@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <ui:composition template="./../../principal/templategreen.xhtml" >
+        <ui:define name="principal-interna">
+            <f:view>
+                <h:form id="for_listar_credito">
+                    <p:panel>
+                        <p:commandButton value="Atualizar" update=":for_listar_credito"/>
+                        <br/>
+                        <br/>
+                        <p:dataTable value="#{receitaRN.pendentesPagamento()}" 
+                                     var="receita" 
+                                     scrollable="true" scrollHeight="400" 
+                                     emptyMessage="Sem registros"
+                                     resizableColumns="true"
+                                     rowStyleClass="#{receita.pago!=true ?(receita.DTVencimento le receitaBean.dataAtual? 'vermelho':(receita.DTVencimento ge receitaBean.hoje ? 'verde':'azul')):'amarelo'}">
+                            <f:facet name="header">
+                                Todas despesas
+                            </f:facet>
+                            <p:column headerText="Empresa"  filterBy="#{receita.IDConta.titular}" sortBy="#{receita.IDConta.titular}">
+                                <h:outputText value="#{receita.IDConta.titular}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Vencimento" >
+                                <h:outputText value="#{receita.DTVencimento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Entidade" > 
+                                <h:outputText value="#{receita.IDCliente.IDPessoa.razao}(cliente)" rendered="#{receita.IDCliente!=null}"/>
+                                <h:outputText value="#{receita.IDFuncionario.IDPessoa.razao}(funcionario)" rendered="#{receita.IDFuncionario!=null}"/>
+                                <h:outputText value="#{despesa.IDFornecedor.IDPessoa.razao}(fornecedor)" rendered="#{receita.IDFornecedor!=null}"/>
+                                <h:outputText value="sem entidade" rendered="#{receita.IDCliente== null and receita.IDFuncionario==null and receita.IDFornecedor==null}"/>
+                            </p:column>
+                            <p:column headerText=" Valor liquido" >
+                                <h:outputText value="R$ "/>
+                                <h:outputText value="#{receita.valorLiquido}">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Tipo" >
+                                <h:outputText value="#{receita.IDClassificacao.descricao}"/>
+                            </p:column>
+                            <p:column width="40">
+                                <p:commandLink  actionListener="#{receitaBean.depesaVisualizacao(receita)}" >
+                                    <h:graphicImage library="imagens" name="Pesq.png"  title="visualizar"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <p:column width="40">
+                                <p:commandLink actionListener="#{receitaBean.calcularTaxa(receita)}" immediate="true" rendered="#{receita.pago==false}" onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                    <h:graphicImage library="imagens" name="money_32x32.png" title="pagar"/>
+                                </p:commandLink>
+                                <h:graphicImage library="imagens" name="money-paga_32x32.png" title="pagar" rendered="#{receita.pago}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panel>
+                    <p:dialog widgetVar="varDialogReceita" modal="true" header="Dados da receita">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Data emição: "/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.DTEmissao}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="Tipo Doc.: "/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.IDDocumento.descricao}"/>
+                            <h:outputText value="Numero: "/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.numero}"/>
+                            <h:outputText value="Entidade: " rendered="#{receitaBean.receitaPesquisa.IDCliente!=null or receitaBean.receitaPesquisa.IDFuncionario!=null or receitaBean.receitaPesquisa.IDFornecedor!=null}"/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.IDCliente.IDPessoa.razao}" rendered="#{receitaBean.receitaPesquisa.IDCliente!=null}"/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.IDFuncionario.IDPessoa.razao}" rendered="#{receitaBean.receitaPesquisa.IDFuncionario!=null}"/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.IDFornecedor.IDPessoa.razao}" rendered="#{receitaBean.receitaPesquisa.IDFornecedor!=null}"/>
+                            <h:outputText value="Atividade Fin.: "/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.IDAtividade.descricao}"/>
+                            <h:outputText value="Centro Custo: " />
+                            <h:outputText value="#{receitaBean.receitaPesquisa.IDCCusto.descricao}"/>
+                            <h:outputText value="Plano de Conta: "/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.IDClassificacao.descricao}"/>
+                            <h:outputText value="Vencimento: "/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.DTVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="5">
+                            <h:outputText value="Multa: R$" rendered="#{receitaBean.receitaPesquisa.valorMulta!='0.00'}"/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.valorMulta}" rendered="#{receitaBean.receitaPesquisa.valorMulta !='0.00'}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.DTMulta==null?'':'limite '}" rendered="#{receitaBean.receitaPesquisa.valorMulta!='0.00'}" />
+                            <h:outputText value="#{receitaBean.receitaPesquisa.DTMulta}" rendered="#{receitaBean.receitaPesquisa.DTMulta!=null and receitaBean.receitaPesquisa.valorMulta!='0.00'}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="" rendered="#{receitaBean.receitaPesquisa.DTMulta==null?true:false}" />
+                            <h:outputText value="#{receitaBean.receitaPesquisa.isentoMulta?'isento':''}" style="color: blue"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+                            <h:outputText value="Juros: R$" rendered="#{receitaBean.receitaPesquisa.valorJuros!='0.00'}"/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.valorJuros}" rendered="#{receitaBean.receitaPesquisa.valorJuros!='0.00'}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.tipoJuros?'dia':'mês'}" rendered="#{receitaBean.receitaPesquisa.valorJuros!='0.00'}"/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.isentoJuros?'isento':''}" style="color: blue" rendered="#{receitaBean.receitaPesquisa.valorJuros!='0.00'}"/>
+
+                            <h:outputText value="Desconto: R$" rendered="#{receitaBean.receitaPesquisa.valorDesconto!='0.00'}"/>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.valorDesconto}" rendered="#{receitaBean.receitaPesquisa.valorDesconto!='0.00'}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="#{receitaBean.receitaPesquisa.DTDesconto==null?'':'limite '}" rendered="#{receitaBean.receitaPesquisa.valorDesconto!='0.00'}" />
+                            <h:outputText value="#{receitaBean.receitaPesquisa.DTDesconto}" rendered="#{receitaBean.receitaPesquisa.DTDesconto!=null and receitaBean.receitaPesquisa.valorDesconto!='0.00'}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="" rendered="#{receitaBean.receitaPesquisa.DTDesconto==null?true:false}" />
+                        </h:panelGrid>
+                        <br/>
+                        <h:outputText value="Valor nominal: "/>
+                        <h:outputText value="#{receitaBean.receitaPesquisa.valorNominal}" styleClass="azul">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                        </h:outputText>
+                        <br/>
+                        <h:outputText value="Valor liquido: "/>
+                        <h:outputText value="#{receitaBean.receitaPesquisa.valorLiquido}" styleClass="azul">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                        </h:outputText>
+                    </p:dialog>
+
+                </h:form>
+                <h:form id="forPagar_credito">
+                    <p:dialog widgetVar="varDialogReceitaPagar" modal="true" header="Dados da receita">
+                        <p:panel id="panelConfirPagCredito">
+                            <p:messages/>
+                            <h:panelGrid columns="2">
+
+                                <h:outputText value="Data emição: "/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.DTEmissao}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="Tipo Doc.: "/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.IDDocumento.descricao}"/>
+                                <h:outputText value="Numero: "/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.numero}"/>
+                                <h:outputText value="Entidade: " rendered="#{receitaBean.receitacredito.IDReceita.IDCliente!=null or receitaBean.receitacredito.IDReceita.IDFuncionario!=null or receitaBean.receitacredito.IDReceita.IDFornecedor!=null}"/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.IDCliente.IDPessoa.razao}" rendered="#{receitaBean.receitacredito.IDReceita.IDCliente!=null}"/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.IDFuncionario.IDPessoa.razao}" rendered="#{receitaBean.receitacredito.IDReceita.IDFuncionario!=null}"/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.IDFornecedor.IDPessoa.razao}" rendered="#{receitaBean.receitacredito.IDReceita.IDFornecedor!=null}"/>
+                                <h:outputText value="Atividade Fin.: "/>
+                                <h:outputText value="#{despesaBean.despesadebito.IDDespesa.IDAtividade.descricao}"/>
+                                <h:outputText value="Centro Custo: " />
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.IDCCusto.descricao}"/>
+                                <h:outputText value="Plano de Conta: "/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.IDClassificacao.descricao}"/>
+                                <h:outputText value="Vencimento: "/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.DTVencimento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </h:panelGrid>
+                            <h:panelGrid columns="5">
+                                <h:outputText value="Multa: R$" rendered="#{receitaBean.receitacredito.IDReceita.valorMulta!='0.00'}"/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.valorMulta}" rendered="#{receitaBean.receitacredito.IDReceita.valorMulta !='0.00'}">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.DTMulta==null?'':'limite '}" rendered="#{receitaBean.receitacredito.IDReceita.valorMulta!='0.00'}" />
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.DTMulta}" rendered="#{receitaBean.receitacredito.IDReceita.DTMulta!=null and receitaBean.receitacredito.IDReceita.valorMulta!='0.00'}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="" rendered="#{receitaBean.receitacredito.IDReceita.DTMulta==null?true:false}" />
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.isentoMulta?'isento':''}" style="color: blue"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="4">
+                                <h:outputText value="Juros: R$" rendered="#{receitaBean.receitacredito.IDReceita.valorJuros!='0.00'}"/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.valorJuros}" rendered="#{receitaBean.receitacredito.IDReceita.valorJuros!='0.00'}">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.tipoJuros?'dia':'mês'}" rendered="#{receitaBean.receitacredito.IDReceita.valorJuros!='0.00'}"/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.isentoJuros?'isento':''}" style="color: blue" rendered="#{receitaBean.receitacredito.IDReceita.valorJuros!='0.00'}"/>
+
+                                <h:outputText value="Desconto: R$" rendered="#{receitaBean.receitacredito.IDReceita.valorDesconto!='0.00'}"/>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.valorDesconto}" rendered="#{receitaBean.receitacredito.IDReceita.valorDesconto!='0.00'}">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.DTDesconto==null?'':'limite '}" rendered="#{receitaBean.receitacredito.IDReceita.valorDesconto!='0.00'}" />
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.DTDesconto}" rendered="#{receitaBean.receitacredito.IDReceita.DTDesconto!=null and receitaBean.receitacredito.IDReceita.valorDesconto!='0.00'}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="" rendered="#{receitaBean.receitacredito.IDReceita.DTDesconto==null?true:false}" />
+                            </h:panelGrid>
+                            <br/>
+                            <h:outputText value="valor liquido: "/>
+                            <h:outputText value="#{receitaBean.receitacredito.IDReceita.valorLiquido}" styleClass="azul">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </h:outputText>
+                            <br/>
+                            <h:outputText value="Valor nominal: "/>
+                            <h:outputText value="#{receitaBean.receitacredito.IDReceita.valorNominal}" styleClass="azul">
+                            </h:outputText>
+                            <p:separator/>
+
+                            <h:panelGrid columns="2" id="gridNumeroDoc_1">
+                                <h:outputText value="Data pagamento:"/>
+                                <p:calendar value="#{receitaBean.receitacredito.IDCredito.DTBaixa}" 
+                                            navigator="true"
+                                            showOn="button"
+                                            pattern="dd/MM/yyyy"
+                                            size="14"
+                                            requiredMessage="Data que foi efetuada é obrigatória!"
+                                            required="true"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Conta : "/>
+                                <p:selectOneMenu converter="contaConverter" value="#{receitaBean.receitacredito.IDReceita.IDConta}" required="true" requiredMessage="conta e obrigatório!">
+                                    <f:selectItem itemLabel=""/>
+                                    <f:selectItems var="conta"
+                                                   value="#{contaRN.listar()}"
+                                                   itemLabel="#{conta.titular} / Banco : #{conta.IDBanco.descricao}"
+                                                   itemValue="#{conta}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputText value="obs. : "/>
+                                <p:inputTextarea value="#{receitaBean.receitacredito.IDReceita.obs}" rows="2" cols="60"/>
+                            </h:panelGrid>
+                            <h:outputText value="valor pago: "/>
+                            <h2>
+                                <h:outputText value="#{receitaBean.receitacredito.IDReceita.valorLiquido}" styleClass="azul">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </h:outputText>
+                            </h2>
+                            <p:separator/>
+                            <p:commandButton value="confirmar" actionListener="#{receitaBean.pagandoReceita(event)}" update=":forPagar_credito:panelConfirPagCredito"/>
+                            <p:commandButton value="sair" onclick="varDialogReceitaPagar.hide();"/>
+                        </p:panel>
+                    </p:dialog>
+
+                </h:form>
+            </f:view>
+        </ui:define>
+
+    </ui:composition>
+</html>

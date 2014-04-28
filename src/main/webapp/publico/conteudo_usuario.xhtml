@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="./../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <f:view>
+                    <h:panelGroup id="painel_grupo_usuario" >
+                        <h:form>
+                            <p:panel >
+                                <h2 >Meu menu</h2>
+
+                                <p:commandLink actionListener="#{usuarioBean.alterarSenha()}" update=":painel_grupo_usuario">
+                                    <h:graphicImage library="imagens" name="Keychain-32.png" title="trocar senha"/>
+                                    <h:outputText value="trocar senha"/>
+                                </p:commandLink>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <p:commandLink actionListener="#{usuarioBean.alterarDados()}" update=":painel_grupo_usuario">
+                                    <h:graphicImage library="imagens" name="page_edit-32.png" title="atualizar dados"/>
+                                    <h:outputText value="Atualizar dados"/>
+                                </p:commandLink>
+
+                            </p:panel>
+                        </h:form>
+                        <br/>
+
+                        <h:form id="form_atualiza_senha">
+                            <h:panelGrid>
+                                <p:panel rendered="#{usuarioBean.opcaoAlterarSenha}"  header="Toca de senha"  style="width: 40em">
+                                    <p:messages/>
+                                    <p:growl showDetail="true" sticky="true" id="grow_atualiza_senha" />
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <h:outputText value="Meu nome:"/>
+                                        <h:outputLabel value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}" style="color:blue"/>
+                                        <h:outputText value="Meu login:"/>
+                                        <h:outputLabel value="#{contextoBean.usuarioLogado.login}" style="color:blue"/>
+                                        <h:outputText value="Senha*"/>
+                                        <p:password value="#{usuarioBean.senhaAtual}" 
+                                                    title="senha atual"
+                                                    />
+
+                                        <h:outputText value="senha nova:"/>
+                                        <p:password  value="#{usuarioBean.usuario.senha}"
+                                                     match="senhaNovaAtualizada"
+                                                     feedback="true" 
+                                                     promptLabel="fraca" weakLabel="media"  
+                                                     goodLabel="forte" strongLabel="Muito Forte"
+                                                     validatorMessage="Senha não confere!"
+                                                     />
+                                        <h:outputText value="Comfirmar Senha:"
+                                                      />
+                                        <p:password id="senhaNovaAtualizada"
+                                                    />
+
+                                    </h:panelGrid>
+                                    <br/>
+                                    <p:separator/>
+                                    <p:commandButton value="Confirmar" 
+                                                     actionListener="#{usuarioBean.atualizarSenha()}" 
+                                                     process="@all" 
+                                                     update=":form_atualiza_senha,grow_atualiza_senha"/>
+                                </p:panel>
+                            </h:panelGrid>
+                        </h:form>
+                        <h:form id="form_atualizacao_dados" rendered="#{usuarioBean.opcaoAlterarDados}">
+                            <h:panelGrid>
+                                <p:messages id="msgAtualizaUser"/>
+                                <p:panel  header="Atualizar dados cadastrais"  style="width: 550px">
+                                    <h:panelGrid columns="3" cellpadding="3" >
+                                        <h:outputText value="Nome*:"/>
+                                        <h:outputLabel value="#{usuarioBean.usuario.IDFuncionario.IDPessoa.razao}  " style="color: blue"/>
+                                        <h:graphicImage library="imagens" name="lock.png"/>
+                                        <h:outputText value="RG*:"/>
+                                        <h:outputLabel value="#{usuarioBean.usuario.IDFuncionario.IDPessoa.rg}  " style="color: blue"/>
+                                        <h:graphicImage library="imagens" name="lock.png"/>
+                                        <h:outputText value="CPF*:"/>
+                                        <h:outputLabel value="#{usuarioBean.usuario.IDFuncionario.IDPessoa.cnpjCpf}  " style="color: blue" />
+                                        <h:graphicImage library="imagens" name="lock.png"/>
+                                        <h:outputText value="Rua:"/>
+                                        <p:inplace editor="true" saveLabel="salvar" cancelLabel="Cancelar">
+                                            <p:inputText value="#{usuarioBean.usuario.IDFuncionario.IDPessoa.logradouro}"/>
+                                        </p:inplace>
+                                        <h:graphicImage library="imagens" name="lock-true.png"/>
+                                        <h:outputText value="Nº:"/>
+                                        <p:inplace editor="true" saveLabel="salvar" cancelLabel="Cancelar">
+                                            <p:inputText value="#{usuarioBean.usuario.IDFuncionario.IDPessoa.numero}"/>
+                                        </p:inplace>
+                                        <h:graphicImage library="imagens" name="lock-true.png"/>
+                                        <h:outputText value="Bairro:"/>
+                                        <p:inplace editor="true" saveLabel="salvar" cancelLabel="Cancelar">
+                                            <p:inputText value="#{usuarioBean.usuario.IDFuncionario.IDPessoa.bairro}"/>
+                                        </p:inplace>
+                                        <h:graphicImage library="imagens" name="lock-true.png"/>
+                                        <h:outputText value="Estado:"/>
+                                        <p:inplace  editor="true" label="#{usuarioBean.endereco.estado}  - Cidade:  #{usuarioBean.endereco.cidade}" effectSpeed="fast" saveLabel="salvar" cancelLabel="Cancelar">
+                                            <p:selectOneMenu value="#{usuarioBean.endereco.estado}" style="width: 60px">
+                                                <f:selectItem itemLabel="estados" itemValue=""/>
+                                                <f:selectItems value="#{usuarioBean.endereco.est}" />
+                                                <p:ajax listener="#{usuarioBean.endereco.handleCidade()}" update="cidadeuser" />
+                                            </p:selectOneMenu>
+                                            <h:outputText value="  Cidades:"/>
+                                            <p:selectOneMenu id="cidadeuser" value="#{usuarioBean.endereco.cidade}" style="min-width: 100px">
+                                                <f:selectItem  itemLabel="Cidades" itemValue=""/>
+                                                <f:selectItems  value="#{usuarioBean.endereco.cid}" />
+                                            </p:selectOneMenu>
+                                        </p:inplace>
+                                        <h:graphicImage library="imagens" name="lock-true.png"/>
+
+                                    </h:panelGrid>
+                                    <p:separator/>
+                                    <p:commandButton value="Confirmar" actionListener="#{usuarioBean.atualizar()}" update="msgAtualizaUser"/>
+                                </p:panel>
+                                <h:panelGrid columns="2">
+                                    <h:graphicImage library="imagens" name="lock.png"/>
+                                    Não editavel
+                                    <h:graphicImage library="imagens" name="lock-true.png"/>
+                                    Editavel (click no texto)
+                                </h:panelGrid>
+
+                            </h:panelGrid>
+                        </h:form>
+                    </h:panelGroup>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

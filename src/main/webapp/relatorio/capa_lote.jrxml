@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="63864262-73af-4753-ae0f-9bd1bf6b5ef0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="gerente" class="java.lang.String"/>
+	<parameter name="vdBruta" class="java.lang.String"/>
+	<parameter name="vdCancel" class="java.lang.String"/>
+	<parameter name="vdLiq" class="java.lang.String"/>
+	<parameter name="fatBruta" class="java.lang.String"/>
+	<parameter name="fatCancel" class="java.lang.String"/>
+	<parameter name="fatLiq" class="java.lang.String"/>
+	<parameter name="percente" class="java.lang.String"/>
+	<parameter name="vlComissao" class="java.lang.String"/>
+	<parameter name="Usuario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="fatBruto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fatBruto]]></fieldDescription>
+	</field>
+	<field name="fatCancelado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fatCancelado]]></fieldDescription>
+	</field>
+	<field name="fatLiquido" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fatLiquido]]></fieldDescription>
+	</field>
+	<field name="procetagemComissao" class="com.green.modelo.CalculoComissao">
+		<fieldDescription><![CDATA[procetagemComissao]]></fieldDescription>
+	</field>
+	<field name="tipoComissao" class="java.lang.Float">
+		<fieldDescription><![CDATA[tipoComissao]]></fieldDescription>
+	</field>
+	<field name="totalPagar" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalPagar]]></fieldDescription>
+	</field>
+	<field name="valorComissao" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorComissao]]></fieldDescription>
+	</field>
+	<field name="vendaBruta" class="java.lang.Integer">
+		<fieldDescription><![CDATA[vendaBruta]]></fieldDescription>
+	</field>
+	<field name="vendaCancelada" class="java.lang.Integer">
+		<fieldDescription><![CDATA[vendaCancelada]]></fieldDescription>
+	</field>
+	<field name="vendaLiquida" class="java.lang.Integer">
+		<fieldDescription><![CDATA[vendaLiquida]]></fieldDescription>
+	</field>
+	<field name="terceiros" class="com.green.modelo.Terceiros">
+		<fieldDescription><![CDATA[terceiros]]></fieldDescription>
+	</field>
+	<variable name="soma" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36">
+			<staticText>
+				<reportElement uuid="93fa38e4-5a47-4d06-89b0-0828afe69841" x="253" y="0" width="343" height="36"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Relatório de comissões Globo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="f7338b93-9c7b-4a6b-aa2c-8034b71f8a68" x="663" y="0" width="139" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="2f5fb778-6b57-48fd-888c-ad55ba9af5c2" x="5" y="49" width="792" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="f8fc0bc0-822c-4328-b3ef-ad5c3b9d7ea1" x="5" y="20" width="48" height="20"/>
+				<textElement/>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="3bbaa69c-d911-48c7-8d22-e6c05aa38fa5" x="53" y="20" width="221" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{Usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0bde9a15-1292-410c-bb74-34067e00c36f" x="253" y="0" width="41" height="20"/>
+				<textElement/>
+				<text><![CDATA[vd.Bruta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="91e661fd-5ae8-4040-b250-d32a44717efe" x="294" y="0" width="51" height="20"/>
+				<textElement/>
+				<text><![CDATA[vd.Cancel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="be58893e-5826-4ccd-956f-03495f4c007e" x="345" y="0" width="58" height="20"/>
+				<textElement/>
+				<text><![CDATA[vd.Liquida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7513301b-5515-47a1-8e60-ff6d9e24572e" x="403" y="0" width="65" height="20"/>
+				<textElement/>
+				<text><![CDATA[fat.Bruto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="44648c3b-415d-4b52-8fc0-dedd2990448c" x="468" y="0" width="62" height="20"/>
+				<textElement/>
+				<text><![CDATA[fat.Cancel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d8224ec2-1f13-4061-9c79-e458b9705f93" x="530" y="0" width="74" height="20"/>
+				<textElement/>
+				<text><![CDATA[fat.Liquido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="31af8e39-0479-435a-9900-e6df217daa76" x="642" y="0" width="75" height="20"/>
+				<textElement/>
+				<text><![CDATA[valor Comissão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d47bb6c1-64af-4164-976f-b8704bee5f48" x="717" y="0" width="85" height="20"/>
+				<textElement/>
+				<text><![CDATA[totalPagar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="af1e929a-82d7-4f52-870f-9da81c2164bf" x="604" y="0" width="38" height="20"/>
+				<textElement/>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7b8030e9-a1fa-4a10-aa55-c4554aaaa85a" x="5" y="0" width="248" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nome promotores]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="f44dd3c7-4d35-48e9-8900-73ba7e9dd304" style="Row" x="0" y="0" width="802" height="23" forecolor="#FFFFFF" backcolor="#CCCCCC">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) != 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="647f29ed-5c07-471d-a1e1-9950e06f6f53" x="717" y="3" width="85" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{valorComissao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="647f29ed-5c07-471d-a1e1-9950e06f6f53" x="642" y="3" width="75" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{valorComissao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement uuid="f8c444fe-a3dc-486e-9a56-a3f989b75ca1" x="604" y="3" width="38" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tipoComissao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="b0b7a91a-e961-4304-a5de-83aadf624a06" x="530" y="3" width="74" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fatLiquido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="2502cec3-a4b2-4ea3-8015-2ea3e8bb22ba" x="468" y="3" width="62" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fatCancelado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="c916acff-c0dd-4075-a859-833f31de09ba" x="403" y="3" width="65" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fatBruto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="315cf119-4d34-47c5-9f5a-fa8254d1dd7f" x="345" y="3" width="58" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{vendaLiquida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="11527c78-998d-42cc-92fd-310593bbe348" x="294" y="3" width="51" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{vendaCancelada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="45d30e35-a997-4243-9f5c-d0b99b118e63" x="253" y="3" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{vendaBruta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f424fcc6-7151-4e4c-9de6-755967da1dcf" x="5" y="3" width="248" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[""+$F{terceiros}.getNome()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="46" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6aef88bd-38ba-4784-994a-ab5f51ac90d5" x="307" y="5" width="109" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="7b05d750-bad1-4e7a-a0b6-cf0d3340810c" x="416" y="5" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="151" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b70a785c-d4b1-4dd9-b31b-93f281815a85" x="5" y="64" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Vendas liquida:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b70a785c-d4b1-4dd9-b31b-93f281815a85" x="5" y="44" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Venda bruta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bb47cb52-138e-4497-8fb5-edfbb120096b" x="4" y="24" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Gerente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="2cc32825-efd4-4566-b589-2cad4e6702f1" x="105" y="64" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{vdLiq}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a5983ebd-a4dd-4108-99c6-12b1755ad854" x="105" y="44" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{vdBruta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f3d99397-347c-47cc-b5c4-2045d4b22c98" x="105" y="24" width="200" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{gerente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b70a785c-d4b1-4dd9-b31b-93f281815a85" x="5" y="124" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Total comissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b70a785c-d4b1-4dd9-b31b-93f281815a85" x="5" y="104" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Comissão de :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b70a785c-d4b1-4dd9-b31b-93f281815a85" x="5" y="84" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Total liquido equipe:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="092e1c79-9c84-414d-90aa-ec0b0e39d132" x="105" y="124" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{vlComissao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="c40d0a9a-213d-4501-bcc5-7335192119ff" x="105" y="104" width="38" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{percente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="9d68b80c-cbdd-4c3d-b7bc-51fb30506bbb" x="105" y="84" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{fatLiq}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="5df9a0b6-83dd-4e00-baf6-3126c2245d73" mode="Opaque" x="5" y="15" width="792" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="19749b6f-feb3-4910-975a-7e136b3ba9c5" x="143" y="104" width="62" height="20"/>
+				<textElement/>
+				<text><![CDATA[%]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

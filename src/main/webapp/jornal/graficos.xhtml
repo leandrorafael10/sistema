@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <h:form>
+                    <p:panel>
+                        <h2>Graficos de desempenho mês atual</h2>
+
+                        <p:lineChart id="category" value="#{graficoGeralBean.modeloLinear}" legendPosition="e"  
+                                     title="Faturamento geral" minY="0"  style="height:300px;margin-top:20px"/> 
+                        <br/>
+                        <p:barChart id="basic" value="#{graficoGeralBean.modeloBarra}" legendPosition="ne"  
+                                    title="Faturamento por equipes" min="0"  style="height:300px"/> 
+                        <br/>
+                        <h:panelGrid columns="2">
+                            <p:pieChart id="custom" value="#{graficoGeralBean.modeloPizza}" legendPosition="e" fill="false" showDataLabels="true"  
+                                        title="Desempenho equipes" style="width:500px;height:500px" sliceMargin="5" />  
+
+                            <p:pieChart id="sample" value="#{graficoGeralBean.modeloPizzaVendas}" legendPosition="w"  
+                                        title="Desempenho por vendas" style="width:500px;height:500px" />    
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

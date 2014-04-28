@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <h:form id="forMailingGerente">
+                    <h2>Mailing de cada vendedor</h2>
+                    <h:panelGrid columns="2">
+                    <h:outputText value="Vendedor:"/>
+                    <p:selectOneMenu converter="funcionarioConverter" value="#{mailingBean.funcionario}" >
+                        <f:selectItem itemLabel="todos" itemDescription="todos" itemEscaped="false"/>
+                        <f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+                                       var="func"
+                                       itemLabel="#{func.IDPessoa.razao}"
+                                       itemValue="#{func}"
+                                       />
+                        <p:ajax update="tabelaMailing" />
+                    </p:selectOneMenu>
+                    </h:panelGrid>
+                    <br/>
+                    <p:separator/>
+                    <br/>
+                    <p:dataTable value="#{mailingRN.listaAtivVend(mailingBean.funcionario)}" var="item" scrollHeight="600"
+                                 scrollable="true" 
+                                 id="tabelaMailing"
+                                 resizableColumns="true" rowStyleClass="#{item.DTvalidade le mailingBean.dataObs?'vermelho':''}">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Razão"/>
+                            </f:facet>
+                            <h:outputText value="#{item.razao}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tel. Fixo"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telefoneFixo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Celular"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telefoneCel}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status==1?'Livre':(item.status==2?'Em prospequição':(item.status==3?'Negociação':'Finalizado'))}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Data validade"/>
+                            </f:facet>
+                            <h:outputText value="#{item.DTvalidade}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ramo atividade"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDRamoatividade.descricao}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Observações"/>
+                            </f:facet>
+                            <p:commandLink value="Obs"  oncomplete="dialogMailingObs.show();" update=":forMailingGerente">
+                                <f:setPropertyActionListener value="#{item}" target="#{mailingBean.mailingAtualizar}"/>
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                    
+
+                    <p:dialog widgetVar="dialogMailingObs" header="observações"
+                              resizable="false" showEffect="clip" hideEffect="clip">
+                        <h1><h:outputText value="Cliente:#{mailingBean.mailingAtualizar.razao}"/></h1>
+                        <h:panelGrid columns="1" width="400"  id="gridObs">
+                            <p:scrollPanel style="height:200px" >
+                                <p:dataList  value="#{mailingBean.mailingAtualizar.IDobsMailing}" var="obs" itemType="disc">
+                                    <h:outputLabel value="#{mailingBean.primeiraPalavra(obs.IDFuncionario.IDPessoa.razao)}" style="color: blue"/> --
+                                    <h:outputLabel value="#{obs.DTObs}" style="color: blue" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel> 
+                                    <h:outputLabel value="-- #{obs.obs}"/> 
+                                </p:dataList> 
+                            </p:scrollPanel>
+                        </h:panelGrid>
+                        <p:commandButton value="sair" onclick="dialogMailingObs.hide();"/>
+                    </p:dialog>
+
+
+
+
+
+
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<ui:composition template="/principal/templategreen.xhtml">
+	<ui:define name="principal-externa">
+		<f:view>
+
+
+			<h:form id="form_atualiza_senha">
+
+
+				<p:panel header="Toca de senha" style="width: 40em">
+					<p:messages />
+					<p:growl showDetail="true" sticky="true" id="grow_atualiza_senha" />
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h:outputText value="Meu nome:" />
+						<h:outputLabel
+							value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}"
+							style="color:blue" />
+						<h:outputText value="Meu login:" />
+						<h:outputLabel value="#{contextoBean.usuarioLogado.login}"
+							style="color:blue" />
+						<h:outputText value="Senha*" />
+						<p:password value="#{usuarioBean.senhaAtual}" title="senha atual" />
+
+						<h:outputText value="senha nova:" />
+						<p:password value="#{usuarioBean.usuario.senha}"
+							match="senhaNovaAtualizada" feedback="true" promptLabel="fraca"
+							weakLabel="media" goodLabel="forte" strongLabel="Muito Forte"
+							validatorMessage="Senha não confere!" />
+						<h:outputText value="Comfirmar Senha:" />
+						<p:password id="senhaNovaAtualizada" />
+
+					</h:panelGrid>
+					<br />
+					<p:separator />
+					<p:commandButton value="Confirmar"
+						actionListener="#{usuarioBean.atualizarSenha()}" process="@all"
+						update=":form_atualiza_senha,grow_atualiza_senha" />
+				</p:panel>
+
+			</h:form>
+
+
+		</f:view>
+
+	</ui:define>
+</ui:composition>
+</html>

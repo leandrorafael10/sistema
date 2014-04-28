@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition >
+        <f:view>
+            <h:panelGroup id="usuario" >
+                <h:form>
+                    <p:panel>
+                        <h2>Cadastro de acesso</h2>
+                        <p:commandLink actionListener="#{usuarioBean.cadastrar()}" update=":usuario"  >
+                            <h:graphicImage  library="imagens" name="user_add_48x48.png" title="Adicionar usuário"/>
+                            <h:outputText value="Adicionar usuário"/>
+                        </p:commandLink>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <p:commandLink   actionListener="#{usuarioBean.alterar()}" update=":usuario">
+                            <h:graphicImage library="imagens" name="user_48x48.png" title="Editar usuário"/>
+                            <h:outputText value="Editar usuário"/>
+                        </p:commandLink>
+
+                    </p:panel>
+                </h:form>
+
+
+                <h:form id="cadUsuario">
+                    <h:panelGrid rendered="#{usuarioBean.opcaoCadastrar}">
+                        <p:messages id="messagesConfirm" showDetail="true" />
+                        <p:growl showDetail="true"/>
+                        <p:panel header="Funcionários Cadastrados" >
+                            <h:panelGrid columns="2" >
+                                <p:dataTable value="#{usuarioBean.funcionarios}"
+                                             var="funcionario"
+                                             rowKey="#{funcionario.IDFuncionario}"
+                                             scrollable="true"
+                                             scrollHeight="400"
+                                             emptyMessage="Busca incorreta!"
+                                             selectionMode="single"
+                                             selection="#{usuarioBean.funcionario}"
+                                             >
+                                    <p:ajax  event="rowSelect" update=":cadUsuario:display" oncomplete="funcionarioDialog.show()" /> 
+                                    <f:facet name="header">  
+                                        Lista de Funcionarios
+                                    </f:facet> 
+                                    <p:column headerText="Código" width="100" filterBy="#{funcionario.IDFuncionario}" sortBy="#{funcionario.IDFuncionario}">
+                                        <h:outputText value="#{funcionario.IDFuncionario}"/>  
+                                    </p:column>
+                                    <p:column headerText="Nome"  filterBy="#{funcionario.IDPessoa.razao}" sortBy="#{funcionario.IDPessoa.razao}">
+                                        <h:outputText value="#{funcionario.IDPessoa.razao}"/> 
+                                    </p:column>
+                                    <p:column headerText="Função" 
+                                              filterBy="#{funcionario.IDFuncao.descricao}" 
+                                              sortBy="#{funcionario.IDFuncao.descricao}"
+                                              >
+                                        <h:outputText value="#{funcionario.IDFuncao.descricao}"/>
+
+                                    </p:column>
+
+                                </p:dataTable>
+
+
+                            </h:panelGrid>
+
+                        </p:panel>
+
+                    </h:panelGrid>    
+
+                    <p:dialog  id="dialog" header="Acesso Funcionário" widgetVar="funcionarioDialog" resizable="false"  
+                               width="350" showEffect="clip" hideEffect="fold" modal="true">
+
+                        <h:panelGrid columns="2" cellpadding="5" id="display">
+                            <p:messages/>
+                            <p:growl showDetail="true" sticky="true" />
+                            <h:outputText value="Código:"/>
+                            <h:outputLabel value="#{usuarioBean.funcionario.IDFuncionario}"/>
+                            <h:outputText value="Nome:"/>
+                            <h:outputLabel value="#{usuarioBean.funcionario.IDPessoa.razao}"/>
+                            <h:outputText value="Função:"/>
+                            <h:outputLabel value="#{usuarioBean.funcionario.IDFuncao.descricao}"/>
+                            <h:outputText value="Tipo de acesso:"/>
+                            <p:selectOneMenu converter="grupoAcessoConverter" value="#{usuarioBean.usuario.IDGrupoAcesso}" >
+                                <f:selectItems value="#{usuarioBean.grupoacessos}"
+                                               var="grupo"
+                                               itemLabel="#{grupo.descricao.substring(5)}"
+                                               itemValue="#{grupo}"/>
+                            </p:selectOneMenu >
+                            <h:outputText value="Login:*"  />
+                            <p:inputText value="#{usuarioBean.usuario.login}"
+                                         required="true"
+                                         requiredMessage="obrigatorio!"/>
+
+                            <h:outputText value="senha:"/>
+                            <p:password  value="#{usuarioBean.usuario.senha}"
+                                         match="senhaNova"
+                                         required="true" feedback="true"   
+                                         promptLabel="fraca" weakLabel="media"  
+                                         goodLabel="forte" strongLabel="Muito Forte"
+                                         validatorMessage="Senha não coresponde!"
+                                         requiredMessage="Senha não coresponde!"/>
+                            <h:outputText value="Comfirmar Senha:"/>
+                            <p:password id="senhaNova"
+                                        required="true"
+                                        requiredMessage="Senha não corresponde!"
+                                        />
+                            <p:commandButton id="salvar" value="Salvar" 
+                                             oncomplete="funcionarioDialog.hide()"  
+                                             action="#{usuarioBean.salvar()}" 
+                                             process="@all" 
+                                             update="display,messagesConfirm,:editarUsuario:tabelafuncionarios"/>    
+                            <p:commandButton id="sair" value="Sair" onclick="funcionarioDialog.hide()" type="button" />   
+
+                        </h:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+                <h:form id="editarUsuario">
+                    <h:panelGrid rendered="#{usuarioBean.opcaoAlterar}">
+                        <p:messages id="messagesConfirm2" showDetail="true" />
+                        <p:growl showDetail="true"/>
+                        <p:panel header="Usuários Cadastrados" >
+                            <h:panelGrid cellpadding="10" >
+                                <p:dataTable value="#{usuarioBean.usuarios}"
+                                             id="tabelafuncionarios"
+                                             var="usuario"
+
+                                             rowKey="#{usuario.IDUsuario}"
+                                             scrollable="true"
+                                             scrollHeight="500"
+                                             emptyMessage="Busca incorreta!"
+                                             selectionMode="single"
+                                             selection="#{usuarioBean.usuario}"
+                                             >
+                                    <p:ajax  event="rowSelect" update=":editarUsuario" oncomplete="funcionarioAtualizadoDialog.show()"/> 
+                                    <f:facet name="header">  
+                                        Lista de Funcionarios
+                                    </f:facet> 
+                                    <p:column headerText="Código" width="100" filterBy="#{usuario.IDUsuario}" sortBy="#{usuario.IDUsuario}">
+                                        #{usuario.IDUsuario}
+                                    </p:column>
+                                    <p:column  headerText="Nome" filterBy="#{usuario.IDFuncionario.IDPessoa.razao}" sortBy="#{usuario.IDFuncionario.IDPessoa.razao}">
+                                        #{usuario.IDFuncionario.IDPessoa.razao}
+                                    </p:column>
+                                    <p:column headerText="Função" filterBy="#{usuario.IDFuncionario.IDFuncao.descricao}" sortBy="#{usuario.IDFuncionario.IDFuncao.descricao}"
+                                              >
+                                        #{usuario.IDFuncionario.IDFuncao.descricao}
+                                    </p:column>
+                                    <p:column headerText="Status"> 
+                                        <h:graphicImage library="imagens" name="ativo_#{usuario.ativo}.png"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <h:graphicImage library="imagens" name="user-ROLE_ADMINISTRACAO.png"/>
+                                <h:outputText value="Administrador"/>
+                                <h:graphicImage library="imagens" name="user-ROLE_USUARIO.png"/>
+                                <h:outputText value="Usuário"/>
+                                <h:graphicImage library="imagens" name="user-ROLE_FINANCEIRO.png"/>
+                                <h:outputText value="Financeiro"/>
+                                <h:graphicImage library="imagens" name="user-ROLE_RH.png"/>
+                                <h:outputText value="Recursos Humanos"/>
+                            </h:panelGrid>
+                        </p:panel>
+
+                    </h:panelGrid> 
+                    <p:dialog  id="dialogAtualisar" header="Editar acesso do funcionário" widgetVar="funcionarioAtualizadoDialog" resizable="false"  
+                               width="400" showEffect="clip" hideEffect="fold" modal="true">
+
+                        <h:panelGrid columns="2" cellpadding="5" id="displayAtualisar">
+                            <p:messages/>
+                            <p:growl showDetail="true" sticky="true" />
+                            <h:outputText value="Código:"/>
+                            <h:outputLabel value="#{usuarioBean.usuario.IDFuncionario.IDFuncionario}"/>
+                            <h:outputText value="Nome:"/>
+                            <h:outputLabel value="#{usuarioBean.usuario.IDFuncionario.IDPessoa.razao}"/>
+                            <h:outputText value="Função:"/>
+                            <h:outputLabel value="#{usuarioBean.usuario.IDFuncionario.IDFuncao.descricao}"/>
+                            <h:outputText value="Tipo de acesso:"/>
+                            <p:selectOneMenu converter="grupoAcessoConverter" value="#{usuarioBean.usuario.IDGrupoAcesso}" >
+                                <f:selectItems value="#{usuarioBean.grupoacessos}"
+                                               var="grupoA"
+                                               itemLabel="#{grupoA.descricao.substring(5)} "
+                                               itemValue="#{grupoA}"/>
+                            </p:selectOneMenu >
+                            <h:outputText value="Opção: " />  
+                            <p:selectOneRadio  value="#{usuarioBean.usuario.ativo}">  
+                                <f:selectItem itemLabel="ativar" itemValue="#{true}"/>  
+                                <f:selectItem itemLabel="desativar" itemValue="#{false}" />  
+                            </p:selectOneRadio> 
+
+
+                            <p:commandButton  value="Salvar" oncomplete="funcionarioAtualizadoDialog.hide()"  actionListener="#{usuarioBean.atualizar()}" process="@all" update="displayAtualisar,messagesConfirm2,tabelafuncionarios" />    
+                            <p:commandButton  value="Sair" onclick="funcionarioAtualizadoDialog.hide()" type="button" />   
+
+                        </h:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+
+
+
+            </h:panelGroup>
+        </f:view>
+    </ui:composition>
+</html>

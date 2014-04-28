@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+
+
+
+            <ui:define name="principal-interna">
+                <h:form id="forEquipes"> 
+                    <h2>Equipes de venda</h2>
+                    <p:panel>
+                        <p:panel>
+                            <p:accordionPanel multiple="true" value="#{terceirosRN.listarPorFuncao(funcaoRN.carregar(1))}" var="gerentes" >
+                                <p:ajax  update="gridEquipes"/>
+                                <p:tab title="#{gerentes.nome}">
+
+                                    <h:panelGrid columns="1" cellpadding="5" id="gridEquipes">
+                                        <p:messages id="msgEquipes"/>
+                                        <p:dataTable value="#{terceirosRN.listarPorEquipe(gerentes)}" var="promotor" emptyMessage="Não há promotores na equipe">
+                                            <p:column headerText="Nome promotores">
+                                                <h:outputText value="#{promotor.nome}"/>
+                                            </p:column>
+                                            <p:column headerText="Demitir">
+                                                <p:commandLink value="demitir" update=":formEquipeDemitir" oncomplete="dialogEquipeDemitir.show()">
+                                                    <f:setPropertyActionListener target="#{terceirosBean.terceiro}" value="#{promotor}"/>
+                                                </p:commandLink>
+                                            </p:column>
+                                        </p:dataTable>
+
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:accordionPanel>
+
+                        </p:panel>
+
+                    </p:panel>
+                </h:form>
+                <h:form id="formEquipeDemitir">
+                    <p:dialog widgetVar="dialogEquipeDemitir" modal="true" header="#{terceirosBean.terceiro.nome}">
+                        Comfirmar demissão?
+                        <h:panelGrid columns="2" cellpadding="15">
+                            <p:commandButton value="sim" actionListener="#{terceirosBean.demitirTereciro}"
+                                             oncomplete="dialogEquipeDemitir.hide()" update=":forEquipes"/>
+                            <p:commandButton value="não" onclick="dialogEquipeDemitir.hide();" update=":forEquipes"/>
+                        </h:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+
+            </ui:define>
+
+
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+   
+        <ui:composition template="/principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <h:form id="formAtividade">
+
+                    <h:panelGroup id="pgAtividade">
+                        <h:inputHidden value="#{atividadeBean.listando()}"/>
+                        <p:panel header="Atividades financeiras">
+                            <p:messages id="msgAtividade"/>
+                            <p:dataTable id="dtAtividades" 
+                                         var="atividade"
+                                         value="#{atividadeBean.atividades}"
+                                         emptyMessage="Nenhum registro">
+                                <p:column headerText="Código">
+                                    <h:outputText value="#{atividade.IDAtividade}"/>
+                                </p:column>
+                                <p:column headerText="Descrição">
+                                    <h:outputText value="#{atividade.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:graphicImage library="imagens" name="ativo_#{atividade.ativo}.png"/>
+                                </p:column>
+                                <p:column headerText="Usuário inc">
+                                    <h:outputText value="#{atividade.IDUsuario.IDFuncionario.IDPessoa.razao}"/>
+                                </p:column>
+                                <p:column headerText="Usuário alt">
+                                    <h:outputText value="#{atividade.IDUsuarioAlt.IDFuncionario.IDPessoa.razao}"/>
+                                </p:column>
+                                <p:column headerText="Editar">
+                                    <p:commandLink oncomplete="dialogEditarAtividade.show()" update=":forEditarAtividade" immediate="true">
+                                        <h:graphicImage library="imagens" name="edit.png" />
+                                        <f:setPropertyActionListener value="#{atividade}" target="#{atividadeBean.atividade}"/>
+                                    </p:commandLink>
+                                </p:column>
+                                <p:column headerText="Excluir">
+                                    <p:commandLink oncomplete="dialogDelAtividade.show()" update=":forDelAtividade:panelDelAtiv" immediate="true">
+                                        <h:graphicImage library="imagens" name="Delete-10.png" />
+                                        <f:setPropertyActionListener  value="#{atividade}" target="#{atividadeBean.atividade}" />
+                                    </p:commandLink>
+                                </p:column>
+                                
+                            </p:dataTable>
+                            <br/>
+                            <p:separator/>
+                            <br/>
+                            <p:commandLink onclick="dialogAtividadesFin.show()">
+                                <h:graphicImage library="imagens" name="new.png" onclick="dialogAtividadesFin.show()"/>
+                                <h:outputText value="incluir novo"/>
+                            </p:commandLink>
+                        </p:panel>
+
+
+                    </h:panelGroup>
+                </h:form>
+                <h:form id="formNovaAtividade">
+                    <p:dialog widgetVar="dialogAtividadesFin" resizable="false" modal="true">
+
+                        <p:messages id="msgAtividadeSalvar"/>
+                        <p:panel>
+                            <h:outputText value="Descrição: "/>
+                            <p:inputText value="#{atividadeBean.atividadeNovo.descricao}" required="true" maxlength="30" size="30"
+                                         requiredMessage="Descrição é obrigatorio!"/>&nbsp;&nbsp;&nbsp;&nbsp; 
+                            <p:selectBooleanCheckbox required="true" value="#{atividadeBean.atividadeNovo.ativo}" requiredMessage="Status é obrigatorio!"/>
+                            <h:outputText value="ativo"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="Observações:"/>
+                            <br/>
+                            <p:inputTextarea value="#{atividadeBean.atividadeNovo.obs}" maxlength="199" rows="8" cols="50"/>
+                            <br/>
+                            <br/>
+                            <p:separator/>
+                            <p:commandButton value="Confirmar" 
+                                             action="#{atividadeBean.salvar()}" 
+                                             process="@form"
+                                             update=":formAtividade:pgAtividade"
+                                             oncomplete="dialogAtividadesFin.hide()"
+                                             />
+                            &nbsp;&nbsp;
+                            <p:commandButton value="Sair" onclick="dialogAtividadesFin.hide()"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="forDelAtividade">
+                    <p:dialog widgetVar="dialogDelAtividade" modal="true">
+                        <p:panel id="panelDelAtiv">
+                            <h:outputText value="Código: "/>
+                            <h:outputLabel value="#{atividadeBean.atividade.IDAtividade}"/>
+                            <br/>
+                            <h:outputText value="Descrição: "/>
+                            <h:outputLabel value="#{atividadeBean.atividade.descricao}"/>
+                            <br/>
+                            <h:outputText value="Status: "/>
+                            <h:graphicImage library="imagens" name="ativo_#{atividadeBean.atividade.ativo}.png"/>
+                            <br/>
+                            <p:separator/>
+                            <p:commandButton value="Confirmar" action="#{atividadeBean.excluir()}" oncomplete="dialogDelAtividade.hide()" update=":formAtividade" immediate="true"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+                <h:form id="forEditarAtividade" >
+                    <p:dialog widgetVar="dialogEditarAtividade" resizable="false" modal="true">
+                        <p:panel id="panelEditarAtiv" header="Edição de atividade">
+                            <h:inputHidden value="#{atividadeBean.atividadeAtualizado.IDAtividade}"/>
+                            <p:messages id="msgAtividadeEditar"/>
+                            <h:outputText value="Código: "/>
+                            <h:outputLabel value="#{atividadeBean.atividade.IDAtividade}"/>
+                            <br/><br/>
+                            <h:outputText value="Descrição: #{atividadeBean.atividade.descricao}"/><br/>
+                            <p:inputText value="#{atividadeBean.atividadeAtualizado.descricao}" 
+                                         maxlength="49" size="40"
+                                         requiredMessage="Descrição é obrigatorio!"/>
+                            <br/><br/>
+                            <h:outputText value="Status: "/>
+                            <h:graphicImage library="imagens" name="ativo_#{atividadeBean.atividade.ativo}.png"/><br/>
+                            <p:selectOneMenu value="#{atividadeBean.atividadeAtualizado.ativo}" style="width: 80px" required="true">
+                                <f:selectItem itemLabel="Ativar" itemValue="#{true}"/>
+                                <f:selectItem itemLabel="Desativar" itemValue="#{false}"/>
+
+                            </p:selectOneMenu> &nbsp;&nbsp;
+                            <br/><br/>
+                            <h:outputText value="Observações:"/>
+                            <br/>
+                            <p:inputTextarea value="#{atividadeBean.atividadeAtualizado.obs}" maxlength="199" rows="8" cols="50"/>
+                            <br/>
+                            <br/>
+                            <p:separator/>
+                            <p:commandButton value="Confirmar" 
+                                             action="#{atividadeBean.atualizar()}" 
+                                             process="@form"
+                                             update=":formAtividade:pgAtividade"
+                                             oncomplete="dialogEditarAtividade.hide()"
+                                             />
+                            &nbsp;&nbsp;
+                            <p:commandButton value="Sair" onclick="dialogEditarAtividade.hide()"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+
+   
+</html>

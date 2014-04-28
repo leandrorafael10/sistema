@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+
+            <ui:define name="principal-interna">
+                <f:view>
+                    <h:form id="formAlteraComissao">
+                        
+                        <br/>
+                        <br/>
+                        <p:messages/>
+                        <h2><h:outputText value="Comissões"/></h2>
+                        <p:panel>
+                            <h:outputText value="Promotores"/>
+                            <h:panelGrid columns="3" cellpadding="10">
+
+                                <h:outputLabel value="ate 50:" for="porcPromotor1" />
+                                <p:inputText id="porcPromotor1" value="#{calculoComissaoBean.calculoComissao.porcPromotor1}" title="PorcPromotor1" required="true" requiredMessage="Todos os valores são obrigatorios!" size="5">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText>%
+                                <h:outputLabel value="de 51 á 99:" for="porcPromotor2" />
+                                <p:inputText id="porcPromotor2" value="#{calculoComissaoBean.calculoComissao.porcPromotor2}" title="PorcPromotor2" required="true" requiredMessage="Todos os valores são obrigatorios!" size="5">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText>%
+                                <h:outputLabel value="acima de 100:" for="porcPromotor3" />
+                                <p:inputText id="porcPromotor3" value="#{calculoComissaoBean.calculoComissao.porcPromotor3}" title="PorcPromotor3" required="true" requiredMessage="Todos os valores são obrigatorios!" size="5">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText>%
+                            </h:panelGrid>
+                            <p:separator/>
+                            <h:outputText value="Gerentes"/>
+                            <h:panelGrid columns="3" cellpadding="10">
+                                <h:outputLabel value="até 450.000,00:" for="porcGerente1" />
+                                <p:inputText id="porcGerente1" value="#{calculoComissaoBean.calculoComissao.porcGerente1}" title="PorcGerente1" required="true" requiredMessage="Todos os valores são obrigatorios!" size="5">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText>%
+                                <h:outputLabel value="de 450.000,01 até 550.000,00 :" for="porcGerente2" />
+                                <p:inputText id="porcGerente2" value="#{calculoComissaoBean.calculoComissao.porcGerente2}" title="PorcGerente2" required="true" requiredMessage="Todos os valores são obrigatorios!" size="5">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText>%
+                                <h:outputLabel value="acima de 550.000,00:" for="porcGerente3" />
+                                <p:inputText id="porcGerente3" value="#{calculoComissaoBean.calculoComissao.porcGerente3}" title="PorcGerente3" required="true" requiredMessage="Todos os valores são obrigatorios!" size="5">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText> %
+                            </h:panelGrid>
+                            <p:commandButton value="salvar" actionListener="#{calculoComissaoBean.salvar(event)}" update=":formAlteraComissao"/>
+                        </p:panel>
+                        obs:Valores e % para comissões (promotores em relação ao numero de vendas e os gerentes em relação ao valor total da sua equipe )
+                    </h:form>
+                </f:view>
+
+            </ui:define>
+
+
+        </ui:composition>
+
+    </body>
+</html>

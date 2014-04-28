@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+    <ui:composition template="/principal/templategreen.xhtml">
+        <ui:define name="principal-interna">
+            <h:form id="formTipoConta">
+                <p:messages/>
+                <p:growl life="30000" id="growlTipoConta"/>
+                <h:inputHidden value="#{tipoContaBean.listando()}"/>
+                <p:panel header="Tipo Conta">
+                    
+                    <p:dataTable var="tipoConta" value="#{tipoContaBean.tipocontas}" editable="true" scrollable="true"
+                                 scrollHeight="400" emptyMessage="Nenhum registro">
+                        <p:ajax event="rowEdit"  listener="#{tipoContaBean.atualizar}" update=":formTipoConta:growlTipoConta" />  
+                        <p:column headerText="Código">
+                            <h:outputText value="#{tipoConta.idtipoconta}"/>
+                        </p:column>
+
+                        <p:column headerText="Descrição">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{tipoConta.descricao}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputText value="#{tipoConta.descricao}" maxlength="30"/>
+                                </f:facet>
+                            </p:cellEditor>
+                            
+                        </p:column>
+                        <p:column headerText="Usuario inscrição">
+                            <h:outputText value="#{tipoConta.IDUsuario.IDFuncionario.IDPessoa.razao}"/>
+                        </p:column>
+                        <p:column headerText="Data inscrição">
+                            <h:outputText value="#{tipoConta.DTInc}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Tipo Caixa">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{tipoConta.cxint ?'interno':'externo'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{tipoConta.cxint}">
+                                        <f:selectItem itemLabel="interno" itemValue="#{true}"/>
+                                        <f:selectItem itemLabel="externo" itemValue="#{false}"/>
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:rowEditor />
+                        </p:column>
+                        <p:column headerText="Excluir">
+                            <p:commandLink oncomplete="dialogExcluirTipoConta.show()" update=":formExcluirTipoConta" immediate="true" >
+                                <f:setPropertyActionListener value="#{tipoConta}" target="#{tipoContaBean.tipoconta}"/>
+                                <h:graphicImage library="imagens" name="Delete-10.png"/>
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                    <br/>
+                    <p:commandLink>
+                        <h:graphicImage library="imagens" name="new.png" onclick="dialogTipoConta.show();"/>
+                        <h:outputText  value="incluir novo" />
+                    </p:commandLink>
+                </p:panel>
+
+            </h:form>
+            <h:form id="formNovaTipoConta">
+                <p:dialog widgetVar="dialogTipoConta" modal="true">
+                    <p:panel>
+                        <h:outputText value="Descrição: "/>
+                        <p:inputText value="#{tipoContaBean.tipoconta.descricao}" maxlength="40" size="40"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <p:selectBooleanCheckbox  value="#{tipoContaBean.tipoconta.cxint}"/>
+                        <h:outputText value="caixa interno"/>
+                        <br/>
+                        <br/>
+                        <p:separator/>
+                        <p:commandButton value="Salvar" actionListener="#{tipoContaBean.salvar}" oncomplete="dialogTipoConta.hide()" update=":formTipoConta"/>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+            <h:form id="formExcluirTipoConta">
+                <p:dialog header="Excluir tipo de conta" widgetVar="dialogExcluirTipoConta" modal="true">
+                    <p:panel>
+                        <h:panelGrid columns="2" id="gridExcluirTipoConta">
+                            <h:outputText value="Descrição: "/>
+                            <h:outputLabel value="#{tipoContaBean.tipoconta.descricao}"/>
+                            <h:outputText value="Caixa : "/>
+                            <h:outputLabel value="#{tipoContaBean.tipoconta.cxint?'interno':'externo'}"/>
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{tipoContaBean.excluir(actionEvent)}" value="confirmar" update=":formTipoConta" oncomplete="dialogExcluirTipoConta.hide()"/>
+                        <p:commandButton value="sair" onclick="dialogExcluirTipoConta.hide()"/>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

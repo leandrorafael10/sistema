@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+
+            <ui:define name="principal-interna">
+                <h:form>
+                    <br/>
+                    <p:panel>
+                        <h2>Cadastro de modalidade</h2>
+                        <h:panelGrid columns="6" cellpadding="8">
+
+                            <h:outputText value="Quant. parcelas:"/>
+                            <p:inputText size="5" value="#{planovendaparcelaBean.planovendaparcela.qtdParcela}"/>
+                            <h:outputText value="Valor:"/>
+                            <p:inputText size="8" value="#{planovendaparcelaBean.planovendaparcela.valor}">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </p:inputText>
+                            <h:outputText value="Modalidade:"/>
+                            <p:inputText value="#{planovendaparcelaBean.planovendaparcela.descricao}"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="salvar" actionListener="#{planovendaparcelaBean.salvar(event)}" update=":formListaPlanos"/>
+                    </p:panel>
+                </h:form>
+                <br/>
+                <h:form id="formListaPlanos">
+                    <p:messages id="msgPlanos"/>
+                    <p:dataTable value="#{planovendaparcelaRN.listar()}" var="modalidades" editable="true">
+                        <p:ajax event="rowEdit" listener="#{planovendaparcelaBean.onEdit}" update=":formListaPlanos:msgPlanos" />  
+                        <p:ajax event="rowEditCancel" listener="#{planovendaparcelaBean.onCancel}" update=":formListaPlanos:msgPlanos" />  
+
+                        <p:column headerText="valor">
+                            <p:cellEditor> 
+                                <f:facet name="output">  
+                                    <h:outputText value="#{modalidades.valor}"/>
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{modalidades.valor}" required="true">
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </p:inputText>
+                                </f:facet>  
+                            </p:cellEditor> 
+
+                        </p:column>
+                        <p:column headerText="quant. parcelas">
+
+                            <p:cellEditor> 
+                                <f:facet name="output">  
+                                    <h:outputText value="#{modalidades.qtdParcela}"/>
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{modalidades.qtdParcela}" required="true"/>
+                                </f:facet>  
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column headerText="descrição">
+                            <p:cellEditor> 
+                                <f:facet name="output">  
+                                    <h:outputText value="#{modalidades.descricao}"/>
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{modalidades.descricao}" />
+                                </f:facet>  
+                            </p:cellEditor>  
+                        </p:column>
+                        <p:column  headerText="editar" width="60">  
+                            <p:rowEditor />  
+                        </p:column>  
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

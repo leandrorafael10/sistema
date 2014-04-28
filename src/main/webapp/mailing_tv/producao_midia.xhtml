@@ -1,0 +1,372 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="./../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+
+                <f:view>
+                    <h:form>
+                        <br/>
+                        <br/>
+                        <p:commandButton value="Atualizar" update=":formListaProducao,:formproduzidos" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <br/>
+                        <br/>
+
+                    </h:form>
+                    <h:form id="formListaProducao">
+                        <h2><h:outputText value="Lista de contratos cadastrados produzindo" /></h2>
+                        <br/>
+                        <br/>
+
+                        <p:messages id="msgProducao"/>
+                        <p:growl/>
+                        <p:dataTable value="#{producaoMidiaBean.listar()}" var="item"
+                                     id="tabelaProducao"
+                                     scrollHeight="300"
+                                     scrollable="true"
+                                     emptyMessage="Não há contratos"
+                                     >
+                            <p:column width="50" >
+                                <f:facet name="header">
+                                    <h:outputText value="Código"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDProducaoMidia}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.IDContratoMidia.IDcliente.IDPessoa.razao}">
+                                <f:facet name="header">
+                                    <h:outputText value="Cliente"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDContratoMidia.IDcliente.IDPessoa.razao}"/>
+                            </p:column>
+                            <p:column width="120" filterBy="#{item.IDContratoMidia.NContrato}">
+                                <f:facet name="header">
+                                    <h:outputText value="N. Contrato"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDContratoMidia.NContrato}"/>
+                            </p:column>
+                            <p:column width="120" filterBy="#{item.IDContratoMidia.IDproduto.descricao}">
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDContratoMidia.IDproduto.descricao}"/>
+                            </p:column>
+                            <p:column width="70">
+                                <f:facet name="header">
+                                    <h:outputText value="Material"/>
+                                </f:facet>
+                                <p:commandLink  oncomplete="dialogForMaterial.show();" update=":formAltMaterial" rendered="#{contextoBean.usuarioLogado.IDGrupoAcesso.descricao!='ROLE_PRODUCAO'?false:true}">
+                                    <f:setPropertyActionListener value="1" target="#{producaoMidiaBean.opc}"/>
+                                    <f:setPropertyActionListener value="#{item}" target="#{producaoMidiaBean.producaoMidia}"/>
+                                    <h:graphicImage library="imagens" name="status#{item.statusMaterial}.png"/>
+                                </p:commandLink>
+                                <h:graphicImage library="imagens" name="status#{item.statusMaterial}.png" rendered="#{contextoBean.usuarioLogado.IDGrupoAcesso.descricao!='ROLE_PRODUCAO'?true:false}"/>
+
+                            </p:column>
+                            <p:column width="70">
+                                <f:facet name="header">
+                                    <h:outputText value="Produção"/>
+                                </f:facet>
+                                <p:commandLink  oncomplete="dialogForProducao.show();" update=":formAltProducao" rendered="#{contextoBean.usuarioLogado.IDGrupoAcesso.descricao!='ROLE_PRODUCAO'?false:true}">
+                                    <f:setPropertyActionListener value="#{item}" target="#{producaoMidiaBean.producaoMidia}"/>
+                                    <f:setPropertyActionListener value="2" target="#{producaoMidiaBean.opc}"/>
+                                    <h:graphicImage library="imagens" name="prod_#{item.statusProducao}.png" />
+                                </p:commandLink>
+                                <h:graphicImage library="imagens" name="prod_#{item.statusProducao}.png" rendered="#{contextoBean.usuarioLogado.IDGrupoAcesso.descricao!='ROLE_PRODUCAO'?true:false}"/>
+                            </p:column>
+                            <p:column width="90">
+                                <f:facet name="header">
+                                    <h:outputText value="Inicio"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDContratoMidia.dataInicioContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column width="90">
+                                <f:facet name="header">
+                                    <h:outputText value="Fim"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDContratoMidia.dataFimContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column width="70">
+                                <f:facet name="header">
+                                    <h:outputText value="Edit.datas"/>
+                                </f:facet>
+                                <p:commandLink oncomplete="dialogForData.show();" update=":formAltData" rendered="#{contextoBean.usuarioLogado.IDGrupoAcesso.descricao!='ROLE_PRODUCAO'?(contextoBean.usuarioLogado.IDGrupoAcesso.descricao!='ROLE_ADMINISTRACAO'?false:true):true}">
+                                    <f:setPropertyActionListener value="#{item}" target="#{producaoMidiaBean.producaoMidia}"/>
+                                    <h:graphicImage library="imagens" name="clock.png" />
+                                </p:commandLink>
+
+                            </p:column>
+                            <p:column width="60">
+                                <f:facet name="header">
+                                    <h:outputText value="Add obs"/>
+                                </f:facet>
+                                <p:commandLink actionListener="#{contratoMidiaBean.buscaObsContrato(item.IDContratoMidia)}"  oncomplete="dialogMailingInsert.show();" update=":formInsertObs">
+                                    <h:graphicImage library="imagens" name="chat1.png" />
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <br/>
+                    <p:separator/>
+                    <h:form id="formAltData">
+                        <p:dialog widgetVar="dialogForData" modal="true">
+                            <h2>Alterar datas de veiculação</h2><br/>
+                            <h:panelGrid columns="2" cellspacing="20">
+                                <h:outputLabel value="Data inic. :"><p:calendar value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.dataInicioContrato}" locale="pt"  navigator="true" pattern="dd/MM/yyyy" mode="inline"/></h:outputLabel>
+                                <h:outputLabel value="Data Fim:"><p:calendar value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.dataFimContrato}" locale="pt"  navigator="true" pattern="dd/MM/yyyy" mode="inline"/></h:outputLabel>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="alterar" actionListener="#{contratoMidiaRN.atualizar(producaoMidiaBean.producaoMidia.IDContratoMidia)}" update=":formListaProducao" oncomplete="dialogForData.hide()"/>
+                            <p:commandButton value="sair" onclick="dialogForData.hide();"/>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formproduzidos">
+                        <h2><h:outputText value="Lista já produzidos e finalizados" /></h2>
+                        <br/>
+                        <br/>
+                        <p:dataTable value="#{producaoMidiaBean.listarFinalizados()}" var="prod"
+                                     id="tabelaProduzidos"
+                                     scrollHeight="300"
+                                     scrollable="true"
+                                     emptyMessage="Não há contratos"
+                                     >
+                            <p:column width="50">
+                                <f:facet name="header">
+                                    <h:outputText value="Código"/>
+                                </f:facet>
+                                <h:outputText value="#{prod.IDProducaoMidia}"/>
+                            </p:column>
+                            <p:column filterBy="#{prod.IDContratoMidia.IDcliente.IDPessoa.fantasia}">
+                                <f:facet name="header">
+                                    <h:outputText value="Cliente"/>
+                                </f:facet>
+                                <h:outputText value="#{prod.IDContratoMidia.IDcliente.IDPessoa.fantasia}"/>
+                            </p:column>
+                            <p:column width="120" filterBy="#{prod.IDContratoMidia.NContrato}">
+                                <f:facet name="header">
+                                    <h:outputText value="N. Contrato"/>
+                                </f:facet>
+                                <h:outputText value="#{prod.IDContratoMidia.NContrato}"/>
+                            </p:column>
+                            <p:column width="120" filterBy="#{prod.IDContratoMidia.IDproduto.descricao}">
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo"/>
+                                </f:facet>
+                                <h:outputText value="#{prod.IDContratoMidia.IDproduto.descricao}"/>
+                            </p:column>
+
+                            <p:column width="80">
+                                <f:facet name="header">
+                                    <h:outputText value="Material"/>
+                                </f:facet>
+                                <h:graphicImage library="imagens" name="status#{prod.statusMaterial}.png"/>
+
+
+                            </p:column>
+                            <p:column width="80">
+                                <f:facet name="header">
+                                    <h:outputText value="Produção"/>
+                                </f:facet>
+                                <h:graphicImage library="imagens" name="prod_#{prod.statusProducao}.png"/>
+
+                            </p:column>
+                            <p:column width="90">
+                                <f:facet name="header">
+                                    <h:outputText value="Inicio"/>
+                                </f:facet>
+                                <h:outputText value="#{prod.IDContratoMidia.dataInicioContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column width="90">
+                                <f:facet name="header">
+                                    <h:outputText value="Fim"/>
+                                </f:facet>
+                                <h:outputText value="#{prod.IDContratoMidia.dataFimContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column width="60">
+                                <f:facet name="header">
+                                    <h:outputText value="Add obs"/>
+                                </f:facet>
+                                <p:commandLink actionListener="#{contratoMidiaBean.buscaObsContrato(prod.IDContratoMidia)}"  oncomplete="dialogMailingInsert.show();" update=":formInsertObs">
+                                    <h:graphicImage library="imagens" name="chat1.png" />
+                                </p:commandLink>
+                            </p:column>
+                            <p:column width="60" rendered="#{contextoBean.usuarioLogado.IDGrupoAcesso.descricao!='ROLE_PRODUCAO'?false:true}">
+                                <f:facet name="header">
+                                    <h:outputText value="voltar prod."/>
+                                </f:facet>
+                                <p:commandLink   oncomplete="dialogVoltarProducao.show();" update=":formVoltarProducao">
+                                    <f:setPropertyActionListener value="#{prod}" target="#{producaoMidiaBean.producaoMidia}"/>
+                                    <h:graphicImage library="imagens" name="seta_subir.png" />
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <br/>
+                    <br/>
+                    <h:panelGrid columns="2" cellpadding="10">
+
+
+                        <p:panelGrid columns="2" >
+                            <h:outputText value="Legenda Produção"/>&nbsp;
+                            <h:graphicImage library="imagens" name="prod_0.png"/>
+                            <h:outputLabel value="não tratado"/>
+                            <h:graphicImage library="imagens" name="prod_1.png"/>
+                            <h:outputLabel value="pendente producao"/>
+                            <h:graphicImage library="imagens" name="prod_2.png"/>
+                            <h:outputLabel value="Aguardando aprovação do cliente"/>
+                            <h:graphicImage library="imagens" name="prod_3.png"/>
+                            <h:outputLabel value="Aprovado pelo cliente"/>
+
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" >
+                            <h:outputText value="Legenda Material"/>&nbsp;
+                            <h:graphicImage library="imagens" name="status0.png"/>
+                            <h:outputLabel value="não tratado"/>
+                            <h:graphicImage library="imagens" name="status1.png"/>
+                            <h:outputLabel value="pendente cliente"/>
+                            <h:graphicImage library="imagens" name="status2.png"/>
+                            <h:outputLabel value="pronto"/>
+
+
+                        </p:panelGrid>
+
+                    </h:panelGrid>
+
+                    <h:form id="formInsertObs">
+                        <p:dialog   widgetVar="dialogMailingInsert" header="observações"
+                                    resizable="false" showEffect="clip" hideEffect="clip" modal="true">
+
+                            <h:panelGrid>
+
+                                <h1><h:outputText value="Cliente:#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.razao}"/></h1>
+                                <h:panelGrid columns="1" width="400"  id="gridObs">
+                                    <p:scrollPanel style="height:200px" >
+                                        <p:dataList  value="#{contratoMidiaBean.listaDeObs}" var="obs" itemType="disc">
+                                            <h:outputLabel value="#{contratoMidiaBean.primeiraPalavra(obs.IDFuncionario.IDPessoa.razao)}" style="color: blue"/> --
+                                            <h:outputLabel value="#{obs.DTObs}" style="color: blue" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputLabel> 
+                                            <h:outputLabel value="-- #{obs.obs}"/> 
+
+                                        </p:dataList> 
+
+                                    </p:scrollPanel>
+                                    <p:inputTextarea rows="2" cols="60" value="#{contratoMidiaBean.obsContrato.obs}" required="true"/> 
+
+                                </h:panelGrid>
+
+                                <p:separator/>
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="ok" actionListener="#{contratoMidiaBean.addObs}" update="gridObs" />
+                                    <p:commandButton value="sair" onclick="dialogMailingInsert.hide();"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
+
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formAltMaterial">
+                        <p:dialog widgetVar="dialogForMaterial" modal="true">
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Alterar para:"/>
+                                <h:outputText value="#{producaoMidiaBean.producaoMidia.statusMaterial==0?'Produzindo':(producaoMidiaBean.producaoMidia.statusMaterial==1?'Finalizado':'')}"/>
+                                <h:outputText value="Cliente"/>
+
+                                <h:outputText value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.IDcliente.IDPessoa.razao}"/>
+                                <br/>
+                                <p:separator/>
+                                <p:commandButton value="alterar" actionListener="#{producaoMidiaBean.alterarStatus(producaoMidiaBean.opc)}" update=":formListaProducao" oncomplete="dialogForMaterial.hide();" 
+                                                 onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                </p:commandButton>
+                                <p:commandButton value="sair" onclick="dialogForMaterial.hide();"/>
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formAltProducao">
+                        <p:dialog widgetVar="dialogForProducao" modal="true">
+                            <h:outputText value="Cliente:"/>
+
+                            <h2><h:outputText value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.IDcliente.IDPessoa.razao}" class="azul"/></h2>
+                            <p:separator/>
+                            <h:panelGrid columns="2">
+
+
+                                <p:outputPanel id="customPanel">
+                                    <p:selectOneRadio id="customRadio" value="#{producaoMidiaBean.producaoMidia.statusProducao}" layout="custom">  
+                                        <f:selectItem itemLabel="Option 1" itemValue="0" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:false}"/>  
+                                        <f:selectItem itemLabel="Option 2" itemValue="1" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==0?true:(producaoMidiaBean.producaoMidia.statusProducao ==2?true:false)}"/>  
+                                        <f:selectItem itemLabel="Option 3" itemValue="2" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:(producaoMidiaBean.producaoMidia.statusProducao ==3?true:false)}"/>  
+                                        <f:selectItem itemLabel="Option 4" itemValue="3" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==2?true:false}"/>  
+
+                                    </p:selectOneRadio>  
+                                    <h:panelGrid columns="3">  
+                                        <p:radioButton id="opt1" for="customRadio" itemIndex="0" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:false}"/>  
+                                        <h:outputLabel for="opt1" value="não tratado" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:false}"/>  
+                                        <h:graphicImage library="imagens" name="prod_0.png" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:false}"/>  
+
+                                        <p:radioButton id="opt2" for="customRadio" itemIndex="1" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==0?true:(producaoMidiaBean.producaoMidia.statusProducao ==2?true:false)}"/>  
+                                        <h:outputLabel for="opt2" value="pendente producao" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==0?true:(producaoMidiaBean.producaoMidia.statusProducao ==2?true:false)}" />  
+                                        <h:graphicImage library="imagens" name="prod_1.png" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==0?true:(producaoMidiaBean.producaoMidia.statusProducao ==2?true:false)}"/> 
+
+                                        <p:radioButton id="opt3" for="customRadio" itemIndex="2" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:(producaoMidiaBean.producaoMidia.statusProducao ==3?true:false)}"/>  
+                                        <h:outputLabel for="opt3" value="Aguardando aprovação do cliente" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:(producaoMidiaBean.producaoMidia.statusProducao ==3?true:false)}"/>  
+                                        <h:graphicImage library="imagens" name="prod_2.png" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==1?true:(producaoMidiaBean.producaoMidia.statusProducao ==3?true:false)}"/>   
+
+                                        <p:radioButton id="opt4" for="customRadio" itemIndex="3" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==2?true:false}"/>  
+                                        <h:outputLabel for="opt4" value="Aprovado pelo cliente" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==2?true:false}"/>  
+                                        <h:graphicImage library="imagens" name="prod_3.png" rendered="#{producaoMidiaBean.producaoMidia.statusProducao ==2?true:false}"/> 
+                                    </h:panelGrid>  
+                                </p:outputPanel>  
+
+
+                            </h:panelGrid>
+                            <br/>
+                            <p:commandButton value="alterar" actionListener="#{producaoMidiaBean.alterarStatusProd(actionEvent)}" 
+                                             update=":formListaProducao" oncomplete="dialogForProducao.hide();" icon="../resources/imagens/prod_0.png" 
+                                             onstart="statusDialog.show();" onsuccess="statusDialog.hide();"
+                                             />     
+                            <p:commandButton value="sair" onclick="dialogForProducao.hide();"/>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formVoltarProducao">
+                        <p:dialog widgetVar="dialogVoltarProducao" modal="true">
+                            <h:outputText value="Cliente:"/>
+
+                            <h2><h:outputText value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.IDcliente.IDPessoa.razao}" class="azul"/></h2>
+                            Voltar Producao
+                            <p:separator/>
+
+                            <br/>
+                            <p:commandButton value="confirmar" 
+                                             actionListener="#{producaoMidiaBean.voltarProducao(actionEvent)}" 
+                                             update=":formListaProducao,:formproduzidos"
+                                             oncomplete="dialogVoltarProducao.hide();"
+                                             onstart="statusDialog.show();" 
+                                             onsuccess="statusDialog.hide();">
+
+                            </p:commandButton>     
+                            <p:commandButton value="sair" onclick="dialogForProducao.hide();"/>
+                        </p:dialog>
+                    </h:form>
+
+                </f:view>
+
+
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

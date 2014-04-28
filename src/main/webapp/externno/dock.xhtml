@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+<h:form>
+	<p:dock position="top" id="dockStile" >
+		<p:menuitem value="Editar venda"
+			icon="/resources/imagens/edit-64.png"
+			action="/externno/alteracaovenda.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			<p:menuitem value="vendas"
+			icon="/resources/imagens/listar_32x32.png"
+			action="/externno/vendasgeral.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+		<p:menuitem value="Sair" icon="/resources/imagens/seta estorno.png"
+			onclick="document.location = '#{request.contextPath}/j_spring_security_logout'" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			
+		<p:menuitem value="Alterar senha"
+			icon="/resources/imagens/Keychain-32.png"
+			action="/externno/trocasenha.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+		<p:menuitem value="Help" icon="/resources/imagens/Help-32.png"
+			action="/externno/edicao.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+
+	</p:dock>
+
+	<h:outputLabel value="Olá! #{request.remoteUser}" style="color:#ffffff" />
+	<h:inputHidden
+		value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}" />
+	<br />
+	<div style="text-align: center;">
+
+		<h2>
+			<strong> Grupo Assinatura Externa </strong>
+		</h2>
+
+	</div>
+	<br />
+
+
+	<p:separator />
+
+	<br />
+</h:form>
+
+
+</html>

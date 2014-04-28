@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<ui:composition template="./../principal/templategreen.xhtml">
+	<ui:define name="principal-interna">
+		<h:form id="listadevendas">
+			<p:panel header="Pesquisa por periodo">
+				<h:panelGrid columns="6" cellspacing="5">
+					<h:outputText value="periodo" />
+					<p:selectOneMenu value="#{capaLoteJornalBean.mes}">
+						<f:selectItem itemLabel="Janeiro" itemValue="0" />
+						<f:selectItem itemLabel="Fevereiro" itemValue="1" />
+						<f:selectItem itemLabel="Março" itemValue="2" />
+						<f:selectItem itemLabel="Abril" itemValue="3" />
+						<f:selectItem itemLabel="Maio" itemValue="4" />
+						<f:selectItem itemLabel="Junho" itemValue="5" />
+						<f:selectItem itemLabel="Junlho" itemValue="6" />
+						<f:selectItem itemLabel="Agosto" itemValue="7" />
+						<f:selectItem itemLabel="Setembro" itemValue="8" />
+						<f:selectItem itemLabel="Outubro" itemValue="9" />
+						<f:selectItem itemLabel="Novembro" itemValue="10" />
+						<f:selectItem itemLabel="Dezembro" itemValue="11" />
+					</p:selectOneMenu>
+					<p:selectOneMenu value="#{capaLoteJornalBean.ano}">
+						<f:selectItem itemLabel="2013" itemValue="2013" />
+						<f:selectItem itemLabel="2014" itemValue="2014" />
+						<f:selectItem itemLabel="2015" itemValue="2015" />
+						<f:selectItem itemLabel="2015" itemValue="2015" />
+						<f:selectItem itemLabel="2016" itemValue="2016" />
+						<f:selectItem itemLabel="2017" itemValue="2017" />
+						<f:selectItem itemLabel="2018" itemValue="2018" />
+						<f:selectItem itemLabel="2019" itemValue="2019" />
+						<f:selectItem itemLabel="2020" itemValue="2020" />
+					</p:selectOneMenu>
+					<h:outputText value="Status: " />
+					<p:selectOneRadio id="options"
+						value="#{capaLoteJornalBean.status}"
+						required="true">
+						<f:selectItem itemLabel="todos" itemValue="4"  />
+						<f:selectItem itemLabel="ativo" itemValue="1" />
+						<f:selectItem itemLabel="pendente" itemValue="2" />
+						<f:selectItem itemLabel="agendado" itemValue="3" />
+						<f:selectItem itemLabel="cancelado" itemValue="0" />
+					</p:selectOneRadio>
+					<p:commandButton icon="ui-icon-search"
+								actionListener="#{capaLoteJornalBean.pesquisar(event)}"
+								update="listadevendas" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+					
+				</h:panelGrid>
+			</p:panel>
+			
+			<p:panel>
+				<h2>Vendas por periodo</h2>
+				<br />
+				<p:messages id="msgGestor" />
+				<p:dataTable value="#{capaLoteJornalBean.filtro}" var="capa"
+					emptyMessage="não há vendas cadastradas para esse periodo." 
+					scrollHeight="400" scrollable="true"
+					id="tbl"
+					resizableColumns="true"
+					>
+					
+					<p:column headerText="DATA" >
+						<h:outputText value="#{capa.DTVenda}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Nº CONTRATO" >
+						<h:outputText value="#{capa.contrato}" />
+					</p:column>
+					<p:column headerText="EQUIPE" >
+                            
+                            <h:outputText value="#{capa.IDGerente.IDPessoa.razao}"/>
+                        </p:column>
+                        <p:column headerText="VENDEDOR">
+                            
+                            <h:outputText value="#{capa.IDFuncionarioPromotor.IDPessoa.razao}"/>
+                        </p:column>
+					<p:column headerText="CLIENTE" >
+						<h:outputText value="#{capa.nome}" />
+					</p:column>
+					<p:column headerText="VALOR" >
+						<h:outputText value="#{capa.valor}">
+							<f:convertNumber minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="MODALIDADE">
+						<h:outputText value="#{capa.modalidade} Meses" />
+					</p:column>
+					<p:column headerText="FORM. PAG">
+						<h:outputText value="#{capa.IDTipopagamento.descricao}" />
+					</p:column>
+					
+					<p:column headerText="STATUS">
+								<h:outputText
+									value="#{capa.status==0?'Cancelado':(capa.status==1?'Ativo':(capa.status==2?'Pendente':'Agendado'))}"
+									styleClass="#{capa.status==0?'vermelho':(capa.status==1?'azul':(capa.status==2?'amarelo':''))}" />
+					</p:column>
+					<p:column headerText="Nº gestor" >
+								<h:outputText value="#{capa.gerador}" />
+					</p:column>
+					<p:column headerText="Data gestor" >
+								<h:outputText value="#{capa.DTIncGerador}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+					</p:column>
+					
+				</p:dataTable>
+			</p:panel>
+			<p:panel>
+				<h:commandLink>  
+                        <p:graphicImage value="/resources/imagens/pdf-branco-32.jpg" />  
+                        <p:dataExporter type="xls" target="tbl" fileName="capa_lote" postProcessor="#{capaLoteJornalBean.postProcessXLS}"/>  
+                    </h:commandLink>
+                    &nbsp;&nbsp;&nbsp; 
+				<h:commandLink>  
+                        <p:graphicImage value="/resources/imagens/excel.jpg" />  
+                        <p:dataExporter type="xls" target="tbl" fileName="capa_lote" postProcessor="#{capaLoteJornalBean.postProcessXLS}"/>  
+                    </h:commandLink> 
+			</p:panel>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

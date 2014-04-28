@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+
+
+
+    <ui:composition template="./../../principal/templategreen.xhtml">
+        <ui:define name="principal-interna">
+
+            <f:view>
+                <h:form id="forDespesas">
+                    <p:tabView>
+                        <p:tab id="tab1" title="Despesas">
+                            <h:panelGrid columns="2"  id="gridFiltrodespesa">
+                                <p:fieldset legend="Filtro" >
+                                    <h:panelGrid columns="6" cellpadding="10">
+                                        <h:outputText value="Centro de custo: "/>
+                                        <p:selectOneMenu converter="ccustoConverter" filter="true" value="#{despesaBean.despesaFiltro.IDCCusto}" >
+                                            <f:selectItem itemLabel=""/>
+                                            <f:selectItems var="receitaCentro"
+                                                           value="#{ccustoRN.listar()}"
+                                                           itemLabel="#{receitaCentro.descricao}"
+                                                           itemValue="#{receitaCentro}"/>
+                                        </p:selectOneMenu> 
+                                        <h:outputText value="Plano de Contas: "/>
+                                        <p:selectOneMenu converter="classificacaoConverter" filter="true" value="#{despesaBean.despesaFiltro.IDClassificacao}">
+                                            <f:selectItem itemLabel=""/>
+                                            <f:selectItems var="receitaClassificacao"
+                                                           value="#{classificacaoRN.listar()}"
+                                                           itemLabel="#{receitaClassificacao.descricao}"
+                                                           itemValue="#{receitaClassificacao}"/>
+                                        </p:selectOneMenu>
+                                        <h:outputText value="Conta:"/>
+                                        <p:selectOneMenu converter="contaConverter" value="#{despesaBean.despesaFiltro.IDConta}"  >
+                                            <f:selectItem itemLabel=""/>
+                                            <f:selectItems var="conta"
+                                                           value="#{contaRN.listar()}"
+                                                           itemLabel="#{conta.titular} / Banco : #{conta.IDBanco.descricao}"
+                                                           itemValue="#{conta}"/>
+                                        </p:selectOneMenu>
+
+
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="6" cellpadding="10">
+                                        <h:outputText value="Venc. de : "/>
+                                        <p:calendar  value="#{despesaBean.despesaFiltro.DTVencimento}" size="8" pattern="dd/MM/yyyy" showOn="button"  locale="pt" />
+                                        <h:outputText value=" até: "/>
+                                        <p:calendar size="8"
+                                                    value="#{despesaBean.fimFiltroVenc}"
+                                                    showOn="button" locale="pt"
+                                                    pattern="dd/MM/yyyy"/>
+                                        <p:selectOneRadio value="#{despesaBean.pgFiltro}" >  
+                                            <f:selectItem itemLabel="todos" itemValue="0"/>  
+                                            <f:selectItem itemLabel="pago" itemValue="1"/>  
+                                            <f:selectItem itemLabel="pagar" itemValue="2"/>  
+                                        </p:selectOneRadio> 
+
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="4" cellpadding="10">
+                                        <h:outputText value="valor de: R$"/>
+                                        <p:inputText value="#{despesaBean.valorIni}" size="15">
+                                            <f:convertNumber  minFractionDigits="2"/>
+                                        </p:inputText>
+                                        <h:outputText value="a:"/>
+                                        <p:inputText value="#{despesaBean.valorFim}" size="15">
+                                            <f:convertNumber  minFractionDigits="2"/>
+                                        </p:inputText>
+                                    </h:panelGrid>
+                                </p:fieldset>
+
+                            </h:panelGrid>
+                            <p:commandButton value="filtrar" actionListener="#{despesaBean.filtroDespesa()}"  update="tabelaDespesas,gridFiltrodespesa" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                            <p:commandButton value="incluir" action="/tesouraria/lancamento_financeiro/despesa_pagar.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                            <br/>
+                            <p:separator/>
+                            <br/>
+                            <p:growl life="30000"/>
+                            <p:messages/>
+                            <p:panel>
+                                <p:dataTable id="tabelaDespesas"
+                                             value="#{despesaBean.despesaDataModelo}" 
+                                             var="despesaModelo" 
+                                             scrollable="true" scrollHeight="400" 
+                                             selection="#{despesaBean.selectDespesas}"
+                                             emptyMessage="Sem registros"
+                                             resizableColumns="true"
+                                             >
+                                    <f:facet name="header">
+                                        Todas despesas
+                                    </f:facet>
+
+                                    <p:column selectionMode="multiple" style="width:2%"  disabledSelection="#{despesaModelo.atzPg!=0}" /> 
+
+                                    <p:column headerText="Venc. " style="width:7%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                        <h:outputText value="#{despesaModelo.DTVencimento}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Entidade" style="width:25%" disabledSelection="#{despesaModelo.atzPg!=0}"> 
+                                        <h:outputText value="#{despesaModelo.IDCliente.IDPessoa.razao}" rendered="#{despesaModelo.IDCliente!=null}"/>
+                                        <h:outputText value="#{despesaModelo.IDFuncionario.IDPessoa.razao}" rendered="#{despesaModelo.IDFuncionario!=null}"/>
+                                        <h:outputText value="#{despesaModelo.IDFornecedor.IDPessoa.fantasia!=null? despesaModelo.IDFornecedor.IDPessoa.fantasia : despesaModelo.IDFornecedor.IDPessoa.razao}" rendered="#{despesaModelo.IDFornecedor!=null}"/>
+                                        <h:outputText value="sem entidade" rendered="#{despesaModelo.IDCliente== null and despesaModelo.IDFuncionario==null and despesaModelo.IDFornecedor==null}"/>
+                                    </p:column>
+                                    <p:column headerText=" Vlr.nominal" style="width:10%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                        <h:outputText value="R$ "/>
+                                        <h:outputText value="#{despesaModelo.valorNominal}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Empresa" style="width:15%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                        <h:outputText value="#{despesaModelo.IDConta.titular}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Tipo" style="width:15%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                        <h:outputText value="#{despesaModelo.IDClassificacao.descricao}"/>
+                                    </p:column>
+                                    <p:column style="width:3%">
+                                        <p:commandLink update=":formDialogDespesa"  oncomplete="varDialogDespesa.show()" >
+                                            <h:graphicImage library="imagens" name="Pesq.png"  title="visualizar"/>
+                                            <f:setPropertyActionListener target="#{despesaBean.despesaPesquisa}" value="#{despesaModelo}"/>
+                                        </p:commandLink>
+                                    </p:column>
+                                    <p:column style="width:3%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                        <p:commandLink update=":formEditDespesa"  oncomplete="varDialogDespesaEdit.show()" immediate="true" disabled="#{despesaModelo.atzPg!=0}">
+                                            <h:graphicImage library="imagens" name="Edit-Yes-32.png" title="editar" />
+                                            <f:setPropertyActionListener value="#{despesaModelo}" target="#{despesaBean.despesaEdit}" />
+                                        </p:commandLink>
+                                    </p:column>
+                                    <p:column style="width:3%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                        <p:commandLink update=":formDeleteDespesa"  oncomplete="varDialogDespesaDel.show()" immediate="true" disabled="#{despesaModelo.atzPg!=0}">
+                                            <h:graphicImage library="imagens" name="Delete-32.png" title="excluir"/>
+                                            <f:setPropertyActionListener value="#{despesaModelo}" target="#{despesaBean.despesaDel}" />
+                                        </p:commandLink>
+                                    </p:column>
+                                    <p:column headerText="status" disabledSelection="#{despesaModelo.atzPg!=0}" style="width:6%">
+                                        <h:outputLabel value="ativo" rendered="#{despesaModelo.atzPg==0}"/>
+                                        <h:outputLabel value="liberação" rendered="#{despesaModelo.atzPg==1}"/>
+                                        <h:outputLabel value="liberado p/pagamento" rendered="#{despesaModelo.atzPg==2}"/>
+                                        <h:outputLabel value="pago" rendered="#{despesaModelo.atzPg==3}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+
+                                <p:commandLink actionListener="#{despesaBean.autorizaPagamento(event)}" update=":forDespesas" title="selecionar despesas" onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                    <p:graphicImage library="imagens" name="Dir.png"/>
+                                    <br/>
+                                    <h:outputText value="selecionar"/>
+                                </p:commandLink>
+                            </p:panel>
+
+                        </p:tab>
+                        <p:tab title="Liberação" >
+                            <p:panel id="painelLiberacao">
+                                <p:messages/>
+                                <p:dataTable 
+                                    value="#{despesaRN.liberaPagamento()}" 
+                                    var="despesaModeloLib" 
+                                    scrollable="true" scrollHeight="400" 
+                                    selection="#{despesaBean.selectDespesasLibera}"
+                                    emptyMessage="Sem registros"
+                                    >
+                                    <f:facet name="header">
+                                        Todas despesas
+                                    </f:facet>
+
+                                    <p:column selectionMode="multiple" style="width:2%" /> 
+
+                                    <p:column headerText="Vencimento " width="80">
+                                        <h:outputText value="#{despesaModeloLib.DTVencimento}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Entidade" width="180"> 
+                                        <h:outputText value="#{despesaModeloLib.IDCliente.IDPessoa.razao}" rendered="#{despesaModeloLib.IDCliente!=null}"/>
+                                        <h:outputText value="#{despesaModeloLib.IDFuncionario.IDPessoa.razao}" rendered="#{despesaModeloLib.IDFuncionario!=null}"/>
+                                        <h:outputText value="#{despesaModeloLib.IDFornecedor.IDPessoa.fantasia}" rendered="#{despesaModeloLib.IDFornecedor!=null}"/>
+                                        <h:outputText value="sem entidade" rendered="#{despesaModeloLib.IDCliente== null and despesaModeloLib.IDFuncionario==null and despesaModeloLib.IDFornecedor==null}"/>
+                                    </p:column>
+                                    <p:column headerText=" Valor nominal" width="100">
+                                        <h:outputText value="R$ "/>
+                                        <h:outputText value="#{despesaModeloLib.valorNominal}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText=" Empresa" width="100">
+                                        <h:outputText value="#{despesaModeloLib.IDConta.titular}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Tipo" width="100">
+                                        <h:outputText value="#{despesaModeloLib.IDClassificacao.descricao}"/>
+                                    </p:column>
+                                    <p:column headerText="num.doc" width="90">
+                                        <h:outputText value="#{despesaModeloLib.numero}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                                <p:separator/>
+                                <h:panelGrid cellspacing="15" columns="6">
+
+                                    <p:commandLink  actionListener="#{despesaBean.estornoPagamento}"  update=":forDespesas">
+                                        <p:graphicImage library="imagens" name="Esq.png"/>
+                                        <br/>
+                                        <h:outputText value="estornar"/>
+                                    </p:commandLink>&nbsp;&nbsp;&nbsp;
+                                    <p:commandLink  actionListener="#{despesaBean.liberaPagamento(event)}"  update=":forDespesas"
+                                                    onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                        <p:graphicImage library="imagens" name="Dir.png"/>
+                                        <br/>
+                                        <h:outputText value="liberar"/>
+                                    </p:commandLink>&nbsp;&nbsp;&nbsp;
+
+                                    <h:commandLink  action="#{despesaBean.geraRelatorioPDF}" 
+                                                    target="_blank"  >
+                                        <p:graphicImage library="imagens" name="pdf.png"/>
+                                        <br/>
+                                        <h:outputText value="pdf"/>
+                                    </h:commandLink>
+                                </h:panelGrid>
+
+                                <br/>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab title="Autorizados" >
+                            <p:panel id="painelAutorizados">
+                                <p:dataTable 
+                                    value="#{despesaRN.faseDePagamento()}" 
+                                    var="despesaModeloLiberado" 
+                                    scrollable="true" scrollHeight="400" 
+                                    selection="#{despesaBean.selectDespesasLiberados}"
+                                    emptyMessage="Sem registros"
+                                    >
+                                    <f:facet name="header">
+                                        Todas despesas
+                                    </f:facet>
+
+                                    <p:column selectionMode="multiple" style="width:2%"  disabledSelection="#{despesaModeloLiberado.pago==true}" /> 
+
+                                    <p:column headerText="Vencimento " width="80">
+                                        <h:outputText value="#{despesaModeloLiberado.DTVencimento}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Entidade" width="180"> 
+                                        <h:outputText value="#{despesaModeloLiberado.IDCliente.IDPessoa.razao}" rendered="#{despesaModeloLiberado.IDCliente!=null}"/>
+                                        <h:outputText value="#{despesaModeloLiberado.IDFuncionario.IDPessoa.razao}" rendered="#{despesaModeloLiberado.IDFuncionario!=null}"/>
+                                        <h:outputText value="#{despesaModeloLiberado.IDFornecedor.IDPessoa.fantasia}" rendered="#{despesaModeloLiberado.IDFornecedor!=null}"/>
+                                        <h:outputText value="sem entidade" rendered="#{despesaModeloLiberado.IDCliente== null and despesaModeloLiberado.IDFuncionario==null and despesaModeloLiberado.IDFornecedor==null}"/>
+                                    </p:column>
+                                    <p:column headerText=" Valor nominal" width="100">
+                                        <h:outputText value="R$ "/>
+                                        <h:outputText value="#{despesaModeloLiberado.valorNominal}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText=" Empresa" width="100">
+                                        <h:outputText value="#{despesaModeloLiberado.IDConta.titular}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Tipo" width="100">
+                                        <h:outputText value="#{despesaModeloLiberado.IDClassificacao.descricao}"/>
+                                    </p:column>
+                                    <p:column headerText="num.doc" width="90">
+                                        <h:outputText value="#{despesaModeloLiberado.numero}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                                <p:separator/>
+                                <p:commandLink  actionListener="#{despesaBean.estornoLiberacaoPagamento(event)}"  update="painelAutorizados,tabelaDespesas" onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                    <p:graphicImage library="imagens" name="Esq.png"/>
+                                    <br/>
+                                    <h:outputText value="estornar"/>
+                                </p:commandLink>
+                            </p:panel>
+                        </p:tab>
+
+                    </p:tabView>
+                </h:form>
+
+                <h:form id="formDialogDespesa">
+                    <p:dialog widgetVar="varDialogDespesa" modal="true" header="Dados da despesa" width="350">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Data emição: "/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.DTEmissao}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="Tipo Doc.: "/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.IDDocumento.descricao}"/>
+                            <h:outputText value="Numero: "/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.numero}"/>
+                            <h:outputText value="Entidade: " rendered="#{despesaBean.despesaPesquisa.IDCliente!=null or despesaBean.despesaPesquisa.IDFuncionario!=null or despesaBean.despesaPesquisa.IDFornecedor!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.IDCliente.IDPessoa.razao}" rendered="#{despesaBean.despesaPesquisa.IDCliente!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.IDFuncionario.IDPessoa.razao}" rendered="#{despesaBean.despesaPesquisa.IDFuncionario!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.IDFornecedor.IDPessoa.fantasia}" rendered="#{despesaBean.despesaPesquisa.IDFornecedor!=null}"/>
+                            <h:outputText value="Atividade Fin.: "/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.IDAtividade.descricao}"/>
+                            <h:outputText value="Centro Custo: " />
+                            <h:outputText value="#{despesaBean.despesaPesquisa.IDCCusto.descricao}"/>
+                            <h:outputText value="Plano de Conta: "/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.IDClassificacao.descricao}"/>
+                            <h:outputText value="Vencimento: "/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.DTVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="5">
+                            <h:outputText value="Multa: R$" rendered="#{despesaBean.despesaPesquisa.valorMulta!='0.00'}"/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.valorMulta}" rendered="#{despesaBean.despesaPesquisa.valorMulta !='0.00'}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.DTMulta==null?'':'limite '}" rendered="#{despesaBean.despesaPesquisa.valorMulta!='0.00'}" />
+                            <h:outputText value="#{despesaBean.despesaPesquisa.DTMulta}" rendered="#{despesaBean.despesaPesquisa.DTMulta!=null and despesaBean.despesaPesquisa.valorMulta!='0.00'}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="" rendered="#{despesaBean.despesaPesquisa.DTMulta==null?true:false}" />
+                            <h:outputText value="#{despesaBean.despesaPesquisa.isentoMulta?'isento':''}" style="color: blue"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+                            <h:outputText value="Juros: R$" rendered="#{despesaBean.despesaPesquisa.valorJuros!='0.00'}"/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.valorJuros}" rendered="#{despesaBean.despesaPesquisa.valorJuros!='0.00'}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.tipoJuros?'dia':'mês'}" rendered="#{despesaBean.despesaPesquisa.valorJuros!='0.00'}"/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.isentoJuros?'isento':''}" style="color: blue" rendered="#{despesaBean.despesaPesquisa.valorJuros!='0.00'}"/>
+
+                            <h:outputText value="Desconto: R$" rendered="#{despesaBean.despesaPesquisa.valorDesconto!='0.00'}"/>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.valorDesconto}" rendered="#{despesaBean.despesaPesquisa.valorDesconto!='0.00'}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="#{despesaBean.despesaPesquisa.DTDesconto==null?'':'limite '}" rendered="#{despesaBean.despesaPesquisa.valorDesconto!='0.00'}" />
+                            <h:outputText value="#{despesaBean.despesaPesquisa.DTDesconto}" rendered="#{despesaBean.despesaPesquisa.DTDesconto!=null and despesaBean.despesaPesquisa.valorDesconto!='0.00'}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="" rendered="#{despesaBean.despesaPesquisa.DTDesconto==null?true:false}" />
+
+                        </h:panelGrid>
+                        <br/>
+                        <h:outputText value="Valor nominal: "/>
+                        <h:outputText value="#{despesaBean.despesaPesquisa.valorNominal}" styleClass="azul">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                        </h:outputText>
+                        <br/>
+                        <h:outputText value="Valor liquido: "/>
+                        <h:outputText value="#{despesaBean.despesaPesquisa.valorLiquido}" styleClass="azul">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                        </h:outputText>
+                        <br/>
+                        <br/>
+                        <p:panel>
+                            <h:outputText value="Obs:"/>
+                            <h:outputLabel value="#{despesaBean.despesaPesquisa.obs}" />
+                        </p:panel>
+
+                    </p:dialog>
+
+
+
+                </h:form>
+                <h:form id="formDeleteDespesa">
+                    <p:dialog widgetVar="varDialogDespesaDel" modal="true" header="excluir registro">
+                        <h:panelGrid columns="2" id="griddel">
+                            <p:messages/>
+                            <h:outputText value="Data emição: "/>
+                            <h:outputText value="#{despesaBean.despesaDel.DTEmissao}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="Tipo Doc.: "/>
+                            <h:outputText value="#{despesaBean.despesaDel.IDDocumento.descricao}"/>
+                            <h:outputText value="Numero: "/>
+                            <h:outputText value="#{despesaBean.despesaDel.numero}"/>
+                            <h:outputText value="Entidade: " rendered="#{despesaBean.despesaDel.IDCliente!=null or despesaBean.despesaDel.IDFuncionario!=null or despesaBean.despesaDel.IDFornecedor!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaDel.IDCliente.IDPessoa.razao}" rendered="#{despesaBean.despesaDel.IDCliente!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaDel.IDFuncionario.IDPessoa.razao}" rendered="#{despesaBean.despesaDel.IDFuncionario!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaDel.IDFornecedor.IDPessoa.razao}" rendered="#{despesaBean.despesaDel.IDFornecedor!=null}"/>
+                            <h:outputText value="Atividade Fin.: "/>
+                            <h:outputText value="#{despesaBean.despesaDel.IDAtividade.descricao}"/>
+                            <h:outputText value="Centro Custo: " />
+                            <h:outputText value="#{despesaBean.despesaDel.IDCCusto.descricao}"/>
+                            <h:outputText value="Plano de Conta: "/>
+                            <h:outputText value="#{despesaBean.despesaDel.IDClassificacao.descricao}"/>
+                            <h:outputText value="Vencimento: "/>
+                            <h:outputText value="#{despesaBean.despesaDel.DTVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+
+                        </h:panelGrid>
+                        <p:commandButton value="confirmar" actionListener="#{despesaBean.excluirParcial(event)}" update="griddel"/>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formEditDespesa">
+                    <p:dialog widgetVar="varDialogDespesaEdit" modal="true" header="alteração de registro">
+
+                        <p:panel id="panelEdicaoDespesa" >
+                            <p:messages/>
+                            <h:panelGrid columns="4" >
+                                <h:outputText value="Tipo de documento: "/>
+                                <p:selectOneMenu converter="documentoConverter" value="#{despesaBean.despesaEdit.IDDocumento}" required="true" requiredMessage="tipo de dodumento e obrigatorio">
+                                    <f:selectItem itemLabel="" itemValue=""/>
+                                    <f:selectItems var="documento"
+                                                   value="#{documentoRN.listar()}"
+                                                   itemLabel="#{documento.descricao}"
+                                                   itemValue="#{documento}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="numero: "/>
+                                <p:inputText  value="#{despesaBean.despesaEdit.numero}"   size="30" maxlength="30"/>
+                            </h:panelGrid>
+                            <br/>
+                            <p:inplace  label="editar entidade" styleClass="azul">
+
+                                <h:panelGrid  columns="3">
+                                    <h:outputText value="entidade: "/>
+                                    <p:selectOneMenu  value="#{despesaBean.opsCedente}" style="width:100px">
+                                        <f:selectItem itemLabel="nenhum" itemValue="0"/>
+                                        <f:selectItem itemLabel="funcionario" itemValue="1"/>
+                                        <f:selectItem itemLabel="cliente" itemValue="2"/>
+                                        <f:selectItem itemLabel="fornecedor" itemValue="3"/>
+                                        <p:ajax  listener="#{despesaBean.opcaoCedente()}" update="gridCedenteDespesa"/>
+                                    </p:selectOneMenu>
+                                    <h:panelGrid id="gridCedenteDespesa" columns="4">
+                                        <h:outputLabel  value="Funcionario: " rendered="#{despesaBean.opcFuncionario}"/>
+                                        <h:outputLabel  value="Cliente: " rendered="#{despesaBean.opsCliente}"/>
+                                        <h:outputLabel  value="Fornecedor: " rendered="#{despesaBean.opsFornecedor}"/>
+                                        <p:selectOneMenu  converter="funcionarioConverter" filter="true" value="#{despesaBean.despesaEdit.IDFuncionario}" rendered="#{despesaBean.opcFuncionario}">
+                                            <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                            <f:selectItems var="funcionario"
+                                                           value="#{funcionarioRN.listar()}"
+                                                           itemLabel="#{funcionario.IDPessoa.razao}"
+                                                           itemValue="#{funcionario}"
+                                                           />
+                                        </p:selectOneMenu>
+
+                                        <p:selectOneMenu  converter="clienteConverter" filter="true" value="#{despesaBean.despesaEdit.IDCliente}" rendered="#{despesaBean.opsCliente}" required="true">
+                                            <f:selectItems var="cliente"
+                                                           value="#{clienteRN.listar()}"
+                                                           itemLabel="#{cliente.IDPessoa.razao}"
+                                                           itemValue="#{cliente}"/>
+                                        </p:selectOneMenu>
+                                        <p:selectOneMenu  converter="fornecedorConverter" filter="true" value="#{despesaBean.despesaEdit.IDFornecedor}" rendered="#{despesaBean.opsFornecedor}" required="true">
+                                            <f:selectItems value="#{fornecedorRN.listar()}"
+                                                           var="forn1"
+                                                           itemLabel="#{forn1.IDPessoa.fantasia}"
+                                                           itemValue="#{forn1}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </p:inplace>
+                            <br/>
+                            <h:panelGrid columns="6">
+                                <h:outputText value="Atividade financeira: "/>
+                                <p:selectOneMenu  converter="atividadeConverter" filter="true" value="#{despesaBean.despesaEdit.IDAtividade}" required="true" requiredMessage="atividade finenceira é obrigatório">
+                                    <f:selectItem itemLabel="" itemValue=""/>
+                                    <f:selectItems var="atividade"
+                                                   value="#{atividadeRN.listar()}"
+                                                   itemLabel="#{atividade.descricao}"
+                                                   itemValue="#{atividade}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Centro de custo: "/>
+                                <p:selectOneMenu converter="ccustoConverter" filter="true" value="#{despesaBean.despesaEdit.IDCCusto}" required="true" requiredMessage="centro de custo e obrigatório">
+                                    <f:selectItem itemLabel="" itemValue=""/>
+                                    <f:selectItems var="centroCusto"
+                                                   value="#{ccustoRN.listar()}"
+                                                   itemLabel="#{centroCusto.descricao}"
+                                                   itemValue="#{centroCusto}"/>
+                                </p:selectOneMenu>
+                                <h:outputLabel value="Plano de conta: "/>
+                                <p:selectOneMenu converter="classificacaoConverter" filter="true" value="#{despesaBean.despesaEdit.IDClassificacao}" requiredMessage="plano de conta é obrigatório!" required="true">
+                                    <f:selectItem itemLabel="" itemValue=""/>
+                                    <f:selectItems var="planoConta"
+                                                   value="#{classificacaoRN.listar()}"
+                                                   itemLabel="#{planoConta.descricao}"
+                                                   itemValue="#{planoConta}"/>
+
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <br/>
+                            <h:panelGrid columns="4">
+                                <h:outputText value="vencimento: "/>
+                                <p:calendar value="#{despesaBean.despesaEdit.DTVencimento}"
+                                            pattern="dd/MM/yyyy"
+                                            size="8"
+                                            showOn="button"
+                                            required="true"
+                                            requiredMessage="Data vencimento e obrigatorio"
+                                            />
+                                <h:outputText value="Conta:"/>
+                                <p:selectOneMenu converter="contaConverter" value="#{despesaBean.despesaEdit.IDConta}"  >
+                                    <f:selectItem itemLabel=""/>
+                                    <f:selectItems var="conta"
+                                                   value="#{contaRN.listar()}"
+                                                   itemLabel="#{conta.titular} / Banco : #{conta.IDBanco.descricao}"
+                                                   itemValue="#{conta}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <p:panel>
+                                <h:panelGrid columns="2" cellpadding="20">
+                                    <p:panel>
+                                        <h:panelGrid columns="7">
+                                            <h:outputText value="Multa:"/>
+                                            <p:selectOneMenu style="width: 50px" id="selectMulta" value="#{despesaBean.tipoMulta}">
+                                                <f:selectItem itemLabel="%" itemValue="#{true}"/>
+                                                <f:selectItem itemLabel="R$" itemValue="#{false}"/>
+                                            </p:selectOneMenu>
+                                            <p:inputText   value="#{despesaBean.despesaEdit.valorMulta}" size="10">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </p:inputText>
+
+                                            <h:outputText value="limite"/>
+                                            <p:calendar value="#{despesaBean.despesaEdit.DTMulta}"
+                                                        showOn="button" 
+                                                        pattern="dd/MM/yyyy"
+                                                        size="8"/>
+                                            <p:selectBooleanCheckbox value="#{despesaBean.despesaEdit.isentoMulta}"/>
+                                            <h:outputText value="isento"/>
+                                        </h:panelGrid>
+
+                                        <p:separator/>
+
+                                        <h:panelGrid columns="6">
+                                            <h:outputText value="Juros: "/>
+                                            <p:selectOneMenu style="width: 65px"  id="selectJuros" value="#{despesaBean.despesaEdit.tipoJuros}" >
+                                                <f:selectItem itemLabel="dia" itemValue="#{false}"/>
+                                                <f:selectItem itemLabel="mês" itemValue="#{true}"/>
+                                            </p:selectOneMenu>
+                                            <h:outputText value="R$ "/>
+                                            <p:inputText value="#{despesaBean.despesaEdit.valorJuros}" size="10">
+                                                <f:convertNumber minFractionDigits="2"/>
+                                            </p:inputText>
+                                            <p:selectBooleanCheckbox value="#{despesaBean.despesaEdit.isentoJuros}"/> 
+                                            <h:outputText value="isento"/>
+                                        </h:panelGrid>
+                                        <p:separator/>
+                                        <h:panelGrid columns="5">
+                                            <h:outputText value="Desconto: "/>
+                                            <p:selectOneMenu style="width: 50px"  value="#{despesaBean.tipoDesconto}">
+                                                <f:selectItem itemLabel="%" itemValue="#{true}"/>
+                                                <f:selectItem itemLabel="R$" itemValue="#{false}"/>
+                                            </p:selectOneMenu>
+                                            <p:inputText  value="#{despesaBean.despesaEdit.valorDesconto}" size="10">
+                                                <f:convertNumber minFractionDigits="2"/>
+                                            </p:inputText>
+                                            <h:outputText value="limite"/>
+                                            <p:calendar value="#{despesaBean.despesaEdit.DTDesconto}"
+                                                        showOn="button" 
+                                                        pattern="dd/MM/yyyy"
+                                                        size="8"/>
+                                        </h:panelGrid>    
+                                    </p:panel>
+                                    <p:panelGrid columns="2">
+                                        <h:outputText value="valor nominal: R$"/>
+                                        <p:inputText value="#{despesaBean.despesaEdit.valorNominal}" size="15">
+                                            <f:convertNumber  minFractionDigits="2"/>
+                                        </p:inputText>
+                                        <h:outputText value="Obs:"/>
+                                        <p:inputTextarea value="#{despesaBean.despesaEdit.obs}" cols="25" rows="6"/>
+                                    </p:panelGrid>
+                                </h:panelGrid>
+                            </p:panel>
+                            <p:commandButton value="alterar" actionListener="#{despesaBean.alterar}" update="panelEdicaoDespesa" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+
+
+            </f:view>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <h:form id="formRelatorioCt">
+                    <p:fieldset legend="Relatorio de contas">
+                        <h:panelGrid columns="4" cellspacing="10">
+                            <h:outputText value="Banco: "/>
+                            <p:selectOneMenu value="#{contaBean.filtroNomeBanco}" filter="true">
+                                <f:selectItem itemLabel="todas" />
+                                <f:selectItems value="#{bancoBean.bancos}"
+                                               var="bancos"
+                                               itemLabel="#{bancos.descricao}"
+                                               itemValue="#{bancos.descricao}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="tipo conta: "/>
+                            <p:selectOneRadio value="#{contaBean.filtroTipoConta}">
+                                <f:selectItem itemLabel="corrente" itemValue="1"/>
+                                <f:selectItem itemLabel="poupança" itemValue="0"/>
+                            </p:selectOneRadio>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <br/>
+                    <p:commandLink actionListener="#{contaBean.arquivoRetorno}" update="formRelatorioCt" onclick="dialogCarregando.show()"  >
+                        <h:graphicImage library="imagens" name="pdf.png"/>
+                    </p:commandLink>&nbsp;&nbsp;&nbsp;
+                    <p:commandLink>
+                        <h:graphicImage library="imagens" name="xls.png"/>
+                    </p:commandLink>
+                    <p:dialog modal="true" widgetVar="dialogCarregando" header="carregando..." maximizable="160" minHeight="160" minWidth="160" width="160">
+                        <h:graphicImage library="imagens" name="376.gif"/>
+                    </p:dialog>
+                    <p:media  player="pdf" id="midiaRelatorioPlanoContas" value="/relatorio/#{contaBean.nomeRelatorioSaida}.pdf" width="100%" height="500px">  
+                        <h:outputLink value="/relatorio/#{contaBean.nomeRelatorioSaida}.pdf"></h:outputLink>  
+                    </p:media>  
+
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

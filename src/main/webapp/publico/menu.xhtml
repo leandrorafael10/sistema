@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+
+    <h:form id="menu" >
+
+        <p:menu >
+            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_RH,ROLE_ADM_ASSINAT">
+                <p:submenu label="Administrador" >
+                    <p:menuitem value="Funcionários" action="/principal/novo_funcionario" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
+                        <p:menuitem value="Usuários" action="/principal/usuarios" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    </sec:ifAnyGranted>
+                </p:submenu >
+            </sec:ifAnyGranted>
+
+            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_FINANCEIRO">
+                <p:submenu label="Tesouraria">
+                    <p:menuitem value="Tesouraria" action="/principal/menu_tesouraria" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO">
+                        <p:menuitem value="Pagamentos" action="/tesouraria/lancamento_financeiro/despesa_pagando.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Recebimentos" action="/tesouraria/lancamento_financeiro/receita_confirmando.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Transferencia" action="/tesouraria/transferencia.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    </sec:ifAnyGranted>
+                </p:submenu>
+            </sec:ifAnyGranted>
+        </p:menu>
+        <p:menu >
+            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+                <p:submenu label="Mailing">
+                    <p:menuitem value="Mailing Geral" action="/mailing_tv/mailing_geral.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+                        <p:menuitem value="Mailing vendedor" action="/mailing_tv/mailing_vendedor.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/> 
+                        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_DIR">
+                            <p:menuitem value="Mailing Diretoria" action="/mailing_tv/mailing_gerente.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/> 
+                        </sec:ifAnyGranted>
+                    </sec:ifAnyGranted>
+                </p:submenu>
+            </sec:ifAnyGranted>
+        </p:menu>
+
+        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL">
+            <p:menu >
+                <p:submenu label="Globo">
+                    <p:menuitem value="Demitir promotor" action="/globo/adm_equipes.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Capa de lote" action="/globo/capa_de_lote.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Cadastrar Brinde" action="/globo/cadastro_brinde.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Cancelar venda" action="/globo/cancel_venda.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Relatorio de vendas" action="/globo/comissao_vendas.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Cadastrar terceiros" action="/globo/cadastro_terceiro.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
+                        <p:menuitem value="Alterar comissão" action="/globo/alteraComissao.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Gráficos" action="/globo/graficos_metas.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    </sec:ifAnyGranted>
+                </p:submenu>
+            </p:menu>
+        </sec:ifAnyGranted>
+        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
+            <p:menu >
+                <p:submenu label="Assinatura Ext.">
+                    <p:menuitem value="Cad. Venda" action="/jornal/capalote.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Edit. Venda" action="/jornal/edit_capalote.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Ranking" action="/jornal/ranking.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="Adm.Equipes" action="/jornal/cadastro_equipe.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_ADM_ASSINAT">
+                        <p:menuitem value="Vendas/Periodo" action="/jornal/vendasperiodo.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Meta Promotores" action="/jornal/meta_promotor.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Cadastrar Brinde" action="/globo/cadastro_brinde.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Adm. Modalidades" action="/jornal/adm_modalidade.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        
+                        <p:menuitem value="Cadastrar ponto de venda" action="/jornal/cadastro_ponto.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
+                            <p:menuitem value="Gráficos" action="/jornal/graficos.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                            <p:menuitem value="Relatórios" action="/jornal/relatoriojornal.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        </sec:ifAnyGranted>
+                    </sec:ifAnyGranted>
+                </p:submenu>
+            </p:menu>
+        </sec:ifAnyGranted>
+        <sec:ifAnyGranted roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+            <p:menu   >
+                <p:submenu label="Fornecedor">
+                    <p:menuitem value="cadastro fornecedores" action="/principal/cadastro_fornecedor.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:menuitem value="lista fornecedores" action="/publico/lista_fornecedor.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                </p:submenu>
+            </p:menu>
+        </sec:ifAnyGranted>
+        <sec:ifAnyGranted roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+            <p:menu >
+                <p:submenu label="Cadastros TVE"/>
+                <p:menuitem value="Produção" action="/mailing_tv/producao_midia.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:menuitem value="Cadastrar TV" action="/principal/cadastro_cliente" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:menuitem value="Contr. Parceiro" action="/contratos_tv/parceiro.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:menuitem value="Todos contratos" action="/contratos_tv/contrato_geral.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:menuitem value="Nossas pracas" action="/contratos_tv/contrato_praca.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_DIR">
+                    <p:menuitem value="Cadastrados" action="/contratos_tv/contratos_cadastrados" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+
+                </sec:ifAnyGranted>
+                <p:menuitem value="Renovar contratos" action="/contratos_tv/renova_contrato.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+            </p:menu>
+        </sec:ifAnyGranted>
+
+
+        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1">
+            <p:menu   >
+                <p:submenu label="Financeiro"/>
+            </p:menu>
+            <p:tieredMenu >
+
+
+                <p:menuitem value="receitas" action="/tesouraria/lancamento_financeiro/receita_recebidas.xhtml"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:menuitem value="despesas" action="/tesouraria/lancamento_financeiro/despesa_paga.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2">
+
+                    <p:submenu label="Cadastros financeiro">
+                        <p:menuitem value="Atividade" action="/tesouraria/cadastros_tesouraria/atividades_financeira.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Tipo de conta" action="/tesouraria/cadastros_tesouraria/tipo_conta.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:submenu label="Conta banco">
+                            <p:menuitem value="Conta nova" action="/tesouraria/cadastros_tesouraria/contas.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                            <p:menuitem value="Lista de contas" action="/tesouraria/cadastros_tesouraria/lista_contas.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        </p:submenu>
+                        <p:menuitem value="Plano de conta" action="/tesouraria/cadastros_tesouraria/plano_conta.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Centro custo" action="/tesouraria/cadastros_tesouraria/centro_custo.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+
+                    </p:submenu>
+                </sec:ifAnyGranted>
+            </p:tieredMenu>
+        </sec:ifAnyGranted>
+        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1,ROLE_COMERCIAL_TV_DIR" >
+            <p:menu   >
+                <p:submenu label="Relatorios"/>
+            </p:menu>
+            <p:tieredMenu >
+                <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1" >
+                    <p:submenu label="Financeiro">
+                        <p:menuitem value="Conta banco" action="/tesouraria/relatorio_fin/rel_contas.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Plano conta" action="/tesouraria/relatorio_fin/rel_plano_conta.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:menuitem value="Despesas" action="/tesouraria/relatorio_fin/rel_despesas.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    </p:submenu>
+                </sec:ifAnyGranted>
+                <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_DIR">
+                    <p:menuitem value="Relatorios TVE" action="/contratos_tv/rel_contratos.xhtml" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                </sec:ifAnyGranted>
+            </p:tieredMenu>
+        </sec:ifAnyGranted>
+        <p:menu >
+            <p:submenu label="Help" icon="/resources/imagens/Help-10.png">
+                <p:menuitem value="Meus dados" action="/publico/conteudo_usuario.xhtml"/>
+                <p:menuitem value="Central de Ajuda"/>
+                <p:menuitem value="Central de Atendimento"/>
+                <p:menuitem value="Sobre a Empresa"/>
+                <p:menuitem value="Sobre o Sistema"/>
+            </p:submenu>
+        </p:menu>
+    </h:form>
+
+
+
+</html>

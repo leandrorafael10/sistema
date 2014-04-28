@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <h:form>
+                    <h:panelGrid columns="2"  id="gridFiltrodespesa">
+                        <p:fieldset legend="Filtro" >
+                            <h:panelGrid columns="6" cellpadding="10">
+                                <h:outputText value="Centro de custo: "/>
+                                <p:selectOneMenu converter="ccustoConverter" filter="true" value="#{despesaBean.despesaFiltro.IDCCusto}" >
+                                    <f:selectItem itemLabel=""/>
+                                    <f:selectItems var="receitaCentro"
+                                                   value="#{ccustoRN.listar()}"
+                                                   itemLabel="#{receitaCentro.descricao}"
+                                                   itemValue="#{receitaCentro}"/>
+                                </p:selectOneMenu> 
+                                <h:outputText value="Plano de Contas: "/>
+                                <p:selectOneMenu converter="classificacaoConverter" filter="true" value="#{despesaBean.despesaFiltro.IDClassificacao}">
+                                    <f:selectItem itemLabel=""/>
+                                    <f:selectItems var="receitaClassificacao"
+                                                   value="#{classificacaoRN.listar()}"
+                                                   itemLabel="#{receitaClassificacao.descricao}"
+                                                   itemValue="#{receitaClassificacao}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Conta:"/>
+                                <p:selectOneMenu converter="contaConverter" value="#{despesaBean.despesaFiltro.IDConta}"  >
+                                    <f:selectItem itemLabel=""/>
+                                    <f:selectItems var="conta"
+                                                   value="#{contaRN.listar()}"
+                                                   itemLabel="#{conta.titular} / Banco : #{conta.IDBanco.descricao}"
+                                                   itemValue="#{conta}"/>
+                                </p:selectOneMenu>
+
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="6" cellpadding="10">
+                                <h:outputText value="Venc. de : "/>
+                                <p:calendar  value="#{despesaBean.despesaFiltro.DTVencimento}" size="8" pattern="dd/MM/yyyy" showOn="button"  locale="pt" />
+                                <h:outputText value=" até: "/>
+                                <p:calendar size="8"
+                                            value="#{despesaBean.fimFiltroVenc}"
+                                            showOn="button" locale="pt"
+                                            pattern="dd/MM/yyyy"/>
+                                <p:selectOneRadio value="#{despesaBean.pgFiltro}" >  
+                                    <f:selectItem itemLabel="todos" itemValue="0"/>  
+                                    <f:selectItem itemLabel="pago" itemValue="1"/>  
+                                    <f:selectItem itemLabel="pagar" itemValue="2"/>  
+                                </p:selectOneRadio> 
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="4" cellpadding="10">
+                                <h:outputText value="valor de: R$"/>
+                                <p:inputText value="#{despesaBean.valorIni}" size="15">
+                                    <f:convertNumber  minFractionDigits="2"/>
+                                </p:inputText>
+                                <h:outputText value="a:"/>
+                                <p:inputText value="#{despesaBean.valorFim}" size="15">
+                                    <f:convertNumber  minFractionDigits="2"/>
+                                </p:inputText>
+                            </h:panelGrid>
+                        </p:fieldset>
+
+                    </h:panelGrid>
+                    <p:commandButton value="filtrar" actionListener="#{despesaBean.filtroDespesa()}"  update="tabelaDespesas,gridFiltrodespesa" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:commandButton value="incluir" action="/tesouraria/lancamento_financeiro/despesa_pagar.xhtml" />
+                    <br/>
+                    <p:separator/>
+                    <br/>
+                    <p:growl life="30000"/>
+                    <p:messages/>
+                    <p:panel>
+                        <p:dataTable id="tabelaDespesas"
+                                     value="#{despesaBean.despesaDataModelo}" 
+                                     var="despesaModelo" 
+                                     scrollable="true" scrollHeight="400" 
+                                     emptyMessage="Sem registros"
+                                     resizableColumns="true"
+                                     >
+                            <f:facet name="header">
+                                Todas despesas
+                            </f:facet>
+                            <p:column headerText="Venc. " style="width:7%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                <h:outputText value="#{despesaModelo.DTVencimento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Cedente" style="width:25%" disabledSelection="#{despesaModelo.atzPg!=0}"> 
+                                <h:outputText value="#{despesaModelo.IDCliente.IDPessoa.razao}" rendered="#{despesaModelo.IDCliente!=null}"/>
+                                <h:outputText value="#{despesaModelo.IDFuncionario.IDPessoa.razao}" rendered="#{despesaModelo.IDFuncionario!=null}"/>
+                                <h:outputText value="#{despesaModelo.IDFornecedor.IDPessoa.fantasia!=null? despesaModelo.IDFornecedor.IDPessoa.fantasia : despesaModelo.IDFornecedor.IDPessoa.razao}" rendered="#{despesaModelo.IDFornecedor!=null}"/>
+                                <h:outputText value="sem cedente" rendered="#{despesaModelo.IDCliente== null and despesaModelo.IDFuncionario==null and despesaModelo.IDFornecedor==null}"/>
+                            </p:column>
+                            <p:column headerText=" Vlr.nominal" style="width:7%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                <h:outputText value="R$ "/>
+                                <h:outputText value="#{despesaModelo.valorNominal}">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Empresa" style="width:15%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                <h:outputText value="#{despesaModelo.IDConta.titular}">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Tipo" style="width:7%" disabledSelection="#{despesaModelo.atzPg!=0}">
+                                <h:outputText value="#{despesaModelo.IDClassificacao.descricao}"/>
+                            </p:column>
+
+
+
+                            <p:column headerText="status" disabledSelection="#{despesaModelo.atzPg!=0}" style="width:12%">
+                                <h:outputLabel value="ativo" rendered="#{despesaModelo.atzPg==0}"/>
+                                <h:outputLabel value="liberação" rendered="#{despesaModelo.atzPg==1}"/>
+                                <h:outputLabel value="liberado p/pagamento" rendered="#{despesaModelo.atzPg==2}"/>
+                                <h:outputLabel value="pago" rendered="#{despesaModelo.atzPg==3}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                        <p:separator/>
+                        <h:commandLink  action="#{despesaBean.geraPDF}"
+                                        target="_blank" >
+                            <p:graphicImage library="imagens" name="pdf.png"/>
+                            <br/>
+                            <h:outputText value="pdf"/>
+                        </h:commandLink>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <f:view>
+                    <h:form id="formCancelVenda">
+                        <p:messages/>
+                        <p:growl life="30000"/>
+                        <h2><h:outputText value="Cancelamento venda"/></h2>
+                        <h:panelGrid columns="3" cellpadding="10">
+                            <h:outputText value="Numero contrato:"/>
+                            <p:inputMask mask="99999999" size="8" value="#{capaLoteBean.codigoCancel}"/>
+                            <p:commandButton value="Confimar" actionListener="#{capaLoteBean.buscaPracancelamento()}" />
+                        </h:panelGrid>
+
+                        <p:separator/>
+                        <h:panelGrid columns="5" cellpadding="10">
+                            <h:outputLabel value="date inicio:"/>
+                            <p:calendar value="#{capaLoteBean.inicioLote}" 
+                                        pattern="dd/MM/yyyy"
+                                        size="8" 
+                                        id="dtInicio"/>
+                            <h:outputLabel value="date fim:"/>
+                            <p:calendar value="#{capaLoteBean.fimDeLote}" 
+                                        size="8" 
+                                        id="dtFim"
+                                        pattern="dd/MM/yyyy"/>
+                            <p:commandButton value="filtro" 
+                                             partialSubmit="true"
+                                             process="dtInicio,dtFim" 
+                                             update=":formCancelVenda"/>
+                        </h:panelGrid>
+                        <p:dataTable value="#{capaLoteBean.listaCancelados()}" var="item" emptyMessage="não há registros!"
+                                     scrollable="true" scrollHeight="500">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Numero Contrato"/>
+                                </f:facet>
+                                <h:outputText value="#{item.numeroContrato}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nome Cliente"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nomeCliente}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Valor"/>
+                                </f:facet>
+                                <h:outputText value="#{item.valor}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:graphicImage library="imagens" name="ativo_#{item.ativo}.png" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data venda"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dtvenda}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data cancelamento"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dtCancel}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Brinde"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDBrinde.descricao}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dialog widgetVar="dialogCapaloteCancel" header="Dados do contrato para cancelamento">
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Numero Contrato:"/>
+                                <h:outputText value="#{capaLoteBean.capaLote.numeroContrato}" title="Numero Contrato"/>
+                                <h:outputText value="Nome Cliente:"/>
+                                <h:outputText value="#{capaLoteBean.capaLote.nomeCliente}" title="Nome Cliente"/>
+                                <h:outputText value="Valor:"/>
+                                <h:outputText value="#{capaLoteBean.capaLote.valor}" title="Valor"/>
+                                <h:outputText value="Data venda:"/>
+                                <h:outputText value="#{capaLoteBean.capaLote.dtvenda}" title="data venda">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Brinde:"/>
+                                <h:outputText value="#{capaLoteBean.capaLote.IDBrinde.descricao}" title="Brinde"/>
+                                <h:outputText value="Promotor:"/>
+                                <h:outputText value="#{capaLoteBean.capaLote.IDTerceiros.nome}" title="promotor"/>
+                            </h:panelGrid>
+                            <p:commandButton value="cancelar" actionListener="#{capaLoteBean.cancelarContrato()}" update=":formCancelVenda"/>
+                            <p:commandButton value="sair" onclick="dialogCapaloteCancel.hide();"/>
+                        </p:dialog>
+                    </h:form>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

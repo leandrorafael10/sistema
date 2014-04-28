@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="./../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <f:view>
+                    <h:form id="formCapaLote">
+                        
+                        <p:messages/>
+                        <p:growl life="30000"/>
+                        <h2><h:outputText value="Cadastro nova venda"/></h2>
+                        <h:panelGrid columns="6" cellspacing="8" id="gridCapaLote">
+                            <h:outputLabel value="Numero Contrato:" for="numeroContrato" />
+                            <p:inputMask mask="99999999" size="8" id="numeroContrato" value="#{capaLoteBean.capaLote.numeroContrato}" title="NumeroContrato" required="true" requiredMessage="numero do contrato e obrigatorio!"/>
+                            <h:outputLabel value="Nome Cliente:" for="nomeCliente" />
+                            <p:inputText id="nomeCliente" value="#{capaLoteBean.capaLote.nomeCliente}" title="NomeCliente" size="50" maxlength="50" required="true" requiredMessage="nome do cliente e obrigatorio!"/>
+                            <h:outputLabel value="Valor:" for="valor" />
+                            <p:inputText id="valor" value="#{capaLoteBean.capaLote.valor}" title="Valor" size="8" required="true" requiredMessage="valor e obrigatorio!">
+                                <f:convertNumber minFractionDigits="2" />
+                            </p:inputText>
+                            <h:outputLabel value="Data:" for="dtvenda" />
+                            <p:calendar id="dtvenda" value="#{capaLoteBean.capaLote.dtvenda}" required="true" size="8" title="Dtvenda" pattern="dd/MM/yyyy" showOn="button" requiredMessage="data da venda e obrigatorio!"/>
+                            <h:outputLabel value="Promotor" for="iDFornecedor" />
+                            <p:selectOneMenu converter="terceirosConverter" filter="true" id="iDFornecedor" value="#{capaLoteBean.capaLote.IDTerceiros}" required="true" requiredMessage="informar o promotor e obrigatório!">
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{terceirosRN.listarPorFuncao(funcaoRN.carregar(5))}"
+                                               var="funcionario"
+                                               itemLabel="#{funcionario.nome}"
+                                               itemValue="#{funcionario}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="Brinde:" for="iDBrinde" />
+                            <p:selectOneMenu converter="brindeConverter" id="iDBrinde" value="#{capaLoteBean.capaLote.IDBrinde}">
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{brindeRN.listar()}"
+                                               var="brinde"
+                                               itemLabel="#{brinde.descricao}"
+                                               itemValue="#{brinde}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <br/>
+                        <p:commandButton value="salvar" actionListener="#{capaLoteBean.salvar}" update=":formCapaLote"/>
+                        <br/>
+                        <p:separator/>
+                        <h2><h:outputText value="Lista de contratos cadastrados hoje"/></h2>
+                        <p:dataTable value="#{capaLoteRN.listarDoDia()}" var="item" scrollable="true" scrollHeight="400">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Numero Contrato"/>
+                                </f:facet>
+                                <h:outputText value="#{item.numeroContrato}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nome Cliente"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nomeCliente}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Valor"/>
+                                </f:facet>
+                                <h:outputText value="#{item.valor}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:graphicImage library="imagens" name="ativo_#{item.ativo}.png" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data venda"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dtvenda}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data inscrição"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dtinc}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Brinde"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDBrinde.descricao}"/>
+                            </p:column>
+                        </p:dataTable>
+
+
+                    </h:form>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

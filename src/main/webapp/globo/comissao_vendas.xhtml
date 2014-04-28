@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+
+
+            <ui:define name="principal-interna">
+                <h:form id="form"> 
+                    <br/>
+                    <p:fieldset legend="Filtro por periodo">
+                        <h:panelGrid columns="5">
+                            <h:outputText value="Mês:"/>
+                            <p:selectOneMenu value="#{capaLoteBean.mesFiltro}">
+                                <f:selectItem itemLabel="" itemValue="0"/>
+                                <f:selectItem itemLabel="Janeiro" itemValue="1"/>
+                                <f:selectItem itemLabel="Fevereiro" itemValue="2"/>
+                                <f:selectItem itemLabel="Março" itemValue="3"/>
+                                <f:selectItem itemLabel="Abril" itemValue="4"/>
+                                <f:selectItem itemLabel="Maio" itemValue="5"/>
+                                <f:selectItem itemLabel="Junho" itemValue="6"/>
+                                <f:selectItem itemLabel="Julho" itemValue="7"/>
+                                <f:selectItem itemLabel="Agosto" itemValue="8"/>
+                                <f:selectItem itemLabel="Setembro" itemValue="9"/>
+                                <f:selectItem itemLabel="Outubro" itemValue="10"/>
+                                <f:selectItem itemLabel="Novembro" itemValue="11"/>
+                                <f:selectItem itemLabel="Dezembro" itemValue="12"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Ano:"/>
+                            <p:selectOneMenu value="#{capaLoteBean.anoFiltro}">
+                                <f:selectItem itemLabel="" itemValue="2029"/>
+                                <f:selectItem itemLabel="2013" itemValue="2013"/>
+                                <f:selectItem itemLabel="2014" itemValue="2014"/>
+                                <f:selectItem itemLabel="2015" itemValue="2015"/>
+                                <f:selectItem itemLabel="2016" itemValue="2016"/>
+                                <f:selectItem itemLabel="2017" itemValue="2017"/>
+                                <f:selectItem itemLabel="2018" itemValue="2018"/>
+                                <f:selectItem itemLabel="2019" itemValue="2019"/>
+                                <f:selectItem itemLabel="2020" itemValue="2020"/>
+                                <f:selectItem itemLabel="2021" itemValue="2021"/>
+                                <f:selectItem itemLabel="2022" itemValue="2022"/>
+                                <f:selectItem itemLabel="2023" itemValue="2023"/>
+                                <f:selectItem itemLabel="2024" itemValue="2024"/>
+                                <f:selectItem itemLabel="2025" itemValue="2025"/>
+                                <f:selectItem itemLabel="2026" itemValue="2026"/>
+                                <f:selectItem itemLabel="2027" itemValue="2027"/>
+                                <f:selectItem itemLabel="2028" itemValue="2028"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="filtrar" actionListener="#{capaLoteBean.filtroPeriodo()}" update=":form"/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <br/>
+                    <p:tabView  value="#{terceirosRN.listarPorFuncao(funcaoRN.carregar(1))}" var="gerente">  
+                        <p:tab title="#{gerente.nome}">  
+                            <p:dataTable  value="#{capaLoteBean.calculaComissao(gerente)}" var="comissao">  
+
+                                <f:facet name="header">  
+                                    Comissões  
+                                </f:facet>  
+
+                                <p:columnGroup type="header">  
+                                    <p:row>  
+                                        <p:column rowspan="2" headerText="Vendedores" />  
+                                        <p:column colspan="9" headerText="dados gerais" />  
+                                    </p:row>  
+                                    <p:row>  
+                                        <p:column headerText="vd. total" />  
+                                        <p:column headerText="vd. cancel." />  
+                                        <p:column headerText="vd. liq." />  
+                                        <p:column headerText="fat.bruto" />  
+                                        <p:column headerText="fat.estorno" />  
+                                        <p:column headerText="fat.liquido" />  
+                                        <p:column headerText="comissao %" />  
+                                        <p:column headerText="comissao vl" />  
+                                        <p:column headerText="total a pagar" />  
+                                    </p:row>  
+                                </p:columnGroup>  
+
+                                <p:column   >  
+                                    #{comissao.terceiros.nome}
+                                </p:column>  
+
+                                <p:column >  
+                                    #{comissao.vendaBruta}
+                                </p:column>  
+
+                                <p:column >  
+                                    #{comissao.vendaCancelada}
+                                </p:column>  
+
+                                <p:column >  
+                                    #{comissao.vendaLiquida}
+                                </p:column>  
+
+                                <p:column >  
+                                    #{comissao.fatBruto}
+                                </p:column>  
+                                <p:column >  
+                                    #{comissao.fatCancelado}
+                                </p:column>
+                                <p:column>  
+                                    #{comissao.fatLiquido}
+                                </p:column>
+                                <p:column>  
+                                    #{comissao.tipoComissao}
+                                </p:column>
+                                <p:column>  
+                                    #{comissao.valorComissao}
+                                </p:column>
+                                <p:column>  
+                                    #{comissao.valorComissao}
+                                </p:column>
+
+                            </p:dataTable> 
+                            <br/>
+                            <br/>
+                            <h:panelGrid columns="2">
+
+                                <p:panelGrid columns="2" style="text-align:left">
+                                    <h:outputLabel value="Nome gerente:"/>
+                                    <h:outputText value="#{capaLoteBean.vendasGerente.terceiros.nome}"  /> 
+                                    <h:outputLabel value="fat.bruta:"/>
+                                    <h:outputText value="#{capaLoteBean.vendasGerente.vendaBruta}"/>  
+                                    <h:outputLabel value="fat.liq:"/>
+                                    <h:outputText value="#{capaLoteBean.vendasGerente.vendaLiquida}"/>
+                                    <h:outputLabel value="fat.bruto:"/>
+                                    <h:outputText value="#{capaLoteBean.vendasGerente.fatBruto}"/>  
+                                    <h:outputLabel value="fat.liquido:"/>
+                                    <h:outputText value="#{capaLoteBean.vendasGerente.fatLiquido}">
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                    </h:outputText>  
+                                    <h:outputLabel value="procentagem:"/>
+                                    <h:outputText value="#{capaLoteBean.vendasGerente.tipoComissao}">
+                                    </h:outputText>  
+                                    <h:outputLabel value="comissão total:"/>
+                                    <h:outputText value="#{capaLoteBean.vendasGerente.valorComissao}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                    </h:outputText>  
+                                </p:panelGrid>
+                                
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" cellpadding="20">
+                               
+
+                                <p:commandLink>
+                                    <h:graphicImage library="imagens" name="exel_32x32.png"/>
+                                    <br/>
+                                    <h:outputLabel value="excel"/>
+                                </p:commandLink>
+                            </h:panelGrid>
+                        </p:tab>  
+                    </p:tabView>
+
+                </h:form>  
+            </ui:define>
+
+
+
+        </ui:composition>
+
+    </body>
+</html>

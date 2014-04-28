@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <h:form id="formCadPontovenda">
+                    <p:panel>
+                        <h2>Cadastro ponto de venda</h2>
+                        <p:messages/>
+                        <h:panelGrid columns="4" cellspacing="10">
+                            <h:outputText value="Nome:"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.descricao}" maxlength="45"/>
+                            <h:outputText value="Rua :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.logradouro}" maxlength="45"/>
+                            <h:outputText value="Numero :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.numero}" maxlength="20" size="10"/>
+                            <h:outputText value="Bairro :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.bairro}" maxlength="30"/>
+                            <h:outputText value="Cidade :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.cidade}" maxlength="25"/>
+                            <h:outputText value="Estado :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.estado}" maxlength="2" size="3"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="salvar" actionListener="#{pontodevendaBean.salvar(event)}" update="formCadPontovenda,:formListaPontos"/>
+                    </p:panel>
+                </h:form>
+                <h:form id="formListaPontos">
+                    <p:panel>
+                        <p:dataTable value="#{pontodevendaRN.listar()}" var="ponto">
+                            <p:column headerText="Cod." width="50">
+                                <h:outputText value="#{ponto.IDPontodeVenda}"/>
+                            </p:column>
+                            <p:column headerText="Nome">
+                                <h:outputText value="#{ponto.descricao}"/>
+                            </p:column>
+                            <p:column headerText="Rua/Av.">
+                                <h:outputText value="#{ponto.logradouro} &nbsp;&nbsp;#{ponto.numero}"/> 
+                            </p:column>
+                            <p:column headerText="Bairro">
+                                <h:outputText value="#{ponto.bairro}"/>
+                            </p:column>
+                            <p:column headerText="Cidade">
+                                <h:outputText value="#{ponto.cidade}"/>
+                            </p:column>
+                            <p:column headerText="UF" width="50">
+                                <h:outputText value="#{ponto.estado}"/>
+                            </p:column>
+                            <p:column headerText="status" width="50">
+                                <p:commandButton value="alterar" oncomplete="PF('dialogEditPontoVenda').show();" update=":formEditPontoVenda">
+                                    <f:setPropertyActionListener value="#{ponto}" target="#{pontodevendaBean.pontodevenda}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+                <h:form id="formEditPontoVenda">
+                    <p:dialog widgetVar="dialogEditPontoVenda" modal="true">
+                        <p:panel>
+                            <p:messages/>
+                        <h:panelGrid columns="4" cellspacing="10">
+                            <h:outputText value="Nome:"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.descricao}" maxlength="45"/>
+                            <h:outputText value="Rua :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.logradouro}" maxlength="45"/>
+                            <h:outputText value="Numero :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.numero}" maxlength="20" size="10"/>
+                            <h:outputText value="Bairro :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.bairro}" maxlength="30"/>
+                            <h:outputText value="Cidade :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.cidade}" maxlength="25"/>
+                            <h:outputText value="Estado :"/>
+                            <p:inputText value="#{pontodevendaBean.pontodevenda.estado}" maxlength="2" size="3"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="atializar" actionListener="#{pontodevendaBean.atualizar(event)}" update="formEditPontoVenda,:formListaPontos" oncomplete="PF('dialogEditPontoVenda').hide();"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./resources/css/LogCSS.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+        <link rel="SHORTCUT ICON" href="./favicon.ico" type="image/x-icon"/>
+        <link rel="apple-touch-icon" href="./favicon.ico" type="image/x-icon"/>
+        <title>tve</title>
+
+    </h:head>
+    <body>
+        <div id="tudo-log">
+            
+            <div id="log">
+                <div id="log-principal">
+                    <form method="post" action= "#{request.contextPath}/j_spring_security_check">
+                        <h:form>
+                            <input type="text" name="j_username" /><br/>
+                            <br/>
+                            <br/>
+                            <input  type="password" name="j_password" onchange="action:submit()" /> 
+                            <br/>
+                            <br/>
+
+                            <a onclick="action:submit()" >
+                                <h:graphicImage library="imagens" name="bt_entrar_01.png"/>
+                            </a>
+                            <br/><br/>
+                            <input type="checkbox" name="_spring_security_remember_me"><h:graphicImage library="imagens" name="entrar_automaticamente.png"/></input>
+                            <script>
+                                document.getElementById("login").j_username.value ="#{SPRING_SECURITY_LAST_USERNAME}";
+                            </script>
+                        </h:form>
+                    </form>
+                </div>
+            </div>       
+        </div>
+    </body>
+</html>

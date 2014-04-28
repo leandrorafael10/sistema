@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+
+    <ui:composition template="./../principal/templategreen.xhtml">
+
+        <ui:define name="principal-interna">
+            <h:form id="form_tarns">
+                <br/>
+                <br/>
+                <p:panel  id="panelTrans">
+                    
+                    <h2>Transferencia bancaria</h2>
+                    <p:messages/>
+                    <h:panelGrid columns="2" cellspacing="20" >
+                        <h:outputText value="Valor"/>
+                        <p:inputText value="#{contaBean.debitoFiltro.valor}" required="true" requiredMessage="Valor é obrigatorio!" size="15">
+                            <f:convertNumber  minFractionDigits="2"/>
+                        </p:inputText>
+                        <h:outputText value="Atividade financeira: "/>
+                        <p:selectOneMenu value="#{contaBean.debitoFiltro.IDAtividade}" filter="true" converter="atividadeConverter" required="true"  requiredMessage="atividade é obrigatorio!">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{atividadeRN.listar()}"
+                                           var="atividade"
+                                           itemLabel="#{atividade.descricao}"
+                                           itemValue="#{atividade}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Data Baixa: "/>
+                        <p:calendar value="#{contaBean.debitoFiltro.DTBaixa}"
+                                    required="true"
+                                    requiredMessage="data de baixa e obrigatório"
+                                    showOn="button"
+                                    pattern="dd/MM/yyyy"
+                                    size="8"/>
+                        <h:outputText value="Conta origem:"/>
+                        <p:selectOneMenu converter="contaConverter" value="#{contaBean.debitoFiltro.IDConta}" required="true" requiredMessage="conta origem e obrigatório!">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems var="conta"
+                                           value="#{contaRN.listar()}"
+                                           itemLabel="#{conta.titular} / Banco : #{conta.IDBanco.descricao}"
+                                           itemValue="#{conta}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Conta destino:"/>
+                        <p:selectOneMenu converter="contaConverter" value="#{contaBean.creditoFiltro.IDConta}" required="true" requiredMessage="conta destino e obrigatório!">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems var="conta"
+                                           value="#{contaRN.listar()}"
+                                           itemLabel="#{conta.titular} / Banco : #{conta.IDBanco.descricao}"
+                                           itemValue="#{conta}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="confirmar" actionListener="#{contaBean.confirmaTrans(event)}" update="gridtrans,panelTrans"/>
+                    </h:panelGrid>
+                </p:panel>
+                <p:dialog modal="true" widgetVar="dialogtrans">
+                    <h:panelGrid id="gridtrans" columns="2" cellspacing="20">
+                        <h:outputLabel value="valor:"/>
+                        <h:outputLabel value="#{contaBean.debitoFiltro.valor}">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                        </h:outputLabel>
+                        <h:outputLabel value="conta origem:"/>
+                        <h:outputLabel value="#{contaBean.debitoFiltro.IDConta.titular} /Banco: #{contaBean.debitoFiltro.IDConta.IDBanco.descricao}"/>
+                        <h:outputLabel value="conta destino:"/>
+                        <h:outputLabel value="#{contaBean.creditoFiltro.IDConta.titular} /Banco: #{contaBean.creditoFiltro.IDConta.IDBanco.descricao}"/>
+
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton value="confirmar" actionListener="#{contaBean.trasferencia(contaBean.creditoFiltro,contaBean.debitoFiltro)}" oncomplete="dialogtrans.hide();" update=":form_tarns"/>
+                    <p:commandButton value="cancelar" onclick="dialogtrans.hide();"/>
+
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

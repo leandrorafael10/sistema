@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <f:view>
+                    <h:form id="forMailingVendedor">
+                        <h2><h:outputText value="Meu mailin"/></h2>
+                        <p:dataTable value="#{mailingRN.listarPorVendedor()}" var="item" scrollHeight="400"
+                                     scrollable="true" 
+                                     resizableColumns="true" 
+                                     rowStyleClass="#{item.DTvalidade!=null?(item.DTvalidade le mailingBean.dataObs?'vermelho':''):'azul'}">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Razão"/>
+                                </f:facet>
+                                <h:outputText value="#{item.razao}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Tel. Fixo"/>
+                                </f:facet>
+                                <h:outputText value="#{item.telefoneFixo}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Celular"/>
+                                </f:facet>
+                                <h:outputText value="#{item.telefoneCel}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Email"/>
+                                </f:facet>
+                                <h:outputText value="#{item.email}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:outputText value="#{item.status==1?'Livre':(item.status==2?'Em prospecção':(item.status==3?'Negociação':'vendido'))}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data validade"/>
+                                </f:facet>
+                                <h:outputText value="#{item.DTvalidade}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Ramo atividade"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDRamoatividade.descricao}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Add obs"/>
+                                </f:facet>
+                                <p:commandLink value="add" rendered="#{item.status!=4}"  oncomplete="dialogMailingInsert.show();" update=":formInsertMailing">
+                                    <f:setPropertyActionListener value="#{item}" target="#{mailingBean.mailingAtualizar}"/>
+                                </p:commandLink>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Alt.status"/>
+                                </f:facet>
+                                <p:commandLink value="alterar"  oncomplete="dialogMailingAlt.show();" update=":formAltMailing" rendered="#{mailingBean.mailingAtualizar.IDContratoMidia==null}">
+                                    <f:setPropertyActionListener value="#{item}" target="#{mailingBean.mailingAtualizar}"/>
+                                </p:commandLink>
+                                <h:outputText value="vendido" rendered="#{mailingBean.mailingAtualizar.IDContratoMidia!=null}"/>
+                            </p:column>
+                            
+                        </p:dataTable>
+                        
+                    </h:form>
+                    <h:form id="formAltMailing">
+                        <p:dialog   widgetVar="dialogMailingAlt" header="observações"
+                                    resizable="false" showEffect="clip" hideEffect="clip">
+                            <h1><h:outputText value="Cliente:#{mailingBean.mailingAtualizar.razao}"/></h1>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Nome contato:"/>
+                                <h:outputText value="#{mailingBean.mailingAtualizar.nome}" title="Nome contato"/>
+                                <h:outputText value="Telefone Fixo:"/>
+                                <h:outputText value="#{mailingBean.mailingAtualizar.telefoneFixo}" title="TelefoneFixo"/>
+                                <h:outputText value="Telefone Celular:"/>
+                                <h:outputText value="#{mailingBean.mailingAtualizar.telefoneCel}" title="Telefone Celular"/>
+                                <h:outputText value="Email:"/>
+                                <h:outputText value="#{mailingBean.mailingAtualizar.email}" title="Email"/>
+
+                                <h:outputText value="Ramo atividade:"/>
+                                <h:outputText value="#{mailingBean.mailingAtualizar.IDRamoatividade.descricao}" title="Ramo atividade"/>
+                            </h:panelGrid>
+
+                            <p:separator/>
+                            <h:panelGrid columns="4">
+                                <p:commandButton value="Liberar" actionListener="#{mailingBean.atualizar(1)}" update=":forMailingVendedor" oncomplete="dialogMailingAlt.hide();" rendered="#{mailingBean.mailingAtualizar.status!=4}"/>
+                                <p:commandButton value="Negociação" actionListener="#{mailingBean.atualizar(3)}" update=":forMailingVendedor" rendered="#{mailingBean.mailingAtualizar.status==2}" oncomplete="dialogMailingAlt.hide();"/>
+                                <p:commandButton value="Finalizar" action="#{mailingBean.levarProContrato}"  rendered="#{mailingBean.mailingAtualizar.status==3}" oncomplete="dialogMailingAlt.hide();">
+                                    <f:param name="id" value="#{mailingBean.mailingAtualizar.IDMailing}"/>
+                                </p:commandButton>
+                                <p:commandButton value="sair" onclick="dialogMailingAlt.hide();"/>
+                            </h:panelGrid>
+
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formInsertMailing">
+                        <p:dialog   widgetVar="dialogMailingInsert" header="observações"
+                                    resizable="false" showEffect="clip" hideEffect="clip">
+
+                            <h:panelGrid>
+
+                                <h1><h:outputText value="Cliente:#{mailingBean.mailingAtualizar.razao}"/></h1>
+                                <h:panelGrid columns="1" width="400"  id="gridObs">
+                                    <p:scrollPanel style="height:200px" >
+                                        <p:dataList  value="#{mailingBean.mailingAtualizar.IDobsMailing}" var="obs" itemType="disc">
+                                            <h:outputLabel value="#{mailingBean.primeiraPalavra(obs.IDFuncionario.IDPessoa.razao)}" style="color: blue"/> --
+                                            <h:outputLabel value="#{obs.DTObs}" style="color: blue" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputLabel> 
+                                            <h:outputLabel value="-- #{obs.obs}"/> 
+
+                                        </p:dataList> 
+
+                                    </p:scrollPanel>
+                                    <p:inputTextarea rows="2" cols="60" value="#{mailingBean.obsmailing.obs}" required="true"/> 
+
+                                </h:panelGrid>
+
+                                <p:separator/>
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="ok" actionListener="#{mailingBean.addObs}" update="gridObs"/>
+                                    <p:commandButton value="sair" onclick="dialogMailingInsert.hide();"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
+
+                        </p:dialog>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

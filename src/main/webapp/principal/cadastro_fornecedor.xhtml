@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition template="./templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <f:view>
+                    <h:form id="formCadFornecedor">
+                        <p:messages/>
+                        <p:growl life="30000"/>
+                        <p:panel header="Formulario cadastro fornecedor">
+                            <h:panelGrid columns="4">
+                                <h:outputLabel value="FisicaJuridica:" for="fisicaJuridica" />
+                                <p:selectOneRadio id="fisicaJuridica" value="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica}"  required="true" >
+                                    <f:selectItem itemLabel="Cpf" itemValue="#{true}"/>
+                                    <f:selectItem itemLabel="Cnpj" itemValue="#{false}"/>
+                                    <p:ajax update="formCadFornecedor"/>
+                                </p:selectOneRadio>
+                                <h:outputLabel value="RamoAtividade:" for="idRamoAtividade" />
+                                <p:selectOneMenu converter="ramoAtividadeConverter" filter="true" id="idRamoAtividade" value="#{fornecedorBean.fornecedorNovo.idRamoAtividade}" label="RamoAtividade" >
+                                    <f:selectItem itemLabel="" />
+                                    <f:selectItems value="#{ramoAtividadeBean.ramoatividades}"
+                                                   var="ramo"
+                                                   itemLabel="#{ramo.descricao}"
+                                                   itemValue="#{ramo}"/>
+                                </p:selectOneMenu>
+                                <h:outputLabel value="Procurador:" for="procurador" />
+                                <p:inputText id="procurador" value="#{fornecedorBean.fornecedorNovo.procurador}" title="Procurador"  maxlength="30"/>
+                                <h:outputLabel value="Razao/Nome:" for="razao" />
+                                <p:inputText id="razao" value="#{fornecedorBean.fornecedorNovo.IDPessoa.razao}" title="Razao/None" required="true" requiredMessage="Razão/Nome é obrigatório!" size="50" maxlength="50"/>
+                                <h:outputLabel value="Fantasia:" for="fantasia" />
+                                <p:inputText id="fantasia" required="true" value="#{fornecedorBean.fornecedorNovo.IDPessoa.fantasia}" title="Fantasia" size="50" maxlength="50" requiredMessage="npme fantazia e obrigatório!"/>
+                                <h:outputLabel value="Rg:" for="rg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica}"/>
+                                <p:inputText id="rg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.rg}" title="Rg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica}"/>
+                                <h:outputLabel value="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?'Cpf':'Cnpj'}" for="cnpjCpf"/>
+                                <p:inputMask mask="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?'999.999.999-99':'99.999.999/9999-99'}" id="cnpjCpf" value="#{fornecedorBean.fornecedorNovo.IDPessoa.cnpjCpf}" title="Cpf" required="true" requiredMessage="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?'Cpf e obrigatório!':'Cnpj é obrigatório!'}"/>
+                                <h:outputLabel value="InscricaoEstadual:" for="inscricaoEstadual" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}"/>
+                                <p:inputText id="inscricaoEstadual" value="#{fornecedorBean.fornecedorNovo.IDPessoa.inscricaoEstadual}" title="InscricaoEstadual" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}"/>
+                                <h:outputLabel value="Inscrição Municipal:" for="inscricaoMunicipal" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}"/>
+                                <p:inputText id="inscricaoMunicipal" value="#{fornecedorBean.fornecedorNovo.IDPessoa.inscricaoMunicipal}" title="InscricaoMunicipal" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}" />
+                                <h:outputLabel value="Tel comercial:" for="TCom" />
+                                <p:inputMask mask="(99)9999-9999" id="TCom" size="12" value="#{fornecedorBean.telefoneC}" title="Telefone comercial" />
+                                <h:outputLabel value="Tel celular:" for="TCel" />
+                                <p:inputMask mask="(99)9999-9999" id="TCel" size="12" value="#{fornecedorBean.telefoneCel}" title="Telefone celular" />
+                                <h:outputLabel value="Tel fixo:" for="Tfixo" />
+                                <p:inputMask mask="(99)9999-9999" id="Tfixo" size="12" value="#{fornecedorBean.telefoneF}" title="Telefone fixo" />
+                                <h:outputLabel value="Cep:" for="cep" />
+                                <p:inputMask mask="99999-999" id="cep" value="#{fornecedorBean.fornecedorNovo.IDPessoa.cep}" title="Cep" />
+                                <h:outputLabel value="Logradouro:" for="logradouro" />
+                                <p:inputText id="logradouro" value="#{fornecedorBean.fornecedorNovo.IDPessoa.logradouro}" title="Logradouro" maxlength="50" size="50"/>
+                                <h:outputLabel value="Numero:" for="numero"  />
+                                <p:inputText id="numero" value="#{fornecedorBean.fornecedorNovo.IDPessoa.numero}" title="Numero"  maxlength="20" size="10"/>
+                                <h:outputLabel value="Complemento:" for="complemento" />
+                                <p:inputText id="complemento" value="#{fornecedorBean.fornecedorNovo.IDPessoa.complemento}" title="Complemento" maxlength="20" size="20"/>
+                                <h:outputLabel value="Bairro:" for="bairro" />
+                                <p:inputText id="bairro" value="#{fornecedorBean.fornecedorNovo.IDPessoa.bairro}" title="Bairro" maxlength="30" size="30"/>
+                                <h:outputLabel value="Cidade:" for="cidade" />
+                                <p:inputText id="cidade" value="#{fornecedorBean.fornecedorNovo.IDPessoa.cidade}" title="Cidade" maxlength="25" size="25"/>
+                                <h:outputLabel value="Estado:" for="estado" />
+                                <p:inputText id="estado" value="#{fornecedorBean.fornecedorNovo.IDPessoa.estado}" title="Estado" maxlength="2" size="2"/>
+                                <h:outputLabel value="Pais:" for="pais" />
+                                <p:inputText id="pais" value="#{fornecedorBean.fornecedorNovo.IDPessoa.pais}" title="Pais" maxlength="20" size="20"/>
+                                <h:outputLabel value="Http:" for="http" />
+                                <p:inputText id="http" value="#{fornecedorBean.fornecedorNovo.IDPessoa.http}" title="Http" />
+                                <h:outputLabel value="Naturalidade:" for="naturalidade" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica}"/>
+                                <p:inputText id="naturalidade" value="#{fornecedorBean.fornecedorNovo.IDPessoa.naturalidade}" title="Naturalidade" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica}"/>
+                                <h:outputLabel value="Referencia:" for="referencia" />
+                                <p:inputTextarea rows="4" cols="30" id="referencia" value="#{fornecedorBean.fornecedorNovo.IDPessoa.referencia}" title="Referencia" />
+
+                                <h:outputLabel value="Email:" for="email" />
+                                <p:inputText id="email" value="#{fornecedorBean.fornecedorNovo.IDPessoa.email}" title="Email" />
+                                <h:outputLabel value="Obs:" for="obs" />
+                                <p:inputTextarea rows="4" cols="30" id="obs" value="#{fornecedorBean.fornecedorNovo.obs}" title="Obs"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="salvar"   actionListener="#{fornecedorBean.confirmaSalvar}" update=":formCadFornecedor"/>&nbsp;&nbsp;
+                            <p:commandButton value="limpar" update="formCadFornecedor" type="reset"/>
+                        </p:panel>
+
+                    </h:form>
+                    <h:form id="formFornecedorDG">
+                        <p:dialog widgetVar="dialogCadFornecedor" modal="true" >
+
+                            <p:panel header="Formulario cadastro fornecedor" >
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="FisicaJuridica:" for="fisicaJuridicaDg" />
+                                    <h:outputLabel id="fisicaJuridicaDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?'Pessoa Física':'Pessoa Jurídica'}"  style="color: red"/>
+                                    <h:outputLabel value="RamoAtividade:" for="idRamoAtividadeDg" rendered="#{fornecedorBean.fornecedorNovo.idRamoAtividade.descricao!=null?true:false}"/>
+                                    <h:outputLabel id="idRamoAtividadeDg" value="#{fornecedorBean.fornecedorNovo.idRamoAtividade.descricao}" rendered="#{fornecedorBean.fornecedorNovo.idRamoAtividade.descricao!=null?true:false}"/>
+                                    <h:outputLabel value="Procurador:" for="procuradorDg"  rendered="#{fornecedorBean.fornecedorNovo.procurador!=null?true:false}"/>
+                                    <h:outputLabel id="procuradorDg" value="#{fornecedorBean.fornecedorNovo.procurador}" rendered="#{fornecedorBean.fornecedorNovo.procurador!=null?true:false}"/>
+                                    <h:outputLabel value="Razao/Nome:" for="razaoDg"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.razao!=null?true:false}"/>
+                                    <h:outputLabel id="razaoDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.razao}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.razao!=null?true:false}"/>
+                                    <h:outputLabel value="Fantasia:" for="fantasiaDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fantasia!=null?true:false}"/>
+                                    <h:outputLabel id="fantasiaDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.fantasia}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fantasia!=null?true:false}"/>
+                                    <h:outputLabel value="Rg:" for="rgDg"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica}"/>
+                                    <h:outputLabel id="rgDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.rg}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica}"/>
+                                    <h:outputLabel value="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?'Cpf':'Cnpj'}" for="cnpjCpfDg"/>
+                                    <h:outputLabel  id="cnpjCpfDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.cnpjCpf}"/>
+                                    <h:outputLabel value="InscricaoEstadual:" for="inscricaoEstadualDg"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}"/>
+                                    <h:outputLabel id="inscricaoEstadualDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.inscricaoEstadual}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}"/>
+                                    <h:outputLabel value="Inscrição Municipal:" for="inscricaoMunicipalDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}"/>
+                                    <h:outputLabel id="inscricaoMunicipalDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.inscricaoMunicipal}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.fisicaJuridica?false:true}"/>
+                                    <h:outputLabel value="Logradouro:" for="logradouroDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.logradouro!=null?true:false}"/>
+                                    <h:outputLabel id="logradouroDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.logradouro}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.logradouro!=null?true:false}"/>
+                                    <h:outputLabel value="Numero:" for="numeroDg"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.numero!=null?true:false}"/>
+                                    <h:outputLabel id="numeroDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.numero}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.numero!=null?true:false}"/>
+                                    <h:outputLabel value="Complemento:" for="complementoDg"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.complemento!=null?true:false}"/>
+                                    <h:outputLabel id="complementoDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.complemento}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.complemento!=null?true:false}"/>
+                                    <h:outputLabel value="Bairro:" for="bairroDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.bairro!=null?true:false}"/>
+                                    <h:outputLabel id="bairroDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.bairro}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.bairro!=null?true:false}"/>
+                                    <h:outputLabel value="Cidade:" for="cidadeDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.cidade!=null?true:false}"/>
+                                    <h:outputLabel id="cidadeDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.cidade}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.cidade!=null?true:false}"/>
+                                    <h:outputLabel value="Estado:" for="estadoDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.estado!=null?true:false}"/>
+                                    <h:outputLabel id="estadoDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.estado}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.estado!=null?true:false}"/>
+                                    <h:outputLabel value="Cep:" for="cepDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.cep!=null?true:false}"/>
+                                    <h:outputLabel id="cepDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.cep}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.cep!=null?true:false}"/>
+                                    <h:outputLabel value="Pais:" for="paisDg"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.pais!=null?true:false}"/>
+                                    <h:outputLabel id="paisDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.pais}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.pais!=''?true:false}"/>
+                                    <h:outputLabel value="Http:" for="httpDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.http!=''?true:false}"/>
+                                    <h:outputLabel id="httpDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.http}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.http!=''?true:false}"/>
+                                    <h:outputLabel value="Naturalidade:" for="naturalidadeDg" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.naturalidade!=''?true:false}"/>
+                                    <h:outputLabel id="naturalidadeDg" value="#{fornecedorBean.fornecedorNovo.IDPessoa.naturalidade}"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.naturalidade!=''?true:false}"/>
+                                    <h:outputLabel value="Email:"  rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.email!=null?true:false}"/>
+                                    <h:outputLabel value="#{fornecedorBean.fornecedorNovo.IDPessoa.email}" rendered="#{fornecedorBean.fornecedorNovo.IDPessoa.email!=null?true:false}"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <p:commandButton value="confirmar" actionListener="#{fornecedorBean.salvar()}"/>
+                                <p:commandButton value="cancelar" onclick="dialogCadFornecedor.hide();"/>
+
+                            </p:panel>
+
+                        </p:dialog>
+                    </h:form>
+                    <h:form>
+                        <p:dialog widgetVar="dialogError" header="Error!" modal="true"
+                                  draggable="false" closable="false" resizable="false">
+                            não pode ser cadastrado por já existir esse cpf ou cnpj
+                            <br/>
+                            <p:commandButton value="sair" oncomplete="dialogError.hide();"/>
+
+
+                        </p:dialog>
+                    </h:form>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

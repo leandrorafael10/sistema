@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans 
+    xmlns:b = "http://www.springframework.org/schema/beans"
+    xmlns:sec = "http://www.springframework.org/schema/security"
+    xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation = "http://www.springframework.org/schema/beans 
+             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+             http://www.springframework.org/schema/security 
+             http://www.springframework.org/schema/security/spring-security-3.1.xsd ">
+                 
+                 
+    <sec:http auto-config="true" access-denied-page="/paginaerro/acessonegado.jsf">
+    <sec:intercept-url pattern="/externo/**" access="ROLE_USER_EXTERNO"/>
+        <sec:intercept-url pattern="/principal/**" 
+                           access="ROLE_USUARIO,ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_RH,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_COMERCIAL,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR,ROLE_PRODUCAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT,ROLE_USER_EXTERNO"/>
+        <sec:intercept-url pattern="/restrito/**" access="ROLE_ADMINISTRACAO,ROLE_RH,ROLE_ADM_ASSINAT"/>
+        <sec:form-login login-page="/logteste/login.jsf"            
+                        always-use-default-target="true"  
+                        default-target-url="/principal/templategreen.jsf"
+                        authentication-failure-url="/paginaerro/acessonegado.jsf"
+        />
+        <sec:logout/>
+        
+        <sec:remember-me/>
+    </sec:http>
+    <sec:authentication-manager> 
+        <sec:authentication-provider>
+            <sec:password-encoder hash="md5"/>
+            <sec:jdbc-user-service data-source-ref="greenDS" 
+                                   authorities-by-username-query="SELECT u.Login, g.Descricao FROM usuario u,grupoacesso g WHERE u.IDGrupoAcesso = g.IDGrupoAcesso AND u.Login =?" 
+                                   users-by-username-query="SELECT Login,Senha,Ativo FROM usuario WHERE login=?"/>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+                            
+                 
+             
+</b:beans>
+    
+    
+            
+    
+    

@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+
+    <ui:composition template="/principal/templategreen.xhtml">
+        <ui:define name="principal-interna">
+            <h:form id="formDespesaPagar">
+                <p:panel header="Incluir despesas" >
+                    <p:messages/>
+                    <h:panelGrid columns="2"  cellpadding="5" id="gridDespesaNum">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Tipo de documento: "/>
+                            <p:selectOneMenu value="#{despesaBean.despesaNovo.IDDocumento}" filter="true" converter="documentoConverter" required="true" requiredMessage="documento e obrigatório">
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{documentoBean.documentos}"
+                                               var="documento"
+                                               itemLabel="#{documento.descricao}"
+                                               itemValue="#{documento}"/>
+                                <p:ajax update="gridDespesaNum"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Numero: " rendered="#{despesaBean.despesaNovo.IDDocumento.IDDocumento!=2}"/>
+                            <p:inputText value="#{despesaBean.despesaNovo.numero}" size="12" maxlength="15" required="true" requiredMessage="numero de documento e obrigaório!" rendered="#{despesaBean.despesaNovo.IDDocumento.IDDocumento!=2}"/>
+                            <h:outputText value="Atividade financeira: "/>
+                            <p:selectOneMenu value="#{despesaBean.despesaNovo.IDAtividade}" filter="true" converter="atividadeConverter" required="true" requiredMessage="atividade financeira e obrigatório">
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{atividadeRN.listar()}"
+                                               var="atividade"
+                                               itemLabel="#{atividade.descricao}"
+                                               itemValue="#{atividade}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Centro de custo: "/>
+                            <p:selectOneMenu value="#{despesaBean.despesaNovo.IDCCusto}" filter="true" converter="ccustoConverter" required="true" requiredMessage="centro de custo e obrigatório">
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{ccustoRN.listar()}"
+                                               var="ccusto"
+                                               itemLabel="#{ccusto.descricao}"
+                                               itemValue="#{ccusto}"/>
+
+                            </p:selectOneMenu>
+                            <h:outputText value="Plano de contas: "/>
+                            <p:selectOneMenu value="#{despesaBean.despesaNovo.IDClassificacao}" filter="true" converter="classificacaoConverter" required="true" requiredMessage="plano de contas e obricatório">
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{classificacaoRN.listar()}"
+                                               var="classificacao"
+                                               itemLabel="#{classificacao.descricao}"
+                                               itemValue="#{classificacao}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Conta:"/>
+                            <p:selectOneMenu converter="contaConverter" value="#{despesaBean.despesaNovo.IDConta}"  >
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems var="conta"
+                                               value="#{contaRN.listar()}"
+                                               itemLabel="#{conta.titular} / Banco : #{conta.IDBanco.descricao}"
+                                               itemValue="#{conta}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Emissão: "/>
+                            <p:calendar value="#{despesaBean.despesaNovo.DTEmissao}"
+                                        pattern="dd/MM/yyyy"
+                                        showOn="button"
+                                        required="true"
+                                        size="8"
+                                        requiredMessage="data de emição é obrigatório "/> 
+                            <h:outputText value="Vencimento: "/>
+                            <p:calendar value="#{despesaBean.despesaNovo.DTVencimento}"
+                                        pattern="dd/MM/yyyy"
+                                        showOn="button"
+                                        required="true"
+                                        size="8"
+                                        requiredMessage="data vencimento é obrigatório"
+                                        />
+
+                            <h:outputText value="entidade: "/>
+
+                            <p:selectOneMenu  value="#{despesaBean.opsCedente}">
+                                <f:selectItem itemLabel="nenhum" itemValue="0"/>
+                                <f:selectItem itemLabel="funcionario" itemValue="1"/>
+                                <f:selectItem itemLabel="cliente" itemValue="2"/>
+                                <f:selectItem itemLabel="fornecedor" itemValue="3"/>
+                                <p:ajax  listener="#{despesaBean.opcaoCedente()}" update="out_Despesa,gridOpcSelect"/>
+                            </p:selectOneMenu> 
+                            <h:outputLabel value="#{despesaBean.tipoCedente}" id="out_Despesa"/>
+
+                            <h:panelGrid id="gridOpcSelect" columns="3">
+                                <p:selectOneMenu   converter="funcionarioConverter"  filter="true" value="#{despesaBean.despesaNovo.IDFuncionario}" rendered="#{despesaBean.opcFuncionario}">
+                                    <f:selectItems var="funcionario"
+                                                   value="#{funcionarioBean.funcionarios}"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"
+                                                   itemValue="#{funcionario}"/>
+                                </p:selectOneMenu>
+                                <p:selectOneMenu  converter="clienteConverter" filter="true" value="#{despesaBean.despesaNovo.IDCliente}" rendered="#{despesaBean.opsCliente}">
+                                    <f:selectItems  var="cliente"
+                                                    value="#{clienteBean.clientes}"
+                                                    itemLabel="#{cliente.IDPessoa.razao}"
+                                                    itemValue="#{cliente}"/>
+                                </p:selectOneMenu>
+                                <p:selectOneMenu  converter="fornecedorConverter" filter="true" value="#{despesaBean.despesaNovo.IDFornecedor}" rendered="#{despesaBean.opsFornecedor}">
+                                    <f:selectItems var="forn"
+                                                   value="#{fornecedorBean.fornecedores}"
+                                                   itemLabel="#{forn.IDPessoa.fantasia}"
+                                                   itemValue="#{forn}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <p:panel >
+                        <h:panelGrid columns="2" cellpadding="30">
+                            <p:panel style="min-width: 500px">
+                                <h:panelGrid columns="7">
+                                    <h:outputText value="Multa:"/>
+                                    <p:selectOneMenu style="width: 50px" id="selectMulta" value="#{despesaBean.tipoMulta}">
+                                        <f:selectItem itemLabel="%" itemValue="#{true}"/>
+                                        <f:selectItem itemLabel="R$" itemValue="#{false}"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText size="6" id="inputMulta" value="#{despesaBean.despesaNovo.valorMulta}" maxlength="10"  required="true" requiredMessage="valor da multa obrigatório!">
+                                        <f:convertNumber maxFractionDigits="2"/>
+                                    </p:inputText>
+
+                                    <h:outputText value="limite"/>
+                                    <p:calendar value="#{despesaBean.despesaNovo.DTMulta}"
+                                                showOn="button" 
+                                                pattern="dd/MM/yyyy"
+                                                size="8"
+                                                validatorMessage="data emição em formato errado "/>
+                                    <p:selectBooleanCheckbox value="#{despesaBean.despesaNovo.isentoMulta}"/>
+                                    <h:outputText value="isento"/>
+                                </h:panelGrid>
+
+                                <p:separator/>
+
+                                <h:panelGrid columns="6">
+                                    <h:outputText value="Juros: "/>
+                                    <p:inputText size="2" id="inputJuros" value="#{despesaBean.despesaNovo.valorJuros}" maxlength="10" required="true" requiredMessage="valor juros obrigatório!"/>
+                                    <h:outputText value="%"/>
+                                    <p:selectOneMenu style="width: 85px"  id="selectJuros" value="#{despesaBean.despesaNovo.tipoJuros}" >
+                                        <f:selectItem itemLabel="dia" itemValue="#{false}"/>
+                                        <f:selectItem itemLabel="mês" itemValue="#{true}"/>
+                                    </p:selectOneMenu>
+                                    <p:selectBooleanCheckbox value="#{despesaBean.despesaNovo.isentoJuros}"/> 
+                                    <h:outputText value="isento"/>
+                                </h:panelGrid>
+
+                                <p:separator/>
+
+                                <h:panelGrid columns="5">
+                                    <h:outputText value="Desconto:"/>
+                                    <p:selectOneMenu style="width: 50px" value="#{despesaBean.tipoDesconto}">
+                                        <f:selectItem itemLabel="%" itemValue="#{true}"/>
+                                        <f:selectItem itemLabel="R$" itemValue="#{false}"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText size="6" value="#{despesaBean.despesaNovo.valorDesconto}" maxlength="10" required="true" requiredMessage="valor desconto obrigatório!">
+                                        <f:convertNumber maxFractionDigits="2"/>
+                                    </p:inputText>
+                                    <h:outputText value="limite"/>
+                                    <p:calendar value="#{despesaBean.despesaNovo.DTDesconto}"
+                                                showOn="button" 
+                                                pattern="dd/MM/yyyy"
+                                                size="8"
+                                                validatorMessage="data emição em formato errado "/>
+                                </h:panelGrid>    
+                            </p:panel>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="valor nominal: R$"/>
+                                <p:inputText value="#{despesaBean.despesaNovo.valorNominal}" size="8" required="true" requiredMessage="valor líquido e obrigatório!" >
+                                    <f:convertNumber maxFractionDigits="2"/>
+                                </p:inputText>
+                                <h:outputText value="numero parcelas: "/>
+                                <p:selectOneMenu value="#{despesaBean.parcelas}">
+                                    <f:selectItem itemLabel="1" itemValue="1"/>
+                                    <f:selectItem itemLabel="2" itemValue="2"/>
+                                    <f:selectItem itemLabel="3" itemValue="3"/>
+                                    <f:selectItem itemLabel="4" itemValue="4"/>
+                                    <f:selectItem itemLabel="5" itemValue="5"/>
+                                    <f:selectItem itemLabel="6" itemValue="6"/>
+                                    <f:selectItem itemLabel="7" itemValue="7"/>
+                                    <f:selectItem itemLabel="8" itemValue="8"/>
+                                    <f:selectItem itemLabel="9" itemValue="9"/>
+                                    <f:selectItem itemLabel="10" itemValue="10"/>
+                                    <f:selectItem itemLabel="11" itemValue="11"/>
+                                    <f:selectItem itemLabel="12" itemValue="12"/>
+                                    <f:selectItem itemLabel="13" itemValue="13"/>
+                                    <f:selectItem itemLabel="14" itemValue="14"/>
+                                    <f:selectItem itemLabel="15" itemValue="15"/>
+                                    <f:selectItem itemLabel="16" itemValue="16"/>
+                                    <f:selectItem itemLabel="17" itemValue="17"/>
+                                    <f:selectItem itemLabel="18" itemValue="18"/>
+                                    <f:selectItem itemLabel="19" itemValue="19"/>
+                                    <f:selectItem itemLabel="20" itemValue="20"/>
+                                    <f:selectItem itemLabel="21" itemValue="21"/>
+                                    <f:selectItem itemLabel="22" itemValue="22"/>
+                                    <f:selectItem itemLabel="23" itemValue="23"/>
+                                    <f:selectItem itemLabel="24" itemValue="24"/>
+                                    <f:selectItem itemLabel="25" itemValue="25"/>
+                                    <f:selectItem itemLabel="26" itemValue="26"/>
+                                    <f:selectItem itemLabel="27" itemValue="27"/>
+                                    <f:selectItem itemLabel="28" itemValue="28"/>
+                                    <f:selectItem itemLabel="29" itemValue="29"/>
+                                    <f:selectItem itemLabel="30" itemValue="30"/>
+                                    <f:selectItem itemLabel="31" itemValue="31"/>
+                                    <f:selectItem itemLabel="32" itemValue="32"/>
+                                    <f:selectItem itemLabel="33" itemValue="33"/>
+                                    <f:selectItem itemLabel="34" itemValue="34"/>
+                                    <f:selectItem itemLabel="35" itemValue="35"/>
+                                    <f:selectItem itemLabel="36" itemValue="36"/>
+                                    <f:selectItem itemLabel="37" itemValue="37"/>
+                                    <f:selectItem itemLabel="38" itemValue="38"/>
+                                    <f:selectItem itemLabel="39" itemValue="39"/>
+                                    <f:selectItem itemLabel="40" itemValue="40"/>
+                                    <f:selectItem itemLabel="41" itemValue="41"/>
+                                    <f:selectItem itemLabel="42" itemValue="42"/>
+                                    <f:selectItem itemLabel="43" itemValue="43"/>
+                                    <f:selectItem itemLabel="44" itemValue="44"/>
+                                    <f:selectItem itemLabel="45" itemValue="45"/>
+                                    <f:selectItem itemLabel="46" itemValue="46"/>
+                                    <f:selectItem itemLabel="47" itemValue="47"/>
+                                    <f:selectItem itemLabel="48" itemValue="48"/>
+                                    <f:selectItem itemLabel="49" itemValue="49"/>
+                                    <f:selectItem itemLabel="50" itemValue="50"/>
+                                    <f:selectItem itemLabel="51" itemValue="51"/>
+                                    <f:selectItem itemLabel="52" itemValue="52"/>
+                                    <f:selectItem itemLabel="53" itemValue="53"/>
+                                    <f:selectItem itemLabel="54" itemValue="54"/>
+                                    <f:selectItem itemLabel="55" itemValue="55"/>
+                                    <f:selectItem itemLabel="56" itemValue="56"/>
+                                    <f:selectItem itemLabel="57" itemValue="57"/>
+                                    <f:selectItem itemLabel="58" itemValue="58"/>
+                                    <f:selectItem itemLabel="59" itemValue="59"/>
+                                    <f:selectItem itemLabel="60" itemValue="60"/>
+                                    <f:selectItem itemLabel="61" itemValue="61"/>
+                                    <f:selectItem itemLabel="62" itemValue="62"/>
+                                    <f:selectItem itemLabel="63" itemValue="63"/>
+                                    <f:selectItem itemLabel="64" itemValue="64"/>
+                                    <f:selectItem itemLabel="65" itemValue="65"/>
+                                    <f:selectItem itemLabel="66" itemValue="66"/>
+                                    <f:selectItem itemLabel="67" itemValue="67"/>
+                                    <f:selectItem itemLabel="68" itemValue="68"/>
+                                    <f:selectItem itemLabel="69" itemValue="69"/>
+                                    <f:selectItem itemLabel="70" itemValue="70"/>
+                                    <f:selectItem itemLabel="71" itemValue="71"/>
+                                    <f:selectItem itemLabel="72" itemValue="72"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="opções: "/>
+                                <p:selectOneRadio value="#{despesaBean.vencimento}">
+                                    <f:selectItem itemLabel="vencimento fixo" itemValue="1"/>
+                                    <f:selectItem itemLabel="dias corridos" itemValue="2"/>
+                                </p:selectOneRadio>
+                            </h:panelGrid>
+
+                        </h:panelGrid>
+                    </p:panel>
+                    <h:panelGrid columns="1">
+                        <h:outputText value="observação:"/>
+                        <p:inputTextarea value="#{despesaBean.despesaNovo.obs}" maxlength="65500"  rows="6" cols="120" />
+                    </h:panelGrid>
+                    <p:commandButton value="confirmar" actionListener="#{despesaBean.confirmacaoDespesa}" update=":formDespesaPagar"/>
+                </p:panel>
+
+                <p:dialog widgetVar="dialogConfirmDespesa" modal="true" header="Inclusão de novo registro">
+                    <p:panel>
+                        <h:panelGrid id="gridConfirmDespesa" columns="2">
+                            <h:outputLabel value="Data emissão: "/>
+                            <h:outputText value="#{despesaBean.despesaNovo.DTEmissao}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputLabel value="Tipo de documento: "/>
+                            <h:outputText value="#{despesaBean.despesaNovo.IDDocumento.descricao}"/>
+                            <h:outputLabel value="Numero: " rendered="#{despesaBean.despesaNovo.IDDocumento.IDDocumento!=2}"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.numero}" rendered="#{despesaBean.despesaNovo.IDDocumento.IDDocumento!=2}"/>
+                            <h:outputLabel value="entidade:" rendered="#{despesaBean.opsCedente!=0}"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.IDCliente.IDPessoa.razao}" rendered="#{despesaBean.despesaNovo.IDCliente!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.IDFuncionario.IDPessoa.razao}" rendered="#{despesaBean.despesaNovo.IDFuncionario!=null}"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.IDFornecedor.IDPessoa.razao}" rendered="#{despesaBean.despesaNovo.IDFornecedor!=null}"/>
+                            <h:outputLabel value="Atividade Financeira: "/>
+                            <h:outputText value="#{despesaBean.despesaNovo.IDAtividade.descricao}"/>
+                            <h:outputLabel value="Centro de custo: "/>
+                            <h:outputText value="#{despesaBean.despesaNovo.IDCCusto.descricao}"/>
+                            <h:outputLabel value="Plano de contas: "/>
+                            <h:outputText value="#{despesaBean.despesaNovo.IDClassificacao.descricao}"/>
+                            <h:outputLabel value="Vencimento: "/>
+                            <h:outputText value="#{despesaBean.despesaNovo.DTVencimento}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="num. parcelas" rendered="#{despesaBean.parcelas>1}"/>
+                            <h:outputText value="#{despesaBean.parcelas}" rendered="#{despesaBean.parcelas>1}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="6" >
+                            <h:outputLabel value="Multa: " />
+                            <h:outputLabel value="R$" rendered="#{despesaBean.tipoMulta!=true}"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.valorMulta}" >
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/> 
+                            </h:outputText>
+                            <h:outputLabel value="%" rendered="#{despesaBean.tipoMulta!=false}"/>
+                            <h:outputLabel value="#{despesaBean.despesaNovo.DTMulta!=null?'limite':''}"/>
+                            <h:outputLabel value="#{despesaBean.despesaNovo.DTMulta}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                            <h:outputText value="#{despesaBean.despesaNovo.isentoMulta?'(isento)':''}"  style="color: red"/>
+                            <h:outputLabel value="Juros:"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.valorJuros}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputLabel value="%"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.tipoJuros?'mês':'dia'}"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.isentoJuros?'(isento)':''}" style="color: red"/>
+                            &nbsp;
+                            <h:outputText value="Desconto:"/>
+                            <h:outputLabel value="R$" rendered="#{despesaBean.tipoDesconto!=true}"/>
+                            <h:outputText value="#{despesaBean.despesaNovo.valorDesconto}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputLabel value="%" rendered="#{despesaBean.tipoDesconto!=false}"/>
+                            <h:outputLabel value="#{despesaBean.despesaNovo.DTDesconto!=null?'limite':''}"/>
+                            <h:outputLabel value="#{despesaBean.despesaNovo.DTDesconto}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                            &nbsp;
+
+                        </h:panelGrid>
+                        <h:outputText value="Valor nominal: R$"/>
+                        <h:outputLabel value="#{despesaBean.despesaNovo.valorNominal}" style="color: blue">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                        </h:outputLabel><br/>
+                        <p:separator/>
+                        <p:commandButton value="salvar" action="#{despesaBean.salvar(actionEvent)}" update=":formDespesaPagar"/>
+                        <p:commandButton value="cancelar" onclick="dialogConfirmDespesa.hide();"/>
+                    </p:panel>
+                </p:dialog>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

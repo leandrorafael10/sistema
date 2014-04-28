@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition template="/principal/templategreen.xhtml">
+        <ui:define name="principal-interna">
+            <h:form id="formCentroCusto">
+                <p:panel header="Centro de custos">
+                    <p:messages/>
+                    
+                    <p:dataTable value="#{ccustoRN.listar()}" var="ccusto" paginator="true" rows="20"
+                                 emptyMessage="Nenhum registro" >
+                        <p:column headerText="Código estrutural" width="80" filterMatchMode="contains" sortBy="#{ccusto.codigo}" filterBy="#{ccusto.codigo}" filterMaxLength="8">
+                            <h:outputText value="#{ccusto.codigo}"/>
+                        </p:column>
+                        <p:column headerText="Descrição">
+                            <h:outputText value="#{ccusto.descricao}"/>
+                        </p:column>
+                        <p:column headerText="Status" width="50">  
+                            <h:graphicImage library="imagens" name="ativo_#{ccusto.ativo}.png"/>
+                        </p:column>
+                        <p:column headerText="Usuário inscrição" width="80">
+                            <h:outputText value="#{ccusto.IDUsuario.IDFuncionario.IDPessoa.razao}"/>
+                        </p:column>
+                        <p:column headerText="Data inclusão" width="70">
+                            <h:outputText value="#{ccusto.DTInc}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Editar" width="50">
+                            <p:commandLink oncomplete="dialogEditarCentroCusto.show()" update=":formEditarCentroCusto:panelEditarCentroCusto" immediate="true">
+                                <h:graphicImage library="imagens" name="edit.png"/>
+                                <f:setPropertyActionListener  value="#{ccusto}" target="#{ccustoBean.ccusto}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column headerText="Excluir" width="50">
+                            <p:commandLink oncomplete="dialogDelCentroCusto.show()" update=":formDelCentroCusto:panelDelCentroCusto" immediate="true">
+                                <h:graphicImage library="imagens" name="Delete-10.png"/>
+                                <f:setPropertyActionListener  value="#{ccusto}" target="#{ccustoBean.ccusto}"/>
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:commandLink  onclick="dialogCentroCusto.show();" >
+                        <h:graphicImage library="imagens" name="new.png" onclick="dialogCentroCusto.show();"/>
+                        <h:outputText value="incluir novo"/>
+                    </p:commandLink>
+
+                </p:panel>
+
+           
+            
+                <p:dialog widgetVar="dialogCentroCusto" modal="true">
+                    <p:panel>
+                        <h:outputText value="Código Estrutural: "/>
+                        <p:inputMask mask="99.99.99" size="8" required="true" value="#{ccustoBean.ccustoNovo.codigo}"  requiredMessage="No máximo de 5 digitos"/>
+                        <br/>
+                        <br/>
+                        <h:outputText value="Descrição: "/>
+                        <p:inputText size="30" required="true" value="#{ccustoBean.ccustoNovo.descricao}" maxlength="30"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <p:selectBooleanCheckbox value="#{ccustoBean.ccustoNovo.ativo}"/>
+                        <h:outputText value="Ativo"/>
+                        <br/>
+                        <br/>
+                        <p:commandButton value="salvar" action="#{ccustoBean.salvar()}" update=":formCentroCusto" oncomplete="dialogCentroCusto.hide()"/>
+                        &nbsp;&nbsp;
+                        <p:commandButton value="sair" onclick="dialogCentroCusto.hide();"/>
+                    </p:panel>
+                </p:dialog>
+             </h:form>
+            <h:form id="formDelCentroCusto">
+                <p:dialog widgetVar="dialogDelCentroCusto" header="Exclusão de centro de custo" modal="true">
+                    <p:panel id="panelDelCentroCusto">
+                        <h:outputText value="Código estrutural: "/>#{ccustoBean.ccusto.codigo}<br/>
+                        <h:outputLabel value="Descrição: "/>#{ccustoBean.ccusto.descricao}<br/>
+                        <h:outputText value="Status: "/>
+                        <h:graphicImage library="imagens" name="ativo_#{ccustoBean.ccusto.ativo==false?'0':'1'}.png"/>
+
+                        <p:separator/>
+                        <p:commandButton value="confirmar" action="#{ccustoBean.excluir()}" update=":formCentroCusto" oncomplete="dialogDelCentroCusto.hide()"/>
+                        &nbsp;&nbsp;
+                        <p:commandButton value="sair" onclick="dialogDelCentroCusto.hide();"/>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+            <h:form id="formEditarCentroCusto">
+                <p:dialog header="Edição centro de custo" widgetVar="dialogEditarCentroCusto" modal="true">
+                    <p:panel id="panelEditarCentroCusto">
+                        <h:outputText value="Código estrutural: #{ccustoBean.ccusto.codigo}"/><br/>
+                        <p:inputMask mask="99.99.99" value="#{ccustoBean.ccustoEditado.codigo}"  required="true" size="5" /><br/><br/>
+                        <h:outputText value="Descrição: #{ccustoBean.ccusto.descricao}"/><br/>
+                        <p:inputText value="#{ccustoBean.ccustoEditado.descricao}" required="true" maxlength="30" size="30"/><br/><br/>
+                        <h:outputText value="Status"/>
+                        <p:selectOneMenu style="width: 90px" value="#{ccustoBean.ccustoEditado.ativo}">
+                            <f:selectItem itemLabel="Ativar" itemValue="#{true}"/>
+                            <f:selectItem itemLabel="Desativar" itemValue="#{false}"/>
+                        </p:selectOneMenu>
+                        <p:separator/>
+                        <p:commandButton value="confirmar" action="#{ccustoBean.atualizar()}" update=":formCentroCusto" oncomplete="dialogEditarCentroCusto.hide()"/>
+                        &nbsp;&nbsp;
+                        <p:commandButton value="sair" onclick="dialogEditarCentroCusto.hide();" type="reset"/>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+
+
+
+        </ui:define>
+    </ui:composition>
+
+
+</html>

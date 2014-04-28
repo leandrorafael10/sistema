@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <head>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <div>
+            <p:feedReader  value="http://rss.news.yahoo.com/rss/sports" var="feed" size="50">  
+                <h:outputText value="#{feed.title}" style="font-weight: bold"/>  
+                <br />  
+                <h:outputText value="#{feed.description.value}" escape="false"/> 
+                <br/>
+                <h:outputText value="#{feed.link}" escape="false"/>  
+                <br/>
+                
+                <p:separator />  
+            </p:feedReader>  </div>
+    </body>
+</html>

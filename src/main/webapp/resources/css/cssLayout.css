@@ -1,0 +1,102 @@
+#usuarioLog{
+    right: 0px;
+    top: 0px;
+    float: right;
+    padding: 1px;
+    margin-right: 5%;
+    width: 90%;
+
+
+}
+#tudo{
+
+    width: 90%;
+    margin: 0 auto;
+    min-width: 860px;
+}
+
+
+#topo{
+    padding-top: 10px;
+    height: 150px;
+    box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+    -moz-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+    -webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+    margin-top: 10px;
+    border-radius: 2em  ;
+    background-color: #2a8ac4;
+
+}
+
+
+
+#rodape {
+    clear: both;
+    height: 100px;
+    background-color: #2a8ac4;
+    background-position: right;
+    box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+    -moz-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+    -webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+    margin-top: 10px;
+    margin-bottom: 10px
+}
+
+#navegacao {
+
+    width: 10.5%;
+    float: left;
+
+}
+
+
+#principal{
+    width: 85%;
+    float: right;
+}
+
+.coluna-fixa{
+    max-width: 125px;
+    min-width: 125px;
+
+}
+.texto-esquerda{
+    text-align: left;
+}
+.vermelho{
+    color: red;
+}
+.azul{
+    color: blue;
+}
+.verde{
+    color: green;
+}
+.amarelo{
+    color: #ffb347;
+}
+
+.old {
+    background-color: #6CE26C !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+.fundo-vermelho {
+    background-color: #ff3333 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+.fundo-verde {
+    background-color: #6CE26C !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+
+
+
+
+
+
+
+

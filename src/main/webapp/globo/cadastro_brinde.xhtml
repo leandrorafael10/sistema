@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <f:view>
+
+                    <h:form id="formBrinde">
+                        <p:panel>
+                            <h2><h:outputText value="Cadastro novo brinde"/></h2>
+                            <p:messages id="msg"/>
+                            <h:panelGrid columns="4">
+                                <h:outputLabel value="Tipo de Brinde:" for="descricao" />
+                                <p:inputText id="descricao" value="#{brindeBean.brinde.descricao}" title="Descricao" required="true" requiredMessage="tipo do brinde e obrigatorio!">
+                                    
+                                </p:inputText>
+                                <h:outputLabel value="Valor Custo:" for="valorCusto" />
+                                <p:inputText id="valorCusto" value="#{brindeBean.brinde.valorCusto}" title="ValorCusto" required="true" requiredMessage="The ValorCusto field is required.">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </p:inputText>
+                                <h:outputLabel value="Valor Venda:" for="saldoVenda" />
+                                <p:inputText id="saldoVenda" value="#{brindeBean.brinde.saldoVenda}" title="SaldoVenda" required="true" requiredMessage="The SaldoVenda field is required.">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </p:inputText>
+                                <h:outputLabel value="Descricao Det:" for="descricaoDet" />
+                                <p:inputTextarea rows="4" cols="30" id="descricaoDet" value="#{brindeBean.brinde.descricaoDet}" title="Descricão" />
+                            </h:panelGrid>
+
+                            <br/>
+                            <p:commandButton value="salvar" actionListener="#{brindeBean.salvar(actionEvent)}" update=":formBrinde,:formListaBrindes"/>
+                        </p:panel>
+                        <p:separator/>
+                    </h:form>
+                    <h:form id="formListaBrindes">
+                        <p:messages id="msgLista"/>
+                        <p:dataTable value="#{brindeBean.brindes}" var="brindes" 
+                                     emptyMessage="não há brindes cadastrados." 
+                                     editable="true">
+                            <f:facet name="header">
+                                Brindes cadastrados
+                            </f:facet>
+                            <p:ajax event="rowEdit" listener="#{brindeBean.onEdit}" update=":formListaBrindes:msgLista" />  
+                            <p:ajax event="rowEditCancel" listener="#{brindeBean.onCancel}" update=":formListaBrindes:msgLista" />  
+
+                            <p:column headerText="descrição" width="60">
+                                <p:cellEditor> 
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{brindes.descricao}" />
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <h:inputText required="true" value="#{brindes.descricao}" label="descrição" maxlength="30"/>
+                                    </f:facet>  
+                                </p:cellEditor>  
+                            </p:column>
+                            <p:column headerText="valor custo" width="60">
+                                <p:cellEditor> 
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{brindes.valorCusto}" >
+                                            <f:convertNumber minFractionDigits="2"/>
+                                        </h:outputText>  
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <h:inputText required="true" value="#{brindes.valorCusto}" label="valor custo">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:inputText>
+                                    </f:facet>  
+                                </p:cellEditor>  
+                            </p:column>
+                            
+                            <p:column headerText="valor venda" width="60">
+                                <p:cellEditor> 
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{brindes.valorVenda}" >
+                                            <f:convertNumber minFractionDigits="2"/>
+                                        </h:outputText>  
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <h:inputText required="true" value="#{brindes.valorVenda}" label="valor custo">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:inputText>
+                                    </f:facet>  
+                                </p:cellEditor>  
+                            </p:column>
+                            <p:column>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{brindes.descricaoDet}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:inputTextarea rows="4" cols="30" id="descricaoDet" value="#{brindes.descricaoDet}" title="Descricão" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="status" width="60">
+                                <p:cellEditor> 
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{brindes.ativo?'ativo':'desativado'}" />
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <h:selectOneMenu value="#{brindes.ativo}">
+                                            <f:selectItem itemLabel="ativo" itemValue="#{true}"/>
+                                            <f:selectItem itemLabel="desativado" itemValue="#{false}"/>
+                                        </h:selectOneMenu>
+                                    </f:facet>  
+                                </p:cellEditor>  
+                            </p:column>
+
+                            <p:column  headerText="editar" width="60">  
+                                <p:rowEditor />  
+                            </p:column>  
+
+                        </p:dataTable>
+                    </h:form>
+
+                </f:view>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

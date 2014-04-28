@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <h:form>
+                    <h2>Contratos vendedores</h2>
+                    <p:messages id="msgContratoVend"/>
+                    <h:panelGrid columns="7" cellspacing="15">
+                        <h:outputText value="Vendedor:"/>
+                        <p:selectOneMenu converter="funcionarioConverter" value="#{contratoMidiaBean.vendedor}">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+                                           var="func"
+                                           itemLabel="#{func.IDPessoa.razao}"
+                                           itemValue="#{func}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Periodo de:"/>
+                        <p:calendar value="#{contratoMidiaBean.atualizaDataInc}" 
+                                    pattern="dd/MM/yyyy" 
+                                    locale="pt" 
+                                    showButtonPanel="true" 
+                                    navigator="true" 
+                                    showOn="button" 
+                                    required="true"
+                                    size="12"
+                                    requiredMessage="inicio do periodo e obrigatório!"/>
+                        <h:outputText value=" á:"/>
+                        <p:calendar value="#{contratoMidiaBean.atualizaDataFin}" 
+                                    pattern="dd/MM/yyyy" 
+                                    locale="pt" showButtonPanel="true" 
+                                    navigator="true" showOn="button" 
+                                    required="true"
+                                    size="12"
+                                    requiredMessage="fim do periodo e obrigatório!"/>
+                        <p:commandButton value="filtrar" actionListener="#{contratoMidiaBean.buscaPorVendedor}" update=":listaPorVenderor,msgContratoVend"/>
+                    </h:panelGrid>
+
+                </h:form>
+                <br/>
+                <p:separator/>
+                <br/>
+                <f:view>
+                    <h:form id="listaPorVenderor">
+
+                        <h2><h:outputText value="Contratos"/></h2>
+                        <p:dataTable value="#{contratoMidiaBean.contratoMidias}" var="item"
+                                     scrollHeight="300"
+                                     scrollable="true"
+                                     resizableColumns="true"
+                                     emptyMessage="Não ha contratos">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Código"/>
+                                </f:facet>
+                                <h:outputText value="#{item.idcontratoMidia}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Início"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dataInicioContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fim"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dataFimContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Valor"/>
+                                </f:facet>
+                                <h:outputText value="#{item.valor}">
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:graphicImage library="imagens" name="ativo_#{item.ativo}.png"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Vendedor"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDvendedor.IDPessoa.razao}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cliente"/>
+                                </f:facet>
+                                <h:outputText value="#{item.IDcliente.IDPessoa.razao}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data inc."/>
+                                </f:facet>
+                                <h:outputText value="#{item.DTinc}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Numero"/>
+                                </f:facet>
+                                <h:outputText value="#{item.NContrato}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                        <br/>
+                        <h:outputText value="Legenda Material"/>
+                        <p:panelGrid columns="2" >
+
+                            <h:graphicImage library="imagens" name="ativo_0.png"/>
+                            <h:outputLabel value="ativo"/>
+                            <h:graphicImage library="imagens" name="ativo_1.png"/>
+                            <h:outputLabel value="cancelado"/>
+                            <h:graphicImage library="imagens" name="ativo_2.png"/>
+                            <h:outputLabel value="renovado"/>
+
+
+                        </p:panelGrid>
+
+                    </h:form>
+                    <br/>
+                    <p:separator/>
+                    <br/><br/>
+                    <p:separator/>
+                    <br/>
+
+                    <p:barChart id="basic" value="#{graficoVendedorTv.linearModel}" legendPosition="ne"  
+                                title="Desempenho vendedores" min="0" max="2100000" style="height:400px"
+                                xaxisLabel="Periodo" yaxisLabel="Valor R$" />  
+                </f:view>
+
+
+
+
+            </ui:define>
+
+
+        </ui:composition>
+
+    </body>
+</html>

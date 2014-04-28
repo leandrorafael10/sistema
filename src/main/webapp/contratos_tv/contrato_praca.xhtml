@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <h2>Situação das praças</h2>
+                <br/>
+                <p:outputLabel value="Faltando menos de 10 dias para termino  "><h:graphicImage library="imagens" name="prod_3.png"/></p:outputLabel>
+
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(1)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()?'old':null}"
+                             resizableColumns="true"
+                             >
+                    <f:facet name="header">
+                        Pampulha-BH
+                    </f:facet>
+                    <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(2)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        Confins-BH
+                    </f:facet>
+                   <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(3)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        Rodoviaria-BH
+                    </f:facet>
+                    <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(4)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        Congonhas-SP
+                    </f:facet>
+                    <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(5)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        JK-DF
+                    </f:facet>
+                   <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(6)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        Eurico Aguilar-ES
+                    </f:facet>
+                   <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(7)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        Ten. Cel. Av. Cesar-MG-Uberlandia
+                    </f:facet>
+                    <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(8)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        Mario De Almeida-MG-Uberaba
+                    </f:facet>
+                   <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{contratoMidiaRN.listarPorPraca(9)}" var="contrato" emptyMessage="não á contratos"
+                             rowStyleClass="#{contrato.dataFimContrato le contratoMidiaBean.dataAtualMaisDezDias()? 'old' : null}"
+                             resizableColumns="true">
+                    <f:facet name="header">
+                        Mario Ribeiro-MG-Montes Claros
+                    </f:facet>
+                   <p:column width="60">
+                        <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <h:outputText value="#{contrato.IDcliente.IDPessoa.fantasia}"/>
+                    </p:column>
+                    <p:column headerText="Tempo do video" width="120">
+                        <h:outputText value="#{contrato.IDproduto.tempoVideo} Segundos">
+                             
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="Até" width="80">
+                        <h:outputText value="#{contrato.dataFimContrato}">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                         </h:outputText>
+                    </p:column>
+                    <p:column headerText="faltam" width="60">
+                        
+                        <h:outputText value="#{contratoMidiaBean.diasFaltando(contrato.dataFimContrato)}-dias"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <br/>
+                
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

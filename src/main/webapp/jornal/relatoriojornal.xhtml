@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="./../principal/templategreen.xhtml">
+	<ui:define name="principal-interna">
+		<h:form>
+			<br />
+			<br />
+			<p:panel>
+				<h2>Relatorio geral</h2>
+				<h:panelGrid columns="3" cellpadding="10" cellspacing="20">
+
+					<h:panelGrid columns="1" cellspacing="8">
+						<h2>Vendas</h2>
+						<p:commandLink value="vendas por periodo"
+							oncomplete="vendasPeriodo.show()">
+
+						</p:commandLink>
+						<p:commandLink value="vendas por vendedor"
+							oncomplete="vendasPeriodoVend.show()">
+
+						</p:commandLink>
+						<p:commandLink value="vendas por praça *">
+
+						</p:commandLink>
+						<p:commandLink value="vendas por gerente +">
+
+						</p:commandLink>
+						<br />
+						<br />
+					</h:panelGrid>
+
+				</h:panelGrid>
+			</p:panel>
+
+		</h:form>
+
+
+
+
+
+		<h:form>
+			<p:dialog widgetVar="vendasPeriodo" header="Vendas por periodo">
+				<p:panel>
+					<h:panelGrid columns="5" cellpadding="10">
+						<h:outputText value="periodo" />
+						<h:outputText value="de" />
+						<p:calendar showButtonPanel="true" navigator="true"
+							value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+							size="14" required="true" />
+						<h:outputText value=" ate " />
+						<p:calendar showButtonPanel="true" navigator="true"
+							value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+							required="true" />
+						
+					</h:panelGrid>
+					<h:panelGrid>
+					<h:outputText value="tipo"/>
+					<p:selectOneRadio id="options"
+							value="#{relatorioGeral.status}"
+							required="true">
+							<f:selectItem itemLabel="todos" itemValue="5" />
+							<f:selectItem itemLabel="Ativo" itemValue="1" />
+							<f:selectItem itemLabel="Pendente" itemValue="2" />
+							<f:selectItem itemLabel="Agendado" itemValue="3" />
+							<f:selectItem itemLabel="Cancelado" itemValue="0" />
+							<f:selectItem itemLabel="Renovação" itemValue="4" />
+							
+						</p:selectOneRadio>
+					</h:panelGrid>
+					<p:separator />
+					<h:commandLink
+						actionListener="#{relatorioGeral.geraRelatorioJornal(1)}"
+						target="_blank">
+						<p:graphicImage library="imagens" name="pdf.png" />
+						<br />
+					</h:commandLink>
+				</p:panel>
+			</p:dialog>
+		</h:form>
+		<h:form>
+			<p:dialog widgetVar="vendasPeriodoVend"
+				header="Vendas por periodo e vendedor">
+				<p:panel>
+					<h:panelGrid columns="5" cellpadding="10">
+						<h:outputText value="periodo" />
+						<h:outputText value="de" />
+						<p:calendar showButtonPanel="true" navigator="true"
+							value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+							size="14" required="true" />
+						<h:outputText value=" ate " />
+						<p:calendar showButtonPanel="true" navigator="true"
+							value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+							required="true" />
+
+					</h:panelGrid>
+					<br />
+					<h:panelGrid columns="2" cellpadding="10">
+						<h:outputText value="Executivo de contas:" />
+						<p:selectOneMenu filter="true" converter="funcionarioConverter"
+							required="true"
+							value="#{relatorioGeral.contratoMidia.IDvendedor}">
+							<f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+								var="funcionario" itemLabel="#{funcionario.IDPessoa.razao}"
+								itemValue="#{funcionario}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+					<p:separator />
+					<h:commandLink action="#{relatorioGeral.GeraRelatorios(8)}"
+						target="_blank">
+						<p:graphicImage library="imagens" name="pdf.png" />
+						<br />
+					</h:commandLink>
+				</p:panel>
+			</p:dialog>
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

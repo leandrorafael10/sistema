@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <f:view>
+                    <h:form id="forCadastroTerceiros">
+                        <br/>
+                        <br/>
+                        <h2><h:outputText value="Cadastrar"/></h2>
+                        <p:panel>
+                            <p:messages/>
+                            <p:growl life="30000"/>
+                            <h:panelGrid columns="2">
+                                <p:selectOneRadio value="#{terceirosBean.opcaoFuncao}" required="true">
+                                    <f:selectItem itemLabel="Promotor" itemValue="#{true}"/>
+                                    <f:selectItem itemLabel="Gerente" itemValue="#{false}"/>
+                                    <p:ajax update="forCadastroTerceiros"/>
+                                </p:selectOneRadio>&nbsp;
+                                <h:outputText value="Nome"/>
+                                <p:inputText id="nome" value="#{terceirosBean.terceiro.nome}" title="Nome" required="true" requiredMessage="Nome é obrigatório!"/>
+                                <h:outputLabel value="Cpf:" for="cpf" />
+                                <p:inputMask  mask="999.999.999-99" id="cpf" value="#{terceirosBean.terceiro.cpf}" title="Cpf" required="true" requiredMessage="Cpf é Obrigatório!"/>
+                                <h:outputLabel value="Gerente:" for="IDTerceirosGerente" rendered="#{terceirosBean.opcaoFuncao}"/>
+                                <p:selectOneMenu converter="terceirosConverter" id="IDTerceirosGerente" value="#{terceirosBean.terceiro.IDTerceirosGerente}" rendered="#{terceirosBean.opcaoFuncao}" required="true">
+                                    <f:selectItem itemLabel=""/>
+                                    <f:selectItems value="#{terceirosRN.listarPorFuncao(funcaoRN.carregar(1))}"
+                                                   var="gerente"
+                                                   itemLabel="#{gerente.nome}"
+                                                   itemValue="#{gerente}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="UF:" rendered="#{!terceirosBean.opcaoFuncao}"/>
+                                <p:selectOneMenu value="#{terceirosBean.terceiro.uf}" required="true" rendered="#{!terceirosBean.opcaoFuncao}">
+                                    <f:selectItem itemLabel="MG" itemValue="MG"/>
+                                    <f:selectItem itemLabel="BA" itemValue="BA"/>
+                                </p:selectOneMenu>
+
+                            </h:panelGrid>
+                            <p:commandButton value="salvar" actionListener="#{terceirosBean.salvar}" update=":forCadastroTerceiros,:forEquipesTerceiros"/>
+                        </p:panel>
+
+                    </h:form>
+                    <h:form id="forEquipesTerceiros"> 
+                        <h2>Equipes de venda</h2>
+                        <p:panel>
+                            <p:accordionPanel multiple="true" value="#{terceirosRN.listarPorFuncao(funcaoRN.carregar(1))}" var="gerentes" >
+                                <p:ajax  update="gridEquipes"/>
+                                <p:tab title="#{gerentes.nome}">
+
+                                    <h:panelGrid columns="1" cellpadding="5" id="gridEquipes">
+                                        <p:messages id="msgEquipes"/>
+                                        <p:dataTable value="#{terceirosRN.listarPorEquipe(gerentes)}" var="promotor" emptyMessage="Não há promotores na equipe">
+                                            <p:column headerText="Nome promotores">
+                                                <h:outputText value="#{promotor.nome}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                        
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:accordionPanel>
+
+                        </p:panel>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <h:form id="formRenovacao">
+                    <br/>
+                    <br/>
+                    <h2>Contratos vencidos</h2>
+                    <br/>
+                    <p:messages/>
+                    <p:growl/>
+                    <p:dataTable var="contrato" value="#{contratoMidiaRN.listVencidos()}" id="tabela" scrollable="true"
+                                 scrollHeight="400">
+                        <p:column headerText="Cliente">
+                            <h:outputLabel value="#{contrato.IDcliente.IDPessoa.razao}"/>
+                        </p:column>
+                        <p:column headerText="Vendedor">
+                            <h:outputLabel value="#{contrato.IDvendedor.IDPessoa.razao}"/>
+                        </p:column>
+                        <p:column headerText="Início" width="80">
+                            <h:outputLabel value="#{contrato.dataInicioContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </p:column>
+                        <p:column headerText="Fim" width="80">
+                            <h:outputLabel value="#{contrato.dataFimContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                        </p:column>
+                        <p:column headerText="Renovar" width="50">
+                            <p:commandLink oncomplete="dialogRenovar.show();" update=":forRenova">
+                                <h:graphicImage library="imagens" name="editar_contrato_32x32.png"/>
+                                <f:setPropertyActionListener value="#{contrato.IDcliente}" target="#{contratoMidiaBean.contratoMidia.IDcliente}"/>
+                                <f:setPropertyActionListener value="#{contrato.NContrato}" target="#{contratoMidiaBean.contratoMidia.NContrato}"/>
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoC}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+
+
+                </h:form>
+
+                <h:form id="forRenova">
+                    <p:dialog widgetVar="dialogRenovar" modal="true" header="Dados para renovação de contrato">
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="2" cellpadding="10" width="55em">
+                                <h:outputLabel value="Cliente : " style="color: blue"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.razao}" style="color: blue"/>
+                                <h:outputLabel value="Cpf/Cnpj : " style="color: blue"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.cnpjCpf}" style="color: blue"/>
+                                <h:outputText value="Numero contrato: "/>
+                                <p:inputText value="#{contratoMidiaBean.contratoMidia.NContrato}" maxlength="30" size="10"/>
+                                <h:outputText value="Gerente de vendas:"/>
+                                <p:selectOneMenu converter="funcionarioConverter" required="true" value="#{contratoMidiaBean.contratoMidia.IDgerentevendas}">
+                                    <f:selectItems value="#{funcionarioRN.listarGerente()}"
+                                                   var="funcionario"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"
+                                                   itemValue="#{funcionario}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Executivo de contas:"/>
+                                <p:selectOneMenu converter="funcionarioConverter" required="true" value="#{contratoMidiaBean.contratoMidia.IDvendedor}">
+                                    <f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+                                                   var="funcionario"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"
+                                                   itemValue="#{funcionario}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel value="Escolha das praças de vinculação"/>
+                                <p:selectManyCheckbox converter="pracaConverter" value="#{contratoMidiaBean.pracas}" rendered="true" layout="pageDirection" requiredMessage="pelo menos um praça e obrigatorio">
+                                    <f:selectItems value="#{pracaRN.listarPorPessoa(pessoaRN.carregar(18))}"
+                                                   var="praca"
+                                                   itemLabel="#{praca.descricao}"
+                                                   itemValue="#{praca}"
+                                                   />
+                                </p:selectManyCheckbox>
+
+
+
+
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:outputText value="Produto Midia"/>
+                                <p:selectOneMenu converter="produtoMidiaConverter" required="true" value="#{contratoMidiaBean.contratoMidia.IDproduto}">
+
+                                    <f:selectItems value="#{produtoMidiaRN.listar()}"
+                                                   var="produto_midia"
+                                                   itemLabel="#{produto_midia.descricao}  ( #{produto_midia.tempoVideo}'') insecões = #{produto_midia.quantidadeInsercaoDiaria}(dia)" 
+                                                   itemValue="#{produto_midia}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Data de inicio veiculação:"/>
+                                <p:calendar value="#{contratoMidiaBean.contratoMidia.dataInicioContrato}" 
+                                            navigator="true" 
+                                            showOn="button"
+                                            pattern="dd/MM/yyyy"
+                                            size="12"
+                                            required="true"
+                                            requiredMessage="Data inicio é obrigatória!"/>
+                                <h:outputText value="Data de termino veiculação:"/>
+                                <p:calendar value="#{contratoMidiaBean.contratoMidia.dataFimContrato}" 
+                                            navigator="true"
+                                            showOn="button"
+                                            pattern="dd/MM/yyyy"
+                                            size="12"
+                                            required="true"
+                                            requiredMessage="Data termino é obrigatória!"/>
+
+
+
+                                <h:outputText value="Condição de pagamento:" />
+                                <p:selectOneMenu converter="tipoPagamentoConverter" value="#{contratoMidiaBean.contratoMidia.IDtipopagamento}" required="true">  
+                                    <f:selectItems value="#{tipoPagamentoRN.listar()}"
+                                                   var="tipopagamento"
+                                                   itemLabel="#{tipopagamento.descricao}"
+                                                   itemValue="#{tipopagamento}">
+                                    </f:selectItems>  
+                                </p:selectOneMenu>
+                                <h:outputText value="Numero de parcelas:"/>
+                                <p:selectOneMenu value="#{contratoMidiaBean.contratoMidia.numeroParcelas}">
+                                    <f:selectItems value="#{contratoMidiaBean.dias}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Dia de vencimento"/>
+                                <p:selectOneMenu  value="#{contratoMidiaBean.contratoMidia.diaVencimento}">
+                                    <f:selectItems value="#{contratoMidiaBean.dias}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Data da venda: "/>
+                                        <p:calendar value="#{contratoMidiaBean.contratoMidia.DTVend}" 
+                                                    navigator="true"
+                                                    showOn="button"
+                                                    pattern="dd/MM/yyyy"
+                                                    size="14"
+                                                    required="true"
+                                                    requiredMessage="Data da venda é obrigatória!"/>
+
+                                <h:outputText value="Valor parcela:"/>
+                                <p:inputText maxlength="10" size="10" id="parcela" required="true" value="#{contratoMidiaBean.contratoMidia.valor}" requiredMessage="Valor total contrato e obrigatoria!">
+                                    <f:convertNumber minFractionDigits="2" />
+                                </p:inputText> 
+                                <h:outputText value="Enviar para produção :"/>
+                                <p:selectOneRadio  value="#{contratoMidiaBean.producao}" required="true" requiredMessage="Marque uma opção  produzir sim ou não .">
+                                    <f:selectItem itemLabel="não" itemValue="#{false}"/>
+                                    <f:selectItem itemLabel="sim" itemValue="#{true}"/>
+                                </p:selectOneRadio>
+
+                                <h:outputText value="Observações:"/>
+                                <p:inputTextarea value="#{contratoMidiaBean.contratoMidia.obs}" rows="5" cols="40" maxlength="199" />  
+
+                            </h:panelGrid>
+
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="renovar" actionListener="#{contratoMidiaBean.renovarContrato(event)}" update=":formRenovacao:tabela,forRenova" oncomplete="dialogRenovar.hide();" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:commandButton value="cancelar"  onclick="dialogRenovar.hide();" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    </p:dialog>
+                </h:form>
+
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>
