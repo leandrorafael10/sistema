@@ -42,7 +42,6 @@ import com.green.rn.CapaLoteJornalRN;
 import com.green.rn.HistaltloteRN;
 import com.green.rn.VendaestornoRN;
 import com.green.util.ContextoUtil;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 
 /**
