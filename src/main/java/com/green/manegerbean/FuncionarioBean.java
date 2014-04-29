@@ -12,6 +12,7 @@ import com.green.rn.ContatoRN;
 import com.green.rn.FuncaoRN;
 import com.green.rn.FuncionarioRN;
 import com.green.rn.PessoaRN;
+import com.green.util.CepWebService;
 import com.green.util.Endereco;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -90,6 +91,14 @@ public class FuncionarioBean implements Serializable {
 
     public void listarPorFuncao() {
         setFuncionarios(getFuncionarioRN().listarPorFuncao(new FuncaoRN().carregar(1)));
+    }
+    
+    public void buscaPorCep(){
+        CepWebService cepWebService = new CepWebService(getFuncionario().getIDPessoa().getCep());
+        getFuncionario().getIDPessoa().setLogradouro(cepWebService.getTipo_logradouro() +" "+cepWebService.getLogradouro());
+        getFuncionario().getIDPessoa().setCidade(cepWebService.getCidade());
+        getFuncionario().getIDPessoa().setEstado(cepWebService.getEstado());
+        getFuncionario().getIDPessoa().setBairro(cepWebService.getBairro());
     }
 
     public void oncapture(CaptureEvent captureEvent) {

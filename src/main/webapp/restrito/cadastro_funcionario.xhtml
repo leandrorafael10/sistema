@@ -29,173 +29,167 @@
             <h:form id="formFuncionario">
                 <p:growl showDetail="true"  life="3000" id="growlmsg"/>
                 <p:panel rendered="#{funcionarioBean.estadoCadastrar}">
-                    <h:panelGrid columns="2">
-                        <h:panelGrid columns="2"  cellpadding="5" width="450px" title="Cadastro funcionário">
 
-                            <h:outputLabel value="Nome"/>
-                            <p:inputText value="#{funcionarioBean.funcionario.IDPessoa.razao}" 
-                                         requiredMessage="Nome e obrigatorio!"
-                                         required="true"
-                                         size="30"
-                                         maxlength="50"/>
-                            <h:outputLabel  value="Data Nascimento:"/>
-                            <p:calendar value="#{funcionarioBean.funcionario.IDPessoa.DTNascimento}"
-                                        showButtonPanel="true" 
-                                        navigator="true" 
-                                        size="10"
-                                        pattern="dd/MM/yyyy"
-                                        timeZone="America/Sao_Paulo"
-                                        yearRange="c-80:"
-                                        />
-                            <h:outputText value="Sexo:"/>
-                            <h:selectOneRadio value="#{funcionarioBean.funcionario.sexo}" required="true" requiredMessage="Informação de sexo é obrigatoria!">
-                                <f:selectItem itemLabel="Masculino" itemValue="M"/>
-                                <f:selectItem itemLabel="Feminino" itemValue="F"/>
-                            </h:selectOneRadio>
-                            <h:outputText value="Mãe"/>
-                            <p:inputText value="#{funcionarioBean.funcionario.filiacaoM}" maxlength="40"/>
-                            <h:outputText value="Pai:"/>
-                            <p:inputText value="#{funcionarioBean.funcionario.filiacaoP}" maxlength="40"/>
-                            <h:outputLabel  value="Naturalidade:"/>
-                            <p:inputText value="#{funcionarioBean.funcionario.IDPessoa.naturalidade}"
-                                         size="10" 
-                                         maxlength="40"/>
-                            <h:outputLabel value="Telefone fixo:"/>
-                            <p:inputMask mask="(99)9999-9999" label="Tel fixo" value="#{funcionarioBean.telefoneF}"
-                                         size="13"
-                                         required="true"
-                                         requiredMessage="Pelo menos um telefone e obrigatorio!"
-                                         />
-                            <h:outputText value="Telefone celular:"/>
-                            <p:inputMask mask="(99)9999-9999" value="#{funcionarioBean.telefoneCel}"
-                                         size="13"
-                                         label="Tel cel"/>
+                    <h:panelGrid columns="6"  cellpadding="5"  title="Cadastro funcionário">
 
-                            <h:outputText value="E-MAIL:"/>
-                            <p:inputText id="email_fum" label="E-MAIL" value="#{funcionarioBean.funcionario.IDPessoa.email}"
-                                         size="30"
-                                         validatorMessage="Email com formato errado!"
-                                         maxlength="40"
-                                         >
-                            </p:inputText>
-                            <h:outputLabel  value="HTTP:"/>
-                            <p:inputText  value="#{funcionarioBean.funcionario.IDPessoa.http}"
-                                          size="40"
-                                          maxlength="40"
-                                          >
-                            </p:inputText>
-                            <h:outputLabel value="CPF:*"/>
-                            <p:inputMask mask="999.999.999-99" value="#{funcionarioBean.funcionario.IDPessoa.cnpjCpf}"
-                                         required="true"
-                                         size="13"
-                                         maxlength="11"
-                                         requiredMessage="CPF é obrigatório"/>
-                            <h:outputLabel value="RG"/>
-                            <p:inputText value="#{funcionarioBean.funcionario.IDPessoa.rg}"
-                                         size="10"
-                                         maxlength="10"/>
+                        <h:outputLabel value="Nome"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.IDPessoa.razao}" 
+                                     requiredMessage="Nome e obrigatorio!"
+                                     required="true"
+                                     size="30"
+                                     maxlength="50"/>
+                        <h:outputLabel  value="Data Nascimento:"/>
+                        <p:calendar value="#{funcionarioBean.funcionario.IDPessoa.DTNascimento}"
+                                    showButtonPanel="true" 
+                                    navigator="true" 
+                                    size="10"
+                                    pattern="dd/MM/yyyy"
+                                    timeZone="America/Sao_Paulo"
+                                    yearRange="c-80:"
+                                    />
+                        <h:outputText value="Sexo:"/>
+                        <h:selectOneRadio value="#{funcionarioBean.funcionario.sexo}" required="true" requiredMessage="Informação de sexo é obrigatoria!">
+                            <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                            <f:selectItem itemLabel="Feminino" itemValue="F"/>
+                        </h:selectOneRadio>
+                        <h:outputText value="Mãe"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.filiacaoM}" maxlength="40"/>
+                        <h:outputText value="Pai:"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.filiacaoP}" maxlength="40"/>
+                        <h:outputLabel  value="Naturalidade:"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.IDPessoa.naturalidade}"
+                                     size="10" 
+                                     maxlength="40"/>
+                        <h:outputLabel value="Telefone fixo:"/>
+                        <p:inputMask mask="(99)9999-9999" label="Tel fixo" value="#{funcionarioBean.telefoneF}"
+                                     size="13"
+                                     required="true"
+                                     requiredMessage="Pelo menos um telefone e obrigatorio!"
+                                     />
+                        <h:outputText value="Telefone celular:"/>
+                        <p:inputMask mask="(99)9999-9999" value="#{funcionarioBean.telefoneCel}"
+                                     size="13"
+                                     label="Tel cel"/>
 
-                            <h:outputText value="Nº CTPS:"/>
+                        <h:outputText value="E-MAIL:"/>
+                        <p:inputText id="email_fum" label="E-MAIL" value="#{funcionarioBean.funcionario.IDPessoa.email}"
+                                     size="30"
+                                     validatorMessage="Email com formato errado!"
+                                     maxlength="40"
+                                     >
+                        </p:inputText>
+                        <h:outputLabel  value="HTTP:"/>
+                        <p:inputText  value="#{funcionarioBean.funcionario.IDPessoa.http}"
+                                      size="30"
+                                      maxlength="40"
+                                      >
+                        </p:inputText>
+                        <h:outputLabel value="CPF:*"/>
+                        <p:inputMask mask="999.999.999-99" value="#{funcionarioBean.funcionario.IDPessoa.cnpjCpf}"
+                                     required="true"
+                                     size="13"
+                                     maxlength="11"
+                                     requiredMessage="CPF é obrigatório"/>
+                        <h:outputLabel value="RG"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.IDPessoa.rg}"
+                                     size="10"
+                                     maxlength="10"/>
 
-                            <p:inputText value="#{funcionarioBean.funcionario.ctrabalho}"
-                                         size="12"
-                                         maxlength="12"
-                                         required="true"
-                                         requiredMessage="CTPS é obrigatório!" />
-                            <h:outputText value="Serie:"/>
-                            <p:inputText value="#{funcionarioBean.funcionario.serieCtps}" maxlength="10" size="8"/>
-                            <h:outputText value="Data admissão:"/>
-                            <p:calendar value="#{funcionarioBean.funcionario.DTAdmissao}"
-                                        navigator="true"
-                                        showButtonPanel="true" size="10"
-                                        pattern="dd/MM/yyyy"
-                                        timeZone="America/Sao_Paulo"
-                                        yearRange="c-80:"
-                                        required="true"
-                                        requiredMessage="Data obrigatória!"/>
+                        <h:outputText value="Nº CTPS:"/>
 
-                            <h:outputText value="Nº CNH:"/>
-                            <p:inputMask mask="99999999999" 
-                                         value="#{funcionarioBean.funcionario.cnh}" requiredMessage="Numero invalido!"
-                                         size="11"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.ctrabalho}"
+                                     size="12"
+                                     maxlength="12"
+                                     required="true"
+                                     requiredMessage="CTPS é obrigatório!" />
+                        <h:outputText value="Serie:"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.serieCtps}" maxlength="10" size="8"/>
+                        <h:outputText value="Data admissão:"/>
+                        <p:calendar value="#{funcionarioBean.funcionario.DTAdmissao}"
+                                    navigator="true"
+                                    showButtonPanel="true" size="10"
+                                    pattern="dd/MM/yyyy"
+                                    timeZone="America/Sao_Paulo"
+                                    yearRange="c-80:"
+                                    required="true"
+                                    requiredMessage="Data obrigatória!"/>
 
-                            <h:outputText value="Categoria (CNH):"/>
-                            <p:inputText value="#{funcionarioBean.funcionario.cnhCategoria}"
-                                         size="2"
-                                         maxlength="2"/>
+                        <h:outputText value="Nº CNH:"/>
+                        <p:inputMask mask="99999999999" 
+                                     value="#{funcionarioBean.funcionario.cnh}" requiredMessage="Numero invalido!"
+                                     size="11"/>
 
-                            <h:outputText value="Data validade CNH:"/>
-                            <p:calendar  value="#{funcionarioBean.funcionario.dtValidadeCNH}"
-                                         showButtonPanel="true" size="10"
-                                         pattern="dd/MM/yyyy"
-                                         timeZone="America/Sao_Paulo"/>
+                        <h:outputText value="Categoria (CNH):"/>
+                        <p:inputText value="#{funcionarioBean.funcionario.cnhCategoria}"
+                                     size="2"
+                                     maxlength="2"/>
 
-                            <h:outputText value="Nº Pis:"/>
-                            <p:inputMask mask="999999999-99" value="#{funcionarioBean.funcionario.pisPasep}"
-                                         validatorMessage="Numero invalido!"
-                                         size="12"/>
+                        <h:outputText value="Data validade CNH:"/>
+                        <p:calendar  value="#{funcionarioBean.funcionario.dtValidadeCNH}"
+                                     showButtonPanel="true" size="10"
+                                     pattern="dd/MM/yyyy"
+                                     timeZone="America/Sao_Paulo"/>
 
-                            <h:outputLabel  value="Rua/Avenida:"/>
-                            <p:inputText  value="#{funcionarioBean.funcionario.IDPessoa.logradouro}"
-                                          size="40"
-                                          maxlength="40"
-                                          required="true"
-                                          requiredMessage="Campo Obrigatório!">
-                            </p:inputText>
-                            <h:outputLabel  value="Nº:"/>
-                            <p:inputText  value="#{funcionarioBean.funcionario.IDPessoa.numero}"
-                                          size="8"
-                                          maxlength="20"
-                                          />
-                            <h:outputLabel  value="Cep:"/>
-                            <p:inputMask  mask="99999-999"  value="#{funcionarioBean.funcionario.IDPessoa.cep}"
-                                          size="10"
-                                          />
-                            <h:outputLabel  value="Bairro:"/>
-                            <p:inputText  value="#{funcionarioBean.funcionario.IDPessoa.bairro}"
-                                          size="30"
-                                          maxlength="30"
-                                          >
-                            </p:inputText>
-                            <h:outputText value="UF:"/>
-                            <p:selectOneMenu   value="#{funcionarioBean.endereco.estado}" filter="true"   >
-                                <f:selectItem itemLabel="Estados  " itemValue=""  />
-                                <f:selectItems  value="#{funcionarioBean.endereco.est}"  />
-                                <p:ajax listener="#{funcionarioBean.endereco.handleCidade()}" update="cidade"/>
-                            </p:selectOneMenu>
-                            <h:outputText value="Cidades:"/>
-                            <p:selectOneMenu id="cidade" filter="true" value="#{funcionarioBean.endereco.cidade}" >
-                                <f:selectItem  itemLabel="Cidades  " itemValue=""/>
-                                <f:selectItems  value="#{funcionarioBean.endereco.cid}"/>
-                            </p:selectOneMenu>
-                            <h:outputText value="Pais"/>
-                            <p:selectOneMenu value="#{funcionarioBean.funcionario.IDPessoa.pais}">
-                                <f:selectItem itemLabel="Brasil" itemValue="Brasil"/>
-                                <f:selectItem itemLabel="Argentina" itemValue="Argentina"/>
-                                <f:selectItem itemLabel="Paraguai" itemValue="Paraguai"/>
-                            </p:selectOneMenu>
-                            <h:outputText value="Função:"/>
-                            <p:selectOneMenu converter="funcaoConverter" filter="true" value="#{funcionarioBean.funcionario.IDFuncao}">  
-                                <f:selectItems value="#{funcaoRN.listar()}"
-                                               var="funcao"
-                                               itemLabel="#{funcao.descricao}"
-                                               itemValue="#{funcao}"/>  
-                            </p:selectOneMenu>
-                            <h:outputText value="Empresa:"/>
-                            <p:selectOneMenu converter="filialConverter" filter="true" value="#{funcionarioBean.funcionario.IDFilial}" required="true"
-                                             requiredMessage="Informe a empresa de registro.">
-                                <f:selectItem itemLabel="" />
-                                <f:selectItems value="#{filialRN.listar()}"
-                                               var="filial"
-                                               itemValue="#{filial}"
-                                               itemLabel="#{filial.fantasia}"/>
-                            </p:selectOneMenu>
-                            <h:outputText value="foto: "/>
-                            <p:commandButton value="add foto" onclick="PF('dialogCapturaFoto').show();" immediate="true"/>
+                        <h:outputText value="Nº Pis:"/>
+                        <p:inputMask mask="999999999-99" value="#{funcionarioBean.funcionario.pisPasep}"
+                                     validatorMessage="Numero invalido!"
+                                     size="12"/>
+                        <h:outputLabel  value="Cep:"/>
+                        <p:inputMask  mask="99999-999"  value="#{funcionarioBean.funcionario.IDPessoa.cep}"  size="10"
+                                      >
+                            <p:ajax  event="blur" listener="#{funcionarioBean.buscaPorCep()}"
+                                     update="inputLogradouro,inputBairro,inputCidade,inputUF" 
+                                     onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        </p:inputMask>
+                        <h:outputLabel  value="Rua/Avenida:"/>
+                        <p:inputText id="inputLogradouro"  value="#{funcionarioBean.funcionario.IDPessoa.logradouro}"
+                                     size="40"
+                                     maxlength="40"
+                                     required="true"
+                                     requiredMessage="Campo Obrigatório!">
+                        </p:inputText>
+                        <h:outputLabel  value="Nº:"/>
+                        <p:inputText  value="#{funcionarioBean.funcionario.IDPessoa.numero}"
+                                      size="8"
+                                      maxlength="20"
+                                      />
 
-                        </h:panelGrid>
+                        <h:outputLabel  value="Bairro:"/>
+                        <p:inputText id="inputBairro" value="#{funcionarioBean.funcionario.IDPessoa.bairro}"
+                                     size="30"
+                                     maxlength="30"
+                                     >
+                        </p:inputText>
+                        <h:outputText value="UF:"/>
+                        <p:inputText id="inputUF"  value="#{funcionarioBean.funcionario.IDPessoa.estado}" maxlength="2" size="4" />
+                        <h:outputText value="Cidades:"/>
+                        <p:inputText id="inputCidade" value="#{funcionarioBean.funcionario.IDPessoa.cidade}"/>
+                        <h:outputText value="Pais"/>
+                        <p:selectOneMenu value="#{funcionarioBean.funcionario.IDPessoa.pais}">
+                            <f:selectItem itemValue="Brasil" itemLabel="Brasil"/>
+                            <f:selectItem itemValue="Argentina" itemLabel="Argentina"/>
+                            <f:selectItem itemValue="Paraguai" itemLabel="Paraguai"/>
+                            <f:selectItem itemValue="Uruguai" itemLabel="Uruguai"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Função:"/>
+                        <p:selectOneMenu converter="funcaoConverter" filter="true" value="#{funcionarioBean.funcionario.IDFuncao}">  
+                            <f:selectItems value="#{funcaoRN.listar()}"
+                                           var="funcao"
+                                           itemLabel="#{funcao.descricao}"
+                                           itemValue="#{funcao}"/>  
+                        </p:selectOneMenu>
+                        <h:outputText value="Empresa:"/>
+                        <p:selectOneMenu converter="filialConverter" filter="true" value="#{funcionarioBean.funcionario.IDFilial}" required="true"
+                                         requiredMessage="Informe a empresa de registro.">
+                            <f:selectItem itemLabel="" />
+                            <f:selectItems value="#{filialRN.listar()}"
+                                           var="filial"
+                                           itemValue="#{filial}"
+                                           itemLabel="#{filial.fantasia}"/>
+                        </p:selectOneMenu>
 
                     </h:panelGrid>
+
                     <p:separator/>
                     <p:commandButton value="Confirmar" actionListener="#{funcionarioBean.salvarFuncionario}"  update=":formFuncionario" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -241,7 +235,7 @@
                                            update=":formEditFuncionario" 
                                            oncomplete="editarFuncDialog.show()" 
                                            title="Editar dados" 
-                                           
+
                                            >
                                 <f:setPropertyActionListener value="#{funcionarioEdit}" target="#{funcionarioBean.funcionarioEditado}" />
                             </p:commandLink>  
@@ -349,8 +343,8 @@
                             <h:graphicImage library="imagens" name="#{funcionarioBean.foto}.png" width="100" height="100" rendered="#{funcionarioBean.foto==''?false:true}"/>
                         </f:facet>  
                         <h:panelGrid columns="2">
-                        <h:outputText value="Nome:" />  
-                        <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.razao}" style="font-weight:bold"/>  
+                            <h:outputText value="Nome:" />  
+                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.razao}" style="font-weight:bold"/>  
                         </h:panelGrid>
                         <h:panelGrid columns="4">
                             <h:outputText value="RG:" />  
