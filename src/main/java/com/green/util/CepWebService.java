@@ -53,7 +53,6 @@ public class CepWebService {
                 if (element.getQualifiedName().equals("uf")) {
                     this.estado = element.getText();
                 }
-
                 if (element.getQualifiedName().equals("cidade")) {
                     this.cidade = element.getText();
                 }
