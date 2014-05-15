@@ -126,4 +126,10 @@ public class FuncionarioDAO extends AbstractDao<Funcionario, Integer> {
         return criteria.list();
 
     }
+
+    public List<Funcionario> listarPorFuncaes(List<Integer> idFuncoes) {
+        Query query = getSf().getCurrentSession().createQuery
+        ("from com.green.modelo.Funcionario f where f.iDFuncao.iDFuncao in(:funcoes)").setParameterList("funcoes", idFuncoes);
+        return (List<Funcionario>)query.list();
+    }
 }

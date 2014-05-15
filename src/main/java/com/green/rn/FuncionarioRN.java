@@ -15,6 +15,7 @@ import com.green.modelo.Funcionario;
 import com.green.util.ContextoBean;
 import com.green.util.ContextoUtil;
 import com.green.util.Endereco;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -157,6 +158,16 @@ public class FuncionarioRN {
     @Transactional(value = "tmGreen")
     public void salvarFuncionarioEquipe(Funcionario promotor) {
         getFuncionarioDAO().atualizar(promotor);
+    }
+    
+    public List<Funcionario> listaPorFuncoes(List<Integer> idFuncoes){
+        return getFuncionarioDAO().listarPorFuncaes(idFuncoes);
+    }
+    public List<Funcionario> listaPromotoresCordenadoraGeral(){
+        List<Integer> teste = new ArrayList<>();
+        teste.add(12);
+        teste.add(13);
+        return listaPorFuncoes(teste);
     }
 
     public EquipevendaDAO getEquipevendaDAO() {

@@ -51,7 +51,7 @@
                 <p:separator/>
                 <br/>
                 <h:form id="formListaEquipes">
-                    <p:dataGrid value="#{funcionarioRN.listarPorFuncao(funcaoRN.carregar(13))}" var="gerentes" columns="3"
+                    <p:dataGrid value="#{funcionarioRN.listaPromotoresCordenadoraGeral()}" var="gerentes" columns="3"
                                 >
 
                         <h1> #{gerentes.IDPessoa.razao}</h1>

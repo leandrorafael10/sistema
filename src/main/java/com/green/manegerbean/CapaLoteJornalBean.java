@@ -4,35 +4,10 @@
  */
 package com.green.manegerbean;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.validation.constraints.Min;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
-
 import com.green.modelo.Brinde;
 import com.green.modelo.Brindecapalote;
 import com.green.modelo.Capalotejornal;
+import com.green.modelo.Despesa;
 import com.green.modelo.Equipevenda;
 import com.green.modelo.Histaltlote;
 import com.green.modelo.Planovendaparcela;
@@ -42,7 +17,37 @@ import com.green.rn.CapaLoteJornalRN;
 import com.green.rn.HistaltloteRN;
 import com.green.rn.VendaestornoRN;
 import com.green.util.ContextoUtil;
+import com.green.util.RelatorioUtil;
+import com.green.util.Venda;
+import com.green.view.CapaloteDataModel;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.validation.constraints.Min;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -78,6 +83,9 @@ public class CapaLoteJornalBean implements Serializable {
     private int contrato;
     private List<Equipe> equipe;
     private List<Equipe> faturamentoEquipe;
+    private CapaloteDataModel capaloteDataModel;
+    private Venda vendaGeral;
+    private Venda vendaFaturado;
 
     @PostConstruct
     private void init() {
@@ -94,10 +102,20 @@ public class CapaLoteJornalBean implements Serializable {
         this.status = 5;
         this.equipe = new ArrayList<>();
         this.faturamentoEquipe = new ArrayList<>();
+        this.vendaGeral = new Venda();
+        this.vendaFaturado = new Venda();
 
     }
 
+    public void onRowSelect(SelectEvent event) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        capalotejornal = (Capalotejornal) event.getObject();
+        context.update("forIncGestor:dialog");
+        context.execute("PF('dialogIncGestor').show()");
+    }
+
     public void calculaRanking(ActionEvent event) {
+        this.vendaGeral = new Venda();
         this.equipe = new ArrayList<>();
         List lista = getCapaLoteJornalRN().rankingEquipe(getMes(), getAno());
         List<Venda> vendas = new ArrayList<>();
@@ -105,13 +123,21 @@ public class CapaLoteJornalBean implements Serializable {
         List<Equipe> equipes = new ArrayList<>();
         for (Object o : lista) {
             Map row = (Map) o;
-            String g = (String.valueOf(row.get("0"))) ;
+            String g = (String.valueOf(row.get("0")));
             vendas.add(new Venda(String.valueOf(row.get("0")), String.valueOf(row.get("1")),
-                    (Long)row.get("2"),(BigDecimal) row.get("3"), (BigDecimal) row
-                    .get("4"), (Long) row.get("5"), (Long) row
-                    .get("6"), (Long) row.get("7"), (Long) row
-                    .get("8"), (Long) row.get("9")));
-			// se nao tiver o gerente na lista de gerentes addiciona um novo
+                    (Long) row.get("2"),
+                    (BigDecimal) row.get("3"),
+                    (BigDecimal) row.get("4"),
+                    (Long) row.get("5"),
+                    (Long) row.get("6"),
+                    (Long) row.get("7"),
+                    (Long) row.get("8"),
+                    (Long) row.get("9"),
+                    (BigDecimal) row.get("11"),
+                    (BigDecimal) row.get("12"),
+                    (BigDecimal) row.get("13"),
+                    (BigDecimal) row.get("14")));
+            // se nao tiver o gerente na lista de gerentes addiciona um novo
             // gerente
             if (!gerente.contains(g)) {
                 gerente.add(g);
@@ -119,48 +145,78 @@ public class CapaLoteJornalBean implements Serializable {
                 equipes.add(eq);
             }
         }
-        
 
         for (Equipe equipeList : equipes) {
             equipeList.vendaPromotor = new ArrayList<>();
+
             for (Venda venda : vendas) {
-                if (equipeList.getGerente().getGerente().equals(venda.gerente)) {
+                if (equipeList.getGerente().getGerente().equals(venda.getGerente())) {
                     equipeList.vendaPromotor.add(venda);
-                    equipeList.gerente.setTotal(equipeList.gerente.getTotal()+venda.total);
-                    equipeList.gerente.setAtivo(equipeList.gerente.getAtivo()+venda.ativo);
-                    equipeList.gerente.setCancelado(equipeList.gerente.getCancelado()+venda.cancelado);
-                    equipeList.gerente.setEstornado(equipeList.gerente.getEstornado()+venda.estornado);
-                    equipeList.gerente.setAgendado(equipeList.gerente.getAgendado()+venda.agendado);
-                    equipeList.gerente.setPendente(equipeList.gerente.getAgendado()+venda.agendado);
-                    equipeList.gerente.setFaturado(equipeList.gerente.getFaturado().add(venda.faturado));
-                    equipeList.gerente.setVenda(equipeList.gerente.getVenda().add(venda.venda));
+                    equipeList.gerente.setTotal(equipeList.gerente.getTotal() + venda.getTotal());
+                    this.vendaGeral.setTotal(this.vendaGeral.getTotal() + venda.getTotal());
+                    equipeList.gerente.setAtivo(equipeList.gerente.getAtivo() + venda.getAtivo());
+                    this.vendaGeral.setAtivo(this.vendaGeral.getAtivo() + venda.getAtivo());
+                    equipeList.gerente.setCancelado(equipeList.gerente.getCancelado() + venda.getCancelado());
+                    this.vendaGeral.setCancelado(this.vendaGeral.getCancelado() + venda.getCancelado());
+                    equipeList.gerente.setRenovado(equipeList.gerente.getRenovado() + venda.getRenovado());
+                    this.vendaGeral.setRenovado(this.vendaGeral.getRenovado() + venda.getRenovado());
+                    equipeList.gerente.setAgendado(equipeList.gerente.getAgendado() + venda.getAgendado());
+                    this.vendaGeral.setAgendado(this.vendaGeral.getAgendado() + venda.getAgendado());
+                    equipeList.gerente.setPendente(equipeList.gerente.getPendente() + venda.getPendente());
+                    this.vendaGeral.setPendente(this.vendaGeral.getPendente() + venda.getPendente());
+                    equipeList.gerente.setValorAtivo(equipeList.gerente.getValorAtivo().add(venda.getValorAtivo()));
+                    this.vendaGeral.setValorAtivo(this.vendaGeral.getValorAtivo().add(venda.getValorAtivo()));
+                    equipeList.gerente.setValorTotal(equipeList.gerente.getValorTotal().add(venda.getValorTotal()));
+                    this.vendaGeral.setValorTotal(this.vendaGeral.getValorTotal().add(venda.getValorTotal()));
+                    equipeList.gerente.setValorAgendado(equipeList.gerente.getValorAgendado().add(venda.getValorAgendado()));
+                    this.vendaGeral.setValorAgendado(this.vendaGeral.getValorAgendado().add(venda.getValorAgendado()));
+                    equipeList.gerente.setValorCancelado(equipeList.gerente.getValorCancelado().add(venda.getValorCancelado()));
+                    this.vendaGeral.setValorCancelado(this.vendaGeral.getValorCancelado().add(venda.getValorCancelado()));
+                    equipeList.gerente.setValorPendente(equipeList.gerente.getValorPendente().add(venda.getValorPendente()));
+                    this.vendaGeral.setValorPendente(this.vendaGeral.getValorPendente().add(venda.getValorPendente()));
+                    equipeList.gerente.setValorRenovado(equipeList.gerente.getValorRenovado().add(venda.getValorRenovado()));
+                    this.vendaGeral.setValorRenovado(this.vendaGeral.getValorRenovado().add(venda.getValorRenovado()));
                 }
             }
             this.equipe.add(equipeList);
         }
 
     }
-    
+
+    public void geraPDF() {
+        List<Venda> vendas = new ArrayList<>();
+        for (Equipe e : getEquipe()) {
+            for (Venda venda : e.getVendaPromotor()) {
+                vendas.add(venda);
+            }
+        }
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("Usuario", ContextoUtil.getContextoBean().getUsuarioLogado().getIDFuncionario().getIDPessoa().getRazao());
+        JRDataSource jrds = new JRBeanCollectionDataSource(vendas);
+        RelatorioUtil.geraRelatorioBean("ranking_parcial", jrds, parametros);
+    }
+
     public void calculaRankingFaturado(ActionEvent event) {
         this.faturamentoEquipe = new ArrayList<>();
-        List lista = getCapaLoteJornalRN().rankingEquipeFaturado(getMes(), getAno(),getDiaFechamento());
+        this.vendaFaturado = new Venda();
+        List lista = getCapaLoteJornalRN().rankingEquipeFaturado(getMes(), getAno(), getDiaFechamento());
         List<Venda> vendas = new ArrayList<>();
         List<String> gerente = new ArrayList<>();
         List<Equipe> equipes = new ArrayList<>();
         for (Object o : lista) {
             Map row = (Map) o;
-            String g = (String.valueOf(row.get("0"))) ;
+            String g = (String.valueOf(row.get("0")));
             /*
-            0:gerente
-            1:promotor
-            2:quantidade vendas faturadas
-            3:valor total das vendas faturadas
-            4:media das vendas
-            */
+             0:gerente
+             1:promotor
+             2:quantidade vendas faturadas
+             3:valor total das vendas faturadas
+             4:media das vendas
+             */
             vendas.add(new Venda(String.valueOf(row.get("0")), String.valueOf(row.get("1")),
-                    (Long)row.get("2"),(BigDecimal) row.get("3"), (Double) row
-                    .get("4"),new BigDecimal(0)));
-			// se nao tiver o gerente na lista de gerentes addiciona um novo
+                    (Long) row.get("2"), (BigDecimal) row.get("3"), (Double) row
+                    .get("4"), new BigDecimal(0)));
+            // se nao tiver o gerente na lista de gerentes addiciona um novo
             // gerente
             if (!gerente.contains(g)) {
                 gerente.add(g);
@@ -171,20 +227,23 @@ public class CapaLoteJornalBean implements Serializable {
         for (Equipe equipeList : equipes) {
             equipeList.vendaPromotor = new ArrayList<>();
             for (Venda venda : vendas) {
-                if (equipeList.getGerente().getGerente().equals(venda.gerente)) {
+                if (equipeList.getGerente().getGerente().equals(venda.getGerente())) {
                     equipeList.vendaPromotor.add(venda);
-                    equipeList.gerente.setTotal(equipeList.gerente.getTotal()+venda.total);
-                    equipeList.gerente.setMedia(equipeList.gerente.getMedia()+venda.media);
-                    equipeList.gerente.setVenda(equipeList.gerente.getVenda().add(venda.venda));
+                    equipeList.gerente.setAtivo(equipeList.gerente.getAtivo() + venda.getAtivo());
+                    this.vendaFaturado.setAtivo(this.vendaFaturado.getAtivo() + venda.getAtivo());
+                    equipeList.gerente.setMedia(equipeList.gerente.getMedia() + venda.getMedia());
+                    this.vendaFaturado.setMedia(this.vendaFaturado.getMedia() + venda.getMedia());
+                    equipeList.gerente.setValorAtivo(equipeList.gerente.getValorAtivo().add(venda.getValorAtivo()));
+                    this.vendaFaturado.setValorAtivo(this.vendaFaturado.getValorAtivo().add(venda.getValorAtivo()));
                 }
             }
-            BigDecimal v = equipeList.gerente.getVenda().divide(new BigDecimal(equipeList.gerente.getTotal().intValue()),2, RoundingMode.HALF_UP);
+            BigDecimal v = equipeList.gerente.getValorAtivo().divide(new BigDecimal(equipeList.gerente.getAtivo().intValue()), 2, RoundingMode.HALF_UP);
             equipeList.gerente.setMedia(new Double(v.toString()));
             this.faturamentoEquipe.add(equipeList);
         }
-
+        BigDecimal vf = this.vendaFaturado.getValorAtivo().divide(new BigDecimal(this.vendaFaturado.getAtivo().intValue()), 2, RoundingMode.HALF_UP);
+        this.vendaFaturado.setMedia(new Double(vf.toString()));
     }
-    
 
     public void salvar(ActionEvent event) {
         this.capalotejornal.setIDGerente(getEquipevenda().getIDGerente());
@@ -370,6 +429,14 @@ public class CapaLoteJornalBean implements Serializable {
             context.update("formEditCapasLote");
             context.execute("PF('dialogEstornoVenda').hide();");
         }
+
+    }
+
+    public void atualizaGestor(ActionEvent event) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        getCapaLoteJornalRN().atualizar(getCapalotejornal());
+        context.execute("PF('dialogIncGestor').hide();");
+        context.update("forIncGestor");
 
     }
 
@@ -632,7 +699,27 @@ public class CapaLoteJornalBean implements Serializable {
     public void setFaturamentoEquipe(List<Equipe> faturamentoEquipe) {
         this.faturamentoEquipe = faturamentoEquipe;
     }
-    
+
+    public CapaloteDataModel getCapaloteDataModel() {
+        this.capaloteDataModel = new CapaloteDataModel(getCapaLoteJornalRN().listarSemGestor());
+        return capaloteDataModel;
+    }
+
+    public Venda getVendaGeral() {
+        return vendaGeral;
+    }
+
+    public void setVendaGeral(Venda vendaGeral) {
+        this.vendaGeral = vendaGeral;
+    }
+
+    public Venda getVendaFaturado() {
+        return vendaFaturado;
+    }
+
+    public void setVendaFaturado(Venda vendaFaturado) {
+        this.vendaFaturado = vendaFaturado;
+    }
 
     public class Equipe {
 
@@ -663,161 +750,6 @@ public class CapaLoteJornalBean implements Serializable {
         public void setVendaPromotor(List<Venda> vendaPromotor) {
             this.vendaPromotor = vendaPromotor;
         }
-
-    }
-
-    public class Venda {
-
-        private String promotor = "";
-        private String gerente = "";
-        private Long total = (long) 0;
-        private BigDecimal venda = new BigDecimal(0);
-        private BigDecimal faturado = new BigDecimal(0);
-        private Long ativo = (long) 0;
-        private Long cancelado = (long) 0;
-        private Long pendente = (long) 0;
-        private Long agendado = (long) 0;
-        private Long estornado = (long) 0;
-        private BigDecimal valorEstorno = new BigDecimal(0);;
-        private Double media = new Double("0");
-
-        public Venda(String gerente, String promotor, Long total,
-                BigDecimal venda, BigDecimal faturado, Long ativo,
-                Long cancelado, Long pendente, Long agendado,
-                Long estornado) {
-            this.gerente = gerente;
-            this.promotor = promotor;
-            this.total = total;
-            this.venda = venda;
-            this.faturado = faturado;
-            this.ativo = ativo;
-            this.cancelado = cancelado;
-            this.pendente = pendente;
-            this.agendado = agendado;
-            this.estornado = estornado;
-        }
-
-        public Venda(String gerente, String promotor, Long total,
-                BigDecimal venda, Double media,BigDecimal valorEstorno) {
-            this.gerente = gerente;
-            this.promotor = promotor;
-            this.total = total;
-            this.venda = venda;
-            this.media = media;
-            this.valorEstorno = valorEstorno;
-        }
-        
-        
-
-        public Venda() {
-            // TODO Auto-generated constructor stub
-        }
-
-        public Venda(String g) {
-            this.gerente = g;
-            // TODO Auto-generated constructor stub
-        }
-
-        public String getGerente() {
-            return gerente;
-        }
-
-        public void setGerente(String gerente) {
-            this.gerente = gerente;
-        }
-
-        public String getPromotor() {
-            return promotor;
-        }
-
-        public void setPromotor(String promotor) {
-            this.promotor = promotor;
-        }
-
-        public Long getTotal() {
-            return total;
-        }
-
-        public void setTotal(Long total) {
-            this.total = total;
-        }
-
-        
-        public BigDecimal getVenda() {
-            return venda;
-        }
-
-        public void setVenda(BigDecimal venda) {
-            this.venda = venda;
-        }
-
-        public BigDecimal getFaturado() {
-            return faturado;
-        }
-
-        public void setFaturado(BigDecimal faturado) {
-            this.faturado = faturado;
-        }
-
-        public Long getAtivo() {
-            return ativo;
-        }
-
-        public void setAtivo(Long ativo) {
-            this.ativo = ativo;
-        }
-
-        public Long getCancelado() {
-            return cancelado;
-        }
-
-        public void setCancelado(Long cancelado) {
-            this.cancelado = cancelado;
-        }
-
-        public Long getPendente() {
-            return pendente;
-        }
-
-        public void setPendente(Long pendente) {
-            this.pendente = pendente;
-        }
-
-        public Long getAgendado() {
-            return agendado;
-        }
-
-        public void setAgendado(Long agendado) {
-            this.agendado = agendado;
-        }
-
-        public Long getEstornado() {
-            return estornado;
-        }
-
-        public void setEstornado(Long estornado) {
-            this.estornado = estornado;
-        }
-
-        public BigDecimal getValorEstorno() {
-            return valorEstorno;
-        }
-
-        public void setValorEstorno(BigDecimal valorEstorno) {
-            this.valorEstorno = valorEstorno;
-        }
-
-        public Double getMedia() {
-            return media;
-        }
-
-        public void setMedia(Double media) {
-            this.media = media;
-        }
-        
-        
-        
-        
 
     }
 

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <br/>
+                <br/>
+                <h:form id="forIncGestor">
+                    <p:dataTable value="#{capaLoteJornalBean.capaloteDataModel}" var="capa"
+                                 selection="#{capaLoteJornalBean.capalotejornal}"
+                                 selectionMode="single">
+                        <p:ajax event="rowSelect" listener="#{capaLoteJornalBean.onRowSelect}" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:column headerText="numero">
+                            <h:outputText value="#{capa.contrato}"/>
+                        </p:column>
+                        <p:column headerText="dt venda">
+                            <h:outputText value="#{capa.DTVenda}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Cliente">
+                            <h:outputText value="#{capa.nome}"/>
+                        </p:column>
+                        <p:column headerText="Promotor">
+                            <h:outputText value="#{capa.IDFuncionarioPromotor.IDPessoa.razao}"/>
+                        </p:column>
+                        <p:column headerText="valor">
+                            <h:outputText value="#{capa.valor}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dialog widgetVar="dialogIncGestor" id="dialog" modal="true">
+                        <h:panelGrid columns="2" id="gridIncGestor" cellspacing="8">
+                            <h:outputText value="Nº: " style="font-size: 14px;color: blue;"/>
+                            <h:outputText value="#{capaLoteJornalBean.capalotejornal.contrato}" style="font-size: 14px;color: blue;"/>
+                            <h:outputText value="Cliente: "/>
+                            <h:outputText value="#{capaLoteJornalBean.capalotejornal.nome}"/>
+                            <h:outputText value="Vendedor:"/>
+                            <h:outputText value="#{capaLoteJornalBean.capalotejornal.IDFuncionarioPromotor.IDPessoa.razao}"/>
+                            <h:outputText value="Nº gestor:" />
+                            <p:inputText value="#{capaLoteJornalBean.capalotejornal.gerador}"
+                                         required="true"/>
+                            <h:outputText value="Data inc. gestor:" />
+                            <p:calendar id="datagestor"
+                                        value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}"
+                                        required="true"
+                                        pattern="dd/MM/yyyy"
+                                        requiredMessage="numero de gestor e obrigatório data de gestor!">
+
+                            </p:calendar>
+                            
+                            <p:commandButton value="salvar"
+                                             actionListener="#{capaLoteJornalBean.atualizaGestor}"
+                                             update="gridIncGestor"/>
+                            <p:commandButton value="sair"
+                                             onclick="PF('dialogIncGestor').hide();" />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

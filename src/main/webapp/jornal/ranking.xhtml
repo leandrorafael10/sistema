@@ -35,11 +35,83 @@
 
                                     <p:commandButton value="buscar"
                                                      actionListener="#{capaLoteJornalBean.calculaRanking(event)}"
-                                                     update="equipesTable" />
+                                                     update="equipesTable gridGeral" />
 
                                 </h:panelGrid>
                             </p:panel>
 
+                            <p:separator/>
+                            <h:panelGrid columns="4" cellspacing="5">
+                                <p:panelGrid id="gridGeral">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column colspan="12">Ranking</p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column colspan="2" >total</p:column>
+
+                                            <p:column colspan="2" >ativo</p:column>
+
+                                            <p:column colspan="2" >cancelado</p:column>
+
+                                            <p:column colspan="2" >pendente</p:column>
+
+                                            <p:column colspan="2" >agendado</p:column>
+
+                                            <p:column colspan="2" >renovado</p:column>
+
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column>#{capaLoteJornalBean.vendaGeral.total}</p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaGeral.valorTotal}" style="color: blue">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>#{capaLoteJornalBean.vendaGeral.ativo}</p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaGeral.valorAtivo}" style="color: blue">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>#{capaLoteJornalBean.vendaGeral.cancelado} </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaGeral.valorCancelado}" style="color: blue">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>#{capaLoteJornalBean.vendaGeral.pendente} </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaGeral.valorPendente}" style="color: blue">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>#{capaLoteJornalBean.vendaGeral.agendado}</p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaGeral.valorAgendado}" style="color: blue">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>#{capaLoteJornalBean.vendaGeral.renovado} </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaGeral.valorRenovado}" style="color: blue">
+                                                <f:convertNumber minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                &nbsp;
+                                <h:commandLink  target="_blank" action="#{capaLoteJornalBean.geraPDF}">
+                                    <h:graphicImage library="imagens" name="pdf.png" title="pdf"/>
+                                </h:commandLink>
+                                <h:commandLink target="_blank">
+                                    <h:graphicImage library="imagens" name="xls.png" title="excel"/>
+                                </h:commandLink>
+                            </h:panelGrid>
+                            <br/>
+                            <p:separator/>
+                            <br/>
                             <p:dataTable id="equipesTable" var="equipe"
                                          value="#{capaLoteJornalBean.equipe}"
                                          >
@@ -52,18 +124,24 @@
                                 <p:columnGroup type="header">
                                     <p:row>
                                         <p:column rowspan="2" headerText="Promotores" />
-                                        <p:column colspan="8" headerText="Numeros" />
+                                        <p:column colspan="12" headerText="Numeros" />
                                     </p:row>
 
                                     <p:row>
                                         <p:column headerText="total" />
+                                        <p:column  />
                                         <p:column headerText="ativo" />
+                                        <p:column  />
                                         <p:column headerText="cancelado" />
+                                        <p:column  />
                                         <p:column headerText="pendente" />
+                                        <p:column  />
                                         <p:column headerText="agendado" />
-                                        <p:column headerText="estornado" />
-                                        <p:column headerText="vendido" />
-                                        <p:column headerText="faturado" />
+                                        <p:column  />
+                                        <p:column headerText="renovado" />
+                                        <p:column  />
+
+
                                     </p:row>
                                 </p:columnGroup>
 
@@ -78,61 +156,118 @@
                                     <p:column>
                                         #{promotor.total}
                                     </p:column>
-
+                                    <p:column>
+                                        R$
+                                        <h:outputText value="#{promotor.valorTotal}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
+                                    </p:column>
                                     <p:column>
                                         #{promotor.ativo}
                                     </p:column>
-
+                                    <p:column>
+                                        R$
+                                        <h:outputText value="#{promotor.valorAtivo}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
+                                    </p:column>
                                     <p:column>
                                         #{promotor.cancelado}
+                                    </p:column>
+                                    <p:column>
+                                        R$
+                                        <h:outputText value="#{promotor.valorCancelado}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
                                     </p:column>
                                     <p:column>
                                         #{promotor.pendente}
                                     </p:column>
                                     <p:column>
+                                        R$
+                                        <h:outputText value="#{promotor.valorPendente}">
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
                                         #{promotor.agendado}
                                     </p:column>
                                     <p:column>
-                                        #{promotor.estornado}
-                                    </p:column>
-                                    <p:column>
                                         R$
-                                        <h:outputText value="#{promotor.venda}">
+                                        <h:outputText value="#{promotor.valorAgendado}">
                                             <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
                                         </h:outputText>
                                     </p:column>
                                     <p:column>
+                                        #{promotor.renovado}
+                                    </p:column>
+                                    <p:column>
                                         R$
-                                        <h:outputText value="#{promotor.faturado}">
+                                        <h:outputText value="#{promotor.valorRenovado}">
                                             <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
                                         </h:outputText>
                                     </p:column>
+
+
 
                                     <p:columnGroup type="footer">
                                         <p:row>
                                             <p:column footerText="Total: " style="text-align:right" />
                                             <p:column footerText="#{equipe.gerente.total}" />
+                                            <p:column >
+                                                <f:facet name="footer">
+                                                    R$
+                                                    <h:outputText value="#{equipe.gerente.valorTotal}">
+                                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
                                             <p:column footerText="#{equipe.gerente.ativo}" />
+                                            <p:column >
+                                                <f:facet name="footer">
+                                                    R$
+                                                    <h:outputText value="#{equipe.gerente.valorAtivo}">
+                                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
                                             <p:column footerText="#{equipe.gerente.cancelado}" />
+                                            <p:column >
+                                                <f:facet name="footer">
+                                                    R$
+                                                    <h:outputText value="#{equipe.gerente.valorCancelado}">
+                                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
                                             <p:column footerText="#{equipe.gerente.pendente}" />
+                                            <p:column >
+                                                <f:facet name="footer">
+                                                    R$
+                                                    <h:outputText value="#{equipe.gerente.valorPendente}">
+                                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
                                             <p:column footerText="#{equipe.gerente.agendado}" />
-                                            <p:column footerText="#{equipe.gerente.estornado}" />
                                             <p:column >
                                                 <f:facet name="footer">
                                                     R$
-                                                    <h:outputText value="#{equipe.gerente.venda}">
+                                                    <h:outputText value="#{equipe.gerente.valorAgendado}">
                                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                                     </h:outputText>
                                                 </f:facet>
                                             </p:column>
+                                            <p:column footerText="#{equipe.gerente.renovado}" />
                                             <p:column >
                                                 <f:facet name="footer">
                                                     R$
-                                                    <h:outputText value="#{equipe.gerente.faturado}">
+                                                    <h:outputText value="#{equipe.gerente.valorRenovado}">
                                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                                     </h:outputText>
                                                 </f:facet>
                                             </p:column>
+
 
                                         </p:row>
                                     </p:columnGroup>
@@ -180,15 +315,58 @@
                                         <f:selectItem itemLabel="23" itemValue="23"/>
                                         <f:selectItem itemLabel="24" itemValue="24"/>
                                         <f:selectItem itemLabel="25" itemValue="25"/>
-                                        
+
                                     </p:selectOneMenu>
 
 
                                     <p:commandButton value="buscar"
                                                      actionListener="#{capaLoteJornalBean.calculaRankingFaturado(event)}"
-                                                     update="equipeFaturadoTable" />
+                                                     update="equipeFaturadoTable gridFaturado" />
                                 </h:panelGrid>
                             </p:panel>
+                            <br/>
+                            <h:panelGrid columns="4" cellspacing="5">
+                                <p:panelGrid id="gridFaturado">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column colspan="3">Ranking faturado</p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column colspan="1" >total</p:column>
+
+                                            <p:column colspan="1" >media geral</p:column>
+
+                                            <p:column colspan="1" >valor total</p:column>
+
+
+
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column>#{capaLoteJornalBean.vendaFaturado.ativo}</p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaFaturado.media}" style="color: blue">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{capaLoteJornalBean.vendaFaturado.valorAtivo}" style="color: blue">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                &nbsp;
+                                <h:commandLink  target="_blank">
+                                    <h:graphicImage library="imagens" name="pdf.png" title="pdf"/>
+                                </h:commandLink>
+                                <h:commandLink target="_blank">
+                                    <h:graphicImage library="imagens" name="xls.png" title="excel"/>
+                                </h:commandLink>
+                            </h:panelGrid>
+                            <br/>
+                            <p:separator/>
+                            <br/>
                             <p:dataTable id="equipeFaturadoTable" var="equipeFat"
                                          value="#{capaLoteJornalBean.faturamentoEquipe}"
                                          >
@@ -220,12 +398,12 @@
                                         #{promotorFat.promotor}
                                     </p:column>
                                     <p:column>
-                                        #{promotorFat.total}
+                                        #{promotorFat.ativo}
                                     </p:column>
 
                                     <p:column>
                                         R$
-                                        <h:outputText value="#{promotorFat.venda}">
+                                        <h:outputText value="#{promotorFat.valorAtivo}">
                                             <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
                                         </h:outputText>
                                     </p:column>
@@ -238,11 +416,11 @@
                                     <p:columnGroup type="footer">
                                         <p:row>
                                             <p:column footerText="Total: " style="text-align:right" />
-                                            <p:column footerText="#{equipeFat.gerente.total}" />
+                                            <p:column footerText="#{equipeFat.gerente.ativo}" />
                                             <p:column >
                                                 <f:facet name="footer">
                                                     R$
-                                                    <h:outputText value="#{equipeFat.gerente.venda}">
+                                                    <h:outputText value="#{equipeFat.gerente.valorAtivo}">
                                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                                     </h:outputText>
                                                 </f:facet>

@@ -35,6 +35,8 @@ public class CapaLoteJornalDAO {
                 .setInteger("id", pk);
         return (Capalotejornal) query.uniqueResult();
     }
+    
+    
 
     @SuppressWarnings("unchecked")
     public List<Capalotejornal> listar() {
@@ -163,7 +165,7 @@ public class CapaLoteJornalDAO {
         Query query = getSf()
                 .getCurrentSession()
                 .createQuery(
-                        "from com.green.modelo.Capalotejornal cp where cp.gerador is null order by cp.nome");
+                        "from com.green.modelo.Capalotejornal cp where cp.gerador is null and cp.status = 1 order by cp.contrato");
         return (List<Capalotejornal>) query.list();
     }
 
@@ -176,17 +178,22 @@ public class CapaLoteJornalDAO {
         fimMes.set(Calendar.YEAR, ano);
         fimMes.set(Calendar.DAY_OF_MONTH, ultimoDia);
 
-        String sql1 = "Select cj.iDGerente.iDPessoa.razao ,cj.iDFuncionarioPromotor.iDPessoa.razao "
-                + ", count(cj.iDCapalotejornal), "
-                + "sum(cj.valor),"
-                + "sum(case when cj.status = 1 then cj.valor else 0 end)"
-                + " ,sum(case when cj.status = 1 then 1 else 0 end)"
-                + " ,sum(case when cj.status = 0 then 1 else 0 end)"
-                + ",sum(case when cj.status = 2 then 1 else 0 end) "
-                + ",sum(case when cj.status = 3 then 1 else 0 end) "
-                + ",sum(case when cj.status = 4 then 1 else 0 end) "
-                + ",sum(case when cj.status = 5 then 1 else 0 end), "
-                + "avg(cj.valor * cj.modalidade)  from com.green.modelo.Capalotejornal cj "
+        String sql1 = "Select cj.iDGerente.iDPessoa.razao ,"  //[0] equipe
+                + "cj.iDFuncionarioPromotor.iDPessoa.razao ,"  // [1] promotor
+                + " count(cj.iDCapalotejornal), " // [2] total
+                + "sum(cj.valor)," //[3] soma total
+                + "sum(case when cj.status = 1 then cj.valor else 0 end)" // [4] soma ativas
+                + " ,sum(case when cj.status = 1 then 1 else 0 end)" // [5] conta ativas
+                + " ,sum(case when cj.status = 0 then 1 else 0 end)" //[6] conta canceladas
+                + ",sum(case when cj.status = 2 then 1 else 0 end) " //[7] conta pendentes
+                + ",sum(case when cj.status = 3 then 1 else 0 end) " // [8] conta agendadas
+                + ",sum(case when cj.status = 4 then 1 else 0 end) " // [9] conta renovação
+                + ",sum(case when cj.status = 5 then 1 else 0 end), " //[10] conta estornado
+                + "sum(case when cj.status = 0 then cj.valor else 0 end), " //[11] soma cancelados
+                + "sum(case when cj.status = 2 then cj.valor else 0 end), "//[12] soma pendentes
+                + "sum(case when cj.status = 3 then cj.valor else 0 end), "//[13] soma agendados
+                + "sum(case when cj.status = 4 then cj.valor else 0 end) "//[14] soma renovados
+                + "  from com.green.modelo.Capalotejornal cj "
                 + "where (month(cj.dTVenda) = :mes and year(cj.dTVenda) = :ano) or (cj.status in(2,3)"
                 + "and cj.dTVenda<= :fechamento) group by cj.iDGerente,cj.iDFuncionarioPromotor "
                 + "order by cj.iDGerente.iDPessoa.razao,cj.iDFuncionarioPromotor.iDPessoa.razao";

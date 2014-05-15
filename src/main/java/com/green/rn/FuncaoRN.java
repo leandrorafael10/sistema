@@ -6,6 +6,7 @@ package com.green.rn;
 
 import com.green.dao.FuncaoDAO;
 import com.green.modelo.Funcao;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,9 @@ public class FuncaoRN {
     public List<Funcao> listar(){
         return getFuncaoDAO().listar();
     }
+    public List<Funcao> listaFuncoes(List<Integer> id) {
+        
+        return getFuncaoDAO().listaFuncoes(id);
+    }
+    
 }
