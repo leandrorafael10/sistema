@@ -23,8 +23,6 @@ public class Credito implements Serializable {
     @GeneratedValue
     @Column(name = "IDCredito")
     private Integer iDCredito;
-    @Column(name = "Numero")
-    private String numero;
     @NotNull
     @Column(name = "DTBaixa")
     @Temporal(TemporalType.DATE)
@@ -54,19 +52,6 @@ public class Credito implements Serializable {
     @JoinColumn(name = "IDTpDocumento", referencedColumnName = "IDDocumento")
     @ManyToOne(optional = false)
     private Documento iDTpDocumento;
-    @JoinColumn(name = "IDConta", referencedColumnName = "IDConta")
-    @ManyToOne(optional = false)
-    private Conta iDConta;
-    @JoinColumn(name = "IDCCusto", referencedColumnName = "IDCCusto")
-    @ManyToOne(optional = false)
-    private Ccusto iDCCusto;
-    @JoinColumn(name = "IDClassificacao", referencedColumnName = "IDClassificacao")
-    @ManyToOne(optional = false)
-    private Classificacao iDClassificacao;
-    @JoinColumn(name = "IDAtividade", referencedColumnName = "IDAtividade")
-    @ManyToOne(optional = false)
-    private Atividade iDAtividade;
-
     public Credito() {
     }
 
@@ -76,7 +61,6 @@ public class Credito implements Serializable {
 
     public Credito(Integer iDCredito, String numero, Date dTBaixa) {
         this.iDCredito = iDCredito;
-        this.numero = numero;
         this.dTBaixa = dTBaixa;
     }
 
@@ -88,13 +72,6 @@ public class Credito implements Serializable {
         this.iDCredito = iDCredito;
     }
 
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
 
     public Date getDTBaixa() {
         return dTBaixa;
@@ -166,38 +143,6 @@ public class Credito implements Serializable {
 
     public void setIDTpDocumento(Documento iDTpDocumento) {
         this.iDTpDocumento = iDTpDocumento;
-    }
-
-    public Conta getIDConta() {
-        return iDConta;
-    }
-
-    public void setIDConta(Conta iDConta) {
-        this.iDConta = iDConta;
-    }
-
-    public Ccusto getIDCCusto() {
-        return iDCCusto;
-    }
-
-    public void setIDCCusto(Ccusto iDCCusto) {
-        this.iDCCusto = iDCCusto;
-    }
-
-    public Classificacao getIDClassificacao() {
-        return iDClassificacao;
-    }
-
-    public void setIDClassificacao(Classificacao iDClassificacao) {
-        this.iDClassificacao = iDClassificacao;
-    }
-
-    public Atividade getIDAtividade() {
-        return iDAtividade;
-    }
-
-    public void setIDAtividade(Atividade iDAtividade) {
-        this.iDAtividade = iDAtividade;
     }
 
     @Override

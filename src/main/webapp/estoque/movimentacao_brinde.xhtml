@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <br/>
+                <h:form id="formNovoTermo">
+                    <p:panel>
+                        <p:commandButton value="novo termo de responsabilidade"
+                                         actionListener="#{brindemovimentacaoBean.addTermo(event)}" oncomplete="PF('dialogTermo').show()"
+                                         update=":formTermo"/>
+                    </p:panel>
+                    <br/>
+                    <p:dataTable  value="#{brindemovimentacaoRN.listar()}" var="movimentacao">
+                        <p:column headerText="código" width="50">
+                            <h:outputText value="#{movimentacao.IDBrindemovimentacao}"/>
+                        </p:column>
+                        <p:column headerText="data inclusão" width="60">
+                            <h:outputText value="#{movimentacao.DTInc}" title="data inclusão">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="usuário" width="190">
+                            <h:outputText value="#{movimentacao.IDUsuario.IDFuncionario.IDPessoa.razao}"/>
+                        </p:column>
+                        <p:column headerText="responsáveis">
+                            <p:dataList value="#{movimentacao.termoResponsabilidadeList}" var="termo"
+                                        itemType="none">
+                                <h:panelGrid columns="4">
+                                    <h:outputText value="#{termo.IDFuncionario.IDPessoa.razao}"/>
+                                    <h:outputText value="#{termo.dataTermo}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                    <h:outputText value="#{termo.entradaSaida?'retorno':'saída'}"/>
+                                    <p:commandLink styleClass="ui-icon ui-icon-search" update=":formNovoTermo:pesqTermo" oncomplete="PF('dialogPesqTermo').show();">
+                                        <f:setPropertyActionListener value="#{termo}" target="#{brindemovimentacaoBean.termoResponsabilidade}"/>
+                                    </p:commandLink>
+                                </h:panelGrid>
+
+                            </p:dataList>
+                        </p:column>
+                        <p:column headerText="retorno" width="50">
+                            <p:commandLink value="retorno" oncomplete="PF('dialogRetorno').show();" update=":formRetorno"
+                                           actionListener="#{brindemovimentacaoBean.retornoBrinde(movimentacao)}"/>
+                        </p:column>
+                        <p:column headerText="retirada extra" width="50">
+                            <p:commandLink value="extra" oncomplete="PF('dialogExtra').show();" update=":formExtra"
+                                           actionListener="#{brindemovimentacaoBean.retiradaExtra(movimentacao)}"/>
+                        </p:column>
+                        <p:column headerText="saldo brinde" width="50">
+                            <p:commandLink value="saldo" actionListener="#{brindemovimentacaoBean.somaBrindeMovimentacao(movimentacao)}" 
+                                           oncomplete="PF('dialogSaldoBrinde').show();"
+                                           update=":formNovoTermo:dialogSaldo"
+                                           >
+                                <f:setPropertyActionListener value="#{movimentacao}" target="#{brindemovimentacaoBean.brindemovimentacao}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column width="50"> 
+                            <p:commandLink value="imprimir">
+                                
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:dialog widgetVar="dialogSaldoBrinde" id="dialogSaldo">
+                        <p:dataTable value="#{brindemovimentacaoBean.brindeSoma}" var="somaBrinde"
+                                     style="width: 300px;">
+                            <p:column headerText="brinde" width="120">
+                                <h:outputText value="#{somaBrinde.IDBrinde.descricao}"/>
+                            </p:column>
+                            <p:column headerText="qtd" width="60">
+                                <h:outputText value="#{somaBrinde.qtd}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                    <p:dialog id="pesqTermo" widgetVar="dialogPesqTermo"  minWidth="250" width="300">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="código:"/>
+                            <h:outputText value="#{brindemovimentacaoBean.termoResponsabilidade.IDTermoResponsabilidade}"/>
+                            <h:outputText value="responsável:"/>
+                            <h:outputText value="#{brindemovimentacaoBean.termoResponsabilidade.IDFuncionario.IDPessoa.razao}"/>
+                            <h:outputText value="data:"/>
+                            <h:outputText value="#{brindemovimentacaoBean.termoResponsabilidade.dataTermo}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <h:outputText value="tipo:"/>
+                            <h:outputText value="#{brindemovimentacaoBean.termoResponsabilidade.entradaSaida?'retorno':'saida'}"
+                                          styleClass="#{brindemovimentacaoBean.termoResponsabilidade.entradaSaida?'azul':'vermelho'}"/>
+                        </h:panelGrid>
+                        <p:dataTable value="#{brindemovimentacaoBean.termoResponsabilidade.brindeTermoList}" var="brindeTermo" style="width: 200px;">
+                            <p:column headerText="brinde" width="160">
+                                <h:outputText value="#{brindeTermo.IDBrinde.descricao}"/>
+                            </p:column>
+                            <p:column headerText="qtd" width="30">
+                                <h:outputText value="#{brindeTermo.qtd}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <br/>
+                        <h:commandLink value="pdf"  target="_blank" action="#{brindemovimentacaoBean.geraPdfTermo()}"/>
+                    </p:dialog>
+                </h:form>
+                <h:form id="formRetorno">
+                    <p:dialog widgetVar="dialogRetorno">
+                        <p:panel>
+                            <h2>Retorno</h2>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Responsável:"/>
+                                <p:selectOneMenu value="#{brindemovimentacaoBean.termoRetorno.IDFuncionario}" converter="funcionarioConverter" filter="true">
+                                    <f:selectItems value="#{funcionarioRN.listar()}"
+                                                   var="funcionario"
+                                                   itemValue="#{funcionario}"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="data do retorno:"/>
+                                <p:calendar mask="true" pattern="dd/MM/yyyy" size="10"
+                                            value="#{brindemovimentacaoBean.termoRetorno.dataTermo}"/>
+                            </h:panelGrid>
+                            <br/>
+                            <p:dataTable value="#{brindemovimentacaoBean.termoRetorno.brindeTermoList}" var="brindeRet"
+                                         style="width: 400px">
+                                <p:column headerText="brinde">
+                                    <h:outputText value="#{brindeRet.IDBrinde.descricao}"/>
+                                </p:column>
+                                <p:column width="80" headerText="qtd">
+                                    <p:spinner value="#{brindeRet.qtd}" min="0" size="6"/>
+                                </p:column>
+                            </p:dataTable>
+                            <p:separator/>
+                            <p:commandButton value="confirmar" actionListener="#{brindemovimentacaoBean.salvarRetorno(event)}" update=":formRetorno"
+                                             />
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+                
+                <h:form id="formTermo">
+                    <p:dialog widgetVar="dialogTermo">
+                        <p:panel>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Responsável:"/>
+                                <p:selectOneMenu value="#{brindemovimentacaoBean.termoResponsabilidade.IDFuncionario}" converter="funcionarioConverter" filter="true">
+                                    <f:selectItems value="#{funcionarioRN.listar()}"
+                                                   var="funcionario"
+                                                   itemValue="#{funcionario}"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="data do termo:"/>
+                                <p:calendar mask="true" pattern="dd/MM/yyyy" size="10"
+                                            value="#{brindemovimentacaoBean.termoResponsabilidade.dataTermo}"/>
+                            </h:panelGrid>
+                            <p:dataTable value="#{brindemovimentacaoBean.brindeTermos}" var="brinde"
+                                         style="width: 400px">
+                                <p:column>
+                                    <h:outputText value="#{brinde.IDBrinde.descricao}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:spinner value="#{brinde.qtd}" min="0" size="8"/>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:commandButton value="confirmar" actionListener="#{brindemovimentacaoBean.salvar(event)}" update=":formNovoTermo"
+                                             oncomplete="PF('dialogTermo').hide();"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+                <h:form id="formExtra">
+                    <p:dialog widgetVar="dialogExtra">
+                        
+                        <p:panel>
+                            <h2> Retirada extra</h2>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Responsável:"/>
+                                <p:selectOneMenu value="#{brindemovimentacaoBean.termoRetorno.IDFuncionario}" converter="funcionarioConverter" filter="true">
+                                    <f:selectItems value="#{funcionarioRN.listar()}"
+                                                   var="funcionario"
+                                                   itemValue="#{funcionario}"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="data do termo:"/>
+                                <p:calendar mask="true" pattern="dd/MM/yyyy" size="10"
+                                            value="#{brindemovimentacaoBean.termoRetorno.dataTermo}"/>
+                            </h:panelGrid>
+                            <p:dataTable value="#{brindemovimentacaoBean.termoRetorno.brindeTermoList}" var="brinde"
+                                         style="width: 400px">
+                                <p:column>
+                                    <h:outputText value="#{brinde.IDBrinde.descricao}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:spinner value="#{brinde.qtd}" min="0" size="8"/>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:commandButton value="confirmar" actionListener="#{brindemovimentacaoBean.salvarExtra(event)}" update=":formExtra"
+                                             oncomplete="PF('dialogExtra').hide();"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

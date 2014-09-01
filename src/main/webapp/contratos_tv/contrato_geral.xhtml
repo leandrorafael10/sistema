@@ -22,7 +22,7 @@
                         <p:growl life="5000"/>
 
                         <h2>Todos Contratos</h2>
-                        <p:dataTable id="tableContratos"  value="#{contratoMidiaBean.contratoMidias}" var="item" scrollable="true" scrollHeight="450"
+                        <p:dataTable id="tableContratos"  value="#{contratoMidiaRN.listar()}" var="item" scrollable="true" scrollHeight="450"
                                      resizableColumns="true" emptyMessage="nenhum contrato" >
                             <p:column  >
                                 <f:facet name="header">
@@ -73,7 +73,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="Edit"/>
                                     </f:facet>
-                                    <p:commandLink oncomplete="dialogEditContrato.show()" update=":formCntratoGeral,:forEditContrato">
+                                    <p:commandLink oncomplete="PF('dialogEditContrato').show()" update=":formCntratoGeral,:forEditContrato">
                                         <h:graphicImage library="imagens" name="Pesq.png"/>
                                         <f:setPropertyActionListener target="#{contratoMidiaBean.contratoMidia}" value="#{item}"/>
                                     </p:commandLink>
@@ -81,7 +81,7 @@
                             </sec:ifAnyGranted>
 
                             <p:column >
-                                <p:commandLink oncomplete="dialogInfoContrato.show()" update=":formCntratoGeral,:formPesqContrato">
+                                <p:commandLink oncomplete="PF('dialogInfoContrato').show()" update=":formCntratoGeral,:formPesqContrato">
                                     <h:graphicImage library="imagens" name="Pesq.png"/>
                                     <f:setPropertyActionListener target="#{contratoMidiaBean.contratoMidia}" value="#{item}"/>
                                 </p:commandLink>
@@ -112,8 +112,8 @@
                                 <p:inputText value="#{contratoMidiaBean.contratoMidia.valor}" required="true" >
                                      <f:convertNumber minFractionDigits="2" />
                                 </p:inputText>
-                                <p:commandButton value="confirmar" actionListener="#{contratoMidiaRN.atualizar(contratoMidiaBean.contratoMidia)}" oncomplete="dialogEditContrato.hide();" update=":formCntratoGeral"/>
-                                <p:commandButton value="sair" onclick="dialogEditContrato.hide();"/>
+                                <p:commandButton value="confirmar" actionListener="#{contratoMidiaRN.atualizar(contratoMidiaBean.contratoMidia)}" oncomplete="PF('dialogEditContrato').hide();" update=":formCntratoGeral"/>
+                                <p:commandButton value="sair" onclick="PF('dialogEditContrato').hide();"/>
                             </h:panelGrid>
                         </p:dialog>
                     </h:form>
@@ -147,7 +147,7 @@
 
 
                                 <h:outputText value="Situação:"/>
-                                <h:outputText value="#{contratoMidiaBean.contratoMidia.ativo==0?'Ativo':(contratoMidiaBean.contratoMidia.ativo==1?'Cancelado':'Renovado')}" styleClass="#{contratoMidiaBean.contratoMidia.ativo==0?'azul':(contratoMidiaBean.contratoMidia.ativo==1?'vermelho':'verde')}" title="Ativo"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.ativo==1?'Ativo':(contratoMidiaBean.contratoMidia.ativo==1?'Cancelado':'Renovado')}" styleClass="#{contratoMidiaBean.contratoMidia.ativo==0?'azul':(contratoMidiaBean.contratoMidia.ativo==1?'vermelho':'verde')}" title="Ativo"/>
                                 <h:outputText value="DataCancelamento:" rendered="#{contratoMidiaBean.contratoMidia.dataCancelamento!=null}"/>
                                 <h:outputText value="#{contratoMidiaBean.contratoMidia.dataCancelamento}" title="Data Cancelamento" rendered="#{contratoMidiaBean.contratoMidia.dataCancelamento!=null}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />

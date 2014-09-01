@@ -49,7 +49,7 @@
                             <p:ajax event="rowEdit" listener="#{brindeBean.onEdit}" update=":formListaBrindes:msgLista" />  
                             <p:ajax event="rowEditCancel" listener="#{brindeBean.onCancel}" update=":formListaBrindes:msgLista" />  
 
-                            <p:column headerText="descrição" width="60">
+                            <p:column headerText="descrição" >
                                 <p:cellEditor> 
                                     <f:facet name="output">  
                                         <h:outputText value="#{brindes.descricao}" />
@@ -94,7 +94,7 @@
                                         <h:outputText value="#{brindes.descricaoDet}"/>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <h:inputTextarea rows="4" cols="30" id="descricaoDet" value="#{brindes.descricaoDet}" title="Descricão" />
+                                        <h:inputTextarea rows="2" cols="50" id="descricaoDet" value="#{brindes.descricaoDet}" title="Descricão" />
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>

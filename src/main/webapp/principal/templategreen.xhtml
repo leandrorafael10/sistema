@@ -1,122 +1,98 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:sec="http://www.springframework.org/security/facelets/tags">
-<f:view>
-	<h:head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link href="./../resources/css/default.css" rel="stylesheet"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+    <f:view>
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="#{request.contextPath}/resources/css/default.css" rel="stylesheet"
+                  type="text/css" />
+		
+		<link href="#{request.contextPath}/resources/css/cssLayout.css" rel="stylesheet"
 			type="text/css" />
-		<link href="/resources/css/default.css" rel="stylesheet"
-			type="text/css" />
-		<link href="./../resources/css/cssLayout.css" rel="stylesheet"
-			type="text/css" />
-		<link href="/resources/css/cssLayout.css" rel="stylesheet"
-			type="text/css" />
-		<link rel="icon" href="./../favicon.ico" type="image/x-icon" />
-		<link rel="SHORTCUT ICON" href="./../favicon.ico" type="image/x-icon" />
-		<link rel="apple-touch-icon" href="/favicon.ico" type="image/x-icon" />
-		<title>Grupo AE</title>
-	</h:head>
+		
+            <link rel="icon" href="./../favicon.ico" type="image/x-icon" />
+            <link rel="SHORTCUT ICON" href="./../favicon.ico" type="image/x-icon" />
+            <link rel="apple-touch-icon" href="/favicon.ico" type="image/x-icon" />
+            <title>Grupo AE</title>
+        </h:head>
 
-	<h:body>
-		<script type="text/javascript">
-			function direciona() {
-				document.location = 'www.google.com';
-			}
-		</script>
-		<sec:ifAllGranted roles="ROLE_USER_EXTERNO">
+        <h:body>
+            
+            <sec:ifAllGranted roles="ROLE_USER_EXTERNO">
 
-			<div>
+                <div>
 
-				<ui:insert name="menu-dock">
-					<ui:include src="/externno/dock.xhtml" />
-				</ui:insert>
-			</div>
-			<div>
-				<ui:insert name="principal-externa">
-					Ola
-				</ui:insert>
-			</div>
-		</sec:ifAllGranted>
-		<p:dialog modal="true" widgetVar="statusDialog" header="carregando..."
-			draggable="false" closable="false" resizable="false">
-			<p:graphicImage value="/resources/imagens/47.gif" />
-		</p:dialog>
+                    <ui:insert name="menu-dock">
+                        <ui:include src="/externno/dock.xhtml" />
+                    </ui:insert>
+                </div>
+                <div>
+                    <ui:insert name="principal-externa">
+                        Ola
+                    </ui:insert>
+                </div>
+            </sec:ifAllGranted>
+            <p:dialog  widgetVar="statusDialog" header="carregando..."
+                      draggable="false" closable="false" resizable="false">
+                <p:graphicImage value="/resources/imagens/47.gif" />
+            </p:dialog>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 
-		<sec:ifAnyGranted
-			roles="ROLE_ADMINISTRACAO,ROLE_USUARIO,ROLE_FINANCEIRO,ROLE_RH,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_COMERCIAL,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR,ROLE_PRODUCAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
-			<div id="tudo">
-				<div id="topo">
+            <sec:ifAnyGranted
+                roles="ROLE_ADMINISTRACAO,ROLE_USUARIO,ROLE_FINANCEIRO,ROLE_RH,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_COMERCIAL,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR,ROLE_PRODUCAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
+                <div id="tudo">
+                    <div id="topo">
 
-					<ui:insert name="top">
-						<div id="usuarioLog">
-							<h:form style="float: right;">
+                        <ui:insert name="top">
+                            <div id="usuarioLog">
+                                <h:form  styleClass="form-sair-home">
 
-								<h:outputLabel value="Olá! #{request.remoteUser}"
-									style="color:#ffffff" />
-								<h:inputHidden
-									value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}" />
-								<br />
-								<br />
-								<br />
-								<p:commandLink
-									onclick="document.location = '#{request.contextPath}/j_spring_security_logout'"
-									style="cursor: pionter; cursor: hand" title="Sair">
-									<h:graphicImage library="imagens" name="bt_exit.png" />
-								</p:commandLink>
+                                    <h:outputLabel value="Olá! #{request.remoteUser}"
+                                                   style="color:#000" />
+                                    <br/>
+                                    <br/>
+                                    <h:inputHidden
+                                        value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}" />
+
+                                    <p:commandLink
+                                        onclick="document.location = '#{request.contextPath}/j_spring_security_logout'"
+                                        style="cursor: pionter; cursor: hand" title="Sair">
+                                        <h:outputText value="Sair" />
+                                    </p:commandLink>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
 
                                     <p:commandLink
-									action="/principal/templategreen.xhtml" title="Tela principal">
-									<h:graphicImage library="imagens" name="bt_home.png" />
-								</p:commandLink>
-							</h:form>
-							<sec:ifAnyGranted
-								roles="ROLE_USUARIO,ROLE_FINANCEIRO,ROLE_RH,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_COMERCIAL,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR,ROLE_PRODUCAO">
-								<h2 align="center"
-									style="font-family: tahoma; font-size: 50px; color: #ffffff;">TV
-									Embarque</h2>
-							</sec:ifAnyGranted>
-							<sec:ifAnyGranted roles="ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
-								<h2 align="center"
-									style="font-family: tahoma; font-size: 50px; color: #ffffff;">Assinatura
-									Externa</h2>
-							</sec:ifAnyGranted>
-							<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
-								<h2 align="center"
-									style="font-family: tahoma; font-size: 40px; color: #ffffff;">TV
-									Embarque - Assinatura Externa</h2>
-							</sec:ifAnyGranted>
-						</div>
-					</ui:insert>
-				</div>
+                                        action="/principal/templategreen.xhtml" title="Tela principal">
+                                        <h:outputText value="principal" />
+                                    </p:commandLink>
 
-				<div id="navegacao">
-					<ui:insert name="navegacao-interna">
-						<ui:include src="/publico/menu.xhtml" />
-					</ui:insert>
-				</div>
-				<div id="principal">
-					<ui:insert name="principal-interna">
-						<ui:include src="/publico/conteudo_principal.xhtml" />
-					</ui:insert>
-				</div>
-				<div id="rodape" style="text-align: right">
-					<ui:insert name="rodape">
-						<h:outputLabel value="Versão:2.0"
-							style="color: #ffffff ;font-size: 20px
-                                                                ;font-family: tahoma ;margin-right: 20px;margin-top: 20px" />
-					</ui:insert>
-				</div>
-			</div>
-		</sec:ifAnyGranted>
 
-	</h:body>
+                                </h:form>
 
-</f:view>
+                            </div>
+                        </ui:insert>
+                    </div>
+
+                    <div >
+                        <ui:insert name="navegacao-interna">
+                            <ui:include src="/publico/menu.xhtml" />
+                        </ui:insert>
+                    </div>
+                    <div >
+                        <ui:insert name="principal-interna">
+                            <ui:include src="/publico/conteudo_principal.xhtml" />
+                        </ui:insert>
+                    </div>
+
+                </div>
+            </sec:ifAnyGranted>
+
+        </h:body>
+
+    </f:view>
 </html>

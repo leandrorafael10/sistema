@@ -4,11 +4,13 @@
  */
 package com.green.dao;
 
+import com.green.modelo.Cliente;
 import com.green.modelo.Receita;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,12 +53,10 @@ public class ReceitaDAO extends AbstractDao<Receita, Integer> {
     @Override
     public void excluir(Receita obj) {
         getSf().getCurrentSession().delete(obj);
-        getSf().getCurrentSession().flush();
     }
-    
+
     public void atualizar(Receita receita) {
-        getSf().getCurrentSession().merge(receita);
-        getSf().getCurrentSession().flush();
+        getSf().getCurrentSession().update(receita);
     }
 
     public List<Receita> receitasVencidas() {
@@ -90,9 +90,17 @@ public class ReceitaDAO extends AbstractDao<Receita, Integer> {
         return sf;
     }
 
-    public List<Receita> filtro(Receita receitaFiltro, Date fimVenc, int pag, BigDecimal valorIni, BigDecimal valorFim){
+    public List<Receita> parcelasCliente(Date inicio, Date fim, Cliente c, boolean tipo) {
+        Query query = getSf().getCurrentSession().createQuery(" from com.green.modelo.Receita d  "
+                + "where d.pago = :pago and d.dTVencimento >= :inicio and d.dTVencimento <= :fim "
+                + "and d.iDCliente = :cliente order by d.dTVencimento")
+                .setBoolean("pago", tipo).setDate("inicio", inicio).setDate("fim", fim).setParameter("cliente", c);
+        return query.list();
+    }
+
+    public List<Receita> filtro(Receita receitaFiltro, Date fimVenc, int pag, BigDecimal valorIni, BigDecimal valorFim) {
         Map<String, Object> params = new HashMap<>();
-        String sql = " From com.green.modelo.Receita d  ";
+        String sql = " from com.green.modelo.Receita d  ";
         Query query;
         switch (pag) {
             case 0:
@@ -100,11 +108,11 @@ public class ReceitaDAO extends AbstractDao<Receita, Integer> {
                 break;
             case 1:
                 params.put("pagos", true);
-                sql = sql + "where pago = :pagos and ";
+                sql = sql + "where d.pago = :pagos and ";
                 break;
             case 2:
-                params.put("apagar",false);
-                sql = sql + "where pago = :apagar and ";
+                params.put("apagar", false);
+                sql = sql + "where d.pago = :apagar and ";
                 break;
         }
         if (receitaFiltro.getDTVencimento() == null && fimVenc == null) {
@@ -112,100 +120,131 @@ public class ReceitaDAO extends AbstractDao<Receita, Integer> {
             Date dataMesAntes = new Date(d2.get(Calendar.YEAR) - 1900, d2.get(Calendar.MONTH), 1);
             params.put("inicio", dataMesAntes);
             params.put("fim", d2.getTime());
-            sql = sql + " dTVencimento >= :inicio and dTVencimento <= :fim";
+            sql = sql + " d.dTVencimento >= :inicio and d.dTVencimento <= :fim";
         } else {
             if (receitaFiltro.getDTVencimento() != null && fimVenc != null) {
                 params.put("inicio", receitaFiltro.getDTVencimento());
                 params.put("fim", fimVenc);
-                sql = sql + " dTVencimento >= :inicio and dTVencimento <= :fim";
+                sql = sql + " d.dTVencimento >= :inicio and d.dTVencimento <= :fim";
             } else if (receitaFiltro.getDTVencimento() != null && fimVenc == null) {
                 params.put("inicio", receitaFiltro.getDTVencimento());
                 params.put("fim", new Date(999, 12, 30));
-                sql = sql + " dTVencimento >= :inicio and dTVencimento <= :fim ";
+                sql = sql + " d.dTVencimento >= :inicio and d.dTVencimento <= :fim ";
             } else if (receitaFiltro.getDTVencimento() == null && fimVenc != null) {
                 params.put("inicio", new Date(000, 1, 1));
                 params.put("fim", fimVenc);
-                sql = sql + " dTVencimento >= :inicio and dTVencimento <= :fim ";
+                sql = sql + " d.dTVencimento >= :inicio and d.dTVencimento <= :fim ";
             }
         }
-         
+
         if (receitaFiltro.getIDConta() != null) {
             params.put("conta", receitaFiltro.getIDConta());
-            sql = sql + " and IDConta = :conta ";
+            sql = sql + " and d.IDConta = :conta ";
         }
         if (receitaFiltro.getIDClassificacao() != null) {
             params.put("classificacao", receitaFiltro.getIDClassificacao());
-            sql = sql + " and iDClassificacao = :classificacao ";
+            sql = sql + " and d.iDClassificacao = :classificacao ";
 
         }
         if (receitaFiltro.getIDCCusto() != null) {
-            params.put("ccusto",receitaFiltro.getIDCCusto());
-            sql = sql + " and iDCCusto = :ccusto ";
+            params.put("ccusto", receitaFiltro.getIDCCusto());
+            sql = sql + " and d.iDCCusto = :ccusto ";
         }
-        
+
         if (receitaFiltro.getIDCliente() != null) {
-            params.put("cliente",receitaFiltro.getIDCliente());
-            sql = sql + " and iDCliente = :cliente ";
+            params.put("cliente", receitaFiltro.getIDCliente());
+            sql = sql + " and d.iDCliente = :cliente ";
         }
         if (!valorFim.equals(new BigDecimal("0.00")) || !valorIni.equals(new BigDecimal("0.00"))) {
             params.put("valorIni", valorIni);
             params.put("valorFim", valorFim);
-            sql = sql + " and valorLiquido >= :valorIni and valorLiquido <= :valorFim";
+            sql = sql + " and d.valorLiquido >= :valorIni and d.valorLiquido <= :valorFim";
         }
         query = getSf().getCurrentSession().
                 createQuery(sql + " order by d.IDConta,d.dTVencimento").setProperties(params);
 
         return query.list();
     }
-    
+
     public List<Receita> vencimentosDoDia() {
         Date d = new Date();
         Calendar d2 = Calendar.getInstance();
         Date dataMesAntes = new Date(d2.get(Calendar.YEAR) - 1900, d2.get(Calendar.MONTH), 1);
-        d2.set(Calendar.DAY_OF_MONTH, d2.getActualMaximum(Calendar.DAY_OF_MONTH)) ;
+        d2.set(Calendar.DAY_OF_MONTH, d2.getActualMaximum(Calendar.DAY_OF_MONTH));
         Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.dTVencimento<= :ultimo and d.dTVencimento>=:d2 order by d.dTVencimento")
                 .setParameter("d2", dataMesAntes).setParameter("ultimo", d2.getTime());
-        return (List<Receita>)  query.list();
+        return (List<Receita>) query.list();
     }
-    
-     public List<Receita> liberacaoPagamento() {
+
+    public List<Receita> liberacaoPagamento() {
         Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 and d.atzPg = 1 order by d.dTVencimento ");
         return (List<Receita>) query.list();
     }
-    
-    public List<Receita> receitasPagas(){
+
+    public List<Receita> receitasPagas() {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Receita.class);
         List<Receita> receitas = criteria.list();
         List<Receita> pagas = new ArrayList<Receita>();
-        for(Receita receita :receitas){
-            if(receita.getValorLiquido().compareTo(BigDecimal.ZERO)==0){
+        for (Receita receita : receitas) {
+            if (receita.getValorLiquido().compareTo(BigDecimal.ZERO) == 0) {
                 pagas.add(receita);
             }
         }
         return pagas;
     }
-     public List<Receita> receitasApagar(){
+
+    public List<Receita> receitasApagar() {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Receita.class);
         List<Receita> receitas = criteria.list();
         List<Receita> aPagar = new ArrayList<Receita>();
         for (Receita receita : receitas) {
-            if (receita.getValorLiquido().compareTo(BigDecimal.ZERO)!=0) {
+            if (receita.getValorLiquido().compareTo(BigDecimal.ZERO) != 0) {
                 aPagar.add(receita);
             }
         }
         return aPagar;
     }
+    
+    
 
     public List<Receita> pendentesPagamento() {
         Date d = new Date();
-         Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 and d.atzPg = 2 order by d.dTVencimento");
+        Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 and d.atzPg = 2 order by d.dTVencimento");
         return (List<Receita>) query.list();
-       
+
     }
+
     public List<Receita> pendentesPagamentoAteHoje() {
         Date d = new Date();
-         Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 and d.atzPg != 3 and d.dTVencimento < :data order by d.dTVencimento ").setDate("data", d);
+        Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 and d.atzPg != 3 and d.dTVencimento < :data order by d.dTVencimento ").setDate("data", d);
         return (List<Receita>) query.list();
-       
+
+    }
+
+    public List<Receita> pagamentoProximoPendenteCliente() {
+        Calendar c = new GregorianCalendar();
+        c.add(GregorianCalendar.DATE, 10);
+        Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 "
+                + "and d.dTVencimento < :data and d.iDCliente.iDTipocliente is null order by d.dTVencimento ").setDate("data", c.getTime());
+        return (List<Receita>) query.list();
+
+    }
+    public List<Receita> pagamentoPendenteParceiro() {
+        Calendar c = new GregorianCalendar();
+        c.add(GregorianCalendar.DATE, 10);
+        Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 "
+                + " and d.iDCliente.iDTipocliente is not null "
+                + " order by d.dTVencimento , d.iDCliente ");
+        return (List<Receita>) query.list();
+
+    }
+    public List<Receita> pagamentoPendenteContraApresentacao() {
+        Calendar c = new GregorianCalendar();
+        c.add(GregorianCalendar.DATE, 10);
+        Query query = getSf().getCurrentSession().createQuery("From com.green.modelo.Receita d where d.pago = 0 "
+                + " and d.idorigem.IDContratoMidia.iDtipopagamento.descricao = 'Contra Apresentação'"
+                + " order by d.dTVencimento , d.iDCliente ");
+        return (List<Receita>) query.list();
+
     }
 }

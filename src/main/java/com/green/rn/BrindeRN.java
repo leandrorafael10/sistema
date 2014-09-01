@@ -38,6 +38,9 @@ public class BrindeRN {
         brinde.setAtivo(true);
         getBrindeDAO().salvar(brinde);
     }
+    public List listarPeriodo(Date inicio, Date fim) {
+        return getBrindeDAO().listarPeriodo(inicio, fim);
+    }
     public BrindeDAO getBrindeDAO() {
         return brindeDAO;
     }
@@ -54,6 +57,7 @@ public class BrindeRN {
         b.setDTAlt(new Date());
         getBrindeDAO().atualizar(b);
     }
+    
     
     
 }

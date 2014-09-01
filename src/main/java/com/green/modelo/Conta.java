@@ -79,6 +79,8 @@ public class Conta implements Serializable {
     @JoinColumn(name = "IDBanco", referencedColumnName = "IDBanco")
     @ManyToOne(fetch = FetchType.LAZY)
     private Banco iDBanco;
+    @OneToOne(mappedBy = "iDConta",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.MERGE})
+    private Boleto iDBoleto;
 
     public Conta() {
     }
@@ -211,6 +213,15 @@ public class Conta implements Serializable {
         this.iDBanco = iDBanco;
     }
 
+    public Boleto getIDBoleto() {
+        return iDBoleto;
+    }
+
+    public void setIDBoleto(Boleto iDBoleto) {
+        this.iDBoleto = iDBoleto;
+    }
+
+    
 
     @Override
     public int hashCode() {

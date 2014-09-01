@@ -21,6 +21,10 @@
     clear: both;
     
 }
+.img-log{
+    display: block;
+    text-align:  center;
+}
 
 .form-1 {
     /* Size & position */

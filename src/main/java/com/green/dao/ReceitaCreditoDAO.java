@@ -4,6 +4,7 @@
  */
 package com.green.dao;
 
+import com.green.modelo.Funcionario;
 import com.green.modelo.Receita;
 import com.green.modelo.Receitacredito;
 import java.math.BigDecimal;
@@ -71,6 +72,14 @@ public class ReceitaCreditoDAO {
         query = getSf().getCurrentSession().
                 createQuery(sql + " order by d.iDCredito.dTBaixa").setProperties(params);
 
+        return query.list();
+    }
+    
+    public List<Receitacredito> listaReceitaPorVendedor(Date inicio ,Date fim,Funcionario f){
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Receitacredito rc"
+                + " where rc.iDReceita.idorigem.IDContratoMidia.iDvendedor = :vendedor "
+                + "and rc.iDCredito.dTBaixa >= :inicio and rc.iDCredito.dTBaixa <= :fim and rc.iDReceita.pago = true").setDate("inicio", inicio)
+                .setDate("fim", fim).setParameter("vendedor", f);
         return query.list();
     }
     

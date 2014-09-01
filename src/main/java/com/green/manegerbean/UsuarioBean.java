@@ -14,7 +14,6 @@ import com.green.rn.GrupoAcessoRN;
 import com.green.rn.UsuarioRn;
 import com.green.util.ContextoBean;
 import com.green.util.ContextoUtil;
-import com.green.util.Endereco;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -39,8 +38,6 @@ public class UsuarioBean implements Serializable {
     private UsuarioRn usuarioRn;
     @ManagedProperty("#{contatoRN}")
     private ContatoRN contatoRN;
-    @ManagedProperty("#{endereco}")
-    private Endereco endereco;
     private Funcionario funcionario = new Funcionario();
     private List<Funcionario> funcionarios;
     private List<Usuario> usuarios;
@@ -95,8 +92,6 @@ public class UsuarioBean implements Serializable {
     public void alterarDados() {
         this.usuario = new Usuario();
         editarUsuario();
-        getEndereco().setEstado(getUsuario().getIDFuncionario().getIDPessoa().getEstado());
-        getEndereco().setCidade(getUsuario().getIDFuncionario().getIDPessoa().getCidade());
         setOpcaoAlterarDados(Boolean.TRUE);
         setOpcaoAlterarSenha(Boolean.FALSE);
     }
@@ -112,13 +107,6 @@ public class UsuarioBean implements Serializable {
         setUsuario(contextoBean.getUsuarioLogado());
     }
 
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
 
     public void setContatos(List<Contato> contatos) {
         this.contatos = contatos;
@@ -260,10 +248,6 @@ public class UsuarioBean implements Serializable {
 
     public void atualizar() {
         if (getOpcaoAlterarDados() == Boolean.TRUE) {
-            getUsuario().getIDFuncionario().getIDPessoa().setEstado(getEndereco().getEstado());
-            if (getEndereco().getCidade()!=null) {
-                getUsuario().getIDFuncionario().getIDPessoa().setCidade(getEndereco().getCidade());
-            }
             getUsuarioRn().atualizarDados(getUsuario());
         } else {
             getUsuarioRn().atualizar(getUsuario());

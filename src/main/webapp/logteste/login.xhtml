@@ -24,7 +24,7 @@ and open the template in the editor.
         <style>
 
             body {
-                background:#42A2BC url(images/blurred.jpg) no-repeat center top;
+
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 background-size: cover;
@@ -40,17 +40,17 @@ and open the template in the editor.
         <div class="container">
 
             <!-- Codrops top bar -->
-            
+
 
             <header>
-                <h1>------------------------------------------------------------</h1>
-                <h1><strong> Grupo Assinatura Externa </strong> </h1>
-                <h1>------------------------------------------------------------</h1>
+                <div class="img-log">
+                    <img src="#{request.contextPath}/resources/imagens/assinatura.png" style="text-align: center;max-width: 650px;min-height: 200px;"/>
+                </div>
             </header>
 
             <section class="main">
                 <form class="form-3" method="post" action= "#{request.contextPath}/j_spring_security_check" style="margin-top: 10%;">
-                    
+
                     <p class="clearfix">
                         <label for="login">Usuario</label>
                         <input type="text" name="j_username" id="login" placeholder="usuário"/>

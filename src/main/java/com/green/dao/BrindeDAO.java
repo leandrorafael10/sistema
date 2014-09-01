@@ -2,21 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.green.dao;
 
 import com.green.modelo.Brinde;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-
 
 /**
  *
@@ -24,23 +21,35 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class BrindeDAO {
-    
+
     @Autowired
     private SessionFactory sessionFactory;
 
     @SuppressWarnings("unchecked")
-	public List<Brinde> listar(){
+    public List<Brinde> listar() {
         return getSessionFactory().getCurrentSession().createCriteria(Brinde.class).list();
     }
-    public Brinde carregar(Integer id){
+
+    public Brinde carregar(Integer id) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Brinde.class);
         criteria.add(Restrictions.eq("iDBrinde", id));
-        return (Brinde)criteria.uniqueResult();
+        return (Brinde) criteria.uniqueResult();
     }
-    public void salvar(Brinde brinde){
+
+    public void salvar(Brinde brinde) {
         getSessionFactory().getCurrentSession().merge(brinde);
     }
-    
+
+    public List listarPeriodo(Date inicio, Date fim) {
+        String sql = "select bc.iDCapalotejornal.iDPontovenda.descricao,bc.iDCapalotejornal.iDPontovenda.cidade, count(bc.iDBrinde)"
+                + " from com.green.modelo.Brindecapalote bc "
+                + "where bc.iDCapalotejornal.dTVenda > :inicio"
+                + " and bc.iDCapalotejornal.dTVenda < :fim group by bc.iDCapalotejornal.iDPontovenda order by count(bc.iDBrinde) desc";
+        Query query = getSessionFactory().getCurrentSession().createQuery(sql).setDate("inicio", inicio).setDate("fim", fim);
+        query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+        return query.list();
+    }
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
@@ -52,5 +61,5 @@ public class BrindeDAO {
     public void atualizar(Brinde b) {
         getSessionFactory().getCurrentSession().update(b);
     }
-    
+
 }

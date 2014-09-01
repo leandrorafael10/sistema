@@ -5,6 +5,7 @@
 package com.green.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -23,6 +24,9 @@ public class Origem implements Serializable {
     @JoinColumn(name = "IDContrato_midia", referencedColumnName = "idcontrato_midia")
     @ManyToOne(fetch = FetchType.EAGER)
     private ContratoMidia IDContratoMidia;
+    @OneToMany(mappedBy ="idorigem" ,cascade={CascadeType.MERGE,CascadeType.REMOVE})
+    private List<Receita> receitas;
+    
 
     public Origem() {
     }
@@ -47,6 +51,15 @@ public class Origem implements Serializable {
         this.IDContratoMidia = IDContratoMidia;
     }
 
+    public List<Receita> getReceitas() {
+        return receitas;
+    }
+
+    public void setReceitas(List<Receita> receitas) {
+        this.receitas = receitas;
+    }
+    
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Origem)) {
@@ -70,4 +83,5 @@ public class Origem implements Serializable {
     public String toString() {
         return "com.green.modelo.Origem[" + "idorigem=" + idorigem + "]";
     }
+    
 }

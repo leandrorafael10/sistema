@@ -7,11 +7,24 @@
             /WEB-INF/Spring-Security.xml
         </param-value>
     </context-param>
+    <context-param>   
+        <param-name>com.sun.faces.writeStateAtFormEnd</param-name>   
+        <param-value>false</param-value>   
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
+    <servlet>
+        <servlet-name>JasperReportsImageServlet</servlet-name>
+        <servlet-class>net.sf.jasperreports.j2ee.servlets.ImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JasperReportsImageServlet</servlet-name>
+        <url-pattern>/stella-boleto</url-pattern>
+    </servlet-mapping>
     <error-page>
         <location>/logteste/login.jsf?faces-redirect=true</location>
     </error-page>
@@ -54,6 +67,6 @@
     </listener>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>redmond</param-value>
+        <param-value>hot-sneaks</param-value>
     </context-param>
 </web-app>

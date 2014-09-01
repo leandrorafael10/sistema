@@ -16,9 +16,6 @@
                 <h:form id="formRanking">
                     <br/>
                     <p:tabView id="tabView" dynamic="true">
-
-
-
                         <p:tab title="Ranking parcial" id="Godfather1">
                             <p:panel >
                                 <h:panelGrid columns="6" cellspacing="5">
@@ -31,15 +28,11 @@
                                     <p:selectOneMenu value="#{capaLoteJornalBean.ano}">
                                         <f:selectItems value="#{calendarioUtil.ano}" />
                                     </p:selectOneMenu>
-
-
                                     <p:commandButton value="buscar"
                                                      actionListener="#{capaLoteJornalBean.calculaRanking(event)}"
                                                      update="equipesTable gridGeral" />
-
                                 </h:panelGrid>
                             </p:panel>
-
                             <p:separator/>
                             <h:panelGrid columns="4" cellspacing="5">
                                 <p:panelGrid id="gridGeral">
@@ -357,7 +350,7 @@
                                     </p:row>
                                 </p:panelGrid>
                                 &nbsp;
-                                <h:commandLink  target="_blank">
+                                <h:commandLink  target="_blank" action="#{capaLoteJornalBean.geraPdfFaturado}">
                                     <h:graphicImage library="imagens" name="pdf.png" title="pdf"/>
                                 </h:commandLink>
                                 <h:commandLink target="_blank">

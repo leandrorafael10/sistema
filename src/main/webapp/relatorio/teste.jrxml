@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="b50a4851-0678-4d56-bf90-83059b1f33fe">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" markup="html" fontName="Arial" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="qtd" class="java.lang.Integer">
+		<fieldDescription><![CDATA[qtd]]></fieldDescription>
+	</field>
+	<field name="IDTermoResponsabilidade" class="com.green.modelo.TermoResponsabilidade">
+		<fieldDescription><![CDATA[IDTermoResponsabilidade]]></fieldDescription>
+	</field>
+	<field name="IDBrindetermo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[IDBrindetermo]]></fieldDescription>
+	</field>
+	<field name="IDBrinde" class="com.green.modelo.Brinde">
+		<fieldDescription><![CDATA[IDBrinde]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="721" height="66" backcolor="#000000" uuid="d24ff2d9-8612-4bb3-a996-97e8b349ce5a"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="370" height="66" uuid="d520f201-f9c0-484f-ba17-864298a3e53c"/>
+					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
+					<textElement verticalAlignment="Bottom" markup="html">
+						<font isBold="false" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Cherry Title]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="SubTitle" x="370" y="37" width="316" height="29" uuid="64110bcd-197f-49b3-bb3a-822ce67fe4de"/>
+					<textElement textAlignment="Right">
+						<font size="22" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Cherry SubTitle]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="70" width="721" height="32" forecolor="#000000" backcolor="#CC0000" uuid="6fe15183-0b6a-40bd-9144-2ef5dbe60c11"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="553" y="12" width="144" height="20" forecolor="#FFFFFF" uuid="fbe4312d-0f15-4380-8e44-33338910d6cf"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="6185443c-72dd-49a5-aac6-1778b1e64e1f"/>
+				<text><![CDATA[IDBrindetermo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="100" height="20" uuid="63201e80-4526-4258-89be-56ecc57ab0e1"/>
+				<text><![CDATA[IDTermoResponsabilidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="100" height="20" uuid="4d711f73-9c48-444b-8fea-2254df1abb39"/>
+				<text><![CDATA[IDBrinde]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="100" height="20" uuid="afc36149-c087-42c1-ad14-4f04b2972be5"/>
+				<text><![CDATA[qtd]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="20" backcolor="#CCCCCC" uuid="dad03f56-7fe7-4a4d-a7a2-7994145fc6ba"/>
+				<textField>
+					<reportElement x="0" y="0" width="100" height="20" uuid="90cbd54d-bb51-46cd-bcd8-875531e54c01"/>
+					<textElement>
+						<font size="24" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{IDBrindetermo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="0" width="100" height="20" uuid="302d197f-6f4c-40ae-80b1-34b5623117a4"/>
+					<textFieldExpression><![CDATA[""+$F{IDTermoResponsabilidade}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="200" y="0" width="100" height="20" uuid="5848d333-12f4-41e4-b5f3-ef84fe13dbbe"/>
+					<textFieldExpression><![CDATA[""+$F{IDBrinde}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="300" y="0" width="100" height="20" uuid="49845c3c-a3eb-4825-a0e6-49657afa9a4c"/>
+					<textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="b154556b-357e-484b-8306-fb5952741761"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="1f58ee86-8a6c-47c1-9325-bf0257390e09"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="63aa191c-1953-4e07-9106-15790e961b7f"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="fd92a9ee-add7-4b3a-a077-711cf0ecebaa"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="5e04501d-2e76-4a3c-88ac-c629f1cad704"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

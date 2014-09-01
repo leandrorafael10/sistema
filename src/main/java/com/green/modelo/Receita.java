@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -135,13 +134,6 @@ public class Receita implements Serializable {
      @JoinColumn(name = "IDConta",referencedColumnName = "IDConta")
     @ManyToOne(fetch = FetchType.EAGER)
     private Conta IDConta;
-    @Column(name = "Des_cedido")
-    private boolean desCedido;
-    @Column(name = "atz_pg")
-    private Integer atzPg;
-    @Column(name = "dt_atz")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dtAtz;
     @Column(name ="pago")
     private boolean pago;
 
@@ -423,30 +415,6 @@ public class Receita implements Serializable {
         this.IDConta = IDConta;
     }
     
-
-    public boolean isDesCedido() {
-        return desCedido;
-    }
-
-    public void setDesCedido(boolean desCedido) {
-        this.desCedido = desCedido;
-    }
-    
-    public Integer getAtzPg() {
-        return atzPg;
-    }
-
-    public void setAtzPg(Integer atzPg) {
-        this.atzPg = atzPg;
-    }
-
-    public Date getDtAtz() {
-        return dtAtz;
-    }
-
-    public void setDtAtz(Date dtAtz) {
-        this.dtAtz = dtAtz;
-    }
     public boolean getPago() {
         return pago;
     }

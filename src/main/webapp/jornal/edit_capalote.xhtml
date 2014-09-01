@@ -1,386 +1,380 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
-<body>
+    <body>
 
-	<ui:composition template="./../principal/templategreen.xhtml">
+        <ui:composition template="./../principal/templategreen.xhtml">
 
-		<ui:define name="principal-interna">
-			<h:form id="formEditCapasLote">
+            <ui:define name="principal-interna">
+                <h:form id="formEditCapasLote">
 
-				<p:panel>
-					<p:messages />
-					<p:panel header="Pesquisar contrato">
-						<p:panelGrid columns="3">
+                    <p:panel>
+                        <p:messages />
+                        <p:panel header="Pesquisar contrato">
+                            <p:panelGrid columns="3">
 
-							<h:panelGrid columns="3">
-								<h:outputText value="Numero:" />
-								<p:inputText value="#{capaLoteJornalBean.contrato}" size="10">
+                                <h:panelGrid columns="3">
+                                    <h:outputText value="Numero:" />
+                                    <p:inputText value="#{capaLoteJornalBean.contrato}" size="10">
 
-								</p:inputText>
-								<p:commandButton icon="ui-icon-search"
-									actionListener="#{capaLoteJornalBean.buscarPorNumero(ActionEvent)}"
-									update=":formEditCapasLote" onstart="statusDialog.show();"
-									onsuccess="statusDialog.hide();" />
-							</h:panelGrid>
-
-
-							<h:panelGrid columns="3">
-								<h:outputText value="Numero gestor:" />
-								<p:inputText value="#{capaLoteJornalBean.numeroGestor}"
-									>
-
-								</p:inputText>
-								<p:commandButton icon="ui-icon-search"
-									actionListener="#{capaLoteJornalBean.buscaPorGestor(event)}"
-									update=":formEditCapasLote" onstart="statusDialog.show();"
-									onsuccess="statusDialog.hide();" />
-							</h:panelGrid>
-							<h:panelGrid columns="3">
-								<h:outputText value="Cliente:" />
-								<p:inputText value="#{capaLoteJornalBean.cliente}" >
-
-								</p:inputText>
-								<p:commandButton icon="ui-icon-search"
-									actionListener="#{capaLoteJornalBean.buscaPorCliente(event)}"
-									update=":formEditCapasLote" onstart="statusDialog.show();"
-									onsuccess="statusDialog.hide();" />
-							</h:panelGrid>
-
-						</p:panelGrid>
-					</p:panel>
-					<p:messages />
-					<p:growl life="30000" />
-					<p:panel header="Dados do contrato" id="paneldados">
-						<p:panelGrid columns="4">
-							<h:outputText value="Numero:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.contrato}" />
-							<h:outputText value="Cliente:" />
-							<h:outputText value="#{capaLoteJornalBean.capalotejornal.nome}" />
-							<h:outputText value="Monitor:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}" />
-							<h:outputText value="Promotor:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.IDFuncionarioPromotor.IDPessoa.razao}" />
-							<h:outputText value="Tipo:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.IDTipopagamento.descricao}" />
-							<h:outputText value="Modalidade:" />
-							<h:outputText value="#{capaLoteJornalBean.capalotejornal.valor}">
-								<f:convertNumber minFractionDigits="2" />
-							</h:outputText>
-							<h:outputText value="Nº gestor:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.gerador}" />
-							<h:outputText value="Data inc. gestor:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-							<h:outputText value="Data Venda:" />
-
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.DTVenda}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-							<h:outputText value="Status:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.status==0?'Cancelado':(capaLoteJornalBean.capalotejornal.status==1?'Ativo':(capaLoteJornalBean.capalotejornal.status==2?'Pendente':(capaLoteJornalBean.capalotejornal.status==3?'Agendado':(capaLoteJornalBean.capalotejornal.status==4?'Renovação':'Estornado'))))}"
-								styleClass="#{capaLoteJornalBean.capalotejornal.status==0?'vermelho':(capaLoteJornalBean.capalotejornal.status==1?'azul':(capaLoteJornalBean.capalotejornal.status==2?'amarelo':''))}" />
-							
-							<h:outputText value="Data estorno:"
-								rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}" />
-							<p:dataList
-								value="#{capaLoteJornalBean.capalotejornal.vendaestornoList}"
-								var="estorno" rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}">
-								<h:outputText value="#{estorno.DTEstorno}" styleClass="vermelho">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
-								</h:outputText>
-								
-
-							</p:dataList>
-							<h:outputText value="Valor estorno:"
-								rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}" />
-							<p:dataList
-								value="#{capaLoteJornalBean.capalotejornal.vendaestornoList}"
-								var="estornoValor" rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}">
-								<h:outputText value="#{estornoValor.valor}" styleClass="vermelho">
-									<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
-								</h:outputText>
-
-							</p:dataList>
-							<h:outputText value="Data cancelamento:"
-								rendered="#{capaLoteJornalBean.capalotejornal.status==0?true:false}" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.status==0?capaLoteJornalBean.capalotejornal.DTCancel:''}"
-								rendered="#{capaLoteJornalBean.capalotejornal.status==0?true:false}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-											
-
-							
-							<h:outputText value="Obs:" />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.motivoAlt}" />
-
-							<h:outputText value="assinaturas" />
-							<h:panelGrid columns="2">
-								<h:outputText value="web o tempo" />
-								<h:outputText
-									value="#{capaLoteJornalBean.capalotejornal.web_otempo==true?'sim':'não'}" />
-								<h:outputText value="web o super" />
-								<h:outputText
-									value="#{capaLoteJornalBean.capalotejornal.web_super==true?'sim':'não'}" />
-								<h:outputText value="o tempo fisico" />
-								<h:outputText
-									value="#{capaLoteJornalBean.capalotejornal.fisico_otempo==true?'sim':'não'}" />
-							</h:panelGrid>
-						</p:panelGrid>
-						<p:separator />
-
-						<p:commandButton value="editar dados"
-							title="editar dados da venda"
-							oncomplete="PF('dialogEditVenda').show();"
-							update=":formEditVenda"
-							disabled="#{capaLoteJornalBean.capalotejornal.IDCapalotejornal!=null?false:true}"
-							onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
-
-						</p:commandButton>
-						<p:commandButton value="cancelar"
-							title="cancelar venda definitivamente"
-							oncomplete="PF('DialogcancelCapaLote').show();"
-							update=":formCancelVenda"
-							disabled="#{capaLoteJornalBean.capalotejornal.IDCapalotejornal!=null?false:true}"
-							onstart="statusDialog.show();" onsuccess="statusDialog.hide();" />
-						<p:commandButton value="estornar"
-							title="estornar venda ja finalizada"
-							oncomplete="PF('dialogEstornoVenda').show();"
-							update=":formEstonoVenda"
-							disabled="#{capaLoteJornalBean.capalotejornal.IDCapalotejornal!=null?false:true}"
-							onstart="statusDialog.show();" onsuccess="statusDialog.hide();" />
-					</p:panel>
-					<p:dialog widgetVar="capaloteErro" closable="false" modal="true"
-						resizable="false" width="300">
-						<h:panelGrid columns="1">
-							<h:outputText value="NUMERO DE CONTRATO NÃO EXISTE!" />
-						</h:panelGrid>
-						<p:separator />
-						<p:commandButton value="sair" onclick="PF('capaloteErro').hide();"
-							update=":formEditCapasLote" />
-					</p:dialog>
+                                    </p:inputText>
+                                    <p:commandButton icon="ui-icon-search"
+                                                     actionListener="#{capaLoteJornalBean.buscarPorNumero(ActionEvent)}"
+                                                     update=":formEditCapasLote" />
+                                </h:panelGrid>
 
 
-				</p:panel>
-			</h:form>
-			<h:form id="formEditVenda">
-				<p:dialog widgetVar="dialogEditVenda" header="Editar dados venda"
-					modal="true">
-					<p:panel id="painelEditVenda">
-						<p:messages />
-						<h2>Nº &nbsp; :&nbsp;
-							#{capaLoteJornalBean.capalotejornal.contrato}</h2>
+                                <h:panelGrid columns="3">
+                                    <h:outputText value="Numero gestor:" />
+                                    <p:inputText value="#{capaLoteJornalBean.numeroGestor}"
+                                                 >
+
+                                    </p:inputText>
+                                    <p:commandButton icon="ui-icon-search"
+                                                     actionListener="#{capaLoteJornalBean.buscaPorGestor(event)}"
+                                                     update=":formEditCapasLote" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="3">
+                                    <h:outputText value="Cliente:" />
+                                    <p:inputText value="#{capaLoteJornalBean.cliente}" >
+
+                                    </p:inputText>
+                                    <p:commandButton icon="ui-icon-search"
+                                                     actionListener="#{capaLoteJornalBean.buscaPorCliente(event)}"
+                                                     update=":formEditCapasLote" />
+                                </h:panelGrid>
+
+                            </p:panelGrid>
+                        </p:panel>
+                        <p:messages />
+                        <p:growl life="30000" />
+                        <p:panel header="Dados do contrato" id="paneldados">
+                            <p:panelGrid columns="4">
+                                <h:outputText value="Numero:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.contrato}" />
+                                <h:outputText value="Cliente:" />
+                                <h:outputText value="#{capaLoteJornalBean.capalotejornal.nome}" />
+                                <h:outputText value="Monitor:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}" />
+                                <h:outputText value="Promotor:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.IDFuncionarioPromotor.IDPessoa.razao}" />
+                                <h:outputText value="Tipo:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.IDTipopagamento.descricao}" />
+                                <h:outputText value="Modalidade:" />
+                                <h:outputText value="#{capaLoteJornalBean.capalotejornal.valor}">
+                                    <f:convertNumber minFractionDigits="2" />
+                                </h:outputText>
+                                <h:outputText value="Nº gestor:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.gerador}" />
+                                <h:outputText value="Data inc. gestor:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Data Venda:" />
+
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.DTVenda}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Status:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.status==0?'Cancelado':(capaLoteJornalBean.capalotejornal.status==1?'Ativo':(capaLoteJornalBean.capalotejornal.status==2?'Pendente':(capaLoteJornalBean.capalotejornal.status==3?'Agendado':(capaLoteJornalBean.capalotejornal.status==4?'Renovação':'Estornado'))))}"
+                                    styleClass="#{capaLoteJornalBean.capalotejornal.status==0?'vermelho':(capaLoteJornalBean.capalotejornal.status==1?'azul':(capaLoteJornalBean.capalotejornal.status==2?'amarelo':''))}" />
+
+                                <h:outputText value="Data estorno:"
+                                              rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}" />
+                                <p:dataList
+                                    value="#{capaLoteJornalBean.capalotejornal.vendaestornoList}"
+                                    var="estorno" rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}">
+                                    <h:outputText value="#{estorno.DTEstorno}" styleClass="vermelho">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
 
 
-						<h:panelGrid columns="4" cellpadding="3">
-							<h:outputText value="Nº gestor:" />
-							<p:inputText value="#{capaLoteJornalBean.capalotejornal.gerador}">
-								<p:ajax event="keyup" update="datagestor" />
-							</p:inputText>
-							<h:outputText value="Data inc. gestor:" />
-							<p:calendar id="datagestor"
-								value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}"
-								required="#{capaLoteJornalBean.capalotejornal.gerador!=''?(capaLoteJornalBean.capalotejornal.gerador!=null?true:false):false}"
-								pattern="dd/MM/yyyy"
-								requiredMessage="Quando há numero de gestor e obrigatório data de gestor!">
+                                </p:dataList>
+                                <h:outputText value="Valor estorno:"
+                                              rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}" />
+                                <p:dataList
+                                    value="#{capaLoteJornalBean.capalotejornal.vendaestornoList}"
+                                    var="estornoValor" rendered="#{capaLoteJornalBean.capalotejornal.status==5?true:false}">
+                                    <h:outputText value="#{estornoValor.valor}" styleClass="vermelho">
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                    </h:outputText>
 
-							</p:calendar>
-							<h:outputText value="Cliente :" />
-							<p:inputText value="#{capaLoteJornalBean.capalotejornal.nome}"
-								maxlength="120" size="50" required="true"
-								requiredMessage="Nome cliente e obrigatorio!" />
-
-							<h:outputText value="Forma Pagamento :" />
-							<p:selectOneMenu converter="tipoPagamentoConverter"
-								required="true"
-								requiredMessage="Escolha uma forma de pagamento."
-								value="#{capaLoteJornalBean.capalotejornal.IDTipopagamento}">
-								<f:selectItems value="#{tipoPagamentoRN.formaPagJornal()}"
-									var="formaPag" itemLabel="#{formaPag.descricao}"
-									itemValue="#{formaPag}" />
-							</p:selectOneMenu>
+                                </p:dataList>
+                                <h:outputText value="Data cancelamento:"
+                                              rendered="#{capaLoteJornalBean.capalotejornal.status==0?true:false}" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.status==0?capaLoteJornalBean.capalotejornal.DTCancel:''}"
+                                    rendered="#{capaLoteJornalBean.capalotejornal.status==0?true:false}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
 
 
 
-							<h:outputText value="valor: " />
+                                <h:outputText value="Obs:" />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.motivoAlt}" />
 
-							<p:inputText value="#{capaLoteJornalBean.valorAlt}"
-								required="true" requiredMessage="valor e obrigatorio!">
-								<f:convertNumber minFractionDigits="2" />
-							</p:inputText>
-							<h:outputText value="Status brinde:"/>
-							<p:selectBooleanCheckbox value="#{capaLoteJornalBean.capalotejornal.statusBrinde}"/>  
-							
-							
-							<h:outputText value="Obs:" />
-							<p:inputTextarea rows="8"
-								value="#{capaLoteJornalBean.capalotejornal.motivoAlt}" />
-							<p:panelGrid columns="2">
-								<h:outputText value="web super:" />
-								<p:selectBooleanCheckbox
-									value="#{capaLoteJornalBean.capalotejornal.web_super}" />
-								<h:outputText value="web o tempo:" />
-								<p:selectBooleanCheckbox
-									value="#{capaLoteJornalBean.capalotejornal.web_otempo}" />
-								<h:outputText value="o tempo fisico:" />
-								<p:selectBooleanCheckbox
-									value="#{capaLoteJornalBean.capalotejornal.fisico_otempo}" />
-							</p:panelGrid>
-							&nbsp;
-							<h:outputText value="Status: " />
-							<p:selectOneRadio id="options"
-								value="#{capaLoteJornalBean.capalotejornal.status}"
-								required="true">
-								<f:selectItem itemLabel="Ativo" itemValue="1" />
-								<f:selectItem itemLabel="Pendente" itemValue="2" />
-								<f:selectItem itemLabel="Agendado" itemValue="3" />
-								<f:selectItem itemLabel="Renovação" itemValue="4" />
-							</p:selectOneRadio>
+                                <h:outputText value="assinaturas" />
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="web o tempo" />
+                                    <h:outputText
+                                        value="#{capaLoteJornalBean.capalotejornal.web_otempo==true?'sim':'não'}" />
+                                    <h:outputText value="web o super" />
+                                    <h:outputText
+                                        value="#{capaLoteJornalBean.capalotejornal.web_super==true?'sim':'não'}" />
+                                    <h:outputText value="o tempo fisico" />
+                                    <h:outputText
+                                        value="#{capaLoteJornalBean.capalotejornal.fisico_otempo==true?'sim':'não'}" />
+                                </h:panelGrid>
+                            </p:panelGrid>
+                            <p:separator />
 
-						</h:panelGrid>
-						<p:separator />
-						<p:commandButton value="atualizar"
-							actionListener="#{capaLoteJornalBean.atualizarValor}"
-							update="formEditVenda:painelEditVenda" />
-						<p:commandButton value="sair"
-							onclick="PF('dialogEditVenda').hide();" />
-					</p:panel>
+                            <p:commandButton value="editar dados"
+                                             title="editar dados da venda"
+                                             oncomplete="PF('dialogEditVenda').show();"
+                                             update=":formEditVenda"
+                                             disabled="#{capaLoteJornalBean.capalotejornal.IDCapalotejornal!=null?false:true}"
+                                             >
 
-				</p:dialog>
-			</h:form>
-			<h:form id="formCancelVenda">
-				<p:dialog widgetVar="DialogcancelCapaLote" modal="true">
-					<p:panel>
-						<p:messages />
-						<h:panelGrid columns="2" cellspacing="5">
-							<h:outputText value="Contrato: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.contrato}" />
-							<h:outputText value="Nº Gestor: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.gerador}" />
-							<h:outputText value="Data inclusão gestor: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-							<h:outputText value="Cliente: " />
-							<h:outputText value="#{capaLoteJornalBean.capalotejornal.nome}" />
-							<h:outputText value="Data venda: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.DTVenda}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-							<h:outputText value="Vendedor: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.IDFuncionarioPromotor.IDPessoa.razao}" />
-							<h:outputText value="Gerente: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}" />
-							<h:outputText value="Data cancelamento:" />
-							<p:calendar value="#{capaLoteJornalBean.capalotejornal.DTCancel}"
-								pattern="dd/MM/yyyy" required="true" showOn="button"
-								requiredMessage="Para o cancelamento e obrigatório a tata do cancelamento!" />
+                            </p:commandButton>
+                            <p:commandButton value="cancelar"
+                                             title="cancelar venda definitivamente"
+                                             oncomplete="PF('DialogcancelCapaLote').show();"
+                                             update=":formCancelVenda"
+                                             disabled="#{capaLoteJornalBean.capalotejornal.IDCapalotejornal!=null?false:true}"
+                                             />
+                            <p:commandButton value="estornar"
+                                             title="estornar venda ja finalizada"
+                                             oncomplete="PF('dialogEstornoVenda').show();"
+                                             update=":formEstonoVenda"
+                                             disabled="#{capaLoteJornalBean.capalotejornal.IDCapalotejornal!=null?false:true}"
+                                             />
+                        </p:panel>
+                        <p:dialog widgetVar="capaloteErro" closable="false" modal="true"
+                                  resizable="false" width="300">
+                            <h:panelGrid columns="1">
+                                <h:outputText value="NUMERO DE CONTRATO NÃO EXISTE!" />
+                            </h:panelGrid>
+                            <p:separator />
+                            <p:commandButton value="sair" onclick="PF('capaloteErro').hide();"
+                                             update=":formEditCapasLote" />
+                        </p:dialog>
 
 
-							<h:outputText value="Motivo cancelamento: " />
-							<p:inputTextarea
-								value="#{capaLoteJornalBean.capalotejornal.obsCancel}"
-								required="true" maxlength="200" cols="20" rows="4" />
-						</h:panelGrid>
-					</p:panel>
-					<p:separator />
-					<p:commandButton value="cancelar"
-						actionListener="#{capaLoteJornalBean.atualizarStatus(0)}"
-						update="formCancelVenda" />
-					<p:commandButton value="sair"
-						onclick="PF('DialogcancelCapaLote').hide();" />
+                    </p:panel>
+                </h:form>
+                <h:form id="formEditVenda">
+                    <p:dialog widgetVar="dialogEditVenda" header="Editar dados venda"
+                              modal="true">
+                        <p:panel id="painelEditVenda">
+                            <p:messages />
+                            <h2>Nº &nbsp; :&nbsp;
+                                #{capaLoteJornalBean.capalotejornal.contrato}</h2>
 
-				</p:dialog>
-			</h:form>
-			<h:form id="formEstonoVenda">
-				<p:dialog widgetVar="dialogEstornoVenda" modal="true">
-					<p:panel id="panelEstorno">
-						<p:messages />
-						<p:panelGrid columns="2">
-							<h:outputText value="Contrato: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.contrato}"
-								styleClass="azul" />
-							<h:outputText value="Nº Gestor: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.gerador}"
-								styleClass="azul" />
-							<h:outputText value="Data inclusão gestor: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}"
-								styleClass="azul">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-							<h:outputText value="Cliente: " />
-							<h:outputText value="#{capaLoteJornalBean.capalotejornal.nome}"
-								styleClass="azul" />
-							<h:outputText value="Data venda: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.DTVenda}"
-								styleClass="azul">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-							<h:outputText value="Vendedor: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.IDFuncionarioPromotor.IDPessoa.razao}"
-								styleClass="azul" />
-							<h:outputText value="Gerente: " />
-							<h:outputText
-								value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}"
-								styleClass="azul" />
-							<h:outputText value="valor da venda: " />
-							<h:outputText value="#{capaLoteJornalBean.capalotejornal.valor}"
-								styleClass="azul">
-								<f:convertNumber maxFractionDigits="2" />
-							</h:outputText>
-							<h:outputText value="Data estorno:" />
-							<p:calendar value="#{capaLoteJornalBean.vendaestorno.DTEstorno}"
-								pattern="dd/MM/yyyy" required="true" showOn="button"
-								requiredMessage="data de estorno e obrigatório!" />
-							<h:outputText value="valor a ser estornado: " />
-							<p:inputText value="#{capaLoteJornalBean.vendaestorno.valor}"
-								title="informe o valor a ser estornado." required="true"
-								requiredMessage="valor do estorno e obrigatório!">
-								<f:convertNumber minFractionDigits="2" />
-							</p:inputText>
 
-						</p:panelGrid>
-						<h:panelGrid columns="2" cellspacing="10">
-							<p:commandButton value="estornar"
-								actionListener="#{capaLoteJornalBean.estornoDeVenda}"
-								update="formEstonoVenda:panelEstorno" />
-							<p:commandButton value="sair"
-								onclick="PF('dialogEstornoVenda').hide();" />
-						</h:panelGrid>
-					</p:panel>
-				</p:dialog>
-			</h:form>
+                            <h:panelGrid columns="4" cellpadding="3">
+                                <h:outputText value="Nº gestor:" />
+                                <p:inputText value="#{capaLoteJornalBean.capalotejornal.gerador}">
+                                    <p:ajax event="keyup" update="datagestor" />
+                                </p:inputText>
+                                <h:outputText value="Data inc. gestor:" />
+                                <p:calendar id="datagestor"
+                                            value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}"
+                                            required="#{capaLoteJornalBean.capalotejornal.gerador!=''?(capaLoteJornalBean.capalotejornal.gerador!=null?true:false):false}"
+                                            pattern="dd/MM/yyyy"
+                                            requiredMessage="Quando há numero de gestor e obrigatório data de gestor!">
 
-		</ui:define>
+                                </p:calendar>
+                                <h:outputText value="Cliente :" />
+                                <p:inputText value="#{capaLoteJornalBean.capalotejornal.nome}"
+                                             maxlength="120" size="50" required="true"
+                                             requiredMessage="Nome cliente e obrigatorio!" />
 
-	</ui:composition>
+                                <h:outputText value="Forma Pagamento :" />
+                                <p:selectOneMenu converter="tipoPagamentoConverter"
+                                                 required="true"
+                                                 requiredMessage="Escolha uma forma de pagamento."
+                                                 value="#{capaLoteJornalBean.capalotejornal.IDTipopagamento}">
+                                    <f:selectItems value="#{tipoPagamentoRN.formaPagJornal()}"
+                                                   var="formaPag" itemLabel="#{formaPag.descricao}"
+                                                   itemValue="#{formaPag}" />
+                                </p:selectOneMenu>
 
-</body>
+
+
+                                <h:outputText value="valor: " />
+
+                                <p:inputText value="#{capaLoteJornalBean.valorAlt}"
+                                             required="true" requiredMessage="valor e obrigatorio!">
+                                    <f:convertNumber minFractionDigits="2" />
+                                </p:inputText>
+                                <h:outputText value="Status brinde:"/>
+                                <p:selectBooleanCheckbox value="#{capaLoteJornalBean.capalotejornal.statusBrinde}"/>  
+
+
+                                <h:outputText value="Obs:" />
+                                <p:inputTextarea rows="8"
+                                                 value="#{capaLoteJornalBean.capalotejornal.motivoAlt}" />
+                                <p:panelGrid columns="2">
+                                    <h:outputText value="web super:" />
+                                    <p:selectBooleanCheckbox
+                                        value="#{capaLoteJornalBean.capalotejornal.web_super}" />
+                                    <h:outputText value="web o tempo:" />
+                                    <p:selectBooleanCheckbox
+                                        value="#{capaLoteJornalBean.capalotejornal.web_otempo}" />
+                                    <h:outputText value="o tempo fisico:" />
+                                    <p:selectBooleanCheckbox
+                                        value="#{capaLoteJornalBean.capalotejornal.fisico_otempo}" />
+                                </p:panelGrid>
+                                &nbsp;
+                                <h:outputText value="Status: " />
+                                <p:selectOneRadio id="options"
+                                                  value="#{capaLoteJornalBean.capalotejornal.status}"
+                                                  required="true">
+                                    <f:selectItem itemLabel="Ativo" itemValue="1" />
+                                    <f:selectItem itemLabel="Pendente" itemValue="2" />
+                                    <f:selectItem itemLabel="Agendado" itemValue="3" />
+                                    <f:selectItem itemLabel="Renovação" itemValue="4" />
+                                </p:selectOneRadio>
+
+                            </h:panelGrid>
+                            <p:separator />
+                            <p:commandButton value="atualizar"
+                                             actionListener="#{capaLoteJornalBean.atualizarValor}"
+                                             update="formEditVenda:painelEditVenda" />
+                            <p:commandButton value="sair"
+                                             onclick="PF('dialogEditVenda').hide();" />
+                        </p:panel>
+
+                    </p:dialog>
+                </h:form>
+                <h:form id="formCancelVenda">
+                    <p:dialog widgetVar="DialogcancelCapaLote" modal="true">
+                        <p:panel>
+                            <p:messages />
+                            <h:panelGrid columns="2" cellspacing="5">
+                                <h:outputText value="Contrato: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.contrato}" />
+                                <h:outputText value="Nº Gestor: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.gerador}" />
+                                <h:outputText value="Data inclusão gestor: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Cliente: " />
+                                <h:outputText value="#{capaLoteJornalBean.capalotejornal.nome}" />
+                                <h:outputText value="Data venda: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.DTVenda}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Vendedor: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.IDFuncionarioPromotor.IDPessoa.razao}" />
+                                <h:outputText value="Gerente: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}" />
+                                <h:outputText value="Data cancelamento:" />
+                                <p:calendar value="#{capaLoteJornalBean.capalotejornal.DTCancel}"
+                                            pattern="dd/MM/yyyy" required="true" showOn="button"
+                                            requiredMessage="Para o cancelamento e obrigatório a tata do cancelamento!" />
+
+
+                                <h:outputText value="Motivo cancelamento: " />
+                                <p:inputTextarea
+                                    value="#{capaLoteJornalBean.capalotejornal.obsCancel}"
+                                    required="true" maxlength="200" cols="20" rows="4" />
+                            </h:panelGrid>
+                        </p:panel>
+                        <p:separator />
+                        <p:commandButton value="cancelar"
+                                         actionListener="#{capaLoteJornalBean.atualizarStatus(0)}"
+                                         update="formCancelVenda" />
+                        <p:commandButton value="sair"
+                                         onclick="PF('DialogcancelCapaLote').hide();" />
+
+                    </p:dialog>
+                </h:form>
+                <h:form id="formEstonoVenda">
+                    <p:dialog widgetVar="dialogEstornoVenda" modal="true">
+                        <p:panel id="panelEstorno">
+                            <p:messages />
+                            <p:panelGrid columns="2">
+                                <h:outputText value="Contrato: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.contrato}"
+                                    styleClass="azul" />
+                                <h:outputText value="Nº Gestor: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.gerador}"
+                                    styleClass="azul" />
+                                <h:outputText value="Data inclusão gestor: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}"
+                                    styleClass="azul">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Cliente: " />
+                                <h:outputText value="#{capaLoteJornalBean.capalotejornal.nome}"
+                                              styleClass="azul" />
+                                <h:outputText value="Data venda: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.DTVenda}"
+                                    styleClass="azul">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="Vendedor: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.IDFuncionarioPromotor.IDPessoa.razao}"
+                                    styleClass="azul" />
+                                <h:outputText value="Gerente: " />
+                                <h:outputText
+                                    value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}"
+                                    styleClass="azul" />
+                                <h:outputText value="valor da venda: " />
+                                <h:outputText value="#{capaLoteJornalBean.capalotejornal.valor}"
+                                              styleClass="azul">
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </h:outputText>
+                                <h:outputText value="Data estorno:" />
+                                <p:calendar value="#{capaLoteJornalBean.vendaestorno.DTEstorno}"
+                                            pattern="dd/MM/yyyy" required="true" showOn="button"
+                                            requiredMessage="data de estorno e obrigatório!" />
+                                <h:outputText value="valor a ser estornado: " />
+                                <p:inputText value="#{capaLoteJornalBean.vendaestorno.valor}"
+                                             title="informe o valor a ser estornado." required="true"
+                                             requiredMessage="valor do estorno e obrigatório!">
+                                    <f:convertNumber minFractionDigits="2" />
+                                </p:inputText>
+
+                            </p:panelGrid>
+                            <h:panelGrid columns="2" cellspacing="10">
+                                <p:commandButton value="estornar"
+                                                 actionListener="#{capaLoteJornalBean.estornoDeVenda}"
+                                                 update="formEstonoVenda:panelEstorno" />
+                                <p:commandButton value="sair"
+                                                 onclick="PF('dialogEstornoVenda').hide();" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
 </html>

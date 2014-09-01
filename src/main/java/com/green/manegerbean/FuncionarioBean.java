@@ -13,7 +13,6 @@ import com.green.rn.FuncaoRN;
 import com.green.rn.FuncionarioRN;
 import com.green.rn.PessoaRN;
 import com.green.util.CepWebService;
-import com.green.util.Endereco;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Serializable;
@@ -55,7 +54,6 @@ public class FuncionarioBean implements Serializable {
     private List<Funcionario> funcionarioFiltro;
     private List<Funcionario> gerentes;
     private List<Funcionario> vendedores;
-    private Endereco endereco = new Endereco();
     private Contato contatoEditado = new Contato();
     private Boolean estadoCadastrar = Boolean.FALSE;
     private Boolean estadoEditar = Boolean.FALSE;
@@ -173,14 +171,12 @@ public class FuncionarioBean implements Serializable {
                 imageOutput.close();
 
 
-                context.update("formInforFuncionario");
-                context.execute("PF('func').show();");
+                
             } catch (Exception e) {
                 throw new FacesException("Erro na captura da imagem!");
             }
         } else {
-            context.update("formInforFuncionario");
-            context.execute("PF('func').show();");
+            
         }
 
     }
@@ -189,10 +185,10 @@ public class FuncionarioBean implements Serializable {
         RequestContext rc = RequestContext.getCurrentInstance();
 
         if (!buscaCpfCnpj(getFuncionario().getIDPessoa().getCnpjCpf())) {
-            rc.execute("dialogError.show()");
+            rc.execute("PF('dialogError').show()");
         } else {
             formatatel(getTelefoneF(), getTelefoneCel());
-            getFuncionarioRN().Salvar(getFuncionario(), getEndereco(), getContato());
+            getFuncionarioRN().Salvar(getFuncionario(), getContato());
             this.funcionario = new Funcionario();
             setEstadoCadastrar(Boolean.FALSE);
             setEstadoEditar(Boolean.FALSE);
@@ -279,13 +275,6 @@ public class FuncionarioBean implements Serializable {
         this.funcionarioRN = funcionarioRN;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
 
     public Funcionario getFuncionarioEditado() {
         return funcionarioEditado;

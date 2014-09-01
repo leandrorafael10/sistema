@@ -74,7 +74,7 @@ public class CapaLoteJornalDAO {
                 .createQuery(
                         "from com.green.modelo.Capalotejornal where month(dTInc) = :inicio "
                         + "and year(dTInc) = :fim and day(dTInc) = :dia  order by iDCapalotejornal desc")
-                .setInteger("inicio", mes).setInteger("fim", ano).setInteger("dia", dia);
+                .setInteger("inicio", mes).setInteger("fim", ano).setInteger("dia", dia).setMaxResults(50);
         return (List<Capalotejornal>) query.list();
     }
 

@@ -1,0 +1,374 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <body>
+        
+        <ui:composition template="./templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <br/>
+                <h:form id="formcadastro">
+                    <p:growl life="2000"/>
+                    <p:panel>
+                        <h:panelGrid columns="6" cellspacing="5">
+                            <h:outputText value="Tipo"/>
+                            <p:selectOneRadio value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}" required="true">
+                                <f:selectItem itemLabel="CPF" itemValue="true"/>
+                                <f:selectItem itemLabel="CNPJ" itemValue="false"/>
+                                <p:ajax update="formcadastro" listener="#{contratoMidiaBean.limpar()}"/>
+                            </p:selectOneRadio>
+                            <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica?'Cpf:':'Cnpj:'}"/>
+                            <p:inputMask required="true" mask="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica?'99.999.999/9999-99':'999.999.999-99'}"
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.cnpjCpf}">
+                                <p:ajax event="blur" update="formcadastro" listener="#{contratoMidiaBean.buscaCpfCnpj}" />
+                            </p:inputMask>
+                            <h:outputText value=""/>
+                            <h:outputText value=""/>
+                            <h:outputText value="Nome Fantazia:"/>
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}" maxlength="70"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"/>
+                            <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica?'Nome:':'Razão:'}"/>
+                            <p:inputText id="nomeRazao" 
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.razao}"
+                                         required="true"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         requiredMessage="Nome ou Razão social e obrigatório!"/>
+                            <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica?'RG:':'Ins. Estadual::'}"/>
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoEstadual}" 
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"
+                                         />
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.rg}" maxlength="20"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputText value="Ins. Municipal:" rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoMunicipal}" 
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputText value="Data Nasc.:" rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <p:calendar mask="true" pattern="dd/MM/yyyy"
+                                        disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                        value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.DTNascimento}" 
+                                        rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"
+                                        size="12"
+                                        navigator="true"/>
+                            <h:outputLabel value="Contato da empresa:" rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <p:inputText label="Contato" 
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.referencia}"
+                                         size="20"
+                                         maxlength="20"
+                                         />
+                            <h:outputLabel value="Telefone fixo:"/>
+                            <p:inputMask  mask="(99)9999-9999" label="tel fixo" value="#{contratoMidiaBean.telefoneF}"
+                                          size="13"
+                                          disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                          required="true"
+                                          requiredMessage="Pelo menos um telefone e obrigatório!"
+                                          >
+                            </p:inputMask>
+                            <h:outputText value="Telefone celular"/>
+                            <p:inputMask mask="(99)9999-9999"
+                                         label="tel celular"
+
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         value="#{contratoMidiaBean.telefoneCel}"
+                                         size="13"
+                                         />
+                            <h:outputText value="Email: "/>
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.email}"
+                                         maxlength="70"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"/>
+                            <h:outputText value="Site: "/>
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.http}"
+                                         maxlength="70"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"/>
+                            <h:outputText value="Ramo atividade :"/>
+                            <p:selectOneMenu converter="ramoAtividadeConverter" 
+                                             value="#{contratoMidiaBean.contratoMidia.IDcliente.IDRamoAtividade}"
+                                             filter="true"
+                                             disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                             required="true">
+                                <f:selectItems  value="#{ramoAtividadeRN.listar()}"
+                                                var="ramo"
+                                                itemLabel="#{ramo.descricao}"
+                                                itemValue="#{ramo}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel for="cep" value="Cep:"/>
+                            <p:inputMask  mask="99999-999" id="cep" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.cep}"
+                                          size="9"
+
+                                          disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}">
+                                <p:ajax  event="blur" listener="#{contratoMidiaBean.buscaPorCep()}"
+                                         update="logradouro bairro cidade UF" 
+
+                                         />
+
+                            </p:inputMask>
+                            <h:outputLabel for="logradouro" value="Rua/Avenida:"/>
+                            <p:inputText id="logradouro" 
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.logradouro}"
+                                         size="40"
+                                         required="true"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         requiredMessage="Campo Obrigatorio"
+                                         maxlength="50">
+                            </p:inputText>
+                            <h:outputLabel for="numeroCasa" value="Nº:"/>
+                            <p:inputText id="numeroCasa" 
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.numero}"
+                                         size="8"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         maxlength="20"
+                                         required="true"/>
+                            <p:outputLabel value="Comple."/>
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.complemento}"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         maxlength="20"/>
+
+                            <h:outputLabel for="bairro" value="Bairro:"/>
+                            <p:inputText id="bairro" 
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.bairro}"
+                                         size="30"
+                                         maxlength="30"
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         required="true">
+                            </p:inputText>
+
+                            <h:outputText value="Cidade:"/>
+                            <p:inputText id="cidade" 
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.cidade}" 
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         required="true"
+                                         maxlength="25"
+                                         />
+
+
+                            <h:outputText value="UF:"/>
+                            <p:inputText id="UF" size="3" maxlength="2"   
+                                         value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.estado}" 
+                                         disabled="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.IDPessoa!=null?'true':'false'}"
+                                         required="true"
+                                         />
+
+
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:panel>
+                        <h:panelGrid columns="4" cellspacing="5">
+                            <h:outputText value="Numero : "/>
+                            <p:inputText value="#{contratoMidiaBean.contratoMidia.NContrato}" 
+                                         maxlength="30" 
+                                         size="10" 
+                                         required="true" 
+                                         requiredMessage="Numero autorização e obrigatório"/>
+                            <h:outputText value="Agência : "/>
+                            <p:selectOneMenu converter="fornecedorConverter" 
+                                             filter="true" 
+                                             value="#{contratoMidiaBean.contratoMidia.IDagencia}">
+                                <f:selectItem itemLabel=""/>
+                                <f:selectItems value="#{fornecedorRN.listarAgencia()}"
+                                               var="fornecedor"
+                                               itemLabel="#{fornecedor.IDPessoa.fantasia}"
+                                               itemValue="#{fornecedor}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Gerente de vendas:"/>
+                            <p:selectOneMenu converter="funcionarioConverter" 
+                                             required="true" 
+                                             value="#{contratoMidiaBean.contratoMidia.IDgerentevendas}">
+                                <f:selectItems value="#{funcionarioRN.listarGerente()}"
+                                               var="funcionario"
+                                               itemLabel="#{funcionario.IDPessoa.razao}"
+                                               itemValue="#{funcionario}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Vendido por:"/>
+                            <p:selectOneMenu converter="funcionarioConverter" 
+                                             required="true" 
+                                             value="#{contratoMidiaBean.contratoMidia.IDvendedor}">
+                                <f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+                                               var="funcionario"
+                                               itemLabel="#{funcionario.IDPessoa.razao}"
+                                               itemValue="#{funcionario}"/>
+                            </p:selectOneMenu>
+
+
+
+                            <h:outputText value="Data inicio:"/>
+                            <p:calendar value="#{contratoMidiaBean.contratoMidia.dataInicioContrato}" 
+                                        navigator="true" 
+                                        showOn="button"
+                                        pattern="dd/MM/yyyy"
+                                        size="14"
+                                        required="true"
+                                        requiredMessage="Data início é obrigatória!"/>
+                            <h:outputText value="Data fim:"/>
+                            <p:calendar value="#{contratoMidiaBean.contratoMidia.dataFimContrato}" 
+                                        navigator="true"
+                                        showOn="button"
+                                        pattern="dd/MM/yyyy"
+                                        size="14"
+                                        required="true"
+                                        requiredMessage="Data término é obrigatória!"/>
+                            <h:outputText value="Produto Midia"/>
+                            <p:selectOneMenu converter="produtoMidiaConverter" 
+                                             required="true" 
+                                             value="#{contratoMidiaBean.contratoMidia.IDproduto}"
+                                             >
+
+                                <f:selectItems value="#{produtoMidiaRN.listar()}"
+                                               var="produto_midia"
+                                               itemLabel="#{produto_midia.descricao}  ( #{produto_midia.tempoVideo}'') insecões = #{produto_midia.quantidadeInsercaoDiaria}(dia)" 
+                                               itemValue="#{produto_midia}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Enviar para produção :"/>
+                            <p:selectOneRadio  value="#{contratoMidiaBean.producao}" required="true" requiredMessage="Marque uma opção  produzir sim ou não .">
+                                <f:selectItem itemLabel="não" itemValue="#{false}"/>
+                                <f:selectItem itemLabel="sim" itemValue="#{true}"/>
+                            </p:selectOneRadio>
+                        </h:panelGrid>
+
+                    </p:panel>
+                    <p:panel>
+                        <h:panelGrid columns="4" cellspacing="5">
+                            <h:outputText value="Praças de vinculação:" />
+                            <p:selectManyCheckbox converter="pracaConverter" 
+                                                  label="pracas" 
+                                                  value="#{contratoMidiaBean.contratoMidia.pracas}" 
+                                                  layout="grid" 
+                                                  columns="4"
+                                                  required="true"
+                                                  requiredMessage="Marque a praça de atuação">
+                                <f:selectItems value="#{pracaRN.listar()}" var="praca" itemLabel="#{praca.descricao}" itemValue="#{praca}" />
+                            </p:selectManyCheckbox>
+
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:panel>
+                        <h:panelGrid columns="4" cellspacing="5">
+                            <h:outputText value="Condição de pagamento:" />
+                            <p:selectOneMenu converter="tipoPagamentoConverter" value="#{contratoMidiaBean.contratoMidia.IDtipopagamento}" required="true">  
+                                <f:selectItems value="#{tipoPagamentoRN.listar()}"
+                                               var="tipopagamento"
+                                               itemLabel="#{tipopagamento.descricao}"
+                                               itemValue="#{tipopagamento}">
+                                </f:selectItems>  
+                            </p:selectOneMenu>
+                            <h:outputText value="Numero de parcelas:"/>
+                            <p:selectOneMenu value="#{contratoMidiaBean.contratoMidia.numeroParcelas}">
+                                <f:selectItems value="#{contratoMidiaBean.dias}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Data 1º vencimento: "/>
+                            <p:calendar mask="true" 
+                                        pattern="dd/MM/yyyy" 
+                                        value="#{contratoMidiaBean.dataInicioParcelas}" 
+                                        size="12"
+                                        required="true"
+                                        requiredMessage="Data do primeiro vencimento e obrigatório!"/>
+                            <h:outputText value="Data da venda: "/>
+                            <p:calendar value="#{contratoMidiaBean.contratoMidia.DTVend}" 
+                                        navigator="true"
+                                        showOn="button"
+                                        pattern="dd/MM/yyyy"
+                                        size="14"
+                                        required="true"
+                                        requiredMessage="Data da venda é obrigatória!"/>
+
+                            <h:outputText value="Valor parcela:"/>
+                            <p:inputText maxlength="10" 
+                                         size="10" 
+                                         id="parcela" 
+                                         required="true" 
+                                         value="#{contratoMidiaBean.contratoMidia.valor}" 
+                                         requiredMessage="Valor total contrato e obrigatoria!">
+                                <f:convertNumber minFractionDigits="2" />
+                            </p:inputText> 
+                            <h:outputText value="Observações:"/>
+                            <p:inputTextarea value="#{contratoMidiaBean.contratoMidia.obs}" rows="5" cols="40" maxlength="199" />  
+
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:separator/>
+                    <p:commandButton process="@form" value="cadastrar" actionListener="#{contratoMidiaBean.confirmar}" update="formcadastro" />
+                </h:form>
+                <h:form id="formConfCadastro">
+                    <p:dialog resizable="false" id="dialogConfirmCadastro" widgetVar="dialogConfirmContrato" modal="true" >
+                        <h:outputText value="Razao social: " rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}" style="color: blue;"/>
+                        <h:outputText value="Nome: " rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}" />
+                        <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.razao}" style="color: blue;"/>
+                        <p:separator/>
+                        <h:panelGrid columns="4" cellspacing="4">
+                            <h:outputText value="Cnpj: " rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputText value="Cpf: " rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.cnpjCpf}"/>
+                            <h:outputText value="Ins.Estadual: " rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoEstadual}" rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputText value="RG: " rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.rg}" rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputText value="Ins.Municipal: " rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoMunicipal}" rendered="#{!contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputText value="Contato: " rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.referencia}" rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fisicaJuridica}"/>
+                            <h:outputLabel value="Telefone Fixo: "  />
+                            <h:outputText value="#{contratoMidiaBean.telefoneF}"  />
+                            <h:outputLabel value="Telefone Celular: "  />
+                            <h:outputText value="#{contratoMidiaBean.telefoneCel}" />
+                            <h:outputLabel value="Telefone Comercial: "  />
+                            <h:outputText value="#{contratoMidiaBean.telefoneC}"/>
+                            <h:outputLabel value="Email: "/>
+                            <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.email}"/>
+                            <h:outputText value="Rua: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.logradouro}"/>
+                            <h:outputText value="Numero: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.numero}"/>
+                            <h:outputText value="Bairro: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.bairro}"/>
+                            <h:outputText value="Cidade: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.cidade}"/>
+                            <h:outputText value="Estado: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.estado}"/>
+                            <h:outputText value="Gerente de Vendas: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDgerentevendas.IDPessoa.razao}"/>
+                            <h:outputText value="Executivo: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDvendedor.IDPessoa.razao}"/>
+                            <h:outputText id="periodo" value="Periodo de: "/>
+                            <h:outputLabel for="periodo" value="#{contratoMidiaBean.contratoMidia.dataInicioContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                            <h:outputText  value=" até: "/>
+                            <h:outputLabel  value="#{contratoMidiaBean.contratoMidia.dataFimContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                            <h:outputText value="Condição de pagamento: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDtipopagamento.descricao}"/>
+                            <h:outputText value="Numero de parcelas: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.numeroParcelas}"/>
+                            <h:outputText value="Dia 1º vencimento: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.dataInicioParcelas}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputLabel>
+                            <h:outputText value="Valor parcela: "/>
+                            <h:outputLabel value="#{contratoMidiaBean.contratoMidia.valor}" >
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputLabel>
+                            <h:outputText value="Praças:"/>
+                            <p:dataList var="pracasContrato" value="#{contratoMidiaBean.contratoMidia.pracas}" itemType="circle">
+                                #{pracasContrato.descricao}
+                            </p:dataList>
+                        </h:panelGrid>
+
+                        <p:commandButton value="cadastrar" actionListener="#{contratoMidiaBean.cadastrarNovo}" 
+                                         oncomplete="PF('dialogConfirmContrato').hide()" update=":formcadastro"
+                                         />
+                        &nbsp;&nbsp;
+                        <p:commandButton value="voltar" onclick="PF('dialogConfirmContrato').hide();"/>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

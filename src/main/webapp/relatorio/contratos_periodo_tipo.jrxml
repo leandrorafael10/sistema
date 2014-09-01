@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="dataInicio" class="java.util.Date"/>
+	<parameter name="dataFim" class="java.util.Date"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="tipo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="ativo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ativo]]></fieldDescription>
+	</field>
+	<field name="diaVencimento" class="java.lang.Integer">
+		<fieldDescription><![CDATA[diaVencimento]]></fieldDescription>
+	</field>
+	<field name="brutoLiq" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[brutoLiq]]></fieldDescription>
+	</field>
+	<field name="porcAgencia" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[porcAgencia]]></fieldDescription>
+	</field>
+	<field name="IDagencia" class="com.green.modelo.Fornecedor">
+		<fieldDescription><![CDATA[IDagencia]]></fieldDescription>
+	</field>
+	<field name="obs" class="java.lang.String">
+		<fieldDescription><![CDATA[obs]]></fieldDescription>
+	</field>
+	<field name="DTVend" class="java.util.Date">
+		<fieldDescription><![CDATA[DTVend]]></fieldDescription>
+	</field>
+	<field name="IDproduto" class="com.green.modelo.ProdutoMidia">
+		<fieldDescription><![CDATA[IDproduto]]></fieldDescription>
+	</field>
+	<field name="IDcliente" class="com.green.modelo.Cliente">
+		<fieldDescription><![CDATA[IDcliente]]></fieldDescription>
+	</field>
+	<field name="producaoList" class="java.util.List">
+		<fieldDescription><![CDATA[producaoList]]></fieldDescription>
+	</field>
+	<field name="origen" class="com.green.modelo.Origem">
+		<fieldDescription><![CDATA[origen]]></fieldDescription>
+	</field>
+	<field name="IDvendedor" class="com.green.modelo.Funcionario">
+		<fieldDescription><![CDATA[IDvendedor]]></fieldDescription>
+	</field>
+	<field name="IDtipopagamento" class="com.green.modelo.Tipopagamento">
+		<fieldDescription><![CDATA[IDtipopagamento]]></fieldDescription>
+	</field>
+	<field name="DTalt" class="java.util.Date">
+		<fieldDescription><![CDATA[DTalt]]></fieldDescription>
+	</field>
+	<field name="IDobsContrato" class="java.util.List">
+		<fieldDescription><![CDATA[IDobsContrato]]></fieldDescription>
+	</field>
+	<field name="idcontratoMidia" class="java.lang.Integer">
+		<fieldDescription><![CDATA[idcontratoMidia]]></fieldDescription>
+	</field>
+	<field name="IDassistentevendas" class="com.green.modelo.Funcionario">
+		<fieldDescription><![CDATA[IDassistentevendas]]></fieldDescription>
+	</field>
+	<field name="DTinc" class="java.util.Date">
+		<fieldDescription><![CDATA[DTinc]]></fieldDescription>
+	</field>
+	<field name="NContrato" class="java.lang.String">
+		<fieldDescription><![CDATA[NContrato]]></fieldDescription>
+	</field>
+	<field name="numeroParcelas" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroParcelas]]></fieldDescription>
+	</field>
+	<field name="IDusuario" class="com.green.modelo.Usuario">
+		<fieldDescription><![CDATA[IDusuario]]></fieldDescription>
+	</field>
+	<field name="clienteParceiro" class="java.lang.String">
+		<fieldDescription><![CDATA[clienteParceiro]]></fieldDescription>
+	</field>
+	<field name="IDusuarioalt" class="com.green.modelo.Usuario">
+		<fieldDescription><![CDATA[IDusuarioalt]]></fieldDescription>
+	</field>
+	<field name="IDgerentevendas" class="com.green.modelo.Funcionario">
+		<fieldDescription><![CDATA[IDgerentevendas]]></fieldDescription>
+	</field>
+	<field name="pracas" class="java.util.List">
+		<fieldDescription><![CDATA[pracas]]></fieldDescription>
+	</field>
+	<field name="dataInicioContrato" class="java.util.Date">
+		<fieldDescription><![CDATA[dataInicioContrato]]></fieldDescription>
+	</field>
+	<field name="obsCancelamento" class="java.lang.String">
+		<fieldDescription><![CDATA[obsCancelamento]]></fieldDescription>
+	</field>
+	<field name="dataFimContrato" class="java.util.Date">
+		<fieldDescription><![CDATA[dataFimContrato]]></fieldDescription>
+	</field>
+	<field name="dataCancelamento" class="java.util.Date">
+		<fieldDescription><![CDATA[dataCancelamento]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<variable name="soma" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="33" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="32"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="802" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="69" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="20" backcolor="#E3E3E3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="493" y="20" width="309" height="44"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="20" width="493" height="44"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="493" y="20" width="77" height="44"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período de]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="570" y="20" width="70" height="44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="640" y="20" width="48" height="44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[até]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="688" y="20" width="79" height="44"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFim}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="21" y="20" width="56" height="44"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emissor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="77" y="20" width="231" height="44"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="333" y="20" width="129" height="44"/>
+			</rectangle>
+			<textField>
+				<reportElement x="409" y="20" width="53" height="44"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="20" width="76" height="44"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="802" height="21" backcolor="#E7E5E5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="77" y="2" width="249" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razão social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="2" width="179" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome fantasia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="546" y="1" width="70" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ínicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="2" width="70" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fim]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="711" y="2" width="81" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="2" width="60" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contrato]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="77" y="0" width="249" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{IDcliente}.getIDPessoa().getRazao()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="0" width="179" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{IDcliente}.getIDPessoa().getFantasia()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="546" y="0" width="70" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataInicioContrato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="630" y="0" width="70" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataFimContrato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="711" y="0" width="81" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{origen}.getIDContratoMidia().getValor()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="0" width="60" height="16"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NContrato}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="44" splitType="Stretch">
+			<textField>
+				<reportElement x="640" y="14" width="101" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="741" y="14" width="51" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="67" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="498" y="15" width="243" height="38" backcolor="#ECEAEA"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="512" y="15" width="80" height="38"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total : R$ ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="592" y="15" width="127" height="38"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{soma}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="33" width="77" height="20"/>
+				<textElement/>
+				<text><![CDATA[Data emissão: ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="77" y="33" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

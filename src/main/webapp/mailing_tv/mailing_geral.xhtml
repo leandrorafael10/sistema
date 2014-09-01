@@ -14,7 +14,7 @@
                     <h:form id="forCadastroMailing">
                         <p:messages id="msgMailing"/>
                         <h2><h:outputText value="Novo cadastro ao mailing"/></h2>
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="4">
                             <h:outputLabel value="Nome Empresa:" for="razao" />
                             <p:inputText id="razao" value="#{mailingBean.mailing.razao}" title="Razão social" required="true" requiredMessage="Nome ou razão e obrigatorio!" size="50"/>
                             <h:outputLabel value="Nome contato:" for="contato" />
@@ -91,7 +91,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="pesquisar"/>
                                 </f:facet>
-                                <p:commandLink value="pesquisar"  oncomplete="dialogMailingPes.show();" update=":forListaMailings">
+                                <p:commandLink value="pesquisar"  oncomplete="PF('dialogMailingPes').show();" update=":forListaMailings">
                                     <f:setPropertyActionListener value="#{item}" target="#{mailingBean.mailingAtualizar}"/>
                                 </p:commandLink>
                             </p:column>
@@ -114,7 +114,7 @@
 
                                 </h:panelGrid>
                                 <p:separator/>
-                                <p:commandButton value="sair" onclick="dialogMailingPes.hide();"/>
+                                <p:commandButton value="sair" onclick="PF('dialogMailingPes').hide();"/>
 
 
                             </h:panelGrid>
@@ -148,8 +148,8 @@
                                     </h:panelGrid>
                                     <p:separator/>
                                     <h:panelGrid columns="2">
-                                        <p:commandButton value="confirmar" actionListener="#{mailingBean.atualizar(2)}" oncomplete="dialogMailingSep.hide();" update=":forListaMailings,:forCadastroMailing:msgMailing" />
-                                        <p:commandButton value="sair" onclick="dialogMailingSep.hide();"/>
+                                        <p:commandButton value="confirmar" actionListener="#{mailingBean.atualizar(2)}" oncomplete="PF('dialogMailingSep').hide();" update=":forListaMailings,:forCadastroMailing:msgMailing" />
+                                        <p:commandButton value="sair" onclick="PF('dialogMailingSep').hide();"/>
                                     </h:panelGrid>
 
 

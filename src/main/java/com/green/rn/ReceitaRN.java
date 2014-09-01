@@ -6,6 +6,7 @@ package com.green.rn;
 
 import com.green.dao.ContratoMidiaDAO;
 import com.green.dao.ReceitaDAO;
+import com.green.modelo.Cliente;
 import com.green.modelo.Receita;
 import com.green.util.ContextoBean;
 import com.green.util.ContextoUtil;
@@ -50,7 +51,6 @@ public class ReceitaRN {
     public void setContratoMidiaDAO(ContratoMidiaDAO contratoMidiaDAO) {
         this.contratoMidiaDAO = contratoMidiaDAO;
     }
-    
 
     /**
      * @author Leandro Metodo salvar de da regra de negocio de receita Somente
@@ -67,7 +67,6 @@ public class ReceitaRN {
             receita.setDTInc(new Date(System.currentTimeMillis()));
             receita.setIDUsuario(contextoBean.getUsuarioLogado());
             receita.setValorLiquido(receita.getValorNominal());
-            receita.setAtzPg(0);
             if (receita.getIDDocumento().getIDDocumento() == 2) {
                 receita.setNumero("1");
             }
@@ -152,36 +151,11 @@ public class ReceitaRN {
                 || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
                 || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")) {
             if (receita != null) {
-                
+
                 for (Receita d : receita) {
                     int status = 0;
-                    if (aut == 1 && d.getAtzPg() != 0) {
-                    } else {
-                        if(d.getIdorigem().getIDContratoMidia().getIDtipopagamento().getIDTipoPagamento()!=4 &&d.getAtzPg()==0){
-                            status = 1;
-                        }
-                        d.setAtzPg(aut+status);
-                        d.setDtAtz(new Date(System.currentTimeMillis()));
-                        d.setIDUsuarioAlt(contextoBean.getUsuarioLogado());
-                        d.setDTAlt(new Date(System.currentTimeMillis()));
-                        
-                        getReceitaDAO().atualizar(d);
-                        b = true;
-                    }
-
                 }
-                if (b) {
-                    if (aut == 0) {
-                        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Receita(s) extornadas(s) com sucesso!", "Receita(s) extornadas(s) com sucesso!"));
-                    }
-                    if (aut == 1) {
-                        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Receita(s) autorizada(s) com sucesso!", "Receita(s) autorizada(s) com sucesso!"));
-                    }
-                    if (aut == 2) {
-                        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Receita(s) liberadas para pagamento(s) com sucesso!", "Receita(s) liberadas para pagamento(s) com sucesso!"));
-                    }
-
-                }
+                
             }
         } else {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha ,usuário não autorizado!", "Falha ,usuário não autorizado!"));
@@ -196,38 +170,14 @@ public class ReceitaRN {
     @Transactional("tmGreen")
     public void atualizar(Receita receita) {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
-        RequestContext context = RequestContext.getCurrentInstance();
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_2")) {
-            receita.setDTAlt(new Date(System.currentTimeMillis()));
-            receita.setIDUsuarioAlt(contextoBean.getUsuarioLogado());
-            getReceitaDAO().atualizar(receita);
-          /*
-           *if(receita.getIdorigem().getIDContratoMidia()!=null){
-                receita.getIdorigem().getIDContratoMidia().setDTalt(new Date());
-                ContratoMidia cm = new ContratoMidia();
-                cm = receita.getIdorigem().getIDContratoMidia();
-                receita = new Receita();
-                getContratoMidiaDAO().atualizar(cm);
-            }
- 
-           */
-            
-            
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualizado com sucesso!", "Atualizado com sucesso!"));
-            context.execute("varDialogReceitaEdit.hide()");
-            context.update("forReceitas");
-        } else {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha,usuario não autorizado!", "Falha,usuario não autorizado!"));
-            context.execute("varDialogReceitaEdit.hide()");
-            context.update("forReceitas");
-        }
-
+        receita.setDTAlt(new Date(System.currentTimeMillis()));
+        receita.setIDUsuarioAlt(contextoBean.getUsuarioLogado());
+        getReceitaDAO().atualizar(receita);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualizado com sucesso!", "Atualizado com sucesso!"));
     }
-    public void atualizarLiquido(Receita receita){
+
+    public void atualizarLiquido(Receita receita) {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
         RequestContext context = RequestContext.getCurrentInstance();
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -310,6 +260,10 @@ public class ReceitaRN {
 
     }
 
+    public List<Receita> parcelasCliente(Date inicio, Date fim, Cliente c, boolean tipo) {
+        return getReceitaDAO().parcelasCliente(inicio, fim, c, tipo);
+    }
+
     public List<Receita> despesasPagas() {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
         List<Receita> receitas;
@@ -349,7 +303,18 @@ public class ReceitaRN {
     public List<Receita> pendentesPagamento() {
         return getReceitaDAO().pendentesPagamento();
     }
-     public List<Receita> pendentesPagamentoAteHoje() {
-         return getReceitaDAO().pendentesPagamentoAteHoje();
-     }
+
+    public List<Receita> pendentesPagamentoAteHoje() {
+        return getReceitaDAO().pendentesPagamentoAteHoje();
+    }
+
+    public List<Receita> pagamentoProximoPendenteCliente() {
+        return getReceitaDAO().pagamentoProximoPendenteCliente();
+    }
+    public List<Receita> pagamentoPendenteParceiro() {
+        return getReceitaDAO().pagamentoPendenteParceiro();
+    }
+    public List<Receita> pagamentoPendenteContraApresentacao() {
+        return getReceitaDAO().pagamentoPendenteContraApresentacao();
+    }
 }

@@ -1,0 +1,342 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{contaBean.recebendoConta()}"/>  
+    </f:metadata> 
+    <br/>
+    <h:form id="forConciliacao">
+        <p:panel>
+            <h:panelGrid columns="2" id="gridFiltro">
+                <p:fieldset legend="Filtro">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Banco : #{contaBean.creditoFiltro.IDConta.IDBanco.descricao} / agencia: #{contaBean.creditoFiltro.IDConta.agenciaDigito} / conta:#{contaBean.creditoFiltro.IDConta.numero}-#{contaBean.creditoFiltro.IDConta.numeroDigito}" styleClass="azul"/>
+                    </h:panelGrid>
+                    <br/>
+                    <h:panelGrid columns="4" cellspacing="10" >
+                        <h:outputText value="Tipo documento: "/>
+                        <p:selectOneMenu converter="documentoConverter" value="#{contaBean.creditoFiltro.IDTpDocumento}" style="min-width: 170px">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems var="receitaDocumento"
+                                           value="#{documentoBean.documentos}"
+                                           itemLabel="#{receitaDocumento.descricao}"
+                                           itemValue="#{receitaDocumento}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Atividade financeira: "/>
+                        <p:selectOneMenu converter="atividadeConverter" value="#{contaBean.creditoFiltro.IDAtividade}" style="min-width: 170px">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems var="receitaAtividade"
+                                           value="#{atividadeBean.atividades}"
+                                           itemLabel="#{receitaAtividade.descricao}"
+                                           itemValue="#{receitaAtividade}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Centro de custo: "/>
+                        <p:selectOneMenu converter="ccustoConverter" value="#{contaBean.creditoFiltro.IDCCusto}" style="min-width: 170px">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems var="receitaCentro"
+                                           value="#{ccustoBean.ccustos}"
+                                           itemLabel="#{receitaCentro.descricao}"
+                                           itemValue="#{receitaCentro}"/>
+                        </p:selectOneMenu> 
+                        <h:outputText value="Plano de Contas: "/>
+                        <p:selectOneMenu converter="classificacaoConverter" value="#{contaBean.creditoFiltro.IDClassificacao}" style="min-width: 170px">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems var="receitaClassificacao"
+                                           value="#{classificacaoBean.classificacaos}"
+                                           itemLabel="#{receitaClassificacao.descricao}"
+                                           itemValue="#{receitaClassificacao}"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Situação:"/>
+                        <p:selectOneMenu value="#{contaBean.opcFiltroSituacao}" style="min-width:70px">
+                            <f:selectItem itemLabel="tudo" itemValue="1"/>
+                            <f:selectItem itemLabel="conciliado" itemValue="2"/>
+                            <f:selectItem itemLabel="á conciliado" itemValue="3"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Tipo:"/>
+                        <p:selectOneMenu value="#{contaBean.opcFiltroTipo}" style="min-width: 70px">
+                            <f:selectItem itemLabel="tudo" itemValue="1"/>
+                            <f:selectItem itemLabel="Credito" itemValue="2"/>
+                            <f:selectItem itemLabel="Debito" itemValue="3"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:fieldset>
+                <h:panelGrid columns="1">
+                    <p:fieldset legend="Filtrar por periodo">
+                        <h:panelGrid columns="4">
+                            <h:outputText value="Baixa  de : "/>
+                            <p:calendar locale="br" value="#{contaBean.creditoFiltro.DTBaixa}" size="8" pattern="dd/MM/yyyy"/>
+                            <h:outputText value=" até: "/>
+                            <p:calendar size="8"
+                                        value="#{contaBean.fimFiltroBaixa}"
+                                        pattern="dd/MM/yyyy"/>
+                            <h:outputText value="Concil. de : "/>
+                            <p:calendar  value="#{contaBean.creditoFiltro.DTConciliacao}" size="8" pattern="dd/MM/yyyy"/>
+                            <h:outputText value=" até: "/>
+                            <p:calendar size="8"
+                                        value="#{contaBean.fimFiltroConciliacao}"
+                                        pattern="dd/MM/yyyy"/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <p:fieldset legend="Saldos" id="fieldSaldos">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="saldo conciliado : "/>
+                            <h:outputText value="#{contaBean.valorConciliado.signum() ge 0?contaBean.valorConciliado :contaBean.valorConciliado*-1}" styleClass="#{contaBean.valorConciliado.signum()==1?'azul':contaBean.valorConciliado.signum()==0?'azul':'vermelho'}">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </h:outputText >
+                            <h:outputText value="saldo a conciliar :"/>
+                            <h:outputText value="#{contaBean.valorAconciliar.signum() ge 0?contaBean.valorAconciliar:contaBean.valorAconciliar*-1}" styleClass="#{contaBean.valorAconciliar.signum()==1?'azul':contaBean.valorAconciliar.signum()==0?'azul':'vermelho'}">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="saldo previsto: "/>
+                            <h:outputText value="#{contaBean.valorPrevisto.signum() ge 0?contaBean.valorPrevisto:contaBean.valorPrevisto*-1}" styleClass="#{contaBean.valorPrevisto.signum()==1?'azul':contaBean.valorPrevisto.signum()==0?'azul':'vermelho'}">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </h:outputText>
+                        </h:panelGrid>
+                    </p:fieldset>
+                </h:panelGrid>
+            </h:panelGrid>
+            <p:commandButton value="filtrar" actionListener="#{contaBean.filtroCreditoDebito()}" update="tabelaCredito"/>
+            <p:commandButton value="listar tudo" actionListener="#{contaBean.contaSelecionada(contaBean.contaConciliacaoData)}" update="tabelaDebito"/>
+            <p:separator/>
+            <p:dataTable value="#{contaBean.creditoDataModelo}" 
+                         var="cred"
+                         emptyMessage="sem cadastros"
+                         scrollable="true" 
+                         scrollHeight="150"
+                         selection="#{contaBean.creditosData}"
+                         resizableColumns="true"
+                         id="tabelaCredito"
+                         >
+                <f:facet name="header">
+                    creditos
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:20px" />
+                <p:column >
+                    <f:facet name="header" >
+                        documento
+                    </f:facet>
+                    <h:outputText value="#{cred.IDTpDocumento.descricao}"/>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        data pagto.
+                    </f:facet>
+                    <h:outputText value="#{cred.DTBaixa}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header"  >
+                        dt conc.
+                    </f:facet>
+                    <h:outputText value="#{cred.DTConciliacao}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column  >
+                    <f:facet name="header" >
+                        banco
+                    </f:facet>
+                    <h:outputText value="#{cred.IDConta.IDBanco.descricao} agencia #{cred.IDConta.agenciaDigito} conta #{cred.IDConta.numero}-#{cred.IDConta.numeroDigito}"/>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        valor
+                    </f:facet>
+                    <h:outputText value="#{cred.valor}">
+                        <f:convertNumber minFractionDigits="2"/>
+                    </h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        pl. de conta
+                    </f:facet>
+                    <h:outputText value="#{cred.IDClassificacao.codigo}- #{cred.IDClassificacao.descricao}"/>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton process="tabelaCredito" value="conciliar" oncomplete="PF('dialogConciliarReg').show()" update=":formConciliar:gridCreditos" />
+                    <p:commandButton process="tabelaCredito" value="estornar" oncomplete="PF('dialogCancelarConciliarReg').show()" update=":formEstornar:gridEstornarCred"/>
+                </f:facet>
+            </p:dataTable>
+            <p:dataTable value="#{contaBean.debitoDataModelo}" 
+                         var="deb"
+                         emptyMessage="sem cadastros"
+                         scrollable="true" 
+                         scrollHeight="150"
+                         selection="#{contaBean.debitosData}"
+                         rowStyleClass="vermelho"
+                         resizableColumns="true"
+                         id="tabelaDebito"
+
+                         >
+                <f:facet name="header" >
+                    debitos 
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:18px">
+                    <f:facet name="header" >
+
+                    </f:facet>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="header" >
+                        doc
+                    </f:facet>
+                    <h:outputText value="#{deb.IDTpDocumento.descricao}"/>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        data pagto.
+                    </f:facet>
+                    <h:outputText value="#{deb.DTBaixa}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        dt concil.
+                    </f:facet>
+                    <h:outputText value="#{deb.DTConciliacao}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        banco
+                    </f:facet>
+                    <h:outputText value="#{deb.IDConta.IDBanco.descricao} agencia #{deb.IDConta.agenciaDigito} conta #{deb.IDConta.numero}-#{deb.IDConta.numeroDigito}"/>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        valor
+                    </f:facet>
+                    <h:outputText value="#{deb.valor}">
+                        <f:convertNumber minFractionDigits="2"/>
+                    </h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header" >
+                        pl de conta
+                    </f:facet>
+                    <h:outputText value="#{deb.IDClassificacao.codigo}- #{deb.IDClassificacao.descricao}"/>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton process="tabelaDebito" value="conciliar" oncomplete="PF('dialogConciliarDeb').show()" update=":formConciliar:gridDebitos" />
+                    <p:commandButton process="tabelaDebito" value="estornar" oncomplete="PF('dialogCancelarConciliarDeb').show()" update=":formEstornar:gridEstornarDeb"/>
+                </f:facet>
+
+            </p:dataTable>
+            <br/>
+
+
+
+        </p:panel>
+    </h:form>
+
+    <h:form id="formConciliar">
+        <p:dialog width="500" id="dialogConciliar" widgetVar="dialogConciliarReg" modal="true" header="Data conciliação: #{contaBean.datahoje()} " style="color: blue">
+            <p:panel >
+                <h:panelGrid  id="gridCreditos">
+                    <p:dataTable  value="#{contaBean.creditosData}" var="regCreditos"   rendered="#{!empty contaBean.creditosData}">
+                        <f:facet name="header" >
+                            conciliando creditos 
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{regCreditos.IDConta.IDBanco.descricao}" styleClass="#{regCreditos.DTConciliacao==null?'':'vermelho'}"/> 
+                            <h:outputText value="--" styleClass="#{regCreditos.DTConciliacao==null?'':'vermelho'}"/>
+                            <h:outputText value="#{regCreditos.IDTpDocumento.descricao}"  styleClass="#{regCreditos.DTConciliacao==null?'':'vermelho'}"/>
+                            <h:outputText value="--R$"  styleClass="#{regCreditos.DTConciliacao==null?'':'vermelho'}"/>
+                            <h:outputText value="#{regCreditos.valor}"  styleClass="#{regCreditos.DTConciliacao==null?'':'vermelho'}">
+                                <f:convertNumber minFractionDigits="2" />
+                            </h:outputText>
+                            <h:outputText value="   Já conciliado" rendered="#{regCreditos.DTConciliacao!=null}" styleClass="#{regCreditos.DTConciliacao==null?'':'vermelho'}"/>
+                        </p:column>
+                    </p:dataTable>
+
+                </h:panelGrid>
+                <br/>
+                <p:commandButton value="confirmar" actionListener="#{contaBean.conciliar(event)}"  oncomplete="PF('dialogConciliarReg').hide()"/>
+                <p:commandButton value="sair" oncomplete="PF('dialogConciliarReg').hide()" />
+            </p:panel>
+        </p:dialog>
+        <p:dialog widgetVar="dialogConciliarDeb" width="500" id="dialogConciliarDebito">
+            <p:panel>
+                <h:panelGrid id="gridDebitos">
+                    <p:dataTable  value="#{contaBean.debitosData}" var="regDebitos" style="color: red"  rendered="#{!empty contaBean.debitosData}">
+                        <f:facet name="header" >
+                            conciliando  debitos 
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{regDebitos.IDConta.IDBanco.descricao}"  styleClass="#{regDebitos.DTConciliacao==null?'':'vermelho'}"/>
+                            <h:outputText value="--"  styleClass="#{regDebitos.DTConciliacao==null?'':'vermelho'}"/>
+                            <h:outputText value="#{regDebitos.IDTpDocumento.descricao}"  styleClass="#{regDebitos.DTConciliacao==null?'':'vermelho'}"/>
+                            <h:outputText value="--R$"  styleClass="#{regDebitos.DTConciliacao==null?'':'vermelho'}"/>
+                            <h:outputText value="#{regDebitos.valor}"  styleClass="#{regDebitos.DTConciliacao==null?'':'vermelho'}">
+                                <f:convertNumber minFractionDigits="2" />
+                            </h:outputText>
+                            <h:outputText value="   Já conciliado" rendered="#{regDebitos.DTConciliacao!=null}" styleClass="#{regDebitos.DTConciliacao==null?'':'vermelho'}"/>
+                        </p:column>    
+                    </p:dataTable>
+                </h:panelGrid>
+                <br/>
+                <p:commandButton value="confirmar" actionListener="#{contaBean.conciliar(event)}"  oncomplete="PF('dialogConciliarDeb').hide()"/>
+                <p:commandButton value="sair" oncomplete="PF('dialogConciliarDeb').hide()" />
+            </p:panel>
+        </p:dialog>
+    </h:form>
+    <h:form id="formEstornar">
+        <p:dialog width="500" widgetVar="dialogCancelarConciliarReg" modal="true" header="Data cancelamento conciliação: #{contaBean.datahoje()} " style="color: blue">
+            <p:panel>
+                <h:panelGrid id="gridEstornarCred">
+                    <p:dataTable  value="#{contaBean.creditosData}" var="regCreditos"   rendered="#{!empty contaBean.creditosData}">
+                        <f:facet name="header" >
+                            Cancelando conciliação de creditos 
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{regCreditos.IDConta.IDBanco.descricao}" styleClass="#{regCreditos.DTConciliacao==null?'vermelho':''}"/> 
+                            <h:outputText value="--" styleClass="#{regCreditos.DTConciliacao==null?'vermelho':''}"/>
+                            <h:outputText value="#{regCreditos.IDTpDocumento.descricao}" styleClass="#{regCreditos.DTConciliacao==null?'vermelho':''}"/>
+                            <h:outputText value="--R$" styleClass="#{regCreditos.DTConciliacao==null?'vermelho':''}"/>
+                            <h:outputText value="#{regCreditos.valor}" styleClass="#{regCreditos.DTConciliacao==null?'vermelho':''}">
+                                <f:convertNumber minFractionDigits="2" />
+                            </h:outputText>
+                            <h:outputText value="   não conciliado" rendered="#{regCreditos.DTConciliacao==null}" styleClass="#{regCreditos.DTConciliacao==null?'vermelho':''}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+                <p:commandButton value="confirmar" actionListener="#{contaBean.cancelarConciliacao(event)}"  oncomplete="PF('dialogCancelarConciliarReg').hide()" />
+                <p:commandButton value="sair" oncomplete="PF('dialogCancelarConciliarReg').hide()" />
+            </p:panel>
+        </p:dialog>
+        <p:dialog width="500" widgetVar="dialogCancelarConciliarDeb" modal="true" header="Data cancelamento conciliação: #{contaBean.datahoje()} " style="color: blue">
+            <p:panel>
+                <h:panelGrid id="gridEstornarDeb">
+                    <p:dataTable    value="#{contaBean.debitosData}" var="regDebitos" style="color: red"  rendered="#{!empty contaBean.debitosData}">
+                        <f:facet name="header" >
+                            Cancelando conciliação de debitos 
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{regDebitos.IDConta.IDBanco.descricao}" styleClass="#{regDebitos.DTConciliacao==null?'vermelho':''}"/>
+                            <h:outputText value="--" styleClass="#{regDebitos.DTConciliacao==null?'vermelho':''}"/>
+                            <h:outputText value="#{regDebitos.IDTpDocumento.descricao}" styleClass="#{regDebitos.DTConciliacao==null?'vermelho':''}"/>
+                            <h:outputText value="--R$" styleClass="#{regDebitos.DTConciliacao==null?'vermelho':''}"/>
+                            <h:outputText value="#{regDebitos.valor}" styleClass="#{regDebitos.DTConciliacao==null?'vermelho':''}">
+                                <f:convertNumber minFractionDigits="2" />
+                            </h:outputText>
+                            <h:outputText value="   não conciliado" rendered="#{regDebitos.DTConciliacao==null}" styleClass="#{regDebitos.DTConciliacao==null?'vermelho':''}"/>
+                        </p:column>    
+                    </p:dataTable>
+                </h:panelGrid>
+                <p:commandButton value="confirmar" actionListener="#{contaBean.cancelarConciliacao(event)}"  oncomplete="PF('dialogCancelarConciliarDeb').hide()"/>
+                <p:commandButton value="sair" oncomplete="PF('dialogCancelarConciliarDeb').hide()" />
+            </p:panel>
+        </p:dialog>
+        
+    </h:form>
+    
+</html>

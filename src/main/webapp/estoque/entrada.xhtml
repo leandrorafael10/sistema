@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <f:view>
+
+                    <h:form id="formBrinde">
+                        <p:panel>
+                            <h2><h:outputText value="Cadastro novo brinde"/></h2>
+                            <p:messages id="msg"/>
+                            <h:panelGrid columns="4">
+                                <h:outputLabel value="Tipo de Brinde:" for="descricao" />
+                                <p:inputText id="descricao" value="#{brindeBean.brinde.descricao}" title="Descricao" required="true" requiredMessage="tipo do brinde e obrigatorio!">
+
+                                </p:inputText>
+                                <h:outputLabel value="Valor Custo:" for="valorCusto" />
+                                <p:inputText id="valorCusto" value="#{brindeBean.brinde.valorCusto}" title="ValorCusto" required="true" requiredMessage="The ValorCusto field is required.">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </p:inputText>
+                                <h:outputLabel value="Valor Venda:" for="saldoVenda" />
+                                <p:inputText id="saldoVenda" value="#{brindeBean.brinde.saldoVenda}" title="SaldoVenda" required="true" requiredMessage="The SaldoVenda field is required.">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </p:inputText>
+                                <h:outputLabel value="Descricao Det:" for="descricaoDet" />
+                                <p:inputTextarea rows="2" cols="30" id="descricaoDet" value="#{brindeBean.brinde.descricaoDet}" title="Descricão" />
+                            </h:panelGrid>
+
+                            <br/>
+                            <p:separator/>
+                            <p:commandButton value="salvar" actionListener="#{brindeBean.salvar(actionEvent)}" update=":formBrinde,:formListaBrindes"/>
+                        </p:panel>
+                        <p:separator/>
+                    </h:form>
+                    <h:form id="formListaBrindes">
+                        <p:messages id="msgLista" closable="true"/>
+                        <p:dataTable value="#{brindeRN.listar()}" var="brindes" 
+                                     emptyMessage="não há brindes cadastrados." 
+                                     >
+
+                            <p:column headerText="Brinde" >
+                                <h:outputText value="#{brindes.descricao}" />
+                            </p:column>
+                            <p:column headerText="Descrição">
+                                <h:outputText value="#{brindes.descricaoDet}"/>
+                            </p:column>
+                            <p:column headerText="Status" width="60">
+                                <h:outputText value="#{brindes.ativo?'ativo':'desativado'}" />
+                            </p:column>
+                            <p:column headerText="Quant.">
+                                <h:outputText value="#{brindes.saldoAtual}"/>
+                            </p:column>
+                            <p:column  headerText="Entrada" width="60">  
+                                <p:commandLink value="mais" oncomplete="PF('dialogAdicionar').show()" update=":formAdicionar">
+                                    <f:setPropertyActionListener value="#{brindes}" target="#{brindeBean.brindeEntrada.IDBrinde}"/>
+                                </p:commandLink>
+                            </p:column>  
+                            <p:column  headerText="histórico" width="60">  
+                                <p:commandLink value="hist." actionListener="#{brindeBean.listarEntradasDeBrinde(brindes)}"/>
+                            </p:column>  
+                        </p:dataTable>
+                    </h:form>
+                    <h:form id="formAdicionar">
+                        <p:dialog header="Adicionar ao estoque" widgetVar="dialogAdicionar" >
+                            <p:panel>
+                                <p:messages id="msgAdd"/>
+                                <h:panelGrid id="gridBrinde" columns="3">
+                                    <h:outputText value="Brinde:"/>
+                                    <h:outputText value="#{brindeBean.brindeEntrada.IDBrinde.descricao}"/>
+                                    <h:outputText/>
+                                    <h:outputText value="Quant. atual:"/>
+                                    <h:outputText value="#{brindeBean.brindeEntrada.IDBrinde.saldoAtual}"
+                                                  />
+                                    <h:outputText/>
+                                    <h:outputLabel for="qtd" value="Adicionar:" />
+                                    <p:inputText id="qtd" value="#{brindeBean.brindeEntrada.quantidade}"
+                                                 required="true">
+                                        <f:validateLongRange  minimum="1"/>
+                                        
+                                    </p:inputText>
+                                    <p:message for="qtd" />
+                                    <h:outputLabel for="dtInc" value="Data entrada:"/>
+                                    <p:calendar id="dtInc" mask="true" 
+                                                required="true"
+                                                requiredMessage="Data de entrada é obrigatória!"
+                                                pattern="dd/MM/yyyy" value="#{brindeBean.brindeEntrada.DTEntrada}"/>
+                                    <p:message for="dtInc"/>
+                                </h:panelGrid>
+
+                                <p:separator/>
+                                <p:commandButton value="confirmar" actionListener="#{brindeBean.atualizarSaldo(event)}"
+                                                 update=":formAdicionar:gridBrinde"
+                                                 />
+                            </p:panel>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formHistorico">
+                        <p:dialog widgetVar="dialogHistorico" width="550" minWidth="300">
+                            <p:dataTable value="#{brindeBean.entradas}" 
+                                         var="entrada" 
+                                         emptyMessage="Não ha histórico de entrada."
+                                         scrollable="true" 
+                                         scrollHeight="300"
+                                         style="width: 500px">
+                                <p:column width="60" headerText="Data entrada">
+                                    <h:outputText value="#{entrada.DTEntrada}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column width="50" headerText="Quant.">
+                                    <h:outputText value="#{entrada.quantidade}"/>
+                                </p:column>
+                                <p:column headerText="Lançamento feito por">
+                                    <h:outputText value="#{entrada.IDUsuario.IDFuncionario.IDPessoa.razao}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:dialog>
+                    </h:form>
+
+                </f:view>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

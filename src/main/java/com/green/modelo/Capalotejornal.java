@@ -75,7 +75,7 @@ public class Capalotejornal implements Serializable {
     private String motivoAlt;
     @OneToMany(mappedBy="iDCapalotejornal")
     private List<Vendaestorno> vendaestornoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDCapalotejornal",fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.PERSIST}, mappedBy = "iDCapalotejornal",fetch = FetchType.LAZY)
     private List<Brindecapalote> brindecapaloteList;
     @JoinColumn(name = "IDGerente", referencedColumnName = "IDFuncionario")
     @ManyToOne

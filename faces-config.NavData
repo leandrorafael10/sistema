@@ -14,8 +14,8 @@
         <Node id="tesouraria/lancamento_financeiro/despesa_paga.xhtml" x="1900" y="150" zoom="true"/>
         <Node id="paginaerro/acessonegado.xhtml" x="150" y="450" zoom="true"/>
         <Node id="publico/menu.xhtml" x="400" y="600" zoom="true"/>
-        <Node id="principal/cadastro_cliente.xhtml" x="1400" y="300" zoom="true"/>
         <Node id="tesouraria/cadastros_tesouraria/contas.xhtml" x="400" y="900" zoom="true"/>
+        <Node id="principal/cadastro_cliente.xhtml" x="1400" y="300" zoom="true"/>
         <Node id="tesouraria/cadastros_tesouraria/centro_custo.xhtml" x="1150" y="300" zoom="true"/>
         <Node id="publico/cadastro.xhtml" x="1150" y="150" zoom="true"/>
         <Node id="tesouraria/cadastros_tesouraria/lista_contas.xhtml" x="400" y="750" zoom="true"/>

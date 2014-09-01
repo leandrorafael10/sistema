@@ -6,15 +6,12 @@ package com.green.manegerbean;
 
 import com.green.modelo.Pessoa;
 import com.green.rn.PessoaRN;
-import com.green.util.Endereco;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -26,18 +23,9 @@ public class PessoaBean implements Serializable {
 
     @ManagedProperty("#{pessoaRN}")
     private PessoaRN pessoaRN;
-    
-    @ManagedProperty("#{endereco}")
-    private Endereco endereco;
-    
-     private Pessoa pessoa =new Pessoa();
-    private List<Pessoa> pessoas = null;
-    
-   
 
-   
-    
-   
+    private Pessoa pessoa = new Pessoa();
+    private List<Pessoa> pessoas = null;
 
     public PessoaBean() {
     }
@@ -51,16 +39,6 @@ public class PessoaBean implements Serializable {
         return pessoas;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    
-
     public void setPessoas(List<Pessoa> pessoas) {
         this.pessoas = pessoas;
     }
@@ -68,8 +46,6 @@ public class PessoaBean implements Serializable {
     public Pessoa getPessoa() {
         return pessoa;
     }
-
-
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
@@ -82,5 +58,5 @@ public class PessoaBean implements Serializable {
     public void setPessoaRN(PessoaRN pessoaRN) {
         this.pessoaRN = pessoaRN;
     }
-    
+
 }

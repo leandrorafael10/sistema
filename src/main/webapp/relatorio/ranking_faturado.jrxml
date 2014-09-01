@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="mes" class="java.lang.Integer"/>
+	<parameter name="ano" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="media" class="java.lang.Double">
+		<fieldDescription><![CDATA[media]]></fieldDescription>
+	</field>
+	<field name="valorAtivo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorAtivo]]></fieldDescription>
+	</field>
+	<field name="promotor" class="java.lang.String">
+		<fieldDescription><![CDATA[promotor]]></fieldDescription>
+	</field>
+	<field name="ativo" class="java.lang.Long">
+		<fieldDescription><![CDATA[ativo]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="44" width="54" height="20" />
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emissor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="54" y="44" width="164" height="20" />
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="44" width="55" height="20" />
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="398" y="44" width="12" height="20" />
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="410" y="44" width="11" height="20" />
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="421" y="44" width="45" height="20" />
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ano}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="197" height="31" />
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ranking vendas faturadas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="1" y="24" width="555" height="1" />
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="1" y="0" width="232" height="20" />
+				<text><![CDATA[promotor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="0" width="73" height="20" />
+				<text><![CDATA[ativo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="1" width="101" height="20" />
+				<text><![CDATA[valorAtivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="484" y="0" width="68" height="20" />
+				<text><![CDATA[media]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="1" y="0" width="555" height="20" />
+				<textField>
+					<reportElement x="0" y="0" width="232" height="20" />
+					<textFieldExpression><![CDATA[$F{promotor}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="290" y="0" width="74" height="20" />
+					<textFieldExpression><![CDATA[$F{ativo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="377" y="0" width="100" height="20" />
+					<textFieldExpression><![CDATA[$F{valorAtivo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="483" y="0" width="69" height="20" />
+					<textFieldExpression><![CDATA[$F{media}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" />
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" />
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343" />
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343" />
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" />
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

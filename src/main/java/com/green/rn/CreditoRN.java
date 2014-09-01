@@ -54,11 +54,11 @@ public class CreditoRN {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha,usuário não autorizado!", "Falha,usuário não autorizado!"));
         }
     }
-
+/*
     public List<Credito> filtroCredito(Credito credito, Date fimBaixa, Date fimConciliacao) {
         return getCreditoDAO().filtroCredito(credito, fimBaixa, fimConciliacao);
     }
-
+*/
     public void conciliarCredito(Credito[] creditos) {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
         FacesContext facesContext = FacesContext.getCurrentInstance();

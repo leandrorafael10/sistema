@@ -41,7 +41,7 @@
                                              selectionMode="single"
                                              selection="#{usuarioBean.funcionario}"
                                              >
-                                    <p:ajax  event="rowSelect" update=":cadUsuario:display" oncomplete="funcionarioDialog.show()" /> 
+                                    <p:ajax  event="rowSelect" update=":cadUsuario:display" oncomplete="PF('funcionarioDialog').show()" /> 
                                     <f:facet name="header">  
                                         Lista de Funcionarios
                                     </f:facet> 
@@ -110,7 +110,7 @@
                                              action="#{usuarioBean.salvar()}" 
                                              process="@all" 
                                              update="display,messagesConfirm,:editarUsuario:tabelafuncionarios"/>    
-                            <p:commandButton id="sair" value="Sair" onclick="funcionarioDialog.hide()" type="button" />   
+                            <p:commandButton id="sair" value="Sair" onclick="PF('funcionarioDialog').hide()" type="button" />   
 
                         </h:panelGrid>
                     </p:dialog>
@@ -133,7 +133,7 @@
                                              selectionMode="single"
                                              selection="#{usuarioBean.usuario}"
                                              >
-                                    <p:ajax  event="rowSelect" update=":editarUsuario" oncomplete="funcionarioAtualizadoDialog.show()"/> 
+                                    <p:ajax  event="rowSelect" update=":editarUsuario" oncomplete="PF('funcionarioAtualizadoDialog').show()"/> 
                                     <f:facet name="header">  
                                         Lista de Funcionarios
                                     </f:facet> 
@@ -192,8 +192,8 @@
                             </p:selectOneRadio> 
 
 
-                            <p:commandButton  value="Salvar" oncomplete="funcionarioAtualizadoDialog.hide()"  actionListener="#{usuarioBean.atualizar()}" process="@all" update="displayAtualisar,messagesConfirm2,tabelafuncionarios" />    
-                            <p:commandButton  value="Sair" onclick="funcionarioAtualizadoDialog.hide()" type="button" />   
+                            <p:commandButton  value="Salvar" oncomplete="PF('funcionarioAtualizadoDialog').hide()"  actionListener="#{usuarioBean.atualizar()}" process="@all" update="displayAtualisar,messagesConfirm2,tabelafuncionarios" />    
+                            <p:commandButton  value="Sair" onclick="PF('funcionarioAtualizadoDialog').hide()" type="button" />   
 
                         </h:panelGrid>
                     </p:dialog>

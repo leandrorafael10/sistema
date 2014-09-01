@@ -14,7 +14,7 @@ import com.green.modelo.Funcao;
 import com.green.modelo.Funcionario;
 import com.green.util.ContextoBean;
 import com.green.util.ContextoUtil;
-import com.green.util.Endereco;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,14 +41,12 @@ public class FuncionarioRN {
     @Autowired
     private EquipevendaDAO equipevendaDAO;
 
-    public Integer Salvar(Funcionario funcionario, Endereco e, Contato c) {
+    public Integer Salvar(Funcionario funcionario, Contato c) {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
         funcionario.setDTInc(new Date(System.currentTimeMillis()));
         funcionario.setIDUsuario(contextoBean.getUsuarioLogado());
         funcionario.setAtivo(true);
         funcionario.getIDPessoa().setFisicaJuridica(true);
-        funcionario.getIDPessoa().setCidade(e.getCidade());
-        funcionario.getIDPessoa().setEstado(e.getEstado());
         getPessoaDao().salvar(funcionario.getIDPessoa());
         c.setDTInc(new Date(System.currentTimeMillis()));
         c.setEmail(funcionario.getIDPessoa().getEmail());
@@ -123,8 +121,7 @@ public class FuncionarioRN {
 
 
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualizado com sucesso!", "Atualizado com sucesso!"));
-            requestContext.update("formFuncionario:painelEditFuncionario");
-            requestContext.execute("editarFuncDialog.hide()");
+           
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Falha,usuario nao autorizado para esta ação!", "Usuario não autorizado."));
         }

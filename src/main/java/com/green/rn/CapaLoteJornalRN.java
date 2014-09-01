@@ -4,6 +4,7 @@
  */
 package com.green.rn;
 
+import com.green.dao.BrindecapaloteDAO;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.green.dao.CapaLoteJornalDAO;
 import com.green.dao.LogMovimentacaoDAO;
+import com.green.modelo.Brindecapalote;
 import com.green.modelo.Capalotejornal;
 import com.green.modelo.Equipevenda;
 import com.green.modelo.LogMovimentacao;
@@ -33,6 +35,8 @@ public class CapaLoteJornalRN {
     private CapaLoteJornalDAO capaLoteJornalDAO;
     @Autowired
     private LogMovimentacaoDAO logMovimentacaoDAO;
+    @Autowired
+    private BrindecapaloteDAO brindecapaloteDAO;
 
     public Capalotejornal carregar(Integer pk) {
         return getCapaLoteJornalDAO().carregar(pk);
@@ -142,6 +146,9 @@ public class CapaLoteJornalRN {
             capalotejornal.setWeb_super(true);
             capalotejornal.setFisico_otempo(true);
             getCapaLoteJornalDAO().salvar(capalotejornal);
+            for (Brindecapalote b : capalotejornal.getBrindecapaloteList()) {
+                getBrindecapaloteDAO().salvar(b);
+            }
             FacesContext.getCurrentInstance().addMessage(
                     null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -221,6 +228,14 @@ public class CapaLoteJornalRN {
 
     public List rankingEquipeFaturado(int mes, int ano, int diaFechamento) {
         return getCapaLoteJornalDAO().rankingEquipeFaturado(mes, ano, diaFechamento);
+    }
+
+    public BrindecapaloteDAO getBrindecapaloteDAO() {
+        return brindecapaloteDAO;
+    }
+
+    public void setBrindecapaloteDAO(BrindecapaloteDAO brindecapaloteDAO) {
+        this.brindecapaloteDAO = brindecapaloteDAO;
     }
 
 }

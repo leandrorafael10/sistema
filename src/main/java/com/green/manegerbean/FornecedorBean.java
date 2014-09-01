@@ -57,7 +57,7 @@ public class FornecedorBean implements Serializable {
     public void confirmaSalvar(ActionEvent event) {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formFornecedorDG");
-        context.execute("dialogCadFornecedor.show()");
+        context.execute("PF('dialogCadFornecedor').show()");
         
         
     }
@@ -67,7 +67,7 @@ public class FornecedorBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         RequestContext rc = RequestContext.getCurrentInstance();
         if (!buscaCpfCnpj(getFornecedorNovo().getIDPessoa().getCnpjCpf())) {
-            rc.execute("dialogError.show()");
+            rc.execute("PF('dialogError').show()");
             
         } else {
             formatatel(getContato(), telefoneF, telefoneCel, telefoneR, telefoneC);
@@ -78,12 +78,12 @@ public class FornecedorBean implements Serializable {
                 getFornecedorNovo().setIDPessoa(new Pessoa());
                 setContato(new Contato());
                 rc.update("formCadFornecedor");
-                rc.execute("dialogCadFornecedor.hide()");
+                rc.execute("PF('dialogCadFornecedor').hide()");
                 
             } else {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha! Usuário nao autorizado!", "Falha! Usuário nao autorizado!"));
                 rc.update("formCadFornecedor");
-                rc.execute("dialogCadFornecedor.hide()");
+                rc.execute("PF('dialogCadFornecedor').hide()");
                 
             }
         }
@@ -105,12 +105,12 @@ public class FornecedorBean implements Serializable {
             setTelefoneF("");
             setTelefoneR("");
             rc.update("formListaFornecedor");
-            rc.execute("fornecedorDialogEditar.hide()");
+            rc.execute("PF('fornecedorDialogEditar').hide()");
             
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha! Usuário nao autorizado!", "Falha! Usuário nao autorizado!"));
             rc.update("formListaFornecedor");
-            rc.execute("fornecedorDialogEditar.hide()");
+            rc.execute("PF('fornecedorDialogEditar').hide()");
             
         }
     }

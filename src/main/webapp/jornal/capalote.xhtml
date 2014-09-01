@@ -1,216 +1,215 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
-<body>
+    <body>
 
-	<ui:composition template="./../principal/templategreen.xhtml">
-		<ui:define name="principal-interna">
-			<h:form id="formCadastroCapalote">
-				<p:growl life="5000" />
-				<p:panel>
-					<h2>Cadastrar Venda</h2>
-					<p:messages />
+        <ui:composition template="./../principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <h:form id="formCadastroCapalote">
+                    <p:growl life="5000" />
+                    <p:panel>
+                        <h2>Cadastrar Venda</h2>
+                        <p:messages />
 
-					<h:panelGrid columns="6" cellpadding="5">
-						<h:outputText value="Cliente :" />
-						<p:inputText value="#{capaLoteJornalBean.capalotejornal.nome}"
-							maxlength="120" size="70" required="true"
-							requiredMessage="Nome cliente e obrigatorio!" />
-						<h:outputText value="Numero contrato:" />
-						<p:inputText value="#{capaLoteJornalBean.capalotejornal.contrato}"
-							required="true" requiredMessage="Numero contrato e obrigatorio!" />
+                        <h:panelGrid columns="6" cellpadding="5">
+                            <h:outputText value="Cliente :" />
+                            <p:inputText value="#{capaLoteJornalBean.capalotejornal.nome}"
+                                         maxlength="120" size="40" required="true"
+                                         requiredMessage="Nome cliente e obrigatorio!" />
+                            <h:outputText value="Numero contrato:" />
+                            <p:inputText value="#{capaLoteJornalBean.capalotejornal.contrato}"
+                                         required="true" requiredMessage="Numero contrato e obrigatorio!" />
 
-						<h:outputText value="Ponto de venda:" />
-						<p:selectOneMenu converter="pontodevendaConverter" filter="true"
-							value="#{capaLoteJornalBean.capalotejornal.IDPontovenda}"
-							required="true" requiredMessage="Ponto de venda e obrigatorio!">
-							<f:selectItem itemLabel="" />
-							<f:selectItems value="#{pontodevendaRN.listar()}" var="pontos"
-								itemLabel="#{pontos.descricao}" itemValue="#{pontos}" />
-						</p:selectOneMenu>
-						<h:outputText value="Promotor:" />
-						<p:selectOneMenu converter="equipevendaConverter" filter="true"
-							value="#{capaLoteJornalBean.equipevenda}" required="true"
-							requiredMessage="Escolha um promotor.">
-							<f:selectItem itemLabel="" />
-							<f:selectItems value="#{equipevendaRN.listarComEquipe()}"
-								var="promotor" itemLabel="#{promotor.IDPromotor.IDPessoa.razao}"
-								itemValue="#{promotor}" />
-						</p:selectOneMenu>
+                            <h:outputText value="Ponto de venda:" />
+                            <p:selectOneMenu converter="pontodevendaConverter" filter="true"
+                                             value="#{capaLoteJornalBean.capalotejornal.IDPontovenda}"
+                                             required="true" requiredMessage="Ponto de venda e obrigatorio!">
+                                <f:selectItem itemLabel="" />
+                                <f:selectItems value="#{pontodevendaRN.listar()}" var="pontos"
+                                               itemLabel="#{pontos.descricao}" itemValue="#{pontos}" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Promotor:" />
+                            <p:selectOneMenu converter="equipevendaConverter" filter="true"
+                                             value="#{capaLoteJornalBean.equipevenda}" required="true"
+                                             requiredMessage="Escolha um promotor.">
+                                <f:selectItem itemLabel="" />
+                                <f:selectItems value="#{equipevendaRN.listarComEquipe()}"
+                                               var="promotor" itemLabel="#{promotor.IDPromotor.IDPessoa.razao}"
+                                               itemValue="#{promotor}" />
+                            </p:selectOneMenu>
 
-						<h:outputText value="Data da venda:" />
-						<p:calendar value="#{capaLoteJornalBean.capalotejornal.DTVenda}"
-							pattern="dd/MM/yyyy" required="true"
-							requiredMessage="Data da venda e obrigatorio!" showOn="button"
-							size="14" locale="pt" navigator="true" />
-						<h:outputText value="Forma Pagamento :" />
-						<p:selectOneMenu converter="tipoPagamentoConverter"
-							required="true" requiredMessage="Escolha uma forma de pagamento."
-							value="#{capaLoteJornalBean.capalotejornal.IDTipopagamento}">
-							<f:selectItems value="#{tipoPagamentoRN.formaPagJornal()}"
-								var="formaPag" itemLabel="#{formaPag.descricao}"
-								itemValue="#{formaPag}" />
-						</p:selectOneMenu>
+                            <h:outputText value="Data da venda:" />
+                            <p:calendar value="#{capaLoteJornalBean.capalotejornal.DTVenda}"
+                                        pattern="dd/MM/yyyy" required="true"
+                                        requiredMessage="Data da venda e obrigatorio!" showOn="button"
+                                        size="14" locale="pt" navigator="true" />
+                            <h:outputText value="Forma Pagamento :" />
+                            <p:selectOneMenu converter="tipoPagamentoConverter"
+                                             required="true" requiredMessage="Escolha uma forma de pagamento."
+                                             value="#{capaLoteJornalBean.capalotejornal.IDTipopagamento}">
+                                <f:selectItems value="#{tipoPagamentoRN.formaPagJornal()}"
+                                               var="formaPag" itemLabel="#{formaPag.descricao}"
+                                               itemValue="#{formaPag}" />
+                            </p:selectOneMenu>
 
 
-					</h:panelGrid>
-					<h:panelGrid columns="3" cellpadding="5">
-						<h:panelGrid columns="2" cellpadding="5">
-							<p:dataTable value="#{brindeRN.listar()}" var="brinde">
-								<p:column>
-									<h:outputText value="#{brinde.descricao}" />
-								</p:column>
-								<p:column width="80">
-									<p:commandButton value="+" immediate="true"
-										actionListener="#{capaLoteJornalBean.addRemove(1, brinde)}"
-										update=":formCadastroCapalote:listbrindes" />
-									<p:commandButton value="-" immediate="true"
-										actionListener="#{capaLoteJornalBean.addRemove(2, brinde)}"
-										update=":formCadastroCapalote:listbrindes" />
-								</p:column>
-							</p:dataTable>
-							<p:dataList id="listbrindes" type="ordered"
-								emptyMessage="nao há brindes"
-								value="#{capaLoteJornalBean.capalotejornal.brindecapaloteList}"
-								var="bri">
-								<f:facet name="header">
+                        </h:panelGrid>
+                        <h:panelGrid columns="4" cellpadding="5">
+
+                            <h:outputText value="Modalidade:  " />
+                            <p:selectOneRadio converter="planovendaparcelaConverter" id="grid"
+                                              value="#{capaLoteJornalBean.planovendaparcela}" layout="grid"
+                                              columns="2" required="true"
+                                              requiredMessage="Modalidade e obrigatorio!">
+                                <f:selectItems value="#{planovendaparcelaRN.listar()}" var="pl"
+                                               itemLabel="#{pl.valor} em (#{pl.qtdParcela}x)" itemValue="#{pl}" />
+                            </p:selectOneRadio>
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:dataTable value="#{brindeRN.listar()}" var="brinde" style="width: 300px">
+                                    <p:column>
+                                        <h:outputText value="#{brinde.descricao}" />
+                                    </p:column>
+                                    <p:column >
+                                        <p:commandButton value="+" immediate="true"
+                                                         actionListener="#{capaLoteJornalBean.addRemove(1, brinde)}"
+                                                         update=":formCadastroCapalote:listbrindes" />
+                                        <p:commandButton value="-" immediate="true"
+                                                         actionListener="#{capaLoteJornalBean.addRemove(2, brinde)}"
+                                                         update=":formCadastroCapalote:listbrindes" />
+                                    </p:column>
+                                </p:dataTable>
+                                <p:dataList id="listbrindes" type="ordered"
+                                            emptyMessage="nao há brindes"
+                                            value="#{capaLoteJornalBean.capalotejornal.brindecapaloteList}"
+                                            var="bri"  >
+                                    <f:facet name="header">
                                         Brindes
                                     </f:facet>
-								<h:outputText value="#{bri.IDBrinde.descricao}"
-									style="border: 10px" />
-							</p:dataList>
+                                    <h:outputText value="#{bri.IDBrinde.descricao}"
+                                                  style="border: 10px" />
+                                </p:dataList>
+                            </h:panelGrid>
 
-							<h:outputText value="Brinde entregue :" />
-							<p:selectOneRadio
-								value="#{capaLoteJornalBean.capalotejornal.statusBrinde}">
-								<f:selectItem itemLabel="sim" itemValue="#{true}" />
-								<f:selectItem itemLabel="não" itemValue="#{false}" />
-							</p:selectOneRadio>
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="Brinde entregue :" />
+                                <p:selectOneRadio
+                                    value="#{capaLoteJornalBean.capalotejornal.statusBrinde}">
+                                    <f:selectItem itemLabel="sim" itemValue="#{true}" />
+                                    <f:selectItem itemLabel="não" itemValue="#{false}" />
+                                </p:selectOneRadio>
+                                <h:outputText value="Status: " />
+                                <p:selectOneRadio id="options"
+                                                  value="#{capaLoteJornalBean.capalotejornal.status}"
+                                                  required="true">
+                                    <f:selectItem itemLabel="Ativo" itemValue="1" />
+                                    <f:selectItem itemLabel="Pendente" itemValue="2" />
+                                    <f:selectItem itemLabel="Agendado" itemValue="3" />
+                                </p:selectOneRadio>
+                            </h:panelGrid>
+                        </h:panelGrid>
 
-						</h:panelGrid>
-						<h:outputText value="Modalidade:  " />
-						<p:selectOneRadio converter="planovendaparcelaConverter" id="grid"
-							value="#{capaLoteJornalBean.planovendaparcela}" layout="grid"
-							columns="2" required="true"
-							requiredMessage="Modalidade e obrigatorio!">
-							<f:selectItems value="#{planovendaparcelaRN.listar()}" var="pl"
-								itemLabel="#{pl.valor} em (#{pl.qtdParcela}x)" itemValue="#{pl}" />
-						</p:selectOneRadio>
 
+                        <p:separator />
+                        <p:commandButton value="salvar"
+                                         actionListener="#{capaLoteJornalBean.salvar(event)}"
+                                         update=":formListaCapasLote,:formCadastroCapalote"
+                                          />
+                    </p:panel>
 
-					</h:panelGrid>
-					<h:panelGrid columns="2" cellpadding="5">
-						<h:outputText value="Status: " />
-						<p:selectOneRadio id="options"
-							value="#{capaLoteJornalBean.capalotejornal.status}"
-							required="true">
-							<f:selectItem itemLabel="Ativo" itemValue="1" />
-							<f:selectItem itemLabel="Pendente" itemValue="2" />
-							<f:selectItem itemLabel="Agendado" itemValue="3" />
-						</p:selectOneRadio>
-					</h:panelGrid>
+                </h:form>
+                <br />
+                <p:separator />
+                <br />
+                <h:form id="formListaCapasLote">
+                    <p:dataTable id="tbl" value="#{capaLoteJornalRN.listarDia()}"
+                                 var="capa" scrollable="true" scrollHeight="400"
+                                 resizableColumns="true">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="DATA" />
+                            </f:facet>
+                            <h:outputText value="#{capa.DTVenda}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="EQUIPE" />
+                            </f:facet>
+                            <h:outputText value="#{capa.IDGerente.IDPessoa.razao}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="VENDEDOR" />
+                            </f:facet>
+                            <h:outputText value="#{capa.IDFuncionarioPromotor.IDPessoa.razao}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nº CONTRATO" />
+                            </f:facet>
+                            <h:outputText value="#{capa.contrato}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PONTO" />
+                            </f:facet>
+                            <h:outputText value="#{capa.IDPontovenda.descricao}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="CLIENTE" />
+                            </f:facet>
+                            <h:outputText value="#{capa.nome}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="VALOR" />
+                            </f:facet>
+                            <h:outputText value="#{capa.valor}">
+                                <f:convertNumber minFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="FORM. PAG" />
+                            </f:facet>
+                            <h:outputText value="#{capa.IDTipopagamento.descricao}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="BRINDES" />
+                            </f:facet>
 
-					<p:separator />
-					<p:commandButton value="salvar"
-						actionListener="#{capaLoteJornalBean.salvar(event)}"
-						update=":formListaCapasLote,:formCadastroCapalote"
-						onstart="statusDialog.show();" onsuccess="statusDialog.hide();" />
-				</p:panel>
+                            <p:dataList value="#{capa.brindecapaloteList}" var="capabri">
+                                <h:outputText value="#{capabri.IDBrinde.descricao}" />
+                            </p:dataList>
+                            <h:graphicImage library="imagens"
+                                            name="ativo_#{capa.statusBrinde}.png" />
 
-			</h:form>
-			<br />
-			<p:separator />
-			<br />
-			<h:form id="formListaCapasLote">
-				<p:dataTable id="tbl" value="#{capaLoteJornalRN.listarDia()}"
-					var="capa" scrollable="true" scrollHeight="400"
-					resizableColumns="true">
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="DATA" />
-						</f:facet>
-						<h:outputText value="#{capa.DTVenda}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</h:outputText>
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="EQUIPE" />
-						</f:facet>
-						<h:outputText value="#{capa.IDGerente.IDPessoa.razao}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="VENDEDOR" />
-						</f:facet>
-						<h:outputText value="#{capa.IDFuncionarioPromotor.IDPessoa.razao}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Nº CONTRATO" />
-						</f:facet>
-						<h:outputText value="#{capa.contrato}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="PONTO" />
-						</f:facet>
-						<h:outputText value="#{capa.IDPontovenda.descricao}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="CLIENTE" />
-						</f:facet>
-						<h:outputText value="#{capa.nome}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="VALOR" />
-						</f:facet>
-						<h:outputText value="#{capa.valor}">
-							<f:convertNumber minFractionDigits="2" />
-						</h:outputText>
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="FORM. PAG" />
-						</f:facet>
-						<h:outputText value="#{capa.IDTipopagamento.descricao}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="BRINDES" />
-						</f:facet>
+                        </p:column>
+                        <p:column width="50">
+                            <f:facet name="header">
+                                <h:outputText value="STATUS" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{capa.status==0?'Cancelado':(capa.status==1?'Ativo':(capa.status==2?' Pendente':'Agendado'))}"
+                                styleClass="#{capa.status==0?'vermelho':(capa.status==1?'azul':(capa.status==2?'amarelo':'agendado'))}" />
+                        </p:column>
+                    </p:dataTable>
+                    <h:commandLink>
+                        <p:graphicImage value="/resources/imagens/exel_32x32.png" />
+                        <p:dataExporter type="xls" target="tbl" fileName="capa_lote"
+                                        postProcessor="#{capaLoteJornalBean.postProcessXLS}" />
+                    </h:commandLink>
+                </h:form>
+            </ui:define>
+        </ui:composition>
 
-						<p:dataList value="#{capa.brindecapaloteList}" var="capabri">
-							<h:outputText value="#{capabri.IDBrinde.descricao}" />
-						</p:dataList>
-						<h:graphicImage library="imagens"
-							name="ativo_#{capa.statusBrinde}.png" />
-
-					</p:column>
-					<p:column width="50">
-						<f:facet name="header">
-							<h:outputText value="STATUS" />
-						</f:facet>
-						<h:outputText
-							value="#{capa.status==0?'Cancelado':(capa.status==1?'Ativo':(capa.status==2?' Pendente':'Agendado'))}"
-							styleClass="#{capa.status==0?'vermelho':(capa.status==1?'azul':(capa.status==2?'amarelo':'agendado'))}" />
-					</p:column>
-				</p:dataTable>
-				<h:commandLink>
-					<p:graphicImage value="/resources/imagens/exel_32x32.png" />
-					<p:dataExporter type="xls" target="tbl" fileName="capa_lote"
-						postProcessor="#{capaLoteJornalBean.postProcessXLS}" />
-				</h:commandLink>
-			</h:form>
-		</ui:define>
-	</ui:composition>
-
-</body>
+    </body>
 </html>

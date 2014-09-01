@@ -6,6 +6,7 @@ package com.green.rn;
 
 import com.green.dao.ClienteDAO;
 import com.green.modelo.Cliente;
+import com.green.modelo.Pessoa;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class ClienteRN {
         this.clienteDAO = clienteDAO;
     }
 
+    public Cliente clienteBuscaPorPessoa(Pessoa p){
+        return getClienteDAO().buscaPorPessoa(p);
+    }
     public Integer salvar(Cliente cliente) {
         return getClienteDAO().salvar(cliente);
     }

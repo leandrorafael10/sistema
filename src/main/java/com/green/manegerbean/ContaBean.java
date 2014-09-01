@@ -12,6 +12,7 @@ import com.green.util.*;
 import com.green.view.ContaConciliacaoDataModelo;
 import com.green.view.CreditoDataModelo;
 import com.green.view.DebitoDataModelo;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -59,11 +62,12 @@ public class ContaBean implements Serializable {
     private String calular = new String();
     private String email = new String();
     String nomeRelatorioSaida;
-    private Endereco endereco = new Endereco();
     private ContaConciliacao contaConciliacao = new ContaConciliacao(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     private ContaConciliacao contaConciliacaoData = new ContaConciliacao(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     private DebitoDataModelo debitoDataModelo;
     private CreditoDataModelo creditoDataModelo;
+    private List<Credito> creditoList;
+    private List<Credito> creditoSelect;
     private ContaConciliacaoDataModelo contaConciliacaoDataModelo;
     private Date fimFiltroBaixa;
     private Date fimFiltroConciliacao;
@@ -73,7 +77,7 @@ public class ContaBean implements Serializable {
     private BigDecimal valorAconciliar = new BigDecimal(0);
     private BigDecimal valorPrevisto = new BigDecimal(0);
     private boolean tab = true;
-    private String filtroNomeBanco ;
+    private String filtroNomeBanco;
     private Integer filtroTipoConta = 1;
 
     public void listando() {
@@ -81,6 +85,8 @@ public class ContaBean implements Serializable {
     }
 
     public void listandoCreditoDebito() {
+        this.creditoList = getCreditos();
+        this.creditoSelect = new ArrayList<>();
         this.debitoDataModelo = new DebitoDataModelo(getDebitos());
         this.creditoDataModelo = new CreditoDataModelo(getCreditos());
     }
@@ -90,12 +96,12 @@ public class ContaBean implements Serializable {
         List<Debito> ds = getDebitoRN().listando();
         setConciliacaos(new ArrayList<ContaConciliacao>());
         for (Conta contaConciliada : getContas()) {
-            ContaConciliacao cc = calculoSaldos(contaConciliada, cs, ds);
-            getConciliacaos().add(cc);
+  //          ContaConciliacao cc = calculoSaldos(contaConciliada, cs, ds);
+    //        getConciliacaos().add(cc);
         }
         setContaConciliacaoDataModelo(new ContaConciliacaoDataModelo(getConciliacaos()));
     }
-
+/*
     public void saldosConta() {
         setValorAconciliar(BigDecimal.ZERO);
         setValorConciliado(BigDecimal.ZERO);
@@ -105,18 +111,19 @@ public class ContaBean implements Serializable {
         setValorAconciliar(cc.getValorAconciliar());
         setValorConciliado(cc.getValorConciliado());
     }
-
+*/
     public String datahoje() {
         Date d = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(d);
     }
-    public void confirmaTrans(ActionEvent event){
+
+    public void confirmaTrans(ActionEvent event) {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form_tarns:gridtrans");
         context.execute("dialogtrans.show()");
     }
-
+/*
     public void filtroCreditoDebito() {
         List<Credito> c;
         List<Debito> d;
@@ -127,10 +134,10 @@ public class ContaBean implements Serializable {
         getDebitoFiltro().setIDClassificacao(getCreditoFiltro().getIDClassificacao());
         getDebitoFiltro().setIDConta(getCreditoFiltro().getIDConta());
         getDebitoFiltro().setIDTpDocumento(getCreditoFiltro().getIDTpDocumento());
-        getDebitoFiltro().setNumero(getCreditoFiltro().getNumero());
+       getDebitoFiltro().setNumero(getCreditoFiltro().getNumero());
         getDebitoFiltro().setValor(getCreditoFiltro().getValor());
         getDebitoFiltro().setValor(getCreditoFiltro().getValor());
-        c = getCreditoRN().filtroCredito(getCreditoFiltro(), getFimFiltroBaixa(), getFimFiltroConciliacao());
+       c = getCreditoRN().filtroCredito(getCreditoFiltro(), getFimFiltroBaixa(), getFimFiltroConciliacao());
         d = getDebitoRN().filtroDebito(getDebitoFiltro(), getFimFiltroBaixa(), getFimFiltroConciliacao());
         if (opcFiltroSituacao == 2) {
             List<Credito> cs = new ArrayList<Credito>();
@@ -183,7 +190,7 @@ public class ContaBean implements Serializable {
 
         listandoCreditoDebito();
     }
-
+*/
     @PostConstruct
     private void init() {
         listando();
@@ -192,46 +199,64 @@ public class ContaBean implements Serializable {
     }
 
     public void contaSelecionada(ContaConciliacao cc) {
-        RequestContext context = RequestContext.getCurrentInstance();
+
         setCreditoFiltro(new Credito());
         setDebitoFiltro(new Debito());
         this.opcFiltroSituacao = 1;
         this.opcFiltroTipo = 1;
-        getCreditoFiltro().setIDConta(cc.getConta());
+        //getCreditoFiltro().setIDConta(cc.getConta());
         getDebitoFiltro().setIDConta(cc.getConta());
-        filtroCreditoDebito();
-        saldosConta();
+        //filtroCreditoDebito();
+        //saldosConta();
         setTab(false);
-        context.update("formConciliacao:tabConciliacao:panelFiltroDataTable");
+        FacesContext contexto = FacesContext.getCurrentInstance();
+        contexto.getExternalContext().getSessionMap().put("conta", cc);
+        System.out.println(contexto.getViewRoot().getViewId()); 
+        try {
+            contexto.getExternalContext().redirect("tesouraria_conciliacao.jsf");
+            System.out.println(contexto.getViewRoot().getViewId());
+        } catch (IOException ex) {
+            Logger.getLogger(ContaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void recebendoConta(){
+        FacesContext contexto = FacesContext.getCurrentInstance();
+        ContaConciliacao cc = (ContaConciliacao)contexto.getExternalContext().getSessionMap().get("conta"); 
+        setCreditoFiltro(new Credito());
+        setDebitoFiltro(new Debito());
+        this.opcFiltroSituacao = 1;
+        this.opcFiltroTipo = 1;
+        //getCreditoFiltro().setIDConta(cc.getConta());
+        getDebitoFiltro().setIDConta(cc.getConta());
+       // filtroCreditoDebito();
+       // saldosConta();
+        RequestContext.getCurrentInstance().update("forConciliacao");
     }
 
     public void conciliar(ActionEvent event) {
         getDebitoRN().conciliarDebito(getDebitosData());
         getCreditoRN().conciliarCredito(getCreditosData());
-        saldosConta();
+       // saldosConta();
         listandoConciliado();
     }
 
     public void cancelarConciliacao(ActionEvent event) {
-        getCreditoRN().cancelarConciliacao(getCreditosData(), getCreditoFiltro().getIDConta());
-        getDebitoRN().cancelarConciliacao(getDebitosData(), getCreditoFiltro().getIDConta());
-        saldosConta();
+        //getCreditoRN().cancelarConciliacao(getCreditosData(), getCreditoFiltro().getIDConta());
+        //getDebitoRN().cancelarConciliacao(getDebitosData(), getCreditoFiltro().getIDConta());
+        //saldosConta();
         listandoConciliado();
     }
 
     public String salvar(ActionEvent actionEvent) {
-        getPessoa().setCidade(getEndereco().getCidade());
-        getPessoa().setEstado(getEndereco().getEstado());
         getPessoa().setEmail(getEmail());
         formatatel(getFax(), getCalular(), "", getTelComercial());
         getContaRN().salvar(getContaNova(), getPessoa(), getContato());
         setPessoa(new Pessoa());
         setConta(new Conta());
-        setEndereco(new Endereco());
         return "/tesouraria/cadastros_tesouraria/lista_contas";
 
     }
-
+/*
     public ContaConciliacao calculoSaldos(Conta conta, List<Credito> creditos, List<Debito> debitos) {
         ContaConciliacao cc = new ContaConciliacao(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         BigDecimal saldoDebitoA = BigDecimal.ZERO;
@@ -278,17 +303,17 @@ public class ContaBean implements Serializable {
         cc.setValorConciliado(saldoCreditoC.subtract(saldoDebitoC));
         return cc;
     }
-    
-    public void trasferencia(Credito credito,Debito debito){
-        getContaRN().transferencia(credito,debito);
+*/
+    public void trasferencia(Credito credito, Debito debito) {
+        getContaRN().transferencia(credito, debito);
     }
 
     public void incluirCredito(Credito c) {
         RequestContext context = RequestContext.getCurrentInstance();
         getCreditoRN().salvar(c);
         listandoConciliado();
-        context.execute("dialogIncluiCredito.hide()");
-        context.execute("dialogIncluir.show()");
+        context.execute("PF('dialogIncluiCredito').hide()");
+        context.execute("PF('dialogIncluir').show()");
         context.update("formConciliacao");
     }
 
@@ -296,8 +321,8 @@ public class ContaBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         getDebitoRN().salvar(d);
         listandoConciliado();
-        context.execute("dialogIncluirDebito.hide()");
-        context.execute("dialogIncluir.show()");
+        context.execute("PF('dialogIncluirDebito').hide()");
+        context.execute("PF('dialogIncluir').show()");
         context.update("formConciliacao");
     }
 
@@ -313,10 +338,10 @@ public class ContaBean implements Serializable {
         nomeRelatorioSaida = dateNomeRelatorio.getTime() + "contas";
         RelatorioUtil relatorioUtil = new RelatorioUtil();
         HashMap<String, Object> parametrosRelatorio = new HashMap<String, Object>();
-        if(getFiltroNomeBanco()==null){
+        if (getFiltroNomeBanco() == null) {
             setFiltroNomeBanco("");
         }
-        parametrosRelatorio.put("nome_banco", getFiltroNomeBanco()+"%");
+        parametrosRelatorio.put("nome_banco", getFiltroNomeBanco() + "%");
         parametrosRelatorio.put("tipo_conta", getFiltroTipoConta());
 
         try {
@@ -337,14 +362,7 @@ public class ContaBean implements Serializable {
         this.pessoa = pessoa;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
+    
     public String getCalular() {
         return calular;
     }
@@ -616,6 +634,19 @@ public class ContaBean implements Serializable {
 
     public void setNomeRelatorioSaida(String nomeRelatorioSaida) {
         this.nomeRelatorioSaida = nomeRelatorioSaida;
+    }
+
+    public List<Credito> getCreditoList() {
+        return creditoList;
+    }
+
+    
+    public List<Credito> getCreditoSelect() {
+        return creditoSelect;
+    }
+
+    public void setCreditoSelect(List<Credito> creditoSelect) {
+        this.creditoSelect = creditoSelect;
     }
 
     public void formatatel(String fixo, String celular, String residencial, String comercial) {

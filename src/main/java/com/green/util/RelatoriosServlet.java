@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;

@@ -14,14 +14,14 @@
                 <h:form id="formAdmEquipe">
                     <p:panel>
                         <p:dataTable value="#{equipevendaRN.listar()}" var="promotor" scrollable="true" scrollHeight="200" >
-                            <p:column filterBy="#{promotor.IDPromotor.IDPessoa.razao}" headerText="promotor" sortBy="#{promotor.IDPromotor.IDPessoa.razao}">
+                            <p:column filterBy="#{promotor.IDPromotor.IDPessoa.razao}" headerText="promotor" >
                                 <h:outputText value="#{promotor.IDPromotor.IDPessoa.razao}"/>
                             </p:column>
                             <p:column headerText="Equipe" >
                                 <h:outputText value="#{promotor.IDGerente.IDPessoa.razao==null?'Não possui equipe':promotor.IDGerente.IDPessoa.razao}"/>
                             </p:column>
                             <p:column headerText="Adm. Equipe" width="60">
-                                <p:commandButton value="add" oncomplete="dialogAltEquipe.show()" update=":formAltEquipe">
+                                <p:commandButton value="add" update=":formAltEquipe" oncomplete="PF('dialogAltEquipe').show()">
                                     <f:setPropertyActionListener target="#{equipevendaBean.equipevenda}" value="#{promotor}" />
                                 </p:commandButton>
                             </p:column>
@@ -37,13 +37,15 @@
                                 <h:outputText value="Equipes:"/>
                                 <p:selectOneMenu converter="funcionarioConverter" value="#{equipevendaBean.equipevenda.IDGerente}" filter="true">
                                     <f:selectItem itemLabel=""/>
-                                    <f:selectItems value="#{funcionarioRN.listarPorFuncao(funcaoRN.carregar(13))}" 
+                                    <f:selectItems value="#{funcionarioRN.listaPromotoresCordenadoraGeral()}" 
                                                    var="equipes"
                                                    itemLabel="#{equipes.IDPessoa.razao}"
                                                    itemValue="#{equipes}"/>
                                 </p:selectOneMenu>
                             </h:panelGrid>
-                            <p:commandButton value="confirmar" actionListener="#{equipevendaBean.atualizar(event)}" update=":formAdmEquipe,:formListaEquipes" oncomplete="dialogAltEquipe.hide()"/>
+                            <p:commandButton value="confirmar" actionListener="#{equipevendaBean.atualizar(event)}" update=":formAdmEquipe,:formListaEquipes" oncomplete="PF('dialogAltEquipe').hide()"/>
+                                
+                            
                         </p:panel>
                     </p:dialog>
                 </h:form>
@@ -51,11 +53,11 @@
                 <p:separator/>
                 <br/>
                 <h:form id="formListaEquipes">
-                    <p:dataGrid value="#{funcionarioRN.listaPromotoresCordenadoraGeral()}" var="gerentes" columns="3"
-                                >
+                    <p:dataGrid value="#{funcionarioRN.listaPromotoresCordenadoraGeral()}" var="gerentes" 
+                                style="width: 600px">
 
                         <h1> #{gerentes.IDPessoa.razao}</h1>
-                        <p:scrollPanel style="height:200px">
+                        <p:scrollPanel style="height:200px;width: 400px;">
                             <p:dataList style="border: 0" value="#{equipevendaRN.listarPorGerente(gerentes)}" var="ger1" type="ordered"> 
 
                                 #{ger1.IDPromotor.IDPessoa.razao}        ----- Data inicio : 

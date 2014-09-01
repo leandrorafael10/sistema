@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="afdd78a9-ab4b-4c86-bd99-d66c87d64f01">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -30,14 +30,14 @@ WHERE
 	<title>
 		<band height="116" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="16a8c8b9-4dc9-4277-a0c1-dd7624de2dcb" x="328" y="60" width="227" height="38"/>
+				<reportElement  x="328" y="60" width="227" height="38"/>
 				<textElement textAlignment="Center">
 					<font size="20"/>
 				</textElement>
 				<text><![CDATA[Relatorio plano de contas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ba448cca-e73c-4114-a8d1-321f05ca0c88" x="0" y="29" width="328" height="69"/>
+				<reportElement  x="0" y="29" width="328" height="69"/>
 				<textElement textAlignment="Center">
 					<font size="50"/>
 				</textElement>
@@ -48,29 +48,29 @@ WHERE
 	<pageHeader>
 		<band height="36" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="a2b2b912-cea7-4545-8184-c1723dd1ec62" x="0" y="0" width="555" height="35" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<reportElement  x="0" y="0" width="555" height="35" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
 			</rectangle>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="28" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="a40deb37-68a0-4e6b-bafc-04015544cb6e" x="100" y="0" width="180" height="20"/>
+				<reportElement  x="100" y="0" width="180" height="20"/>
 				<textElement/>
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b9055c41-b185-457d-95f9-e8adb8fdec0f" x="280" y="0" width="138" height="20"/>
+				<reportElement  x="280" y="0" width="138" height="20"/>
 				<textElement/>
 				<text><![CDATA[natureza]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ed6ef745-ac7e-4f7c-92bb-1513ee23eae6" x="418" y="0" width="100" height="20"/>
+				<reportElement  x="418" y="0" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[tipo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9e5d0acf-59a3-47ec-a21d-c2950cfb545a" x="0" y="0" width="100" height="20"/>
+				<reportElement  x="0" y="0" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[código]]></text>
 			</staticText>
@@ -79,22 +79,22 @@ WHERE
 	<detail>
 		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement uuid="d91b0609-2609-4008-9a55-28dbd4104e95" x="100" y="0" width="180" height="20"/>
+				<reportElement  x="100" y="0" width="180" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ca76e47a-23d8-4b4a-971d-3d766abb78f7" x="280" y="0" width="138" height="20"/>
+				<reportElement  x="280" y="0" width="138" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{natureza}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8d92bf83-3452-47a0-aed2-bd9fc3800976" x="418" y="0" width="100" height="20"/>
+				<reportElement  x="418" y="0" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e32033ef-0aba-46d6-b4fe-2073140f08cb" x="0" y="0" width="100" height="20"/>
+				<reportElement  x="0" y="0" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
@@ -103,22 +103,22 @@ WHERE
 	<summary>
 		<band height="47" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="8455c9ab-a9a1-4dbb-aa35-123181b370c4" x="494" y="12" width="61" height="20"/>
+				<reportElement  x="494" y="12" width="61" height="20"/>
 				<textElement/>
 				<text><![CDATA[GreenWeb]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="a837e013-a17a-4444-83ce-b331d3876597" x="0" y="12" width="100" height="20"/>
+				<reportElement  x="0" y="12" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="aea48f75-882d-4871-9b6b-75b19e81b493" x="179" y="12" width="80" height="20"/>
+				<reportElement  x="179" y="12" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="874b7001-a026-4c5b-85e6-70b15bdf8042" x="259" y="12" width="40" height="20"/>
+				<reportElement  x="259" y="12" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

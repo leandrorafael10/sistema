@@ -5,16 +5,13 @@
 package com.green.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 /**
  *
@@ -24,12 +21,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name = "pessoa")
 @XmlRootElement
 public class Pessoa implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDPessoa")
-    private List<Fornecedor> fornecedorList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDPessoa")
-    private List<Funcionario> funcionarioList;
-    
-    
     @Column(name =     "DTNascimento")
     @Temporal(TemporalType.DATE)
     private Date dTNascimento;
@@ -102,12 +93,12 @@ public class Pessoa implements Serializable {
     @Size(max = 65535)
     @Column(name = "Referencia")
     private String referencia;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
+    //@Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 50)
     @Column(name = "Email")
     private String email;
-    @OneToMany(mappedBy ="iDPessoa" ,fetch = FetchType.EAGER)
-    private Collection<Contato> contatosCollection;
+    @OneToMany(mappedBy ="iDPessoa" ,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<Contato> contatosList;
     
     public Pessoa() {
     }
@@ -326,33 +317,14 @@ public class Pessoa implements Serializable {
         this.dTNascimento = dTNascimento;
     }
 
-    public Collection<Contato> getContatosCollection() {
-        return contatosCollection;
+    public List<Contato> getContatosList() {
+        return contatosList;
     }
 
-    public void setContatosCollection(Collection<Contato> contatosCollection) {
-        this.contatosCollection = contatosCollection;
+    public void setContatosList(List<Contato> contatosList) {
+        this.contatosList = contatosList;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public List<Fornecedor> getFornecedorList() {
-        return fornecedorList;
-    }
-
-    public void setFornecedorList(List<Fornecedor> fornecedorList) {
-        this.fornecedorList = fornecedorList;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public List<Funcionario> getFuncionarioList() {
-        return funcionarioList;
-    }
-
-    public void setFuncionarioList(List<Funcionario> funcionarioList) {
-        this.funcionarioList = funcionarioList;
-    }
-
+    
     
 }

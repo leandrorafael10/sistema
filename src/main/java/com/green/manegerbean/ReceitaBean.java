@@ -5,17 +5,21 @@
 package com.green.manegerbean;
 
 import com.green.modelo.Cliente;
+import com.green.modelo.Conta;
 import com.green.modelo.Credito;
 import com.green.modelo.Receita;
 import com.green.modelo.Receitacredito;
 import com.green.rn.ReceitaCreditoRN;
 import com.green.rn.ReceitaRN;
+import com.green.util.BoletoCaelum;
 import com.green.view.ReceitaDataModelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +52,7 @@ public class ReceitaBean implements Serializable {
     private Receita receitaPesquisa = new Receita();
     private Receita receitaDel = new Receita();
     private Receita receitaEdit = new Receita();
+    private Conta conta;
     private List<Receita> receitas;
     private int opsCedente;
     private boolean opcFuncionario = false;
@@ -62,6 +67,7 @@ public class ReceitaBean implements Serializable {
     private Date fimFiltroVenc;
     private Date fimFiltroCancel;
     private Date fimFiltroEmissao;
+    private Date dataBaixa;
     private BigDecimal valorPago = BigDecimal.ZERO;
     private int parcelas = 1;
     private int vencimento = 1;
@@ -85,6 +91,7 @@ public class ReceitaBean implements Serializable {
         valorIni = new BigDecimal("0.00");
         valorFim = new BigDecimal("0.00");
         data();
+        this.conta = new Conta();
     }
 
     /**
@@ -144,15 +151,19 @@ public class ReceitaBean implements Serializable {
         this.nunDocumento = "";
     }
     
+    public void atualizaParcela(ActionEvent event){
+        getReceitaRN().atualizar(getReceitaEdit());
+        RequestContext.getCurrentInstance().update("formParcelas");
+    }
+    
     public void confirmacaoReceita() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formReceitaReceber");
         context.execute("dialogConfirmReceita.show()");
     }
-    
-    public void pagandoReceita(ActionEvent actionEvent) {
-        getReceitaCreditoRN().salvar(getReceitacredito(), getValorPago());
-        setValorPago(BigDecimal.ZERO);
+    public void baixaPagamento(ActionEvent actionEvent){
+        getReceitaCreditoRN().baixaPagamento(getReceitaEdit(),getDataBaixa());
+        RequestContext.getCurrentInstance().update("formParcelas");
     }
     
     public void calcularTaxa(Receita receita) {
@@ -192,14 +203,7 @@ public class ReceitaBean implements Serializable {
             }
 
             //aqui o desconto ainda não foi cedido e a data limite para esse desconto nao pode ser maior que a data atual.
-            if (receita.isDesCedido() == false && situacaoData >= 0) {
-                valorCalc = receita.getValorLiquido();
-                valorCalc = valorCalc.add(valorJuros.add(valorMulta)).subtract(receita.getValorDesconto());
-                
-            } else {
-                valorCalc = receita.getValorLiquido();
-                valorCalc = valorCalc.add(valorJuros.add(valorMulta));
-            }
+            
             receita.setValorLiquido(valorCalc);
             getReceitacredito().setIDReceita(receita);
             getReceitacredito().setIDCredito(new Credito());
@@ -208,6 +212,11 @@ public class ReceitaBean implements Serializable {
             context.execute("varDialogReceitaPagar.show()");
         }
     }
+    
+    public void emitirBoleto(Receita r){
+        BoletoCaelum.boletoModeloNovo(r);
+    }
+            
     
     public void filtroReceita() {
         getReceitaFiltro().setIDCliente(getCliente());
@@ -574,4 +583,21 @@ public class ReceitaBean implements Serializable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    public Conta getConta() {
+        return conta;
+    }
+
+    public void setConta(Conta conta) {
+        this.conta = conta;
+    }
+
+    public Date getDataBaixa() {
+        return dataBaixa;
+    }
+
+    public void setDataBaixa(Date dataBaixa) {
+        this.dataBaixa = dataBaixa;
+    }
+    
 }

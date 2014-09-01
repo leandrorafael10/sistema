@@ -52,8 +52,8 @@ public class ClienteDAO extends AbstractDao<Cliente, Integer> {
         return (Cliente) query.uniqueResult();
     }
 
-    public Cliente carregar2(String id) {
-        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Cliente c where c.iDPessoa.razao = :k").setString("k", id);
+    public Cliente carregar2(String nome) {
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Cliente c where c.iDPessoa.razao = :k").setString("k", nome);
         Cliente c = (Cliente) query.uniqueResult();
 
         return (Cliente) query.uniqueResult();

@@ -66,7 +66,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Add obs"/>
                                 </f:facet>
-                                <p:commandLink value="add" rendered="#{item.status!=4}"  oncomplete="dialogMailingInsert.show();" update=":formInsertMailing">
+                                <p:commandLink value="add" rendered="#{item.status!=4}"  oncomplete="PF('dialogMailingInsert').show();" update=":formInsertMailing">
                                     <f:setPropertyActionListener value="#{item}" target="#{mailingBean.mailingAtualizar}"/>
                                 </p:commandLink>
                             </p:column>
@@ -74,7 +74,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Alt.status"/>
                                 </f:facet>
-                                <p:commandLink value="alterar"  oncomplete="dialogMailingAlt.show();" update=":formAltMailing" rendered="#{mailingBean.mailingAtualizar.IDContratoMidia==null}">
+                                <p:commandLink value="alterar"  oncomplete="PF('dialogMailingAlt').show();" update=":formAltMailing" rendered="#{mailingBean.mailingAtualizar.IDContratoMidia==null}">
                                     <f:setPropertyActionListener value="#{item}" target="#{mailingBean.mailingAtualizar}"/>
                                 </p:commandLink>
                                 <h:outputText value="vendido" rendered="#{mailingBean.mailingAtualizar.IDContratoMidia!=null}"/>
@@ -103,12 +103,12 @@
 
                             <p:separator/>
                             <h:panelGrid columns="4">
-                                <p:commandButton value="Liberar" actionListener="#{mailingBean.atualizar(1)}" update=":forMailingVendedor" oncomplete="dialogMailingAlt.hide();" rendered="#{mailingBean.mailingAtualizar.status!=4}"/>
-                                <p:commandButton value="Negociação" actionListener="#{mailingBean.atualizar(3)}" update=":forMailingVendedor" rendered="#{mailingBean.mailingAtualizar.status==2}" oncomplete="dialogMailingAlt.hide();"/>
-                                <p:commandButton value="Finalizar" action="#{mailingBean.levarProContrato}"  rendered="#{mailingBean.mailingAtualizar.status==3}" oncomplete="dialogMailingAlt.hide();">
+                                <p:commandButton value="Liberar" actionListener="#{mailingBean.atualizar(1)}" update=":forMailingVendedor" oncomplete="PF('dialogMailingAlt').hide();" rendered="#{mailingBean.mailingAtualizar.status!=4}"/>
+                                <p:commandButton value="Negociação" actionListener="#{mailingBean.atualizar(3)}" update=":forMailingVendedor" rendered="#{mailingBean.mailingAtualizar.status==2}" oncomplete="PF('dialogMailingAlt').hide();"/>
+                                <p:commandButton value="Finalizar" action="#{mailingBean.levarProContrato}"  rendered="#{mailingBean.mailingAtualizar.status==3}" oncomplete="PF('dialogMailingAlt').hide();">
                                     <f:param name="id" value="#{mailingBean.mailingAtualizar.IDMailing}"/>
                                 </p:commandButton>
-                                <p:commandButton value="sair" onclick="dialogMailingAlt.hide();"/>
+                                <p:commandButton value="sair" onclick="PF('dialogMailingAlt').hide();"/>
                             </h:panelGrid>
 
                         </p:dialog>
@@ -139,7 +139,7 @@
                                 <p:separator/>
                                 <h:panelGrid columns="2">
                                     <p:commandButton value="ok" actionListener="#{mailingBean.addObs}" update="gridObs"/>
-                                    <p:commandButton value="sair" onclick="dialogMailingInsert.hide();"/>
+                                    <p:commandButton value="sair" onclick="PF('dialogMailingInsert').hide();"/>
                                 </h:panelGrid>
                             </h:panelGrid>
 

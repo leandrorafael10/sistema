@@ -164,6 +164,82 @@ public class ContratoMidiaRN {
         this.taxaParceiroDAO = taxaParceiroDAO;
     }
 
+    @Transactional("tmGreen")
+    public void cadastrarNovo(ContratoMidia contratoMidia, Date inicio, boolean producao) {
+        Receita receitaContrato = new Receita();
+        try {
+            if (contratoMidia.getIDcliente().getIDPessoa().getIDPessoa() == null) {
+                getPessoaDao().salvar(contratoMidia.getIDcliente().getIDPessoa());
+                if (contratoMidia.getIDcliente().getIDCliente() == null) {
+                    contratoMidia.getIDcliente().setAtivo(true);
+                    contratoMidia.getIDcliente().setDTInc(new Date());
+                    contratoMidia.getIDcliente().setIDUsuario(ContextoUtil.getContextoBean().getUsuarioLogado());
+                    getClienteDAO().salvar(contratoMidia.getIDcliente());
+                }
+            } else if (contratoMidia.getIDcliente().getIDCliente() == null) {
+                contratoMidia.getIDcliente().setAtivo(true);
+                contratoMidia.getIDcliente().setDTInc(new Date());
+                contratoMidia.getIDcliente().setIDUsuario(ContextoUtil.getContextoBean().getUsuarioLogado());
+                getClienteDAO().salvar(contratoMidia.getIDcliente());
+            }
+
+            contratoMidia.setDTinc(new Date());
+            contratoMidia.setIDusuario(ContextoUtil.getContextoBean().getUsuarioLogado());
+            contratoMidia.setAtivo(1);
+            if (contratoMidia.getIDtipopagamento().getDescricao().equals("Bonificacão") || contratoMidia.getIDtipopagamento().getDescricao().equals("Permuta")) {
+                if (contratoMidia.getIDtipopagamento().getDescricao().equals("Bonificacão")) {
+                    contratoMidia.setValor(BigDecimal.ZERO);
+                }
+                getContratoMidiaDAO().salvarContrato(contratoMidia);
+                ProducaoMidia midia = new ProducaoMidia();
+                midia.setIDContratoMidia(contratoMidia);
+
+            } else {
+
+                receitaContrato.setValorNominal(contratoMidia.getValor());
+                contratoMidia.setValor(contratoMidia.getValor().multiply(new BigDecimal(contratoMidia.getNumeroParcelas())));
+                getContratoMidiaDAO().salvarContrato(contratoMidia);
+                Origem origem = new Origem();
+                origem.setIDContratoMidia(contratoMidia);
+                this.origemDAO.salvar(origem);
+                receitaContrato.setIDAtividade(this.atividadeDAO.carregar(1));
+                receitaContrato.setIDDocumento(this.documentoDAO.carregar(19));
+                receitaContrato.setIDCCusto(this.custoDAO.carregar(1));
+                receitaContrato.setIDClassificacao(this.classificacaoDAO.carregar(2));
+                receitaContrato.setIDCliente(contratoMidia.getIDcliente());
+                receitaContrato.setIDConta(this.contaDAO.carregar(1));
+                receitaContrato.setTipoJuros(Boolean.FALSE);
+                receitaContrato.setIDUsuario(ContextoUtil.getContextoBean().getUsuarioLogado());
+                receitaContrato.setIdorigem(origem);
+                receitaContrato.setDTInc(new Date());
+                receitaContrato.setDTEmissao(new Date());
+                receitaContrato.setNumero(contratoMidia.getNContrato());
+                receitaContrato.setValorDesconto(BigDecimal.ZERO);
+                receitaContrato.setValorJuros(BigDecimal.ZERO);
+                receitaContrato.setValorMulta(BigDecimal.ZERO);
+                receitaContrato.setDTVencimento(new Date());
+                salvarRecContr(receitaContrato, inicio, Integer.parseInt(contratoMidia.getNumeroParcelas()), contratoMidia.getNContrato());
+                ProducaoMidia midia = new ProducaoMidia();
+                midia.setIDContratoMidia(contratoMidia);
+            }
+            ProducaoMidia midia = new ProducaoMidia();
+            midia.setIDContratoMidia(contratoMidia);
+            if (producao) {
+                midia.setStatusMaterial(0);
+                midia.setStatusProducao(0);
+            } else {
+                midia.setStatusMaterial(2);
+                midia.setStatusProducao(3);
+            }
+            this.producaoMidiaDAO.salvar(midia);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Salvo com sucesso!", "Salvo com sucesso!"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao salvar!", "Erro ao salvar!"));
+        }
+
+    }
+    
+    
     /*
      *funcão salva contrato insere as parcelas nas receitas da conta da empresa 
      * e envia o status inicial para a producão começar a divulgar o video.
@@ -210,7 +286,7 @@ public class ContratoMidiaRN {
                         getContratoMidiaDAO().salvarContrato(contratoMidia);
                         ProducaoMidia midia = new ProducaoMidia();
                         midia.setIDContratoMidia(contratoMidia);
-                        
+
                     } else {
 
                         receitaContrato.setValorNominal(contratoMidia.getValor());
@@ -233,7 +309,6 @@ public class ContratoMidiaRN {
                         receitaContrato.setIdorigem(origem);
                         receitaContrato.setDTInc(new Date());
                         receitaContrato.setDTEmissao(new Date());
-                        receitaContrato.setAtzPg(0);
                         receitaContrato.setNumero(contratoMidia.getNContrato());
                         receitaContrato.setValorDesconto(BigDecimal.ZERO);
                         receitaContrato.setValorJuros(BigDecimal.ZERO);
@@ -242,7 +317,7 @@ public class ContratoMidiaRN {
                         salvarReceitaContrato(receitaContrato, Integer.parseInt(contratoMidia.getNumeroParcelas()), contratoMidia.getDiaVencimento(), inicio);
                         ProducaoMidia midia = new ProducaoMidia();
                         midia.setIDContratoMidia(contratoMidia);
-                       
+
                     }
 
                 } else {
@@ -268,7 +343,6 @@ public class ContratoMidiaRN {
                     origem.setIDContratoMidia(contratoMidia);
                     this.origemDAO.salvar(origem);
 
-
                     receitaContrato.setIDAtividade(this.atividadeDAO.carregar(1));
                     receitaContrato.setIDDocumento(this.documentoDAO.carregar(19));
                     receitaContrato.setIDCCusto(this.custoDAO.carregar(1));
@@ -280,7 +354,6 @@ public class ContratoMidiaRN {
                     receitaContrato.setIdorigem(origem);
                     receitaContrato.setDTInc(new Date());
                     receitaContrato.setDTEmissao(new Date());
-                    receitaContrato.setAtzPg(0);
                     receitaContrato.setNumero(contratoMidia.getNContrato());
 
                     receitaContrato.setValorDesconto(BigDecimal.ZERO);
@@ -290,8 +363,6 @@ public class ContratoMidiaRN {
 
                     salvarReceitaContrato(receitaContrato, Integer.parseInt(contratoMidia.getNumeroParcelas()), contratoMidia.getDiaVencimento(), inicio);
                 }
-
-
 
                 for (Praca p : pracas) {
                     ContratoPracas contratoPracas = new ContratoPracas();
@@ -390,7 +461,6 @@ public class ContratoMidiaRN {
 
                 receita.setTipoJuros(Boolean.FALSE);
                 receita.setDTEmissao(new Date());
-                receita.setAtzPg(0);
                 //calcular quantidade de meses;
 
                 Calendar calendar = Calendar.getInstance();
@@ -399,14 +469,13 @@ public class ContratoMidiaRN {
                 calendar.set(Calendar.DAY_OF_MONTH, 10);
                 receita.setDTVencimento(calendar.getTime());
 
-
                 for (Map.Entry<Date, BigDecimal> entry : map.entrySet()) {
                     Integer parcela = 1;
                     Receita r = receita;
                     r.setValorLiquido(entry.getValue());
                     r.setValorNominal(entry.getValue());
                     r.setDTVencimento(entry.getKey());
-                    r.setNumero("parc : " + parcela.toString());
+                    r.setNumero(parcela.toString());
                     receitaDAO.salvar(r);
                     parcela++;
                 }
@@ -446,9 +515,7 @@ public class ContratoMidiaRN {
             requestContext.execute("dialogInsereContrato.hide()");
             requestContext.update("formPrin");
 
-
         }
-
 
     }
 
@@ -508,7 +575,6 @@ public class ContratoMidiaRN {
                 receita.setDTDesconto(new Date());
                 receita.setDTJuros(new Date());
                 receita.setIDConta(this.contaDAO.carregar(1));
-                receita.setAtzPg(0);
                 receita.setNumero(midia.getNContrato());
                 receita.setIDCliente(midia.getIDcliente());
                 //calcular quantidade de meses;
@@ -582,7 +648,8 @@ public class ContratoMidiaRN {
         return getContratoMidiaDAO().contratoUsuario(usuario.getUsuarioLogado());
     }
 
-    public void escluir(ContratoMidia contratoMidia) {
+    @Transactional(value = "tmGreen")
+    public void excluir(ContratoMidia contratoMidia) {
         getContratoMidiaDAO().excluir(contratoMidia);
     }
 
@@ -593,20 +660,10 @@ public class ContratoMidiaRN {
     @Transactional("tmGreen")
     public void atualizar(ContratoMidia contratoMidia) {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
-        FacesContext message = FacesContext.getCurrentInstance();
-        if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_2")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_PRODUCAO")) {
-            contratoMidia.setDTalt(new Date(System.currentTimeMillis()));
-            contratoMidia.setIDusuarioalt(contextoBean.getUsuarioLogado());
-            getContratoMidiaDAO().atualizar(contratoMidia);
-            message.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualizado com sucesso", "Ok! Atualizado com sucesso!"));
+        contratoMidia.setDTalt(new Date(System.currentTimeMillis()));
+        contratoMidia.setIDusuarioalt(contextoBean.getUsuarioLogado());
+        getContratoMidiaDAO().atualizar(contratoMidia);
 
-        } else {
-            message.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Falha autorização", "Usuario não autorizado!"));
-        }
     }
 
     /*
@@ -688,7 +745,6 @@ public class ContratoMidiaRN {
         Calendar nova = new GregorianCalendar();
         nova.set(Calendar.DAY_OF_MONTH, vencimento);
         receita.setValorLiquido(receita.getValorNominal());
-        receita.setAtzPg(0);
         String doc = receita.getNumero();
         if (inicio) {
             nova.add(Calendar.MONTH, +1);
@@ -700,7 +756,7 @@ public class ContratoMidiaRN {
                 for (int i = 0; parcelas > i; i++) {
                     Receita r = receita;
                     nova.add(Calendar.MONTH, +1);
-                    r.setNumero(doc + " / parc: " + String.valueOf(i + 1));
+                    r.setNumero(String.valueOf(i + 1));
                     r.setDTVencimento(nova.getTime());
                     getReceitaDAO().salvar(r);
                 }
@@ -709,7 +765,7 @@ public class ContratoMidiaRN {
                     Receita r = receita;
                     nova.setTime(r.getDTVencimento());
                     nova.add(Calendar.DAY_OF_MONTH, cont);
-                    r.setNumero(doc + " / parc: " + String.valueOf(i + 1));
+                    r.setNumero(String.valueOf(i + 1));
                     r.setDTVencimento(nova.getTime());
                     getReceitaDAO().salvar(r);
                     cont = 30;
@@ -719,6 +775,36 @@ public class ContratoMidiaRN {
         } else if (parcelas == 0 || parcelas == 1) {
             getReceitaDAO().salvar(receita);
         }
+    }
+
+    public void salvarRecContr(Receita r, Date inicio, int numParc, String numero) {
+        Calendar nova = new GregorianCalendar();
+        nova.setTime(inicio);
+        r.setValorLiquido(r.getValorNominal());
+        for (int i = 0; i < numParc; i++) {
+            r.setDTVencimento(nova.getTime());
+            r.setNumero(String.valueOf(i + 1));
+            getReceitaDAO().salvar(r);
+            nova.add(GregorianCalendar.MONTH, 1);
+        }
+
+    }
+    @Transactional(value = "tmGreen")
+    public void atualizaParcela(Receita r){
+        r.setIDUsuarioAlt(ContextoUtil.getContextoBean().getUsuarioLogado());
+        r.setDTAlt(new Date());
+        getReceitaDAO().atualizar(r);
+    }
+    @Transactional(value = "tmGreen")
+    public void excluirParcela(Receita r){
+        getReceitaDAO().excluir(r);
+    }
+    
+    public List<ContratoMidia> buscaPorPeriodoTipo(Date inicio,Date fim,int tipo){
+      return getContratoMidiaDAO().buscaPorPeriodoTipo(inicio, fim, tipo);
+    }
+    public List<ContratoMidia> buscaPorPeriodoTipo_parceiro(Date inicio,Date fim,int tipo,Cliente c){
+        return getContratoMidiaDAO().buscaPorPeriodoTipo_parceiro(inicio, fim, tipo,c);
     }
 
     public List<ContratoMidia> buscaPorVendedor(Funcionario funcionario, Date dtini, Date dtfim) {
@@ -740,4 +826,9 @@ public class ContratoMidiaRN {
     public List<ContratoMidia> listarPorPraca(Integer id) {
         return getContratoMidiaDAO().listarPorPraca(id);
     }
+
+    public List<ContratoMidia> contratosDoCliente(Cliente c) {
+        return getContratoMidiaDAO().contratosDoCliente(c);
+    }
+
 }

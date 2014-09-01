@@ -7,6 +7,15 @@
     width: 90%;
 
 
+
+}
+.form-sair-home{
+    float: right;
+    margin-top: 0px;
+    height: 40px;
+}
+.form-sair-home>a{
+   color: blue;
 }
 #tudo{
 
@@ -24,7 +33,8 @@
     -webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
     margin-top: 10px;
     border-radius: 2em  ;
-    background-color: #2a8ac4;
+    background-size:100% 100%;
+    background-image: url(../imagens/assinatura_principal.png); 
 
 }
 
@@ -53,6 +63,7 @@
 #principal{
     width: 85%;
     float: right;
+    
 }
 
 .coluna-fixa{

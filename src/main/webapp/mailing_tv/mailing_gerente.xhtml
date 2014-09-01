@@ -80,7 +80,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Observações"/>
                             </f:facet>
-                            <p:commandLink value="Obs"  oncomplete="dialogMailingObs.show();" update=":forMailingGerente">
+                            <p:commandLink value="Obs"  oncomplete="PF('dialogMailingObs').show();" update=":forMailingGerente">
                                 <f:setPropertyActionListener value="#{item}" target="#{mailingBean.mailingAtualizar}"/>
                             </p:commandLink>
                         </p:column>
@@ -102,7 +102,7 @@
                                 </p:dataList> 
                             </p:scrollPanel>
                         </h:panelGrid>
-                        <p:commandButton value="sair" onclick="dialogMailingObs.hide();"/>
+                        <p:commandButton value="sair" onclick="PF('dialogMailingObs').hide();"/>
                     </p:dialog>
 
 

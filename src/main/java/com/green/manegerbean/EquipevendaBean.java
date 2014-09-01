@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -36,7 +37,6 @@ public class EquipevendaBean implements Serializable {
         this.equipevenda = new Equipevenda();
         this.equipevenda.setIDGerente(new Funcionario());
         this.equipevenda.setIDPromotor(new Funcionario());
-
 
     }
 

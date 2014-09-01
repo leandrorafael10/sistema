@@ -6,6 +6,7 @@ package com.green.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -43,6 +44,8 @@ public class Praca implements Serializable {
     @JoinColumn(name = "IDPessoa", referencedColumnName = "IDPessoa")
     @ManyToOne
     private Pessoa iDPessoa;
+    @ManyToMany(mappedBy = "pracas")
+    private List<ContratoMidia> contratosPraca;
 
     public Praca() {
     }
@@ -147,5 +150,15 @@ public class Praca implements Serializable {
     public void setIDPessoa(Pessoa iDPessoa) {
         this.iDPessoa = iDPessoa;
     }
+
+    public List<ContratoMidia> getContratosPraca() {
+        return contratosPraca;
+    }
+
+    public void setContratosPraca(List<ContratoMidia> contratosPraca) {
+        this.contratosPraca = contratosPraca;
+    }
     
+    
+
 }

@@ -77,7 +77,7 @@ public class MailingBean implements Serializable {
         if (m.getStatus() == 1) {
             setMailingAtualizar(m);
             context.update("formConfirSeparar");
-            context.execute("dialogMailingSep.show()");
+            context.execute("PF('dialogMailingSep').show()");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Cliente não liberado para prospequicão!", "Cliente não liberado para prospequicão!"));
             context.update("forCadastroMailing:msgMailing");

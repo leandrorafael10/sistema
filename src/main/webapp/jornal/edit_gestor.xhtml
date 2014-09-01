@@ -17,7 +17,7 @@
                     <p:dataTable value="#{capaLoteJornalBean.capaloteDataModel}" var="capa"
                                  selection="#{capaLoteJornalBean.capalotejornal}"
                                  selectionMode="single">
-                        <p:ajax event="rowSelect" listener="#{capaLoteJornalBean.onRowSelect}" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                        <p:ajax event="rowSelect" listener="#{capaLoteJornalBean.onRowSelect}" />
                         <p:column headerText="numero">
                             <h:outputText value="#{capa.contrato}"/>
                         </p:column>

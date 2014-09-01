@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <br/>
+                <h:form id="formPonto">
+                    <p:panel>
+                        <h:panelGrid columns="6">
+                            <h:outputText value="Período ínicio: " />
+                            <p:calendar required="true" value="#{brindeBean.inicio}" size="10" pattern="dd/MM/yyyy" mask="true"/>
+                            <h:outputText value=" fim: "/>
+                            <p:calendar required="true" value="#{brindeBean.fim}" size="10" pattern="dd/MM/yyyy" mask="true"/>
+                            
+                            <p:commandButton icon="ui-icon-search" 
+                                             actionListener="#{brindeBean.listarPeriodo(event)}" update=":formPonto:listaPontos"/>
+                        </h:panelGrid>
+                        <h:commandLink  target="_blank" action="#{brindeBean.geraPDF}">
+                            <h:graphicImage library="imagens" name="pdf.png" title="pdf"/>
+                        </h:commandLink>
+                    </p:panel>
+                    <p:panel>
+                        <p:dataTable scrollHeight="400" scrollable="true" id="listaPontos" value="#{brindeBean.contadorBrindes}" var="brinde" emptyMessage="não há vendas">
+                            <p:column headerText="nome">
+                                <h:outputText value="#{brinde.descricao}"/>
+                            </p:column>
+                           <p:column headerText="cidade">
+                               <h:outputText value="#{brinde.local}"/>
+                            </p:column>
+                            <p:column headerText="quantidade">
+                                <h:outputText value="#{brinde.quantidade}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

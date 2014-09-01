@@ -43,6 +43,7 @@
                                     showButtonPanel="true" 
                                     navigator="true" 
                                     size="10"
+                                    mask="true"
                                     pattern="dd/MM/yyyy"
                                     timeZone="America/Sao_Paulo"
                                     yearRange="c-80:"
@@ -75,15 +76,10 @@
                         <p:inputText id="email_fum" label="E-MAIL" value="#{funcionarioBean.funcionario.IDPessoa.email}"
                                      size="30"
                                      validatorMessage="Email com formato errado!"
-                                     maxlength="40"
+                                     maxlength="50"
                                      >
                         </p:inputText>
-                        <h:outputLabel  value="HTTP:"/>
-                        <p:inputText  value="#{funcionarioBean.funcionario.IDPessoa.http}"
-                                      size="30"
-                                      maxlength="40"
-                                      >
-                        </p:inputText>
+                        
                         <h:outputLabel value="CPF:*"/>
                         <p:inputMask mask="999.999.999-99" value="#{funcionarioBean.funcionario.IDPessoa.cnpjCpf}"
                                      required="true"
@@ -93,7 +89,7 @@
                         <h:outputLabel value="RG"/>
                         <p:inputText value="#{funcionarioBean.funcionario.IDPessoa.rg}"
                                      size="10"
-                                     maxlength="10"/>
+                                     maxlength="20"/>
 
                         <h:outputText value="Nº CTPS:"/>
 
@@ -109,6 +105,7 @@
                                     navigator="true"
                                     showButtonPanel="true" size="10"
                                     pattern="dd/MM/yyyy"
+                                    mask="true"
                                     timeZone="America/Sao_Paulo"
                                     yearRange="c-80:"
                                     required="true"
@@ -139,7 +136,8 @@
                                       >
                             <p:ajax  event="blur" listener="#{funcionarioBean.buscaPorCep()}"
                                      update="inputLogradouro,inputBairro,inputCidade,inputUF" 
-                                     onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                                     />
+
                         </p:inputMask>
                         <h:outputLabel  value="Rua/Avenida:"/>
                         <p:inputText id="inputLogradouro"  value="#{funcionarioBean.funcionario.IDPessoa.logradouro}"
@@ -191,7 +189,7 @@
                     </h:panelGrid>
 
                     <p:separator/>
-                    <p:commandButton value="Confirmar" actionListener="#{funcionarioBean.salvarFuncionario}"  update=":formFuncionario" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:commandButton value="Confirmar" actionListener="#{funcionarioBean.salvarFuncionario}"  update=":formFuncionario" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <p:commandButton type="reset" value="Limpar"/>
                 </p:panel>
@@ -226,14 +224,16 @@
                         <p:column width="50" headerText="pesq.">  
                             <p:commandButton id="selectButton" 
                                              icon="ui-icon-search" 
-                                             title="Todos dados" actionListener="#{funcionarioBean.pesquisaFuncionario(funcionarioEdit)}">  
+                                             title="Todos dados" actionListener="#{funcionarioBean.pesquisaFuncionario(funcionarioEdit)}"
+                                             oncomplete="PF('func').show()"
+                                             update=":formInforFuncionario:displayFuncionario">  
                             </p:commandButton>  
                         </p:column>  
                         <p:column width="50" headerText="Editar"> 
 
                             <p:commandLink value="editar"  id="selectLinkEdit" 
                                            update=":formEditFuncionario" 
-                                           oncomplete="editarFuncDialog.show()" 
+                                           oncomplete="PF('editarFuncDialog').show()" 
                                            title="Editar dados" 
 
                                            >
@@ -243,7 +243,7 @@
                         <p:column headerText="Baixa" width="50">
                             <p:commandLink value="demitir"
                                            update=":forDemisaoFuncionario"
-                                           oncomplete="demitirFuncDialog.show()"
+                                           oncomplete="PF('demitirFuncDialog').show()"
                                            title="demissão do funcionário"
                                            disabled="#{!funcionarioEdit.ativo}">
                                 <f:setPropertyActionListener value="#{funcionarioEdit}" target="#{funcionarioBean.funcionarioEditado}" />
@@ -266,10 +266,10 @@
                 </p:dialog>
             </h:form>
             <h:form id="forDemisaoFuncionario">
-                <p:dialog header="Demitir Funcionário" widgetVar="demitirFuncDialog" modal="true">
-                    <h:panelGrid id="displayFuncionario" cellpadding="4" style="margin:0 auto;" columns="2">  
+                <p:dialog header="Demitir Funcionário" widgetVar="demitirFuncDialog" modal="true" width="650">
+                    <h:panelGrid id="displayFuncionario" cellpadding="4" style="margin:0 auto;" columns="1">  
 
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="6">
                             <h:outputText value="Nome:" />  
                             <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.razao}" style="font-weight:bold"/>  
                             <h:outputText value="RG:" />  
@@ -304,15 +304,17 @@
                             <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.estado}"/>
                             <h:outputText value="País:"/>
                             <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.pais}"/>
+                            <h:outputText value="Empresa:"/>
+                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDFilial.fantasia}"/>
                             <h:outputText value="Data de admissão: " style="color: royalblue"/>
                             <h:outputText value="#{funcionarioBean.funcionarioEditado.DTAdmissao}" style="color: royalblue">
                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                             </h:outputText>
-                            <h:outputText value="Empresa:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDFilial.fantasia}"/>
+
                         </h:panelGrid>
+
                         <h:panelGrid columns="1">
-                            <p:dataTable value="#{funcionarioBean.funcionarioEditado.IDPessoa.contatosCollection}" 
+                            <p:dataTable value="#{funcionarioBean.funcionarioEditado.IDPessoa.contatosList}" 
                                          var="contatosD" emptyMessage="Não a contatos!"
                                          >
                                 <p:column headerText="Residencial">
@@ -326,18 +328,31 @@
                                 </p:column>
                             </p:dataTable>
                             <br/>
+
                             <h:outputText value="Data baixa:" style="color: red;"/>
-                            <p:calendar  value="#{funcionarioBean.funcionarioEditado.DTDemissao}" mode="inline"/>
+                            <h:panelGrid columns="3" cellspacing="5">
+                                <p:calendar  value="#{funcionarioBean.funcionarioEditado.DTDemissao}" mode="inline">
+                                    <p:ajax event="dateSelect" update="outData"/>
+                                </p:calendar>
+                                <h:outputText value="Demitido em:"/>
+                                <h:outputText id="outData" value="#{funcionarioBean.funcionarioEditado.DTDemissao}" style="font-size: 15px;color: red">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                
+                            </h:panelGrid>
+
                         </h:panelGrid>
+
+
                     </h:panelGrid>  
                     <p:separator/>
                     <p:commandButton value="confirmar demissão" actionListener="#{funcionarioBean.demitirFuncionario(funcionarioBean.funcionarioEditado)}"/>
-                    <p:commandButton value="sair" onclick="displayFuncionario.hide();" update=":formFuncionario,:forDemisaoFuncionario"/>
+                    <p:commandButton value="sair" onclick="PF('displayFuncionario').hide();" update=":formFuncionario,:forDemisaoFuncionario"/>
                 </p:dialog>
             </h:form>
             <h:form id="formInforFuncionario">
                 <p:dialog header="Dados funcionário" widgetVar="func" resizable="false" id="funcDisplay"  
-                          showEffect="fade" hideEffect="explode" modal="true" closable="false">  
+                          showEffect="fade" hideEffect="explode" modal="true" closable="false" width="500">  
                     <h:panelGrid id="displayFuncionario"  cellpadding="2" style="margin:0 auto;">  
                         <f:facet name="header">  
                             <h:graphicImage library="imagens" name="#{funcionarioBean.foto}.png" width="100" height="100" rendered="#{funcionarioBean.foto==''?false:true}"/>
@@ -387,7 +402,7 @@
                             <h:outputText value="#{funcionarioBean.funcionario.IDFilial.fantasia}"/>
 
                         </h:panelGrid>
-                        <p:dataTable value="#{funcionarioBean.funcionario.IDPessoa.contatosCollection}" 
+                        <p:dataTable value="#{funcionarioBean.funcionario.IDPessoa.contatosList}" 
                                      var="contatos" emptyMessage="Não a contatos!"
                                      >
                             <f:facet name="header">
@@ -411,12 +426,9 @@
             </h:form>
             <h:form id="formEditFuncionario">
                 <p:dialog header="Edição Funcionario" widgetVar="editarFuncDialog" showEffect="explode" hideEffect="explode" modal="true">
-                    <h:panelGrid columns="2" id="editarFuncionario">
-                        <p:growl showDetail="true"  life="3000" id="growlmsgEdit"/>
+                    <p:growl showDetail="true"  life="3000" id="growlmsgEdit"/>
                         <p:messages id="msgFuncEdit"/>
-
-                        <p:panel  >
-                            <h:panelGrid columns="2"  cellpadding="5"  title="Cadastro funcionário">
+                    <h:panelGrid columns="4" id="editarFuncionario">
                                 <h:outputLabel value="Nome:"/>
                                 <p:inputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.razao}"/>
                                 <h:outputLabel  value="Data Nascimento:"/>
@@ -424,8 +436,7 @@
                                             showButtonPanel="true" 
                                             navigator="true" 
                                             size="10"
-                                            pattern="dd-MM-yyyy"
-                                            timeZone="America/Sao_Paulo"
+                                            pattern="dd/MM/yyyy"
                                             yearRange="c-80:"
                                             />
                                 <h:outputText value="Sexo:"/>
@@ -476,11 +487,7 @@
                                 <p:inputText value="#{funcionarioBean.funcionarioEditado.serieCtps}"
                                              size="8"
                                              maxlength="10"/>
-                            </h:panelGrid>
-
-                        </p:panel>
-                        <p:panel>
-                            <h:panelGrid columns="2"  cellpadding="5" width="45em" title="Cadastro funcionário">
+                          
                                 <h:outputText value="Data admissão:"/>
                                 <p:calendar value="#{funcionarioBean.funcionarioEditado.DTAdmissao}"
                                             navigator="true"
@@ -555,15 +562,15 @@
                                                    itemValue="#{filial}"
                                                    itemLabel="#{filial.fantasia}"/>
                                 </p:selectOneMenu>
-                            </h:panelGrid>
+                            
 
-                        </p:panel>
+                       
 
                     </h:panelGrid>
                     <p:separator/>
-                    <p:commandButton value="Salvar" actionListener="#{funcionarioBean.atualizar()}"   update="editarFuncionario" />
+                    <p:commandButton value="Salvar" actionListener="#{funcionarioBean.atualizar()}"   update="editarFuncionario,msgFuncEdit,growlmsgEdit" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <p:commandButton  value="Sair" onclick="editarFuncDialog.hide();"/>
+                    <p:commandButton  value="Sair" onclick="PF('editarFuncDialog').hide();" />
                 </p:dialog>  
             </h:form>
             <h:form>
@@ -571,7 +578,7 @@
                           draggable="false" closable="false" resizable="false">
                     Cpf já cadastrado!
                     <br/>
-                    <p:commandButton value="sair" oncomplete="dialogError.hide();"/>
+                    <p:commandButton value="sair" oncomplete="PF('dialogError').hide();" />
 
 
                 </p:dialog>

@@ -7,7 +7,6 @@ package com.green.manegerbean;
 import com.green.modelo.Brinde;
 import com.green.modelo.Brindecapalote;
 import com.green.modelo.Capalotejornal;
-import com.green.modelo.Despesa;
 import com.green.modelo.Equipevenda;
 import com.green.modelo.Histaltlote;
 import com.green.modelo.Planovendaparcela;
@@ -89,7 +88,7 @@ public class CapaLoteJornalBean implements Serializable {
 
     @PostConstruct
     private void init() {
-        this.filtroLista = getCapaLoteJornalRN().listarSemGestor();
+       // this.filtroLista = getCapaLoteJornalRN().listarSemGestor();
         this.capalotejornal = new Capalotejornal();
         this.capalotejornal.setStatus(1);
         this.capalotejornal.setStatusBrinde(true);
@@ -191,9 +190,38 @@ public class CapaLoteJornalBean implements Serializable {
             }
         }
         HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("total", getVendaGeral().getTotal().toString());
+        parametros.put("totalValor", getVendaGeral().getValorTotal());
+        parametros.put("ativo", getVendaGeral().getAtivo().toString());
+        parametros.put("ativoValor", getVendaGeral().getValorAtivo());
+        parametros.put("cancel", getVendaGeral().getCancelado().toString());
+        parametros.put("cancelValor", getVendaGeral().getValorCancelado());
+        parametros.put("agend", getVendaGeral().getAgendado().toString());
+        parametros.put("agendValor", getVendaGeral().getValorAgendado());
+        parametros.put("pend", getVendaGeral().getPendente().toString());
+        parametros.put("pendValor", getVendaGeral().getValorPendente());
+        parametros.put("renovado", getVendaGeral().getRenovado().toString());
+        parametros.put("renovadoValor", getVendaGeral().getValorRenovado());
+        parametros.put("mes", getMes());
+        parametros.put("ano", getAno());
         parametros.put("Usuario", ContextoUtil.getContextoBean().getUsuarioLogado().getIDFuncionario().getIDPessoa().getRazao());
         JRDataSource jrds = new JRBeanCollectionDataSource(vendas);
         RelatorioUtil.geraRelatorioBean("ranking_parcial", jrds, parametros);
+    }
+    
+    public void geraPdfFaturado() {
+        List<Venda> vendas = new ArrayList<>();
+        for (Equipe e : getEquipe()) {
+            for (Venda venda : e.getVendaPromotor()) {
+                vendas.add(venda);
+            }
+        }
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("mes", getMes());
+        parametros.put("ano", getAno());
+        parametros.put("usuario", ContextoUtil.getContextoBean().getUsuarioLogado().getIDFuncionario().getIDPessoa().getRazao());
+        JRDataSource jrds = new JRBeanCollectionDataSource(vendas);
+        RelatorioUtil.geraRelatorioBean("ranking_faturado", jrds, parametros);
     }
 
     public void calculaRankingFaturado(ActionEvent event) {
@@ -255,7 +283,14 @@ public class CapaLoteJornalBean implements Serializable {
         this.capalotejornal.setModalidade(getPlanovendaparcela()
                 .getQtdParcela());
         getCapaLoteJornalRN().salvar(capalotejornal);
-        init();
+        this.capalotejornal = new Capalotejornal();
+        this.capalotejornal.setStatus(1);
+        this.capalotejornal.setStatusBrinde(true);
+        this.capalotejornal.setIDTipopagamento(new Tipopagamento());
+        this.capalotejornal
+                .setBrindecapaloteList(new ArrayList<Brindecapalote>());
+        this.planovendaparcela = new Planovendaparcela();
+        this.equipevenda = new Equipevenda();
     }
 
     public void postProcessXLS(Object document) {

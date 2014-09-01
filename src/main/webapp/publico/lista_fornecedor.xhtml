@@ -49,14 +49,14 @@
 
                         <p:column width="30">
                             <p:commandLink  update=":formListaFornecedor" title="visualizar"
-                                            oncomplete="fornecedorDialog.show()">
+                                            oncomplete="PF('fornecedorDialog').show()">
                                 <h:graphicImage library="imagens" name="Pesq.png" title="visualizar"/>
                                 <f:setPropertyActionListener target="#{fornecedorBean.fornecedorNovo}" value="#{item}"/>
                             </p:commandLink>  
                         </p:column>
                         <p:column  width="30">
                             <p:commandLink   update=":formFornecedorEditado" title="editar"
-                                             oncomplete="fornecedorDialogEditar.show()">
+                                             oncomplete="PF('fornecedorDialogEditar').show()">
                                 <h:graphicImage library="imagens" name="Edit-Yes-32.png" title="editar"/>
                                 <f:setPropertyActionListener target="#{fornecedorBean.fornecedorEditado}" value="#{item}"/>
                             </p:commandLink>
@@ -123,9 +123,9 @@
                     </p:dialog>
                 </h:form>
                 <h:form id="formFornecedorEditado">
-                    <p:dialog widgetVar="fornecedorDialogEditar" modal="true">
+                    <p:dialog header="Formulário edição de fornecedor " widgetVar="fornecedorDialogEditar" modal="true">
 
-                        <p:panel header="Formulario cadastro fornecedor" id="panelFornecedorEditado">
+                        <p:panel id="panelFornecedorEditado">
                             <p:messages/>
                             <h:panelGrid columns="2">
                                 <h:panelGrid columns="2" >
@@ -192,7 +192,7 @@
                             </h:panelGrid> 
                             <p:separator/>
                             <p:commandButton value="confirmar"   actionListener="#{fornecedorBean.alterar(event)}" update="panelFornecedorEditado"/>&nbsp;&nbsp;
-                            <p:commandButton value="cancelar"  onclick="fornecedorDialogEditar.hide()" update="panelFornecedorEditado"/>&nbsp;&nbsp;
+                            <p:commandButton value="cancelar"  onclick="PF('fornecedorDialogEditar').hide()" update="panelFornecedorEditado"/>&nbsp;&nbsp;
                         </p:panel>
 
                     </p:dialog>

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 /**
  *
@@ -212,8 +212,7 @@ public class Usuario implements Serializable {
         this.dTAlt = dTAlt;
     }
 
-    @XmlTransient
-    @JsonIgnore
+   
     public List<Fornecedor> getFornecedorList() {
         return fornecedorList;
     }
@@ -222,8 +221,7 @@ public class Usuario implements Serializable {
         this.fornecedorList = fornecedorList;
     }
 
-    @XmlTransient
-    @JsonIgnore
+   
     public List<Fornecedor> getFornecedorList1() {
         return fornecedorList1;
     }
@@ -232,8 +230,7 @@ public class Usuario implements Serializable {
         this.fornecedorList1 = fornecedorList1;
     }
 
-    @XmlTransient
-    @JsonIgnore
+    
     public List<Desconto> getDescontoList() {
         return descontoList;
     }
@@ -242,8 +239,7 @@ public class Usuario implements Serializable {
         this.descontoList = descontoList;
     }
 
-    @XmlTransient
-    @JsonIgnore
+  
     public List<Funcao> getFuncaoList() {
         return funcaoList;
     }
@@ -252,8 +248,7 @@ public class Usuario implements Serializable {
         this.funcaoList = funcaoList;
     }
 
-    @XmlTransient
-    @JsonIgnore
+    
     public List<Limite> getLimiteList() {
         return limiteList;
     }
@@ -262,8 +257,7 @@ public class Usuario implements Serializable {
         this.limiteList = limiteList;
     }
 
-    @XmlTransient
-    @JsonIgnore
+   
     public List<Funcionariometa> getFuncionariometaList() {
         return funcionariometaList;
     }
@@ -272,8 +266,7 @@ public class Usuario implements Serializable {
         this.funcionariometaList = funcionariometaList;
     }
 
-    @XmlTransient
-    @JsonIgnore
+  
     public List<Funcionariometa> getFuncionariometaList1() {
         return funcionariometaList1;
     }
@@ -282,8 +275,7 @@ public class Usuario implements Serializable {
         this.funcionariometaList1 = funcionariometaList1;
     }
 
-    @XmlTransient
-    @JsonIgnore
+   
     public List<Funcionario> getFuncionarioList() {
         return funcionarioList;
     }
@@ -292,8 +284,7 @@ public class Usuario implements Serializable {
         this.funcionarioList = funcionarioList;
     }
 
-    @XmlTransient
-    @JsonIgnore
+   
     public List<Equipevenda> getEquipevendaList() {
         return equipevendaList;
     }
@@ -302,8 +293,7 @@ public class Usuario implements Serializable {
         this.equipevendaList = equipevendaList;
     }
 
-    @XmlTransient
-    @JsonIgnore
+   
     public List<Ramoatividade> getRamoatividadeList() {
         return ramoatividadeList;
     }

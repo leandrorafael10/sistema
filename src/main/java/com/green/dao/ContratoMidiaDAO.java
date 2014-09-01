@@ -4,6 +4,7 @@
  */
 package com.green.dao;
 
+import com.green.modelo.Cliente;
 import com.green.modelo.ContratoMidia;
 import com.green.modelo.Funcionario;
 import com.green.modelo.Tipopagamento;
@@ -155,6 +156,39 @@ public class ContratoMidiaDAO extends AbstractDao<ContratoMidia, Integer> {
         getSf().getCurrentSession().update(contratoMidia);
     }
 
+    public List<ContratoMidia> buscaPorPeriodoTipo(Date inicio,Date fim,int tipo){
+        String opcao = "";
+        switch(tipo){
+            case 0: opcao = "= 0 ";
+                    break;
+            case 1:opcao = "= 1 ";
+                break;
+            case 2: opcao = "> 0 ";
+                break;
+        }
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.ContratoMidia c "
+                + "where c.dataFimContrato >= :inicio and c.dataFimContrato <= :fim and c.ativo "+opcao
+        +" and c.iDcliente.iDTipocliente is null").setDate("inicio", inicio).setDate("fim", fim);
+        return query.list();
+    }
+    
+    public List<ContratoMidia> buscaPorPeriodoTipo_parceiro(Date inicio,Date fim,int tipo,Cliente c){
+        String opcao = "";
+        switch(tipo){
+            case 0: opcao = "= 0 ";
+                    break;
+            case 1:opcao = "= 1 ";
+                break;
+            case 2: opcao = "> 0 ";
+                break;
+        }
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.ContratoMidia c "
+                + "where c.dataFimContrato >= :inicio and c.dataFimContrato <= :fim and c.ativo "+opcao
+        +" and c.iDcliente.iDTipocliente is not null and c.iDcliente = :cliente").setDate("inicio", inicio)
+                .setDate("fim", fim).setParameter("cliente", c);
+        return query.list();
+    }
+    
     public List<ContratoMidia> buscaPorVendedor(Funcionario funcionario, Date dtInicio, Date dtFim) {
         Query query;
         Map<String, Object> params = new HashMap<>();
@@ -212,6 +246,11 @@ public class ContratoMidiaDAO extends AbstractDao<ContratoMidia, Integer> {
             query =getSf().getCurrentSession().createQuery(sql);
         }
         
+        return (List<ContratoMidia>)query.list();
+    }
+
+    public List<ContratoMidia> contratosDoCliente(Cliente c) {
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.ContratoMidia c where c.iDcliente = :c").setParameter("c", c);
         return (List<ContratoMidia>)query.list();
     }
 }

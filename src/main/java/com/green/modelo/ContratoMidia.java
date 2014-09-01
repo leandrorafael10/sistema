@@ -13,9 +13,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 
 /**
  *
@@ -26,6 +23,11 @@ import org.hibernate.annotations.FetchMode;
 @XmlRootElement
 public class ContratoMidia implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue
+    @Column(name = "idcontrato_midia")
+    private Integer idcontratoMidia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "data_inicio_contrato")
@@ -62,10 +64,12 @@ public class ContratoMidia implements Serializable {
     private String numeroParcelas;
     @Column(name = "porc_agencia")
     @Max(value = 100)
-    private BigDecimal  porcAgencia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDcontratomidia")
-    @Fetch(FetchMode.SUBSELECT)  
-    private List<ContratoPracas> contratoPracasSet;
+    private BigDecimal porcAgencia;
+    @ManyToMany (cascade={ CascadeType.PERSIST,CascadeType.MERGE}) 
+    @JoinTable(name = "contrato_pracas",
+    joinColumns = @JoinColumn(name = "idcontrato_midia",referencedColumnName = "IDcontrato_midia"),   
+    inverseJoinColumns = @JoinColumn(name = "IDpraca",referencedColumnName = "idpraca")) 
+    private List<Praca> pracas;
     @Size(max = 200)
     @Column(name = "obs")
     private String obs;
@@ -73,7 +77,7 @@ public class ContratoMidia implements Serializable {
     @ManyToOne
     private Tipopagamento iDtipopagamento;
     @JoinColumn(name = "IDvendedor", referencedColumnName = "IDFuncionario")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Funcionario iDvendedor;
     @JoinColumn(name = "IDusuarioalt", referencedColumnName = "IDUsuario")
     @ManyToOne
@@ -82,7 +86,7 @@ public class ContratoMidia implements Serializable {
     @ManyToOne(optional = false)
     private Usuario iDusuario;
     @JoinColumn(name = "IDgerente_vendas", referencedColumnName = "IDFuncionario")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Funcionario iDgerentevendas;
     @JoinColumn(name = "IDcliente", referencedColumnName = "IDCliente")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
@@ -93,14 +97,15 @@ public class ContratoMidia implements Serializable {
     @JoinColumn(name = "IDagencia", referencedColumnName = "IDFornecedor")
     @ManyToOne
     private Fornecedor iDagencia;
-    @OneToMany(mappedBy = "iDContratoMidia", fetch = FetchType.LAZY)
-    private List<ObsContrato> iDobsContrato;
     
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue
-    @Column(name = "idcontrato_midia")
-    private Integer idcontratoMidia;
+    @OneToMany(mappedBy = "iDContratoMidia", fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.MERGE})
+    private List<ObsContrato> iDobsContrato;
+
+    @OneToMany(mappedBy = "iDContratoMidia",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.MERGE})
+    private List<ProducaoMidia> producaoList;
+    
+    @OneToOne(mappedBy = "IDContratoMidia",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.MERGE})
+    private Origem origen;
     @Lob
     @Size(max = 65535)
     @Column(name = "obs_cancelamento")
@@ -112,7 +117,7 @@ public class ContratoMidia implements Serializable {
     @Column(name = "ativo")
     private Integer ativo;
     @JoinColumn(name = "IDproduto", referencedColumnName = "idproduto_midia")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private ProdutoMidia iDproduto;
     @Column(name = "cliente_parceiro")
     private String clienteParceiro;
@@ -290,13 +295,6 @@ public class ContratoMidia implements Serializable {
         this.obs = obs;
     }
 
-    public List<ContratoPracas> getContratoPracasSet() {
-        return contratoPracasSet;
-    }
-
-    public void setContratoPracasSet(List<ContratoPracas> contratoPracasSet) {
-        this.contratoPracasSet = contratoPracasSet;
-    }
 
     public Date getDTinc() {
         return dTinc;
@@ -377,9 +375,33 @@ public class ContratoMidia implements Serializable {
     public void setDTVend(Date dTVend) {
         this.dTVend = dTVend;
     }
+
+    public List<Praca> getPracas() {
+        return pracas;
+    }
+
+    public void setPracas(List<Praca> pracas) {
+        this.pracas = pracas;
+    }
+
+    public List<ProducaoMidia> getProducaoList() {
+        return producaoList;
+    }
+
+    public void setProducaoList(List<ProducaoMidia> producaoList) {
+        this.producaoList = producaoList;
+    }
+
+    public Origem getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(Origem origen) {
+        this.origen = origen;
+    }
+
     
-    
-    
-    
+
+       
     
 }

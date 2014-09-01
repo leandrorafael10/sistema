@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <br/>
+                <h:form id="formContratoCliente">
+                    <p:growl id="growl"/>
+                    <p:panel>
+                        <h2>Edição de contratos</h2>
+                        <p:messages/>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Cliente: "/>
+                            <p:selectOneMenu converter="clienteConverter" filter="true" 
+                                             value="#{contratoMidiaBean.cliente}" 
+                                             var="t" style="width:360px"  filterMatchMode="startsWith">
+                                <f:selectItems value="#{clienteRN.listar()}"
+                                               var="cliente"
+                                               itemLabel="#{cliente.IDPessoa.razao}"
+                                               itemValue="#{cliente}"/>
+                                <p:column style="width:30%">
+                                    <h:outputText value="#{t.IDPessoa.razao}" />
+                                </p:column>
+
+                                <p:column>
+                                    <h:outputText value="#{t.IDPessoa.fantasia}" />
+                                </p:column>
+                                <p:ajax update="formContratoCliente:tabelaContratos"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:dataTable id="tabelaContratos" value="#{contratoMidiaBean.cliente.contratos}" var="contrato">
+                        <p:column headerText="Código">
+                            <h:outputText value="#{contrato.idcontratoMidia}"/>
+                        </p:column>
+                        <p:column headerText="Ínicio">
+                            <h:outputText value="#{contrato.dataInicioContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Fim">
+                            <h:outputText value="#{contrato.dataFimContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="visualizar"  oncomplete="PF('dialogVisualizar').show()" update=":formVisualizar">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="editar"  oncomplete="PF('dialogEditar').show()" update=":formEditar">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="parcelas" oncomplete="PF('dialogParcelas').show()" update=":formParcelas">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="excluir" oncomplete="PF('dialogExcluir').show()" update=":formExcluir">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
+                <h:form id="formParcelas">
+                    <p:dialog widgetVar="dialogParcelas" width="550px" header="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}">
+                        <p:panel>
+                            <p:messages id="msgs"/>
+                            <p:dataTable value="#{contratoMidiaBean.contratoMidia.origen.receitas}" var="parcela"
+                                         scrollHeight="300" scrollable="true"
+                                         style="width: 500px;" emptyMessage="Não há parcelas!"
+                                         editable="true"
+                                         id="tabelaParcela">
+                                <p:ajax event="rowEdit" listener="#{contratoMidiaBean.onRowEdit}" update=":formParcelas:msgs" />
+                                <p:ajax event="rowEditCancel" listener="#{contratoMidiaBean.onRowCancel}" update=":formParcelas:msgs" />
+                                <p:column>
+                                    <h:outputText value="#{parcela.numero}"/>
+                                </p:column>
+                                <p:column headerText="valor">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{parcela.valorLiquido}">
+                                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{parcela.valorLiquido}" required="true" requiredMessage="valor e obrigatório"
+                                                         validatorMessage="valor minimo 0">
+                                                <f:convertNumber  minFractionDigits="2"/>
+                                                <f:validateLongRange minimum="0"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+
+                                </p:column>
+                                <p:column headerText="vencimento">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{parcela.DTVencimento}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:calendar mask="true" pattern="dd/MM/yyyy" 
+                                                        value="#{parcela.DTVencimento}" 
+                                                        />
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column>
+                                    <p:commandLink value="excluir" actionListener="#{contratoMidiaBean.excluirParcela(parcela)}" update=":formParcelas:tabelaParcela,:formParcelas:msgs"/>
+                                </p:column>
+                                <p:column style="width:32px">
+                                    <p:rowEditor />
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </p:panel>
+                    </p:dialog>
+
+                </h:form>
+                <h:form id="formExcluir">
+                    <p:dialog widgetVar="dialogExcluir" header="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}">
+                        <p:panel>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Contrato:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.NContrato}" style="size: 12px;color: blue;"/>
+                                <p:commandButton value="excluir" actionListener="#{contratoMidiaBean.excluir}" update=":formContratoCliente"
+                                                 oncomplete="PF('dialogExcluir').hide();"/>
+                                <p:commandButton value="cancelar" onclick="PF('dialogExcluir').hide();"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+                <h:form id="formEditar">
+                    <p:dialog widgetVar="dialogEditar" header="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}">
+                        <p:panel>
+                            <h:panelGrid columns="4" cellspacing="5">
+                                <h:outputText value="Numero : "/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.NContrato}" style="size: 12px;color: blue;"/>
+                                <h:outputText value="Agência : "/>
+                                <p:selectOneMenu converter="fornecedorConverter" 
+                                                 filter="true" 
+                                                 value="#{contratoMidiaBean.contratoMidia.IDagencia}">
+                                    <f:selectItem itemLabel=""/>
+                                    <f:selectItems value="#{fornecedorRN.listarAgencia()}"
+                                                   var="fornecedor"
+                                                   itemLabel="#{fornecedor.IDPessoa.fantasia}"
+                                                   itemValue="#{fornecedor}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Gerente de vendas:"/>
+                                <p:selectOneMenu converter="funcionarioConverter" 
+                                                 required="true" 
+                                                 value="#{contratoMidiaBean.contratoMidia.IDgerentevendas}">
+                                    <f:selectItems value="#{funcionarioRN.listarGerente()}"
+                                                   var="funcionario"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"
+                                                   itemValue="#{funcionario}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Vendido por:"/>
+                                <p:selectOneMenu converter="funcionarioConverter" 
+                                                 required="true" 
+                                                 value="#{contratoMidiaBean.contratoMidia.IDvendedor}">
+                                    <f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+                                                   var="funcionario"
+                                                   itemLabel="#{funcionario.IDPessoa.razao}"
+                                                   itemValue="#{funcionario}"/>
+                                </p:selectOneMenu>
+
+
+
+                                <h:outputText value="Data inicio:"/>
+                                <p:calendar value="#{contratoMidiaBean.contratoMidia.dataInicioContrato}" 
+                                            navigator="true" 
+                                            showOn="button"
+                                            pattern="dd/MM/yyyy"
+                                            size="14"
+                                            required="true"
+                                            requiredMessage="Data início é obrigatória!"/>
+                                <h:outputText value="Data fim:"/>
+                                <p:calendar value="#{contratoMidiaBean.contratoMidia.dataFimContrato}" 
+                                            navigator="true"
+                                            showOn="button"
+                                            pattern="dd/MM/yyyy"
+                                            size="14"
+                                            required="true"
+                                            requiredMessage="Data término é obrigatória!"/>
+                                <h:outputText value="Produto Midia"/>
+                                <p:selectOneMenu converter="produtoMidiaConverter" 
+                                                 required="true" 
+                                                 value="#{contratoMidiaBean.contratoMidia.IDproduto}"
+                                                 >
+
+                                    <f:selectItems value="#{produtoMidiaRN.listar()}"
+                                                   var="produto_midia"
+                                                   itemLabel="#{produto_midia.descricao}  ( #{produto_midia.tempoVideo}'') insecões = #{produto_midia.quantidadeInsercaoDiaria}(dia)" 
+                                                   itemValue="#{produto_midia}"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Data da venda: "/>
+                                <p:calendar value="#{contratoMidiaBean.contratoMidia.DTVend}" 
+                                            navigator="true"
+                                            showOn="button"
+                                            pattern="dd/MM/yyyy"
+                                            size="14"
+                                            required="true"
+                                            requiredMessage="Data da venda é obrigatória!"/>
+                                <h:outputText value="Observações:"/>
+                                <p:inputTextarea value="#{contratoMidiaBean.contratoMidia.obs}" rows="5" cols="40" maxlength="199" />  
+                            </h:panelGrid>
+
+                        </p:panel>
+                        <p:panel>
+                            <h:panelGrid columns="4" cellspacing="5">
+                                <h:outputText value="Praças de vinculação:" />
+                                <p:selectManyCheckbox converter="pracaConverter" 
+                                                      label="pracas" 
+                                                      value="#{contratoMidiaBean.contratoMidia.pracas}" 
+                                                      layout="grid" 
+                                                      columns="4"
+                                                      required="true"
+                                                      requiredMessage="Marque a praça de atuação">
+                                    <f:attribute name="collectionType" value="java.util.ArrayList" />
+                                    <f:selectItems value="#{pracaRN.listar()}" var="praca" itemLabel="#{praca.descricao}" itemValue="#{praca}" />
+                                </p:selectManyCheckbox>
+
+                            </h:panelGrid>
+                        </p:panel>
+                        <p:separator/>
+                        <p:commandButton value="atualizar" actionListener="#{contratoMidiaBean.editarContrato}" update=":formContratoCliente" oncomplete="PF('dialogEditar').hide();"/>
+                        &nbsp;
+                        <p:commandButton value="cancelar" onclick="PF('dialogEditar').hide();"/>
+                    </p:dialog>
+
+                </h:form>
+
+                <p:dialog widgetVar="dialogVisualizar">
+                    <h:form id="formVisualizar">
+                        <p:panel>
+                            <p:panel >
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="Nome/Razão social:"/>
+                                    <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.razao}"/>
+
+                                    <h:outputText value="Fantasia:"/>
+                                    <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                            <h:panelGrid columns="4">
+
+                                <h:outputText value="Numero: "/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.NContrato}"/>
+                                <h:outputText value="Agência:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDagencia.IDPessoa.fantasia}"/>
+                                <h:outputText value="Gerente:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDgerentevendas.IDPessoa.razao}"/>
+                                <h:outputText value="Vendido por:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDvendedor.IDPessoa.razao}"/>
+
+                                <h:outputText value="Período de :"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.dataInicioContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="até :"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.dataFimContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="Condição pag.:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDtipopagamento.descricao}"/>
+                                <h:outputText value="Data Venda:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.DTVend}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="Produto:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDproduto.descricao}  ( #{contratoMidiaBean.contratoMidia.IDproduto.tempoVideo} seg.) "/>
+                                <h:outputText value="Observações:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.obs}"/>
+                                <h:outputText value="Praças:"/>
+                                <p:dataList value="#{contratoMidiaBean.contratoMidia.pracas}" var="praca" type="definition">
+                                    #{praca.descricao}
+                                </p:dataList>
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

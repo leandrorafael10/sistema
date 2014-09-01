@@ -6,14 +6,18 @@ package com.green.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -71,7 +75,7 @@ public class Cliente implements Serializable {
     @ManyToOne
     private Ramoatividade iDRamoAtividade;
     @JoinColumn(name = "IDPessoa", referencedColumnName = "IDPessoa")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REMOVE},optional = false)
     private Pessoa iDPessoa;
     @JoinColumn(name = "IDLimite", referencedColumnName = "IDLimite")
     @ManyToOne
@@ -79,6 +83,10 @@ public class Cliente implements Serializable {
     @JoinColumn(name = "IDDesconto", referencedColumnName = "IDDesconto")
     @ManyToOne
     private Desconto iDDesconto;
+    @OneToMany(mappedBy = "iDcliente",targetEntity = ContratoMidia.class)
+    private List<ContratoMidia> contratos;
+    @OneToMany(mappedBy = "iDCliente")
+    private  List<Receita> receitas;
 
     public Cliente() {
     }
@@ -239,6 +247,22 @@ public class Cliente implements Serializable {
 
     public void setDTAlt(Date dTAlt) {
         this.dTAlt = dTAlt;
+    }
+
+    public List<ContratoMidia> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(List<ContratoMidia> contratos) {
+        this.contratos = contratos;
+    }
+
+    public List<Receita> getReceitas() {
+        return receitas;
+    }
+
+    public void setReceitas(List<Receita> receitas) {
+        this.receitas = receitas;
     }
     
 }

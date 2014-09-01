@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="boleto-default" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="915"/>
+	<property name="ireport.background.image" value="/Users/mario/caelum/caelum-stella/stella-boleto/BradescoDoBrasil.png"/>
+	<property name="ireport.background.image.properties" value="false,true,0.75,0,0,0,0,0,0"/>
+	<style name="Celula" forecolor="#646464" fontName="Arial" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Txt_Normal" fontName="Arial" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+			<pen lineWidth="0.5"/>
+			<topPen lineWidth="0.0"/>
+			<leftPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<style name="Txt_Negrito" style="Txt_Normal" hAlign="Left" vAlign="Bottom" fontSize="11" isBold="true">
+		<box topPadding="2" leftPadding="5" bottomPadding="2" rightPadding="2"/>
+	</style>
+	<style name="Txt_Peq" style="Txt_Normal" fontSize="7"/>
+	<style name="Txt_valor" style="Txt_Normal" hAlign="Right" pattern="###0.00">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="10"/>
+	</style>
+	<style name="Txt_Data" style="Txt_Normal" pattern="dd/MM/yyyy"/>
+	<subDataset name="instrucoes_ds" >
+		<field name="_THIS" class="java.lang.String">
+			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/mario/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUB_INSTRUCOES" class="net.sf.jasperreports.engine.JasperReport"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cedente" class="java.lang.String">
+		<fieldDescription><![CDATA[emissor.cedente]]></fieldDescription>
+	</field>
+	<field name="endereco" class="java.lang.String">
+		<fieldDescription><![CDATA[emissor.endereco]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[sacado.nome]]></fieldDescription>
+	</field>
+	<field name="vencimento" class="java.util.Calendar">
+		<fieldDescription><![CDATA[datas.vencimento]]></fieldDescription>
+	</field>
+	<field name="valorCobrado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorCobrado]]></fieldDescription>
+	</field>
+	<field name="agenciaECodigoCedente" class="java.lang.String">
+		<fieldDescription><![CDATA[agenciaECodigoCedente]]></fieldDescription>
+	</field>
+	<field name="nossoNumeroECodDocumento" class="java.lang.String">
+		<fieldDescription><![CDATA[nossoNumeroECodDocumento]]></fieldDescription>
+	</field>
+	<field name="numeroFormatadoComDigito" class="java.lang.String">
+		<fieldDescription><![CDATA[banco.numeroFormatadoComDigito]]></fieldDescription>
+	</field>
+	<field name="locaisDePagamento" class="java.util.List">
+		<fieldDescription><![CDATA[locaisDePagamento]]></fieldDescription>
+	</field>
+	<field name="documento" class="java.util.Calendar">
+		<fieldDescription><![CDATA[datas.documento]]></fieldDescription>
+	</field>
+	<field name="especieDocumento" class="java.lang.String">
+		<fieldDescription><![CDATA[especieDocumento]]></fieldDescription>
+	</field>
+	<field name="aceite" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[aceite]]></fieldDescription>
+	</field>
+	<field name="processamento" class="java.util.Calendar">
+		<fieldDescription><![CDATA[datas.processamento]]></fieldDescription>
+	</field>
+	<field name="especieMoeda" class="java.lang.String">
+		<fieldDescription><![CDATA[especieMoeda]]></fieldDescription>
+	</field>
+	<field name="quantidadeDeMoeda" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[quantidadeDeMoeda]]></fieldDescription>
+	</field>
+	<field name="valorMoeda" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorMoeda]]></fieldDescription>
+	</field>
+	<field name="valorBoleto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorBoleto]]></fieldDescription>
+	</field>
+	<field name="instrucoes" class="java.util.List">
+		<fieldDescription><![CDATA[instrucoes]]></fieldDescription>
+	</field>
+	<field name="valorDescontos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorDescontos]]></fieldDescription>
+	</field>
+	<field name="valorDeducoes" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorDeducoes]]></fieldDescription>
+	</field>
+	<field name="valorMulta" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorMulta]]></fieldDescription>
+	</field>
+	<field name="valorAcrescimos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorAcrescimos]]></fieldDescription>
+	</field>
+	<field name="logo_banco" class="java.net.URL">
+		<fieldDescription><![CDATA[banco.image]]></fieldDescription>
+	</field>
+	<field name="endereco_1" class="java.lang.String">
+		<fieldDescription><![CDATA[sacado.endereco]]></fieldDescription>
+	</field>
+	<field name="cpf" class="java.lang.String">
+		<fieldDescription><![CDATA[sacado.cpf]]></fieldDescription>
+	</field>
+	<field name="cep" class="java.lang.String">
+		<fieldDescription><![CDATA[sacado.cep]]></fieldDescription>
+	</field>
+	<field name="bairro" class="java.lang.String">
+		<fieldDescription><![CDATA[sacado.bairro]]></fieldDescription>
+	</field>
+	<field name="cidade" class="java.lang.String">
+		<fieldDescription><![CDATA[sacado.cidade]]></fieldDescription>
+	</field>
+	<field name="uf" class="java.lang.String">
+		<fieldDescription><![CDATA[sacado.uf]]></fieldDescription>
+	</field>
+	<field name="localDePagamento" class="java.lang.String">
+		<fieldDescription><![CDATA[localDePagamento]]></fieldDescription>
+	</field>
+	<field name="linhaDigitavel" class="java.lang.String">
+		<fieldDescription><![CDATA[linhaDigitavel]]></fieldDescription>
+	</field>
+	<field name="numeroDoDocumentoFormatado" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroDoDocumentoFormatado]]></fieldDescription>
+	</field>
+	<field name="codigoDeBarras" class="java.lang.String">
+		<fieldDescription><![CDATA[codigoDeBarras]]></fieldDescription>
+	</field>
+	<field name="carteira" class="java.lang.String">
+		<fieldDescription><![CDATA[carteira]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="746" splitType="Prevent">
+			
+			<staticText>
+				<reportElement style="Celula" x="1" y="304" width="354" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Nome do Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="1" y="270" width="50" height="34" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CEDENTE : ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="51" y="270" width="503" height="16" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{cedente}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="51" y="286" width="503" height="18" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{endereco}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="1" y="314" width="354" height="16" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="355" y="304" width="100" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Data de Vencimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="455" y="304" width="99" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<text><![CDATA[Valor Cobrado]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Data" x="355" y="314" width="100" height="16" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{vencimento}.getTime()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_valor" x="455" y="314" width="99" height="16" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="10">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{valorCobrado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="1" y="330" width="177" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Agência / Código do Cedente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="178" y="330" width="177" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Nosso Número]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="335" width="190" height="21" forecolor="#646464" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<text><![CDATA[Autenticação Mecânica]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="1" y="340" width="177" height="16" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{agenciaECodigoCedente}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="178" y="340" width="177" height="16" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{nossoNumeroECodDocumento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="181" y="462" width="60" height="14" />
+				<textFieldExpression><![CDATA[$F{especieDocumento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="1" y="438" width="389" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{cedente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="310" y="681" width="80" height="15" />
+				<box topPadding="5" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Autenticação Mecânica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="1" y="476" width="100" height="24" />
+				<text><![CDATA[Uso do Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="91" y="452" width="90" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Nº do Documento]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Negrito" x="158" y="381" width="396" height="23" />
+				<box topPadding="2" leftPadding="5" bottomPadding="2" rightPadding="2">
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" markup="none">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{linhaDigitavel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="1" y="428" width="389" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Cedente]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="91" y="462" width="90" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{numeroDoDocumentoFormatado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Data" mode="Opaque" x="390" y="414" width="164" height="14" backcolor="#D2D2D2" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{vencimento}.getTime()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="241" y="462" width="59" height="14" />
+				<textFieldExpression><![CDATA[$F{aceite} ? "S" : "N"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" mode="Opaque" x="390" y="596" width="164" height="11" backcolor="#D2D2D2" />
+				<text><![CDATA[(=) Valor Cobrado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" mode="Opaque" x="390" y="404" width="164" height="10" backcolor="#D2D2D2" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Vencimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="181" y="452" width="60" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<text><![CDATA[Espécie Doc.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_valor" x="390" y="534" width="164" height="14" />
+				<textFieldExpression><![CDATA[$F{valorDeducoes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="394" y="681" width="160" height="20" />
+				<box topPadding="5" leftPadding="2" bottomPadding="2" rightPadding="3">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FICHA DE COMPENSAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="1" y="621" width="27" height="59" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Sacado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" mode="Opaque" x="390" y="476" width="164" height="10" backcolor="#D2D2D2" />
+				<text><![CDATA[(=) Valor do Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="101" y="476" width="75" height="10" />
+				<text><![CDATA[Carteira]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" mode="Transparent" x="390" y="500" width="164" height="10" />
+				<text><![CDATA[(-) Desconto / Abatimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="341" y="476" width="49" height="10" />
+				<text><![CDATA[Valor Moeda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" mode="Transparent" x="390" y="452" width="164" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Nosso Número / Cód. do Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="1" y="404" width="389" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Local de Pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="541" y="621" width="13" height="59" />
+				<box topPadding="2" leftPadding="2" bottomPadding="5" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_valor" x="390" y="510" width="164" height="14" />
+				<textFieldExpression><![CDATA[$F{valorDescontos}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="370" width="553" height="1" />
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Celula" x="310" y="665" width="80" height="15" />
+				<box topPadding="2" leftPadding="2" bottomPadding="5" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Código de Baixa]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="28" y="621" width="272" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" mode="Transparent" x="390" y="524" width="164" height="10" />
+				<text><![CDATA[(-) Outras Deduções]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="1" y="414" width="389" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{localDePagamento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="1" y="607" width="389" height="14" />
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endereco}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="1" y="593" width="389" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{cedente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" mode="Transparent" x="390" y="428" width="164" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Agência / Código do Cedente]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_valor" x="390" y="582" width="164" height="14" />
+				<textFieldExpression><![CDATA[$F{valorAcrescimos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="176" y="476" width="75" height="10" />
+				<text><![CDATA[Espécie Moeda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="390" y="665" width="151" height="15" />
+				<box topPadding="2" leftPadding="2" bottomPadding="5" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="341" y="486" width="49" height="14" />
+				<textFieldExpression><![CDATA[$F{valorMoeda}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="28" y="635" width="513" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{endereco_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="28" y="665" width="282" height="15" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Negrito" x="112" y="381" width="46" height="23" />
+				<box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="2">
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{numeroFormatadoComDigito}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_valor" mode="Opaque" x="390" y="607" width="164" height="14" backcolor="#D2D2D2" />
+				<textFieldExpression><![CDATA[$F{valorCobrado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" mode="Transparent" x="390" y="548" width="164" height="10" />
+				<text><![CDATA[(+) Mora / Multa]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="28" y="649" width="513" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{cep} + " - " + $F{bairro} + " - " + $F{cidade} + " " + $F{uf}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="101" y="486" width="75" height="14" />
+				<textFieldExpression><![CDATA[$F{carteira}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_valor" mode="Opaque" x="390" y="486" width="164" height="14" backcolor="#D2D2D2" />
+				<textFieldExpression><![CDATA[$F{valorBoleto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Data" x="300" y="462" width="90" height="14" />
+				<textFieldExpression><![CDATA[$F{processamento}.getTime()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="1" y="452" width="90" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Data do Documento]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="390" y="438" width="164" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{agenciaECodigoCedente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="300" y="452" width="90" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Data de Processamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="251" y="476" width="90" height="10" />
+				<text><![CDATA[Quantidade Moeda]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="10" y="700" width="292" height="37" />
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Int2of5" drawText="false" checksumRequired="false" barWidth="0" barHeight="0">
+					<jr:codeExpression><![CDATA[$F{codigoDeBarras}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<image vAlign="Bottom">
+				<reportElement x="1" y="381" width="111" height="23" />
+				<box topPadding="2" bottomPadding="2" rightPadding="0">
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<imageExpression><![CDATA[$F{logo_banco}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="251" y="486" width="90" height="14" />
+				<textFieldExpression><![CDATA[$F{quantidadeDeMoeda}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Data" x="1" y="462" width="90" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{documento}.getTime()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="241" y="452" width="59" height="10" />
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[Aceite]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="300" y="621" width="171" height="14" />
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cpf}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="176" y="486" width="75" height="14" />
+				<textFieldExpression><![CDATA[$F{especieMoeda}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="1" y="583" width="389" height="10" />
+				<text><![CDATA[Unidade Cedente]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_Normal" x="390" y="462" width="164" height="14" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{nossoNumeroECodDocumento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Celula" x="1" y="500" width="389" height="10" />
+				<text><![CDATA[Instruções]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Txt_valor" x="390" y="558" width="164" height="14" />
+				<textFieldExpression><![CDATA[$F{valorMulta}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="3" y="510" width="386" height="72" />
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{instrucoes})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUB_INSTRUCOES}]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement style="Celula" mode="Transparent" x="390" y="572" width="164" height="10" />
+				<text><![CDATA[(+) Outros Acréscimos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Celula" x="1" y="510" width="2" height="73" />
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

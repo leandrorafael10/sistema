@@ -131,7 +131,7 @@
                                 </h:panelGrid>
                                 <p:separator/>
                                 <p:commandButton value="confirmar" actionListener="#{fornecedorBean.salvar()}"/>
-                                <p:commandButton value="cancelar" onclick="dialogCadFornecedor.hide();"/>
+                                <p:commandButton value="cancelar" onclick="PF('dialogCadFornecedor').hide();"/>
 
                             </p:panel>
 
@@ -142,7 +142,7 @@
                                   draggable="false" closable="false" resizable="false">
                             não pode ser cadastrado por já existir esse cpf ou cnpj
                             <br/>
-                            <p:commandButton value="sair" oncomplete="dialogError.hide();"/>
+                            <p:commandButton value="sair" oncomplete="PF('dialogError').hide();"/>
 
 
                         </p:dialog>
