@@ -17,6 +17,7 @@ import javax.faces.bean.ViewScoped;
  *
  * @author leandro.silva
  */
+@SuppressWarnings("serial")
 @ManagedBean(name = "documentoBean")
 @ViewScoped
 public class DocumentoBean implements Serializable {

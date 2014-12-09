@@ -34,7 +34,7 @@ public class ReceitaCreditoRN {
     private CreditoDAO creditoDAO;
 
     @Transactional("tmGreen")
-    public void baixaPagamento(Receita receita,Date dataBaixa) {
+    public void baixaPagamento(Receita receita, Date dataBaixa) {
         Receitacredito receitacredito = new Receitacredito();
         receitacredito.setIDReceita(receita);
         receitacredito.setIDCredito(new Credito());
@@ -48,13 +48,28 @@ public class ReceitaCreditoRN {
         receitacredito.getIDReceita().setPago(true);
         getReceitaDAO().atualizar(receitacredito.getIDReceita());
     }
-    
-    public List<Receitacredito> listaReceitaPorVendedor(Date inicio ,Date fim,Funcionario f){
+
+    public List<Receitacredito> listaReceitaPorVendedor(Date inicio, Date fim, Funcionario f) {
         return getReceitaCreditoDAO().listaReceitaPorVendedor(inicio, fim, f);
     }
 
     public List<Receitacredito> filtro(Receita receitaFiltro, Date fimVenc, int pag, BigDecimal valorIni, BigDecimal valorFim) {
         return getReceitaCreditoDAO().filtro(receitaFiltro, fimVenc, pag, valorIni, valorFim);
+    }
+
+    public List<Receitacredito> listaCreditoPorPeriodo(Date inicio, Date fim) {
+        return getReceitaCreditoDAO().listaCreditoPorPeriodo(inicio, fim);
+    }
+
+    public List<Receitacredito> listaCreditoClienterPorPeriodo(Date inicio, Date fim) {
+        return getReceitaCreditoDAO().listaCreditoClienterPorPeriodo(inicio, fim);
+    }
+
+    @Transactional("tmGreen")
+    public void excluir(Receitacredito receitacredito) {
+        getReceitaCreditoDAO().excluir(receitacredito);
+        receitacredito.getIDReceita().setPago(false);
+        getReceitaDAO().atualizar(receitacredito.getIDReceita());
     }
 
     public CreditoDAO getCreditoDAO() {

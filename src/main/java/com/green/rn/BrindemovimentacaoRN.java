@@ -5,22 +5,24 @@
  */
 package com.green.rn;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.green.dao.BrindeDAO;
 import com.green.dao.BrindeTermoDAO;
 import com.green.dao.BrindemovimentacaoDAO;
-import com.green.dao.Crud;
 import com.green.dao.TermoResponsabilidadeDAO;
 import com.green.modelo.BrindeTermo;
 import com.green.modelo.Brindemovimentacao;
 import com.green.modelo.TermoResponsabilidade;
 import com.green.util.ContextoUtil;
-import java.util.Date;
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -35,6 +37,8 @@ public class BrindemovimentacaoRN {
     private TermoResponsabilidadeDAO termoResponsabilidadeDAO;
     @Autowired
     private BrindeTermoDAO brindeTermoDAO;
+    @Autowired
+    private BrindeDAO brindeDAO;
 
     public BrindemovimentacaoDAO getBrindemovimentacaoDAO() {
         return brindemovimentacaoDAO;
@@ -73,6 +77,8 @@ public class BrindemovimentacaoRN {
             getTermoResponsabilidadeDAO().salvar(termo);
             for (BrindeTermo brindeTermo : brindeTermos) {
                 brindeTermo.setIDTermoResponsabilidade(termo);
+                brindeTermo.getIDBrinde().setSaldoAtual(brindeTermo.getIDBrinde().getSaldoAtual() - brindeTermo.getQtd());
+                getBrindeDAO().atualizar(brindeTermo.getIDBrinde());
                 getBrindeTermoDAO().salvar(brindeTermo);
             }
         }
@@ -85,14 +91,34 @@ public class BrindemovimentacaoRN {
         getTermoResponsabilidadeDAO().salvar(tr);
         for (BrindeTermo brindeTermo : tr.getBrindeTermoList()) {
             brindeTermo.setIDTermoResponsabilidade(tr);
+            brindeTermo.getIDBrinde().setSaldoAtual(brindeTermo.getIDBrinde().getSaldoAtual() + brindeTermo.getQtd());
+            getBrindeDAO().atualizar(brindeTermo.getIDBrinde());
             getBrindeTermoDAO().salvar(brindeTermo);
         }
-        if(tr.getEntradaSaida()){
+        if (tr.getEntradaSaida()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Retorno salvo com sucesso!", "Retorno salvo com sucesso!"));
-        }else{
+        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Retirada extra confirmada!", "Retirada extra confirmada!"));
         }
-        
+
+    }
+    @Transactional(value = "tmGreen")
+    public void salvarSaidaExtra(TermoResponsabilidade tr) {
+        tr.setIDUsuario(ContextoUtil.getContextoBean().getUsuarioLogado());
+        tr.setDTInc(new Date());
+        getTermoResponsabilidadeDAO().salvar(tr);
+        for (BrindeTermo brindeTermo : tr.getBrindeTermoList()) {
+            brindeTermo.setIDTermoResponsabilidade(tr);
+            brindeTermo.getIDBrinde().setSaldoAtual(brindeTermo.getIDBrinde().getSaldoAtual() - brindeTermo.getQtd());
+            getBrindeDAO().atualizar(brindeTermo.getIDBrinde());
+            getBrindeTermoDAO().salvar(brindeTermo);
+        }
+        if (tr.getEntradaSaida()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Retorno salvo com sucesso!", "Retorno salvo com sucesso!"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Retirada extra confirmada!", "Retirada extra confirmada!"));
+        }
+
     }
 
     public List<BrindeTermo> somaBrindeMovimentacao(Brindemovimentacao b) {
@@ -109,6 +135,14 @@ public class BrindemovimentacaoRN {
 
     public List<Brindemovimentacao> listar() {
         return getBrindemovimentacaoDAO().listar();
+    }
+
+    public BrindeDAO getBrindeDAO() {
+        return brindeDAO;
+    }
+
+    public void setBrindeDAO(BrindeDAO brindeDAO) {
+        this.brindeDAO = brindeDAO;
     }
 
 }

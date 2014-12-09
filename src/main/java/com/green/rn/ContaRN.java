@@ -4,6 +4,16 @@
  */
 package com.green.rn;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.green.dao.CCustoDAO;
 import com.green.dao.ClassificacaoDAO;
 import com.green.dao.ContaDAO;
@@ -16,17 +26,8 @@ import com.green.modelo.Conta;
 import com.green.modelo.Contato;
 import com.green.modelo.Credito;
 import com.green.modelo.Debito;
-import com.green.modelo.Pessoa;
 import com.green.util.ContextoBean;
 import com.green.util.ContextoUtil;
-import java.util.Date;
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -97,31 +98,18 @@ public class ContaRN {
         getContaDAO().atializar(editada);
     }
 
-    public void salvar(Conta conta, Pessoa pessoa, Contato contato) {
+    public void salvar(Conta conta, Contato contato) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
         Conta c = getContaDAO().carregarNumeroConta(conta);
         if (c == null) {
-            if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO")
-                    || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
-                    || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")) {
-                pessoa.setCnpjCpf("0");
-                pessoa.setFisicaJuridica(Boolean.TRUE);
-                pessoa.setSituacao(Boolean.TRUE);
-                getPessoaDao().salvar(pessoa);
                 contato.setDTInc(new Date(System.currentTimeMillis()));
                 contato.setIDUsuario(contextoBean.getUsuarioLogado());
-                contato.setIDPessoa(pessoa);
                 getContatoDAO().salvar(contato);
-                conta.setIDPessoa(pessoa);
                 conta.setIDUsuario(contextoBean.getUsuarioLogado());
                 conta.setDTInc(new Date(System.currentTimeMillis()));
                 getContaDAO().salvar(conta);
                 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "OK! Salvo com sucesso!", "Ok! Salvo com sucesso!"));
-            } else {
-                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha! Usuario não autorisado", "Falha! Usuario não autorisado"));
-            }
-
         } else {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha! Conta já cadastrada!", "Falha! Conta já cadastrada!"));
         }
@@ -130,8 +118,6 @@ public class ContaRN {
     @Transactional("tmGreen")
     public void transferencia(Credito credito, Debito debito) {
         debito.setIDTpDocumento(this.documentoDAO.carregar(17));
-        debito.setIDCCusto(this.ccustoDAO.carregar(15));
-        debito.setIDClassificacao(this.classificacaoDAO.carregar(137));
         debito.setDTInc(new Date());
         debito.setIDUsuario(ContextoUtil.getContextoBean().getUsuarioLogado());
        // credito.setIDCCusto(debito.getIDCCusto());

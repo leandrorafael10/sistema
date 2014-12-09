@@ -4,24 +4,26 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.ObsContrato;
-import com.green.modelo.ProducaoMidia;
-import com.green.rn.ContratoMidiaRN;
-import com.green.rn.ObsContratoRN;
-import com.green.rn.ProducaoMidiaRN;
-import com.green.util.ContextoUtil;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import com.green.modelo.ObsContrato;
+import com.green.modelo.ProducaoMidia;
+import com.green.rn.ObsContratoRN;
+import com.green.rn.ProducaoMidiaRN;
+import com.green.util.ContextoUtil;
+
 /**
  *
  * @author leandro.silva
  */
+@SuppressWarnings("serial")
 @ManagedBean(name = "producaoMidiaBean")
 @ViewScoped
 public class ProducaoMidiaBean implements Serializable {

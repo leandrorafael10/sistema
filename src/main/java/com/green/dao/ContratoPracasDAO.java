@@ -4,10 +4,8 @@
  */
 package com.green.dao;
 
-import com.green.modelo.ContratoMidia;
-import com.green.modelo.ContratoPracas;
-import com.green.modelo.Praca;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -16,11 +14,16 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.green.modelo.ContratoMidia;
+import com.green.modelo.ContratoPracas;
+import com.green.modelo.Praca;
+
 /**
  *
  * @author leandro.silva
  */
 @Repository("contratoPracasDAO")
+@SuppressWarnings("unchecked")
 public class ContratoPracasDAO {
     @Autowired
     private SessionFactory sf;
@@ -32,7 +35,8 @@ public class ContratoPracasDAO {
     public void setSf(SessionFactory sf) {
         this.sf = sf;
     }
-    public List<ContratoPracas> listarPorPracas(Praca praca){
+    
+	public List<ContratoPracas> listarPorPracas(Praca praca){
         Criterion filtro = Restrictions.eq("iDpraca", praca);
         Criteria criteria = getSf().getCurrentSession().createCriteria(ContratoPracas.class);
         criteria.add(filtro);

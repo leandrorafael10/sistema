@@ -4,19 +4,21 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Pessoa;
-import com.green.modelo.Teste;
-import com.green.modelo.Usuario;
-import com.green.rn.TesteRN;
 import java.io.Serializable;
 import java.util.logging.Logger;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
 import org.primefaces.event.FlowEvent;
+
+import com.green.modelo.Pessoa;
+import com.green.modelo.Teste;
+import com.green.rn.TesteRN;
 
 /**
  *
@@ -26,7 +28,12 @@ import org.primefaces.event.FlowEvent;
 @ViewScoped
 public class TesteBean implements Serializable{
     
-    @ManagedProperty("#{testeRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@ManagedProperty("#{testeRN}")
     private TesteRN testeRN;
     
     private Teste teste = new Teste();

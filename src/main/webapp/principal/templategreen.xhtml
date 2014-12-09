@@ -6,93 +6,146 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:sec="http://www.springframework.org/security/facelets/tags">
-    <f:view>
-        <h:head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link href="#{request.contextPath}/resources/css/default.css" rel="stylesheet"
-                  type="text/css" />
-		
-		<link href="#{request.contextPath}/resources/css/cssLayout.css" rel="stylesheet"
-			type="text/css" />
-		
-            <link rel="icon" href="./../favicon.ico" type="image/x-icon" />
-            <link rel="SHORTCUT ICON" href="./../favicon.ico" type="image/x-icon" />
-            <link rel="apple-touch-icon" href="/favicon.ico" type="image/x-icon" />
-            <title>Grupo AE</title>
-        </h:head>
 
-        <h:body>
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{request.contextPath}/resources/css/default.css" rel="stylesheet"
+              type="text/css" />
+
+<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+        <link href="#{request.contextPath}/resources/css/cssLayout.css" rel="stylesheet"
+              type="text/css" />
+        <!--bootstrep responsive-->
+
+
+
+        <link rel="icon" href="#{request.contextPath}/favicon.ico" type="image/x-icon" />
+        <link rel="SHORTCUT ICON" href="#{request.contextPath}/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="#{request.contextPath}/favicon.ico" type="image/x-icon" />
+        
+        <!--
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link> 
+        <link href="/resources/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet"></link>-->
+        <title>Grupo AE</title>
+        <script>
+            PrimeFaces.locales['pt'] = {
+                closeText: 'Fechar',
+                prevText: 'Anterior',
+                nextText: 'Próximo',
+                currentText: 'Começo',
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 0,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Só Horas',
+                timeText: 'Tempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                ampm: false,
+                month: 'Mês',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Todo o Dia'
+            };
+        </script>
+
+
+    </h:head>
+
+    <h:body>
+
+        <sec:ifAllGranted roles="ROLE_USER_EXTERNO">
+
+            <div>
+
+                <ui:insert name="menu-dock">
+                    <ui:include src="/externno/dock.xhtml" />
+                </ui:insert>
+            </div>
+            <div>
+                <ui:insert name="principal-externa">
+                    Ola
+                </ui:insert>
+            </div>
+        </sec:ifAllGranted>
+        <sec:ifAllGranted roles="ROLE_FUNCIONARIO_AUTONOMO">
+	
+            <div>
+
+                <ui:insert name="menu-dock">
+                    <ui:include  src="/checkin/menu_check_in.xhtml" />
+                </ui:insert>
+            </div>
             
-            <sec:ifAllGranted roles="ROLE_USER_EXTERNO">
+        </sec:ifAllGranted>
+        <p:dialog  widgetVar="statusDialog" header="carregando..."
+                   draggable="false" closable="false" resizable="false">
+            <p:graphicImage value="/resources/imagens/47.gif" />
+        </p:dialog>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 
-                <div>
+        <sec:ifAnyGranted
+            roles="ROLE_ADMINISTRACAO,ROLE_USUARIO,ROLE_FINANCEIRO,ROLE_RH,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_COMERCIAL,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR,ROLE_PRODUCAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
+            <div id="tudo">
 
-                    <ui:insert name="menu-dock">
-                        <ui:include src="/externno/dock.xhtml" />
+                <div id="topo">
+
+                    <ui:insert name="top">
+                        <div id="usuarioLog">
+                            <h:form  styleClass="form-sair-home">
+
+                                <h:outputLabel value="Olá! #{request.remoteUser}"
+                                               style="color:#000" />
+                                <br/>
+                                <br/>
+                                <h:inputHidden
+                                    value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}" />
+
+                                <p:commandLink
+                                    onclick="document.location = '#{request.contextPath}/j_spring_security_logout'"
+                                    style="cursor: pionter; cursor: hand" title="Sair">
+                                    <h:outputText value="Sair" />
+                                </p:commandLink>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+
+                                <p:commandLink
+                                    action="/principal/templategreen.xhtml" title="Tela principal">
+                                    <h:outputText value="principal" />
+                                </p:commandLink>
+
+
+                            </h:form>
+
+                        </div>
+
                     </ui:insert>
                 </div>
-                <div>
-                    <ui:insert name="principal-externa">
-                        Ola
+
+                <div >
+                    <ui:insert name="navegacao-interna">
+                        <ui:include src="/publico/menu.xhtml" />
                     </ui:insert>
                 </div>
-            </sec:ifAllGranted>
-            <p:dialog  widgetVar="statusDialog" header="carregando..."
-                      draggable="false" closable="false" resizable="false">
-                <p:graphicImage value="/resources/imagens/47.gif" />
-            </p:dialog>
-            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-
-            <sec:ifAnyGranted
-                roles="ROLE_ADMINISTRACAO,ROLE_USUARIO,ROLE_FINANCEIRO,ROLE_RH,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_COMERCIAL,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR,ROLE_PRODUCAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
-                <div id="tudo">
-                    <div id="topo">
-
-                        <ui:insert name="top">
-                            <div id="usuarioLog">
-                                <h:form  styleClass="form-sair-home">
-
-                                    <h:outputLabel value="Olá! #{request.remoteUser}"
-                                                   style="color:#000" />
-                                    <br/>
-                                    <br/>
-                                    <h:inputHidden
-                                        value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}" />
-
-                                    <p:commandLink
-                                        onclick="document.location = '#{request.contextPath}/j_spring_security_logout'"
-                                        style="cursor: pionter; cursor: hand" title="Sair">
-                                        <h:outputText value="Sair" />
-                                    </p:commandLink>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-
-                                    <p:commandLink
-                                        action="/principal/templategreen.xhtml" title="Tela principal">
-                                        <h:outputText value="principal" />
-                                    </p:commandLink>
-
-
-                                </h:form>
-
-                            </div>
-                        </ui:insert>
-                    </div>
-
-                    <div >
-                        <ui:insert name="navegacao-interna">
-                            <ui:include src="/publico/menu.xhtml" />
-                        </ui:insert>
-                    </div>
-                    <div >
-                        <ui:insert name="principal-interna">
-                            <ui:include src="/publico/conteudo_principal.xhtml" />
-                        </ui:insert>
-                    </div>
-
+                <div >
+                    <ui:insert name="principal-interna">
+                        <ui:include src="/publico/conteudo_principal.xhtml" />
+                    </ui:insert>
                 </div>
-            </sec:ifAnyGranted>
 
-        </h:body>
 
-    </f:view>
+            </div>
+        </sec:ifAnyGranted>
+
+    </h:body>
+
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+     <script src="/resources/bootstrap/js/bootstrap.min.js"></script>-->
 </html>

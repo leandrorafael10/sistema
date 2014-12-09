@@ -8,12 +8,14 @@ package com.green.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -31,7 +33,7 @@ public class ContratoParceiro implements Serializable {
     @Column(name = "cliente")
     private String cliente;
     @JoinColumn(name = "idcontrato_midia", referencedColumnName = "idcontrato_midia")
-    @ManyToOne
+    @OneToOne(cascade = {CascadeType.REFRESH,CascadeType.MERGE})
     private ContratoMidia iDContratoMidia;
     @Column(name = "bv")
     private BigDecimal bv;
@@ -39,11 +41,14 @@ public class ContratoParceiro implements Serializable {
     private BigDecimal comissao;
     @Column(name = "imposto")
     private BigDecimal imposto;
+    @Column(name = "comissao_agencia")
+    private BigDecimal comissaoAgencia;
 
     public ContratoParceiro() {
         this.bv = new BigDecimal("0.00");
         this.comissao = new BigDecimal("0.00");
         this.imposto = new BigDecimal("0.00");
+        this.comissaoAgencia = new BigDecimal("0.00");
     }
 
     public ContratoParceiro(Integer iDContratoParceiro, String cliente, ContratoMidia iDContratoMidia, BigDecimal bv, BigDecimal comissao, BigDecimal imposto) {
@@ -105,6 +110,16 @@ public class ContratoParceiro implements Serializable {
     public void setImposto(BigDecimal imposto) {
         this.imposto = imposto;
     }
+
+    public BigDecimal getComissaoAgencia() {
+        return comissaoAgencia;
+    }
+
+    public void setComissaoAgencia(BigDecimal comissaoAgencia) {
+        this.comissaoAgencia = comissaoAgencia;
+    }
+    
+    
     
     
 

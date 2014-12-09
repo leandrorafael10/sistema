@@ -15,17 +15,49 @@
 
                     <p:panel>
                         <h2>Parcelas a receber</h2>
+                        <p:panel>
+                            <p:messages/>
+                            <h:panelGrid columns="5" cellspacing="5">
+
+                                <h:outputText value="Período de "/>
+                                <p:calendar value="#{receitaBean.dt_inicio}"
+                                            pattern="dd/MM/yyyy"
+                                            mask="true"
+                                            locale="pt"
+                                            navigator="true" required="true"
+                                            requiredMessage="insira a data de inicio.">
+                                </p:calendar>
+                                <h:outputText value=" até "/>
+                                <p:calendar value="#{receitaBean.dt_fim}"
+                                            id="fim"
+                                            pattern="dd/MM/yyyy"
+                                            mask="true"
+                                            locale="pt"
+                                            navigator="true" required="true"
+                                            requiredMessage="insira data fim."
+                                            >
+                                </p:calendar>
+                                <p:commandButton value="buscar" actionListener="#{receitaBean.filtarReceitas(event)}" update=":formParcelas"/>
+                            </h:panelGrid>
+
+                        </p:panel>
                     </p:panel>
                     <p:tabView >
                         <p:tab title="Clientes">
-                            <p:dataTable value="#{receitaRN.pagamentoProximoPendenteCliente()}" var="receita"
-                                         scrollHeight="400" scrollable="true">
+
+                            <p:dataTable value="#{receitaBean.receitaCliente}" var="receita"
+                                         rowStyleClass="#{receita.DTVencimento gt receitaBean.dataAtual?'':'vermelho'}"
+                                         scrollHeight="400" scrollable="true"
+                                         emptyMessage="nao há registro!">
                                 <p:column headerText="vencimento" width="70">
                                     <h:outputText value="#{receita.DTVencimento}">
                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="razão">
+                                <p:column headerText="contrato" width="80" filterBy="#{receita.idorigem.IDContratoMidia.NContrato}">
+                                    <h:outputText value="#{receita.idorigem.IDContratoMidia.NContrato}"/>
+                                </p:column>
+                                <p:column headerText="razão" filterBy="#{receita.IDCliente.IDPessoa.razao}">
                                     <h:outputText value="#{receita.IDCliente.IDPessoa.razao}"/>
                                 </p:column>
                                 <p:column headerText="fantasia">
@@ -49,8 +81,10 @@
                                         <f:setPropertyActionListener value="#{receita}" target="#{receitaBean.receitaEdit}"/>
                                     </p:commandLink>
                                 </p:column >
-                                <p:column headerText="cancelar" width="70">
-                                    <p:commandLink value="cancelar"/>
+                                <p:column headerText="cancelar/ativar" width="70">
+                                    <p:commandLink value="#{receita.ativo?'cancelar':'ativar'}" update=":formCancelar" oncomplete="PF('dialogCancelar').show()">
+                                        <f:setPropertyActionListener value="#{receita}" target="#{receitaBean.receitaEdit}"/>
+                                    </p:commandLink>
                                 </p:column>
                                 <p:column headerText="boleto" width="70">
                                     <h:commandLink value="emitir" target="_blank" action="#{receitaBean.emitirBoleto(receita)}"/>
@@ -59,8 +93,13 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Parceiros">
-                            <p:dataTable value="#{receitaRN.pagamentoPendenteParceiro()}" var="parceiro"
-                                         scrollHeight="400" scrollable="true">
+                            <p:dataTable id="tabelaParceiro" value="#{receitaBean.receitaParceiro}" var="parceiro"
+                                         selection="#{receitaBean.selectReceitas}"
+                                         rowStyleClass="#{receita.DTVencimento gt receitaBean.dataAtual?'':'vermelho'}"
+                                         rowKey="#{parceiro}"
+                                         scrollHeight="400" scrollable="true"
+                                         emptyMessage="nao há registro!">
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
                                 <p:column headerText="vencimento" width="70">
                                     <h:outputText value="#{parceiro.DTVencimento}">
                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
@@ -69,8 +108,18 @@
                                 <p:column headerText="Parceiro">
                                     <h:outputText value="#{parceiro.IDCliente.IDPessoa.razao}"/>
                                 </p:column>
-                                <p:column headerText="parcela" width="50">
-                                    <h:outputText value="#{parceiro.numero}&nbsp;/&nbsp; #{receita.idorigem.IDContratoMidia.numeroParcelas}"/>
+                                <p:column headerText="Cliente">
+                                    <h:outputText value="#{parceiro.idorigem.IDContratoMidia.IContratoParceiro.cliente}"/>
+                                </p:column>
+                                <p:column headerText="ínicio ">
+                                    <h:outputText value="#{parceiro.idorigem.IDContratoMidia.dataInicioContrato}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="fim ">
+                                    <h:outputText value="#{parceiro.idorigem.IDContratoMidia.dataFimContrato}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>    
+                                    </h:outputText>
                                 </p:column>
                                 <p:column headerText="valor" width="90">
                                     <h:outputText value="#{parceiro.valorLiquido}">
@@ -86,20 +135,27 @@
                                     <p:commandLink value="cancelar"/>
                                 </p:column>
                             </p:dataTable>
-                            <h:commandLink value="emitir" target="_blank" action="#{receitaBean.emitirBoleto(receita)}"/>&nbsp;&nbsp;&nbsp;
-                            <p:commandLink value="baixar"  >
-                                
+                            <h:commandLink  value="emitir boleto" target="_blank" action="#{receitaBean.emitirBoletoParceiro()}"/>&nbsp;&nbsp;&nbsp;
+                            <p:commandLink value="baixar pagamentos" actionListener="#{receitaBean.somarParcelasParceiro(event)}"  oncomplete="PF('dialogSomaParcelasParceiro').show()" update=":formSomaParcelasParceiro">
+
                             </p:commandLink>
+
+
                         </p:tab>
                         <p:tab title="Contra Apresentação">
-                            <p:dataTable value="#{receitaRN.pagamentoPendenteContraApresentacao()}" var="contra_apres"
-                                         scrollHeight="400" scrollable="true">
-                                <p:column headerText="vencimento" width="70">
+                            <p:dataTable value="#{receitaBean.receitaGoverno}" var="contra_apres"
+                                         scrollHeight="400" scrollable="true"
+                                         rowStyleClass="#{receita.DTVencimento gt receitaBean.dataAtual?'':'vermelho'}"
+                                         emptyMessage="nao há registro!">
+                                <p:column headerText="previsão pag." width="70">
                                     <h:outputText value="#{contra_apres.DTVencimento}">
                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="razão">
+                                <p:column headerText="Nº contrato" width="90" filterBy="#{contra_apres.idorigem.IDContratoMidia.NContrato}">
+                                    <h:outputText value="#{contra_apres.idorigem.IDContratoMidia.NContrato}"/>
+                                </p:column>
+                                <p:column headerText="razão" filterBy="#{contra_apres.IDCliente.IDPessoa.razao}">
                                     <h:outputText value="#{contra_apres.IDCliente.IDPessoa.razao}"/>
                                 </p:column>
                                 <p:column headerText="fantasia">
@@ -132,10 +188,75 @@
 
                             </p:dataTable>
                         </p:tab>
+                        <p:tab title="Vencidos">
+                            <p:dataTable value="#{receitaRN.pendentesPagamentoAteHoje()}" var="vencidos"
+                                         scrollHeight="400" scrollable="true"
+                                         rowStyleClass="#{receita.DTVencimento gt receitaBean.dataAtual?'':'vermelho'}"
+                                         emptyMessage="nao há registro!">
+                                <p:column headerText="previsão pag." width="70">
+                                    <h:outputText value="#{vencidos.DTVencimento}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Nº contrato" width="90" filterBy="#{vencidos.idorigem.IDContratoMidia.NContrato}">
+                                    <h:outputText value="#{vencidos.idorigem.IDContratoMidia.NContrato}"/>
+                                </p:column>
+                                <p:column headerText="razão" filterBy="#{vencidos.IDCliente.IDPessoa.razao}">
+                                    <h:outputText value="#{vencidos.IDCliente.IDPessoa.razao}"/>
+                                </p:column>
+                                <p:column headerText="fantasia">
+                                    <h:outputText value="#{vencidos.IDCliente.IDPessoa.fantasia}"/>
+                                </p:column>
+                                <p:column headerText="parcela" width="50">
+                                    <h:outputText value="#{vencidos.numero}&nbsp;/&nbsp; #{vencidos.idorigem.IDContratoMidia.numeroParcelas}"/>
+                                </p:column>
+                                <p:column headerText="valor" width="90">
+                                    <h:outputText value="#{vencidos.valorLiquido}">
+                                        <f:convertNumber  minFractionDigits="2"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="editar" width="70">
+                                    <p:commandLink value="editar" oncomplete="PF('dialogEditar').show()" update=":forEditar">
+                                        <f:setPropertyActionListener value="#{vencidos}" target="#{receitaBean.receitaEdit}"/>
+                                    </p:commandLink>
+                                </p:column>
+                                <p:column headerText="efetuar pag" width="70">
+                                    <p:commandLink value="baixar"  oncomplete="PF('dialogEfetuarBaixa').show()" update=":formEfetuarBaixa">
+                                        <f:setPropertyActionListener value="#{vencidos}" target="#{receitaBean.receitaEdit}"/>
+                                    </p:commandLink>
+                                </p:column >
+                                <p:column headerText="cancelar" width="70">
+                                    <p:commandLink value="cancelar"/>
+                                </p:column>
+                                <p:column headerText="boleto" width="70">
+                                    <h:commandLink value="emitir" target="_blank" action="#{receitaBean.emitirBoleto(vencidos)}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:tab>
                     </p:tabView>
                 </h:form>
+                <h:form id="formCancelar">
+                    <p:dialog widgetVar="dialogCancelar" modal="true" header="#{receitaBean.receitaEdit.ativo?'Cancelar':'Ativar'}">
+                        <p:panel>
+                            <h2>#{receitaBean.receitaEdit.IDCliente.IDPessoa.razao}</h2>
+                            <h:panelGrid columns="4" cellpadding="5">
+                                <h:outputText value="Vencimento:"/>
+                                <h:outputText value="#{receitaBean.receitaEdit.DTVencimento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="valor:"/>
+                                <h:outputText value="#{receitaBean.receitaEdit.valorNominal}">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                </h:outputText>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="confirmar" actionListener="#{receitaBean.cancelar(event)}" update=":formParcelas" oncomplete="PF('dialogCancelar').hide()"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
                 <h:form id="forEditar">
-                    <p:dialog widgetVar="dialogEditar" header="Editar">
+                    <p:dialog modal="true" widgetVar="dialogEditar" header="Editar">
                         <p:panel>
                             <p:messages id="msgEditar"/>
                             <h:panelGrid columns="4" cellspacing="5" cellpadding="5">
@@ -160,7 +281,8 @@
                                 </p:inputText>
                                 <h:outputText value="Data vencimento: "/>
                                 <p:calendar mask="true" pattern="dd/MM/yyyy"
-                                            value="#{receitaBean.receitaEdit.DTVencimento}"/>
+                                            value="#{receitaBean.receitaEdit.DTVencimento}"
+                                            locale="pt"/>
                                 <p:commandButton value="atualizar" 
                                                  actionListener="#{receitaBean.atualizaParcela(event)}" 
                                                  update=":forEditar:msgEditar" 
@@ -170,7 +292,7 @@
                     </p:dialog>
                 </h:form>
                 <h:form id="formEfetuarBaixa">
-                    <p:dialog widgetVar="dialogEfetuarBaixa" header="Efetuando baixa de pagamento">
+                    <p:dialog modal="true" widgetVar="dialogEfetuarBaixa" header="Efetuando baixa de pagamento">
                         <p:panel>
                             <p:messages id="msgBaixa"/>
                             <h:panelGrid columns="4" cellspacing="5">
@@ -185,14 +307,22 @@
                                 <h:outputText value="#{receitaBean.receitaEdit.DTEmissao}">
                                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </h:outputText>
+                                
                                 <h:outputText value="valor líquido: "/>
                                 <h:outputText value="#{receitaBean.receitaEdit.valorLiquido}">
                                     <f:convertNumber minFractionDigits="2"/>
                                 </h:outputText>
+                                <h:outputText value="Data vencimento: "/>
+                                <h:outputText value="#{receitaBean.receitaEdit.DTVencimento}" styleClass="azul">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText/>
+                                <h:outputText/>
                                 <h:outputText value="Data pagamento: "/>
                                 <p:calendar value="#{receitaBean.dataBaixa}" pattern="dd/MM/yyyy" 
                                             mask="true"
                                             rendered="true"
+                                            locale="pt"
                                             requiredMessage="data do pagamento e obrigatório!"
                                             />
                                 <h:outputText value="valor pago:"/>
@@ -209,6 +339,34 @@
                                              oncomplete="PF('dialogEfetuarBaixa').hide()"
                                              actionListener="#{receitaBean.baixaPagamento(actionEvent)}"
                                              update=":formEfetuarBaixa:msgBaixa"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+                <h:form id="formSomaParcelasParceiro">
+                    <p:dialog modal="true" widgetVar="dialogSomaParcelasParceiro">
+                        <p:messages id="msgBaixaParceiro"/>
+                        <p:panel>
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="Parceiro: "/>
+                                <h:outputText value="#{receitaBean.receitaEdit.IDCliente.IDPessoa.razao}"/>
+                                <h:outputText value="Valor total: " styleClass="azul"/>
+                                <h:outputText value="#{receitaBean.valorPago}" styleClass="azul">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                                <h:outputText value="Data Baixa: "/>
+                                <p:calendar value="#{receitaBean.dataBaixa}"
+                                            mask="true"
+                                            pattern="dd/MM/yyyy"
+                                            required="true"
+                                            locale="pt"
+                                            requiredMessage="data da baixa e obrigatório!"/>
+
+
+                            </h:panelGrid> 
+                            <p:separator/>
+                            <p:commandButton value="confirmar baixa" update=":formSomaParcelasParceiro:msgBaixaParceiro" 
+                                             actionListener="#{receitaBean.baixaPagamentoParceiro(actionEvent)}"
+                                             oncomplete="PF('dialogSomaParcelasParceiro').hide();"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

@@ -36,7 +36,6 @@ public class ContaDAO extends AbstractDao<Conta, Integer> {
     public Conta carregar(Integer k) {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Conta.class);
         Criterion filtro = Restrictions.eq("iDConta", k);
-        Conta c = (Conta) criteria.add(filtro).uniqueResult();
         return (Conta) criteria.add(filtro).uniqueResult();
     }
 
@@ -53,7 +52,8 @@ public class ContaDAO extends AbstractDao<Conta, Integer> {
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Conta> listar() {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Conta.class);
         return criteria.list();

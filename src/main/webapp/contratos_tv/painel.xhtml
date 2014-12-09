@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<body>
+
+	<ui:composition template="./../principal/templategreen.xhtml">
+
+		<ui:define name="principal-interna">
+			<br />
+			<h:form id="formCadPainel">
+				<p:panel>
+					<h2>Paineis de Mídia Stática</h2>
+					<p:separator />
+					<p:messages id="msgPaineis" />
+					<h:panelGrid columns="6">
+						<p:outputLabel value="Código: " />
+						<p:inputText value="#{painelBean.painel.codigo}" maxlength="45"></p:inputText>
+						<p:outputLabel value="Descrição: " />
+						<p:inputText value="#{painelBean.painel.descricao}" maxlength="100"></p:inputText>
+						<p:selectOneMenu converter="pracaConverter"
+							value="#{painelBean.painel.IDPraca}" filter="true">
+							<f:selectItems value="#{pracaBean.pracas}" var="praca"
+								itemLabel="#{praca.descricao}" itemValue="#{praca}" />
+						</p:selectOneMenu>
+						<p:commandButton value="cadastrar"
+							actionListener="#{painelBean.salvar(event)}"
+							update=":formCadPainel,:formlistaPaineis" />
+
+					</h:panelGrid>
+
+				</p:panel>
+			</h:form>
+			<h:form id="formlistaPaineis">
+				<p:dataTable value="#{painelBean.listaPaineis}" var="paineis">
+					<p:column headerText="Código">
+						<h:outputText value="#{paineis.codigo}" />
+					</p:column>
+					<p:column headerText="Descrição">
+						<h:outputText value="#{paineis.descricao}" />
+					</p:column>
+					<p:column headerText="Praça">
+						<h:outputText value="#{paineis.IDPraca.descricao}" />
+					</p:column>
+					<p:column headerText="Status">
+						<h:outputText value="#{paineis.ativo?'ativo':'cancelado'}" />
+					</p:column>
+					<p:column>
+						<p:commandLink value="editar" oncomplete="PF('dialogEditarMS').show()" update=":formEditarMS">
+
+							<f:setPropertyActionListener value="#{paineis}"
+								target="#{painelBean.painel}"></f:setPropertyActionListener>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<h:form id="formEditarMS">
+				<p:dialog header="Editar Painel" widgetVar="dialogEditarMS">
+					<p:panel>
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="Código: " />
+							<p:inputText value="#{painelBean.painel.codigo}"  maxlength="45"/>
+							<h:outputText value="Descrição: " />
+							<p:inputText value="#{painelBean.painel.descricao}" maxlength="100"/>
+							<h:outputText value="Praça: " />
+							<p:selectOneMenu converter="pracaConverter" value="#{painelBean.painel.IDPraca}"
+								filter="true">
+								<f:selectItems value="#{pracaBean.pracas}" var="praca"
+									itemLabel="#{praca.descricao}" itemValue="#{praca}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<p:separator/>
+						<p:commandButton value="confirmar" actionListener="#{painelBean.atualizar(event)}" oncomplete="PF('dialogEditarMS').hide()" update=":formlistaPaineis,:formCadPainel:msgPaineis"/>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

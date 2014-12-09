@@ -45,7 +45,8 @@ public class DocumentoDAO extends AbstractDao<Documento, Integer> {
 
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Documento> listar() {
        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Documento c where c.iDDocumento != :trans1 "
                 ).setInteger("trans1", 17);

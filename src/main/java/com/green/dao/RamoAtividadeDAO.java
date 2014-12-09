@@ -20,7 +20,8 @@ public class RamoAtividadeDAO {
     @Autowired
     private SessionFactory sf;
 
-    public List<Ramoatividade> listar(){
+    @SuppressWarnings("unchecked")
+	public List<Ramoatividade> listar(){
         return getSf().getCurrentSession().createCriteria(Ramoatividade.class).list();
     }
     public Ramoatividade buscar(Integer id){

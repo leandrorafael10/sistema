@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimentacao_brindes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="descricao" class="java.lang.String">
+			<fieldDescription><![CDATA[IDBrinde.descricao]]></fieldDescription>
+		</field>
+		<field name="qtd" class="java.lang.Integer">
+			<fieldDescription><![CDATA[qtd]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="Table Dataset 1">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="descricao" class="java.lang.String">
+			<fieldDescription><![CDATA[IDBrinde.descricao]]></fieldDescription>
+		</field>
+		<field name="qtd" class="java.lang.Integer">
+			<fieldDescription><![CDATA[qtd]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="saldoMov" class="java.util.List"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="IDFuncionario" class="com.green.modelo.Funcionario">
+		<fieldDescription><![CDATA[IDFuncionario]]></fieldDescription>
+	</field>
+	<field name="IDUsuario" class="com.green.modelo.Usuario">
+		<fieldDescription><![CDATA[IDUsuario]]></fieldDescription>
+	</field>
+	<field name="brindeTermoList" class="java.util.List">
+		<fieldDescription><![CDATA[brindeTermoList]]></fieldDescription>
+	</field>
+	<field name="IDUsuario_1" class="com.green.modelo.Usuario">
+		<fieldDescription><![CDATA[IDBrindemovimentacao.IDUsuario]]></fieldDescription>
+	</field>
+	<field name="dataTermo" class="java.util.Date">
+		<fieldDescription><![CDATA[dataTermo]]></fieldDescription>
+	</field>
+	<field name="entradaSaida" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[entradaSaida]]></fieldDescription>
+	</field>
+	<field name="DTInc" class="java.util.Date">
+		<fieldDescription><![CDATA[DTInc]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Termo Responsabilidade]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="69" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="47" forecolor="#FFFFFF" backcolor="#EBE6E6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="129" y="31" width="166" height="16"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Responsável: "+$F{IDFuncionario}.getIDPessoa().getRazao()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="307" y="31" width="220" height="16"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Conferido por: "+$F{IDUsuario}.getIDFuncionario().getIDPessoa().getRazao()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="156" y="49" width="184" height="14"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset1">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{brindeTermoList})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="14" width="184">
+						<textField>
+							<reportElement x="0" y="0" width="102" height="14"/>
+							<textElement textAlignment="Right">
+								<font fontName="Arial" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="115" y="0" width="57" height="14"/>
+							<textElement textAlignment="Center">
+								<font fontName="Arial" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="35" y="31" width="79" height="16"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Data: "+$F{dataTermo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="3" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entradaSaida}?"Retorno":"Saida"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="402" y="11" width="85" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="487" y="11" width="40" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="11" width="59" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Emissor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="27" width="61" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Data emissão:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="71" y="27" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="11" width="155" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="109" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="109"/>
+				<staticText>
+					<reportElement x="351" y="0" width="180" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Saldo da movimentacao:]]></text>
+				</staticText>
+				<componentElement>
+					<reportElement key="table" x="351" y="18" width="180" height="91"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="Table Dataset 1">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{saldoMov})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:column width="138">
+							<jr:columnHeader height="18" rowSpan="1">
+								<box>
+									<pen lineWidth="1.0"/>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+								<staticText>
+									<reportElement x="0" y="0" width="138" height="18" backcolor="#FFFFFF"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Brinde]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell height="15" rowSpan="1">
+								<box>
+									<pen lineWidth="1.0"/>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+								<textField>
+									<reportElement x="0" y="0" width="138" height="15"/>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Arial" size="6" isBold="false"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="49">
+							<jr:columnHeader height="18" rowSpan="1">
+								<box>
+									<pen lineWidth="1.0"/>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+								<staticText>
+									<reportElement x="0" y="0" width="49" height="18"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Qtd]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell height="15" rowSpan="1">
+								<box>
+									<pen lineWidth="1.0"/>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+								<textField>
+									<reportElement x="0" y="0" width="49" height="15"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" size="6" isBold="false"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

@@ -2,181 +2,179 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
 
 
-    <h:form id="menu" >
+<h:form id="menu">
 
-        <p:menubar>
-            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_RH,ROLE_ADM_ASSINAT">
-                <p:submenu label="Administrador" >
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
-                        <p:menuitem value="usuários" outcome="/principal/usuarios"  />
-                    </sec:ifAnyGranted>
-                </p:submenu >
-                <p:submenu label="Funcionário">
-                    <p:menuitem value="funcionários" outcome="/principal/novo_funcionario" />
-                </p:submenu>
-            </sec:ifAnyGranted>
+	<p:menubar>
+		<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_RH,ROLE_ADM_ASSINAT">
+			<p:submenu label="Administrador">
+				<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
+					<p:menuitem value="usuários" outcome="/restrito/acesso_sistema" />
+				</sec:ifAnyGranted>
+			</p:submenu>
+			<p:submenu label="Funcionário">
+				<p:menuitem value=" cadastro funcionários" outcome="/restrito/cadastro_funcionario" />
+				<p:menuitem value="funcionários" outcome="/restrito/funcionarios" />
+			</p:submenu>
+		</sec:ifAnyGranted>
 
-            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_FINANCEIRO">
-                <p:submenu label="Tesouraria">
-                    <p:menuitem value="conta" outcome="/principal/menu_tesouraria" />
-                    <p:menuitem value="Transferencia" outcome="/tesouraria/transferencia" />
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO">
-                        <p:submenu label="Baixa">
-                            <p:menuitem value="Pagamentos" outcome="/tesouraria/lancamento_financeiro/despesa_pagando" />
-                            <p:menuitem value="Recebimentos" outcome="/tesouraria/lancamento_financeiro/receita_confirmando" />
-                        </p:submenu>
-                    </sec:ifAnyGranted>
-                </p:submenu>
-            </sec:ifAnyGranted>
+		<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_FINANCEIRO">
+			<p:submenu label="Tesouraria">
+				<p:menuitem value="conta" outcome="/principal/menu_tesouraria" />
+				<p:menuitem value="Transferencia" outcome="/tesouraria/transferencia" />
 
-            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
-                <p:submenu label="Prospecção">
-                    <p:menuitem value="Prospectar" outcome="/mailing_tv/mailing_geral" />
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
-                        <p:menuitem value="Mailing vendedor" outcome="/mailing_tv/mailing_vendedor" /> 
-                        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_DIR">
-                            <p:menuitem value="Gestão mailing" outcome="/mailing_tv/mailing_gerente"  /> 
-                        </sec:ifAnyGranted>
-                    </sec:ifAnyGranted>
-                </p:submenu>
-            </sec:ifAnyGranted>
+			</p:submenu>
+		</sec:ifAnyGranted>
+
+		<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+			<p:submenu label="Prospecção">
+				<p:menuitem value="Prospectar" outcome="/mailing_tv/mailing_geral" />
+				<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+					<p:menuitem value="Mailing vendedor" outcome="/mailing_tv/mailing_vendedor" />
+					<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_DIR">
+						<p:menuitem value="Gestão mailing" outcome="/mailing_tv/mailing_gerente" />
+					</sec:ifAnyGranted>
+				</sec:ifAnyGranted>
+			</p:submenu>
+		</sec:ifAnyGranted>
 
 
-            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL">
+		<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL">
 
-                <p:submenu label="Globo">
-                    <p:menuitem value="Demitir promotor" outcome="/globo/adm_equipes"  />
-                    <p:menuitem value="Capa de lote" outcome="/globo/capa_de_lote"  />
-                    <p:menuitem value="Cadastrar Brinde" outcome="/globo/cadastro_brinde"  />
-                    <p:menuitem value="Cancelar venda" outcome="/globo/cancel_venda" />
-                    <p:menuitem value="Relatorio de vendas" outcome="/globo/comissao_vendas"  />
-                    <p:menuitem value="Cadastrar terceiros" outcome="/globo/cadastro_terceiro"  />
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
-                        <p:menuitem value="Alterar comissão" outcome="/globo/alteraComissao" />
-                        <p:menuitem value="Gráficos" outcome="/globo/graficos_metas"  />
-                    </sec:ifAnyGranted>
-                </p:submenu>
+			<p:submenu label="Globo">
+				<p:menuitem value="Demitir promotor" outcome="/globo/adm_equipes" />
+				<p:menuitem value="Capa de lote" outcome="/globo/capa_de_lote" />
+				<p:menuitem value="Cadastrar Brinde" outcome="/globo/cadastro_brinde" />
+				<p:menuitem value="Cancelar venda" outcome="/globo/cancel_venda" />
+				<p:menuitem value="Relatorio de vendas" outcome="/globo/comissao_vendas" />
+				<p:menuitem value="Cadastrar terceiros" outcome="/globo/cadastro_terceiro" />
+				<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
+					<p:menuitem value="Alterar comissão" outcome="/globo/alteraComissao" />
+					<p:menuitem value="Gráficos" outcome="/globo/graficos_metas" />
+				</sec:ifAnyGranted>
+			</p:submenu>
 
-            </sec:ifAnyGranted>
-            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
+		</sec:ifAnyGranted>
+		<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_USUARIO_ASSINAT,ROLE_ADM_ASSINAT">
 
-                <p:submenu label="Assinatura Ext.">
-                    <p:submenu label="venda">
-                        <p:menuitem value="Cad. Venda" outcome="/jornal/capalote"  />
-                        <p:menuitem value="Edit. Venda" outcome="/jornal/edit_capalote"  />
-                        <p:menuitem value="Inc. Gestor" outcome="/jornal/edit_gestor"  />
-                    </p:submenu>
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_ADM_ASSINAT">
-                        <p:submenu label="cadastro">
-                            <p:menuitem value="brinde" outcome="/globo/cadastro_brinde"  />
-                            <p:menuitem value="modalidades" outcome="/jornal/adm_modalidade"  />
-                            <p:menuitem value="ponto de venda" outcome="/jornal/cadastro_ponto"  />
-                        </p:submenu>
-                    </sec:ifAnyGranted>
-
-
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_ADM_ASSINAT">
-
-                        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO">
-                            <p:menuitem value="Gráficos" outcome="/jornal/graficos" />
-                            <p:submenu label="relatórios">
-                                <p:menuitem value="relatório pontos de venda" outcome="/jornal/relatorio_jornal/relatorio_ponto" />
-                                <p:menuitem value="relatório brindes" outcome="/jornal/relatorio_jornal/relatorio_brinde" />
-                            </p:submenu>
-                        </sec:ifAnyGranted>
-                    </sec:ifAnyGranted>
-                </p:submenu>
-                <p:submenu label="Adm. Equipes">
-                    <p:menuitem value="equipes" outcome="/jornal/cadastro_equipe"  />
-
-                    <p:submenu label="promotores">
-                        <p:menuitem value="ranking" outcome="/jornal/ranking"  />
-                        <p:menuitem value="vendas/Periodo" outcome="/jornal/vendasperiodo"  />
-                        <p:menuitem value="meta" outcome="/jornal/meta_promotor"  />
-                    </p:submenu>
-
-                </p:submenu>
-
-            </sec:ifAnyGranted>
-            <p:submenu label="Estoque">
-                <p:menuitem value="brinde" outcome="/estoque/entrada"  />
-                <p:menuitem value="máquina" outcome="/principal/cadastro_autorizacao_tv"  />
-                <p:menuitem value="movimentação brindes" outcome="/estoque/movimentacao_brinde"  />
-            </p:submenu>
-            <sec:ifAnyGranted roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
-
-                <p:submenu label="Fornecedor">
-                    <p:menuitem value="cadastrar" outcome="/principal/cadastro_fornecedor"  />
-                    <p:menuitem value="listar" outcome="/publico/lista_fornecedor"  />
-                </p:submenu>
-
-            </sec:ifAnyGranted>
-            <sec:ifAnyGranted roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
-
-                <p:submenu label="TV Embarque">
-                    <p:submenu label="Cadastro">
-                        <p:menuitem value="TVEmbarque" outcome="/principal/cadastro_autorizacao_tv"  />
-                        <p:menuitem value="Parceiros" outcome="/contratos_tv/parceiro"  />
-                    </p:submenu>
-                    
-                    <p:menuitem value="editar"  outcome="/contratos_tv/editar"/>
-                    <p:menuitem value="todos contratos" outcome="/contratos_tv/contrato_geral"  />
-                    <p:menuitem value="produção" outcome="/mailing_tv/producao_midia"  />
-                    <p:menuitem value="pracas" outcome="/contratos_tv/contrato_praca" />
-                    <p:menuitem value="cadastrados" outcome="/contratos_tv/contratos_cadastrados" />
-                </p:submenu>
-            </sec:ifAnyGranted>
-            
+			<p:submenu label="Assinatura Ext.">
+				<p:submenu label="venda">
+					<p:menuitem value="Cad. Venda" outcome="/jornal/capalote" />
+					<p:menuitem value="Edit. Venda" outcome="/jornal/edit_capalote" />
+					<p:menuitem value="Inc. Gestor" outcome="/jornal/edit_gestor" />
+				</p:submenu>
+				<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_ADM_ASSINAT">
+					<p:submenu label="cadastro">
+						<p:menuitem value="brinde" outcome="/globo/cadastro_brinde" />
+						<p:menuitem value="modalidades" outcome="/jornal/adm_modalidade" />
+						<p:menuitem value="ponto de venda" outcome="/jornal/cadastro_ponto" />
+					</p:submenu>
+				</sec:ifAnyGranted>
 
 
-            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1">
-                <p:submenu label="Financeiro">
-                    <p:submenu label="cadastrar">
-                        <p:menuitem value="receita" outcome="/tesouraria/lancamento_financeiro/receita_recebidas"   onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                        <p:menuitem value="despesa" outcome="/tesouraria/lancamento_financeiro/despesa_paga"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                    </p:submenu>
-                    <p:submenu label="cadastros financ.">
-                        <p:menuitem value="atividade" outcome="/tesouraria/cadastros_tesouraria/atividades_financeira"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                        <p:menuitem value="tipo de conta" outcome="/tesouraria/cadastros_tesouraria/tipo_conta" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                        <p:submenu label="conta banco">
-                            <p:menuitem value="conta nova" outcome="/tesouraria/cadastros_tesouraria/contas"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                            <p:menuitem value="lista de contas" outcome="/tesouraria/cadastros_tesouraria/lista_contas"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                        </p:submenu>
-                        <p:menuitem value="plano de conta" outcome="/tesouraria/cadastros_tesouraria/plano_conta"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                        <p:menuitem value="centro custo" outcome="/tesouraria/cadastros_tesouraria/centro_custo"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+				<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_ADM_ASSINAT">
+					<p:menuitem value="Gráficos" outcome="/jornal/graficos" />
+					<p:submenu label="relatórios">
+						<p:menuitem value="relatório pontos de venda" outcome="/jornal/relatorio_ponto" />
+						<p:menuitem value="relatório brindes" outcome="/jornal/relatorio_brinde" />
+					</p:submenu>
+				</sec:ifAnyGranted>
+			</p:submenu>
+			<p:submenu label="Adm. Equipes">
+				<p:menuitem value="equipes" outcome="/jornal/cadastro_equipe" />
 
-                    </p:submenu>
-                    <p:submenu label="parcelas clientes">
-                        <p:menuitem value="baixar parcelas" outcome="/tesouraria/conta_receber/parcela"/>
-                    </p:submenu>
-                </p:submenu>
-            </sec:ifAnyGranted>
-            <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1,ROLE_COMERCIAL_TV_DIR" >
-                <p:submenu label="Relatorios">
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1" >
-                        <p:submenu label="Financeiro">
-                            <p:menuitem value="conta banco" outcome="/tesouraria/relatorio_fin/rel_contas"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                            <p:menuitem value="plano conta" outcome="/tesouraria/relatorio_fin/rel_plano_conta"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                            <p:menuitem value="despesas" outcome="/tesouraria/relatorio_fin/rel_despesas"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                        </p:submenu>
-                    </sec:ifAnyGranted>
-                    <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_DIR">
-                        <p:menuitem value="relatorios TVE" outcome="/contratos_tv/rel_contratos"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                    </sec:ifAnyGranted>
-                </p:submenu>
-            </sec:ifAnyGranted>
-            <p:submenu label="Minha conta" >
-                <p:menuitem value="trocar senha" outcome="/publico/conteudo_usuario" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-            </p:submenu>
-        </p:menubar>
-    </h:form>
+				<p:submenu label="promotores">
+					<p:menuitem value="ranking" outcome="/jornal/ranking" />
+					<p:menuitem value="vendas/Periodo" outcome="/jornal/vendasperiodo" />
+					<p:menuitem value="meta" outcome="/jornal/meta_promotor" />
+				</p:submenu>
+
+			</p:submenu>
+
+		</sec:ifAnyGranted>
+		<p:submenu label="Estoque">
+			<p:menuitem value="brinde" outcome="/estoque/entrada" />
+			<p:menuitem value="máquina" outcome="/estoque/maquina_cartao" />
+			<p:menuitem value="movimentação brindes" outcome="/estoque/movimentacao_brinde" />
+		</p:submenu>
+		<sec:ifAnyGranted roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+
+			<p:submenu label="Fornecedor">
+				<p:menuitem value="cadastrar" outcome="/principal/cadastro_fornecedor" />
+				<p:menuitem value="listar" outcome="/publico/lista_fornecedor" />
+			</p:submenu>
+
+		</sec:ifAnyGranted>
+		<sec:ifAnyGranted
+			roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1">
+
+			<p:submenu label="TV Embarque">
+				<sec:ifAnyGranted roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+					<p:submenu label="Cadastro">
+						<p:menuitem value="TVEmbarque" outcome="/principal/cadastro_autorizacao_tv" />
+						<p:menuitem value="Parceiros" outcome="/contratos_tv/parceiro" />
+						<p:menuitem value="Painel" outcome="/contratos_tv/painel"></p:menuitem>
+					</p:submenu>
+				</sec:ifAnyGranted>
+				<p:menuitem value="histórico cliente" outcome="/contratos_tv/historico_cliente" />
+				<p:menuitem value="editar" outcome="/contratos_tv/editar" />
+				<p:menuitem value="todos contratos" outcome="/contratos_tv/contrato_geral" />
+				<sec:ifAnyGranted roles="ROLE_PRODUCAO,ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_EXE,ROLE_COMERCIAL_TV_DIR">
+					<p:menuitem value="produção" outcome="/mailing_tv/producao_midia" />
+					<p:menuitem value="pracas" outcome="/contratos_tv/contrato_praca" />
+				</sec:ifAnyGranted>
+				<p:menuitem value="cadastrados" outcome="/contratos_tv/contratos_cadastrados" />
+			</p:submenu>
+		</sec:ifAnyGranted>
 
 
+
+		<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1">
+			<p:submenu label="Financeiro">
+				<p:submenu label="cadastros financ.">
+					<p:menuitem value="atividade" outcome="/tesouraria/cadastros_tesouraria/atividades_financeira" />
+					<p:menuitem value="tipo de conta" outcome="/tesouraria/cadastros_tesouraria/tipo_conta" />
+					<p:submenu label="conta banco">
+						<p:menuitem value="conta nova" outcome="/tesouraria/cadastros_tesouraria/contas" />
+						<p:menuitem value="lista de contas" outcome="/tesouraria/cadastros_tesouraria/lista_contas" />
+					</p:submenu>
+					<p:menuitem value="plano de conta" outcome="/tesouraria/cadastros_tesouraria/plano_conta" />
+					<p:menuitem value="centro custo" outcome="/tesouraria/cadastros_tesouraria/centro_custo" />
+
+				</p:submenu>
+				<p:submenu label="receita">
+				<p:menuitem value="entrada" outcome="/tesouraria/conta_receber/entrada" />
+					<p:menuitem value="baixa" outcome="/tesouraria/conta_receber/parcela" />
+					<p:menuitem value="estorno" outcome="/tesouraria/conta_receber/estorno" />
+				</p:submenu>
+				<p:submenu label="despesa">
+					<p:menuitem value="entrada" outcome="/tesouraria/conta_pagar/despesa" />
+					<p:menuitem value="baixa" outcome="/tesouraria/conta_pagar/despesa_baixa" />
+					<p:menuitem value="estorno" outcome="/tesouraria/conta_pagar/estorno_pagamento"/>
+				</p:submenu>
+			</p:submenu>
+		</sec:ifAnyGranted>
+		<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1,ROLE_COMERCIAL_TV_DIR">
+			<p:submenu label="Relatorios">
+				<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1">
+					<p:submenu label="Financeiro">
+						<p:menuitem value="conta banco" outcome="/tesouraria/relatorio_fin/rel_contas" />
+						<p:menuitem value="plano conta" outcome="/tesouraria/relatorio_fin/rel_plano_conta" />
+						<p:menuitem value="despesas" outcome="/tesouraria/relatorio_fin/rel_despesas" />
+					</p:submenu>
+				</sec:ifAnyGranted>
+				<sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_COMERCIAL_TV_DIR,ROLE_FINANCEIRO,ROLE_FINANCEIRO_1">
+					<p:menuitem value="relatorios TVE" outcome="/contratos_tv/rel_contratos" />
+				</sec:ifAnyGranted>
+			</p:submenu>
+		</sec:ifAnyGranted>
+		<p:submenu label="Minha conta">
+			<p:menuitem value="trocar senha" outcome="/publico/conteudo_usuario" />
+		</p:submenu>
+	</p:menubar>
+</h:form>
 
 </html>

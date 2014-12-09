@@ -4,45 +4,29 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 
     <ui:composition>
 
         <f:view>
             <h:panelGroup  id="cadastroFisicaJuridica" >
-                <h:form id="formulario_F_J" >
-
-                    <p:panel style="width: 300px;height: 110px">
-                        <h2>Cadastrar contrato</h2>
-                        <p:commandLink actionListener="#{contratoMidiaBean.cadastrarFisica()}" update=":cadastroFisicaJuridica" title="Cadastrar Pessoa Fisica" >
-                            <h:graphicImage  library="imagens"  name="PFisica.png" title="Cadastrar Pessoa Fisica"/>
-                            <h:outputText value="Fisica"/>
-                        </p:commandLink>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <p:commandLink actionListener="#{contratoMidiaBean.cadastrarJuridica()}" update=":cadastroFisicaJuridica" title="Cadastrar Pessoa Juridica">
-                            <h:graphicImage library="imagens" name="PJuridica.png" title="Cadastrar Pessoa Juridica"/>
-                            <h:outputText value="Juridica"/>
-                        </p:commandLink>
-                    </p:panel>
-
-
-                </h:form>
+                
 
 
                 <p:growl id="growConfirm" showDetail="true" life="2000"/>
                 <p:messages id="msgConfirmacao"/>
-                <h:form id="cadastro" rendered="#{contratoMidiaBean.ESTADO_FISICA or contratoMidiaBean.ESTADO_JURIDICA}">
+                <h:form id="cadastro" >
 
 
                     <h:panelGrid id="painelContrato"> 
 
                         <p:wizard widgetVar="wiz"   
-                                  flowListener="#{contratoMidiaBean.onFlowProcess}" backLabel="Voltar" nextLabel="Avançar" showNavBar="#{contratoMidiaBean.resp}">
-                            <p:tab  title="Cliente" rendered="#{contratoMidiaBean.abas}">
+                                   backLabel="Voltar" nextLabel="Avançar" showNavBar="#{contratoMidiaBean.resp}">
+                            <p:tab  title="Cliente" >
                                 <p:growl showDetail="true" life="2000"/>
 
-                                <p:panel header="Dados Pessoais" rendered="#{contratoMidiaBean.ESTADO_FISICA}">
+                                <p:panel header="Dados Pessoais" >
                                     &nbsp;&nbsp;&nbsp;&nbsp; <h:outputLabel value="CPF *:   "/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <p:inputMask mask="999.999.999-99" value="#{contratoMidiaBean.cpfCnpj}" 
                                                  size="14"
@@ -58,42 +42,42 @@
                                                      size="70"
                                                      maxlength="70"
                                                      required="true"
-                                                     disabled="#{contratoMidiaBean.requerimento}"/>
+                                                     />
                                         <h:outputLabel  value="Nome Fantasia:"/>
                                         <p:inputText  value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}"
                                                       size="20"
                                                       maxlength="50"
                                                       required="true"
                                                       requiredMessage="Nome fantasia e obrigatorio!"
-                                                      disabled="#{contratoMidiaBean.requerimento}"/>
+                                                     />
 
                                         <h:outputLabel value="RG"/>
                                         <p:inputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.rg}"
                                                      size="9"
                                                      maxlength="9"
-                                                     disabled="#{contratoMidiaBean.requerimento}"/>
+                                                     />
                                         <h:outputLabel  value="Data Nascimento:"/>
                                         <p:calendar showButtonPanel="true" 
                                                     navigator="true" 
                                                     value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.DTNascimento}"
                                                     pattern="dd-MM-yyyy"
                                                     size="10"
-                                                    timeZone="America/Sao_Paulo"
+                                                    locale="pt"
                                                     yearRange="c-80:"
-                                                    disabled="#{contratoMidiaBean.requerimento}">
+                                                    >
                                         </p:calendar> 
                                         <h:outputLabel  value="Naturalidade:"/>
                                         <p:inputText id="naturalidade" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.naturalidade}"
                                                      size="20"
                                                      maxlength="30"
-                                                     disabled="#{contratoMidiaBean.requerimento}"
+                                                     
                                                      />
 
                                         <h:outputLabel value="Telefone fixo:"/>
                                         <p:inputMask  mask="(99)9999-9999" label="tel fixo" value="#{contratoMidiaBean.telefoneF}"
                                                       size="13"
                                                       required="true"
-                                                      disabled="#{contratoMidiaBean.requerimento}"
+                                                      
                                                       requiredMessage="Pelo menos um telefone e obrigatório!"
                                                       >
                                         </p:inputMask>
@@ -102,12 +86,12 @@
                                                      label="tel celular"
                                                      value="#{contratoMidiaBean.telefoneCel}"
                                                      size="13"
-                                                     disabled="#{contratoMidiaBean.requerimento}"/>
+                                                     />
                                         <h:outputText value="E-MAIL:"/>
                                         <p:inputText id="email" label="E-MAIL" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.email}"
                                                      size="30"
                                                      required="true"
-                                                     disabled="#{contratoMidiaBean.requerimento}"
+                                                    
                                                      requiredMessage="Email é obrigatorio! "
                                                      maxlength="30"
                                                      >
@@ -118,10 +102,10 @@
                                                       size="40"
                                                       id="httpFisica"
                                                       maxlength="30"
-                                                      disabled="#{contratoMidiaBean.requerimento}">
+                                                      >
                                         </p:inputText>
                                         <h:outputText value="Ramo atividade"/>
-                                        <p:selectOneMenu disabled="#{contratoMidiaBean.requerimento}" converter="ramoAtividadeConverter" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDRamoAtividade}" filter="true">
+                                        <p:selectOneMenu  converter="ramoAtividadeConverter" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDRamoAtividade}" filter="true">
                                             <f:selectItems  value="#{ramoAtividadeRN.listar()}"
                                                             var="ramo"
                                                             itemLabel="#{ramo.descricao}"
@@ -129,7 +113,7 @@
                                         </p:selectOneMenu>
                                     </h:panelGrid>
                                 </p:panel>
-                                <p:panel header="Dados pessoais" rendered="#{contratoMidiaBean.ESTADO_JURIDICA}">
+                                <p:panel header="Dados pessoais" >
                                     &nbsp;&nbsp;&nbsp;&nbsp;<h:outputLabel value="CNPJ: *" for="cnpj"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <p:inputMask   id="cnpj" label="CNPJ" value="#{contratoMidiaBean.cpfCnpj}" 
                                                    mask="99.999.999/9999-99"
@@ -147,7 +131,7 @@
                                                      requiredMessage="Razão social é obrigatório!"
                                                      maxlength="70"
                                                      required="true"
-                                                     disabled="#{contratoMidiaBean.requerimento}">
+                                                     >
                                         </p:inputText>
                                         <h:outputLabel  value="Nome Fantasia:"/>
                                         <p:inputText  value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}"
@@ -155,23 +139,23 @@
                                                       maxlength="50"
                                                       required="true"
                                                       requiredMessage="Nome fantasia e obrigatorio!"
-                                                      disabled="#{contratoMidiaBean.requerimento}"/>
+                                                      />
 
                                         <h:outputText value="Inscrição Estadual: "/>
                                         <p:inputText  label="Inscrição Estadual" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoEstadual}"
                                                       maxlength="20"
-                                                      disabled="#{contratoMidiaBean.requerimento}"/>
+                                                      />
 
                                         <h:outputLabel for="insMunicipal" value="Inscrição Municipal"/>
                                         <p:inputText id="insMunicipal" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoMunicipal}"
                                                      maxlength="20"
-                                                     disabled="#{contratoMidiaBean.requerimento}"/>
+                                                     />
 
                                         <h:outputLabel value="Contato da empresa:"/>
                                         <p:inputText label="Contato" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.referencia}"
                                                      size="20"
                                                      maxlength="20"
-                                                     disabled="#{contratoMidiaBean.requerimento}">
+                                                     >
 
                                         </p:inputText>
                                         <h:outputLabel  value="Telefone:"/>
@@ -180,7 +164,7 @@
                                                      requiredMessage="Pelo menos um telefone e recomentado!"
                                                      size="13"
                                                      required="true"
-                                                     disabled="#{contratoMidiaBean.requerimento}"
+                                                     
                                                      >
 
 
@@ -189,7 +173,7 @@
                                         <p:inputMask mask="(99)9999-9999"
                                                      value="#{contratoMidiaBean.telefoneC}"
                                                      size="13"
-                                                     disabled="#{contratoMidiaBean.requerimento}">
+                                                     >
 
                                         </p:inputMask>
 
@@ -197,7 +181,7 @@
                                         <p:inputMask mask="(99)9999-9999"  
                                                      value="#{contratoMidiaBean.telefoneCel}"
                                                      size="13"
-                                                     disabled="#{contratoMidiaBean.requerimento}"
+                                                    
                                                      >
 
                                         </p:inputMask>
@@ -207,16 +191,16 @@
                                                      size="30"
                                                      requiredMessage="Email é obrigatório!"
                                                      required="true"
-                                                     disabled="#{contratoMidiaBean.requerimento}">
+                                                     >
                                         </p:inputText>
                                         <h:outputLabel  value="HTTP:"/>
                                         <p:inputText  value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.http}"
                                                       size="40"
                                                       maxlength="50"
-                                                      disabled="#{contratoMidiaBean.requerimento}">
+                                                      >
                                         </p:inputText>
                                         <h:outputText value="Ramo atividade"/>
-                                    <p:selectOneMenu disabled="#{contratoMidiaBean.requerimento}"  converter="ramoAtividadeConverter" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDRamoAtividade}" filter="true">
+                                    <p:selectOneMenu   converter="ramoAtividadeConverter" value="#{contratoMidiaBean.contratoMidia.IDcliente.IDRamoAtividade}" filter="true">
                                         <f:selectItems  value="#{ramoAtividadeRN.listar()}"
                                                         var="ramo"
                                                         itemLabel="#{ramo.descricao}"
@@ -225,7 +209,7 @@
                                     </h:panelGrid>
                                 </p:panel>
                             </p:tab>
-                            <p:tab id="endereco" title="Endereço" rendered="#{contratoMidiaBean.abas}">
+                            <p:tab id="endereco" title="Endereço" >
                                 <p:growl id="msgs" showDetail="true"/> 
                                 <p:panel header="Endereço comercial">
 
@@ -316,6 +300,7 @@
                                                     pattern="dd/MM/yyyy"
                                                     size="14"
                                                     required="true"
+                                                    locale="pt"
                                                     requiredMessage="Data inicio é obrigatória!"/>
                                         <h:outputText value="Data de termino veiculação:"/>
                                         <p:calendar value="#{contratoMidiaBean.contratoMidia.dataFimContrato}" 
@@ -323,6 +308,7 @@
                                                     showOn="button"
                                                     pattern="dd/MM/yyyy"
                                                     size="14"
+                                                    locale="pt"
                                                     required="true"
                                                     requiredMessage="Data termino é obrigatória!"/>
                                         <h:outputText value="Enviar para produção :"/>
@@ -366,7 +352,7 @@
                                             <f:selectItems value="#{contratoMidiaBean.dias}"/>
                                         </p:selectOneMenu>
                                         <h:outputText value="Inicio das parcelas:"/>
-                                        <p:selectOneRadio  value="#{contratoMidiaBean.inicioParcelas}" required="true" requiredMessage="Marque uma opção para inico das parcelas se será no mês atual ou no mês seguinte.">
+                                        <p:selectOneRadio   required="true" requiredMessage="Marque uma opção para inico das parcelas se será no mês atual ou no mês seguinte.">
                                             <f:selectItem itemLabel="mês atual" itemValue="#{false}"/>
                                             <f:selectItem itemLabel="mês seguinte " itemValue="#{true}"/>
                                         </p:selectOneRadio>
@@ -378,6 +364,7 @@
                                                     pattern="dd/MM/yyyy"
                                                     size="14"
                                                     required="true"
+                                                    locale="pt"
                                                     requiredMessage="Data da venda é obrigatória!"/>
 
                                         <h:outputText value="Valor parcela:"/>
@@ -418,8 +405,8 @@
                             <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}" rendered="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia!=null}" style="color: blue"/>
                         </p:panel>
                         <p:commandButton  value="Confirmar novo contrato"  
-                                          actionListener="#{contratoMidiaBean.confimaCadastro}" /> 
-                        <p:commandButton value="Cancelar" actionListener="#{contratoMidiaBean.cancelaCadastro}"/>   
+                                          /> 
+                        <p:commandButton value="Cancelar" />   
                     </p:dialog>  
 
 
@@ -427,20 +414,20 @@
                         <h:panelGrid columns="3">
                             <p:panel header="Dados pessoais">
                                 <h:panelGrid columns="2" style="width: 250px; height: 400px;">
-                                    <h:outputText value="Razao social: " rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
-                                    <h:outputText value="Nome: " rendered="#{contratoMidiaBean.ESTADO_FISICA}"/>
+                                    <h:outputText value="Razao social: " />
+                                    <h:outputText value="Nome: " />
                                     <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.razao}"/>
-                                    <h:outputText value="Cnpj: " rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
-                                    <h:outputText value="Cpf: " rendered="#{contratoMidiaBean.ESTADO_FISICA}"/>
+                                    <h:outputText value="Cnpj: " />
+                                    <h:outputText value="Cpf: " />
                                     <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.cnpjCpf}"/>
-                                    <h:outputText value="Ins.Estadual: " rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
-                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoEstadual}" rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
-                                    <h:outputText value="RG: " rendered="#{contratoMidiaBean.ESTADO_FISICA}"/>
-                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.rg}" rendered="#{contratoMidiaBean.ESTADO_FISICA}"/>
-                                    <h:outputText value="Ins.Municipal: " rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
-                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoMunicipal}" rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
-                                    <h:outputText value="Contato: " rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
-                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.referencia}" rendered="#{contratoMidiaBean.ESTADO_JURIDICA}"/>
+                                    <h:outputText value="Ins.Estadual: " />
+                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoEstadual}" />
+                                    <h:outputText value="RG: " />
+                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.rg}" />
+                                    <h:outputText value="Ins.Municipal: " />
+                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.inscricaoMunicipal}" />
+                                    <h:outputText value="Contato: " />
+                                    <h:outputLabel value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.referencia}" />
                                     <h:outputLabel value="Telefone Fixo: "  />
                                     <h:outputText value="#{contratoMidiaBean.telefoneF}"  />
                                     <h:outputLabel value="Telefone Celular: "  />

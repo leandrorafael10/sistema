@@ -18,7 +18,11 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class ContaConciliacao implements Serializable{
     
-    private Conta conta ;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Conta conta ;
     private BigDecimal valorAconciliar;
     private BigDecimal valorConciliado;
     private BigDecimal valorPrevisto;

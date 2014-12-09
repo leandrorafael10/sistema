@@ -70,6 +70,7 @@ and open the template in the editor.
                                         size="8"
                                         pattern="dd/MM/yyyy"
                                         required="true"
+                                        locale="pt"
                                         requiredMessage="Data de emissão obrigatória!"/> 
                             <h:outputText  value="vencimento: "/> 
                             <p:calendar id="dtReceitaVenc" value="#{receitaBean.novaReceita.DTVencimento}"
@@ -77,6 +78,7 @@ and open the template in the editor.
                                         size="8"
                                         showOn="button"
                                         required="true"
+                                        locale="pt"
                                         requiredMessage="data vencimento e obrigatório!"/>
                             
                             <h:outputText value="entidade: "/>
@@ -129,6 +131,7 @@ and open the template in the editor.
                                     <p:calendar value="#{receitaBean.novaReceita.DTMulta}"
                                                 showOn="button" 
                                                 pattern="dd/MM/yyyy"
+                                                locale="pt"
                                                 size="8"/>
                                     <p:selectBooleanCheckbox value="#{receitaBean.novaReceita.isentoMulta}"/>
                                     <h:outputText value="isento"/>
@@ -159,6 +162,7 @@ and open the template in the editor.
                                     <p:calendar value="#{receitaBean.novaReceita.DTDesconto}"
                                                 showOn="button" 
                                                 pattern="dd/MM/yyyy"
+                                                locale="pt"
                                                 size="8"/>
                                 </h:panelGrid>    
                             </p:panel>

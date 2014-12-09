@@ -29,7 +29,11 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class FornecedorBean implements Serializable {
     
-    @ManagedProperty("#{fornecedorRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{fornecedorRN}")
     private FornecedorRN fornecedorRN;
     @ManagedProperty("#{contatoRN}")
     private ContatoRN contatoRN;

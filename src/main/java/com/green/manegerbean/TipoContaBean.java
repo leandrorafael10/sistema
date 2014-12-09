@@ -9,9 +9,11 @@ import com.green.rn.TipoContaRN;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -23,7 +25,12 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class TipoContaBean implements Serializable{
     
-    @ManagedProperty("#{tipoContaRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8288095050439553578L;
+
+	@ManagedProperty("#{tipoContaRN}")
     private TipoContaRN tipoContaRN;
     
     private Tipoconta tipoconta = new Tipoconta();
@@ -52,6 +59,7 @@ public class TipoContaBean implements Serializable{
     public  void atualizar(RowEditEvent editEvent){
         Tipoconta t = (Tipoconta)editEvent.getObject();
         getTipoContaRN().atualizar(t);
+        FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualizado com sucesso!", "Atualizado com sucesso!"));
     }
     public void setTipocontas(List<Tipoconta> tipocontas) {
         this.tipocontas = tipocontas;

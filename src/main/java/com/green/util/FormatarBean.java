@@ -6,8 +6,10 @@ package com.green.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -19,10 +21,38 @@ import org.primefaces.model.StreamedContent;
 @ViewScoped
 public class FormatarBean implements Serializable {
 
-    private StreamedContent imagem = new DefaultStreamedContent();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private StreamedContent imagem = new DefaultStreamedContent();
 
     public static String formatatel(String fixo, String celular, String residencial, String comercial) {
         return null;
+    }
+
+    
+
+    public static String maiuscula(String silva) {
+        String mais = "";
+        String maiuscula2;
+        String tudo;
+        String posicao = "" + silva.charAt(0);//pega a primeira letra que sera maiuscula  
+        String pos = posicao.toUpperCase();    //transforma em maiuscula  
+
+        for (int i = 1; i < silva.length(); i++) {  //coloca o for de acordo com o tamanho  
+            mais = mais + silva.charAt(i); //acrescenta as letras  
+
+            if (silva.charAt(i) == ' ') {  //se houver um espaço a próxima vai ser transformada em maisucula.  
+                String maiuscula = "" + silva.charAt(i + 1);//pega a próxima apos o espaço    
+                maiuscula2 = maiuscula.toUpperCase();       //transforma em maiuscula.  
+                mais = mais + maiuscula2;//acrescenta a maiuscula a palavra completa, que se chama mais  
+                i = i + 1; //soma um, pois uma letra minuscula foi substituida e ja foi acrescentada                                   
+            }
+        }
+        tudo = pos + mais;
+        System.out.println("tudo:" + tudo);
+        return tudo;
     }
 
     public String stringMes(int mes) {

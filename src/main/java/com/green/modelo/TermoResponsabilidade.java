@@ -9,6 +9,7 @@ package com.green.modelo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -74,6 +74,8 @@ public class TermoResponsabilidade implements Serializable {
     @JoinColumn(name = "IDUsuario" ,referencedColumnName = "IDUsuario")
     @ManyToOne
     private Usuario iDUsuario;
+    @Column(name = "Obs")
+    private String obs;
 
     public TermoResponsabilidade() {
     }
@@ -153,7 +155,13 @@ public class TermoResponsabilidade implements Serializable {
     public void setIDUsuario(Usuario iDUsuario) {
         this.iDUsuario = iDUsuario;
     }
-    
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
+    }
     
 
     @Override

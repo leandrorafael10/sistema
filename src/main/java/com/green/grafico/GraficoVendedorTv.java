@@ -4,7 +4,6 @@
  */
 package com.green.grafico;
 
-import com.green.modelo.Capalotejornal;
 import com.green.modelo.Equipevenda;
 import com.green.modelo.Funcionario;
 import com.green.modelo.Funcionariometa;
@@ -15,14 +14,12 @@ import com.green.rn.FuncaoRN;
 import com.green.rn.FuncionarioRN;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.spi.Contextual;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -37,9 +34,14 @@ import org.primefaces.model.chart.LineChartSeries;
  */
 @ManagedBean(name = "graficoVendedorTv")
 @ViewScoped
+@SuppressWarnings({"rawtypes","deprecation"})
 public class GraficoVendedorTv implements Serializable {
 
-    @ManagedProperty("#{contratoMidiaRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{contratoMidiaRN}")
     private ContratoMidiaRN contratoMidiaRN;
     @ManagedProperty("#{funcaoRN}")
     private FuncaoRN funcaoRN;
@@ -58,7 +60,8 @@ public class GraficoVendedorTv implements Serializable {
         createLinearModel();
     }
 
-    private void createLinearModel() {
+    
+	private void createLinearModel() {
         linearModel = new CartesianChartModel();
         linearModelFat = new CartesianChartModel();
 
@@ -177,11 +180,11 @@ public class GraficoVendedorTv implements Serializable {
             linearModel.addSeries(metas);
         }
 
-        context.execute("dialogNovaMeta.show()");
+        context.execute("PF('dialogNovaMeta').show()");
         context.update("formNovaMeta");
 
     }
-
+    @SuppressWarnings("unused")
     private class Vendas {
 
         private String periodo;
@@ -202,7 +205,8 @@ public class GraficoVendedorTv implements Serializable {
             return periodo;
         }
 
-        public void setPeriodo(String periodo) {
+        
+		public void setPeriodo(String periodo) {
             this.periodo = periodo;
         }
 

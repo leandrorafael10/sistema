@@ -23,7 +23,8 @@ public class GrupoAcessoDAO {
     @Autowired
     private SessionFactory sf;
 
-    public List<Grupoacesso> listar(){
+    @SuppressWarnings("unchecked")
+	public List<Grupoacesso> listar(){
         Criteria criteria = getSf().getCurrentSession().createCriteria(Grupoacesso.class);
         return criteria.list();
     }

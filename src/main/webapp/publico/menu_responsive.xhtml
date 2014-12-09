@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+    <h:body>
+        <div class="navbar navbar-default">
+            <div >
+                <!-- .btn-navbar é usado como alternador para conteúdo de barra de navegação colapsável -->
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <!-- Tenha certeza de deixar a marca se você quer que ela seja mostrada -->
+                <!--<a class="brand" href="#" >Nome do projeto</a>-->
+
+
+                <!-- Tudo que você queira escondido em 940px ou menos, coloque aqui adicionando  a classe dropdown nan div transforma dudo em dropdown-->
+                <div class="nav-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_RH,ROLE_ADM_ASSINAT">
+                            <li class="dropdown" >
+                                <a data-toggle="dropdown" href="#">Administrador
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li > <a href="#{request.contextPath}/principal/usuarios.jsf">Usuario</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a  data-toggle="dropdown" href="#" >
+                                    Funcionários
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li > <a href="#{request.contextPath}/principal/novo_funcionario.jsf">funcionários</a></li>
+                                </ul>
+                            </li>
+                        </sec:ifAnyGranted>
+                        <sec:ifAnyGranted roles="ROLE_ADMINISTRACAO,ROLE_FINANCEIRO_1,ROLE_FINANCEIRO_2,ROLE_FINANCEIRO_3,ROLE_FINANCEIRO">
+                            <li class="dropdown">
+                                <a  data-toggle="dropdown" href="#" >
+                                    Tesouraria
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li > <a href="#{request.contextPath}/principal/menu_tesouraria.jsf">conta</a></li>
+                                    <li > <a href="#">transferência</a></li>
+                                    <!--criando um sub menu-->
+                                    <li class="dropdown-submenu">
+                                        <a  data-toggle="dropdown" href="#" >
+                                            baixa
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li > <a href="#{request.contextPath}/tesouraria/lancamento_financeiro/despesa_pagando.jsf">pagamentos</a></li>
+                                            <li > <a href="#{request.contextPath}/tesouraria/lancamento_financeiro/receita_confirmando.jsf">recebimentos</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </sec:ifAnyGranted>
+                        <li class="dropdown">
+                            <a  data-toggle="dropdown" href="#" >
+                                Prospecção
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li > <a href="#">Prospectar</a></li>
+                                <li > <a href="#">Mailing vendedor</a></li>
+                                <li > <a href="#">Gestão mailing</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a  data-toggle="dropdown" href="#" >
+                                Globo
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li > <a href="#">Demitir promotor</a></li>
+                                <li > <a href="#">Capa lote</a></li>
+                                <li > <a href="#">Cadastro brinde</a></li>
+                                <li > <a href="#">Cancelar venda</a></li>
+                                <li > <a href="#">Relatorio venda</a></li>
+                                <li > <a href="#">Cadastrar terceiros</a></li>
+                                <li > <a href="#">Alterar comissão</a></li>
+                                <li > <a href="#">Gráficos</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a  data-toggle="dropdown" href="#" >
+                                Assinatura Ext
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#">venda</a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">cad. venda</a></li>
+                                        <li><a href="#">edit. venda</a></li>
+                                        <li><a href="#">inc. gestor</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">cadastro</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="">brinde</a></li>
+                                        <li><a href="">modalidades</a></li>
+                                        <li><a href="">ponto de venda</a></li>
+                                    </ul>
+                                </li>
+                                <li > <a href="#">gráfico</a></li>
+                                <li class="dropdown-submenu"> 
+                                    <a href="#">relatórios</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="">pontos de venda</a></li>
+                                        <li><a href="">brindes</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                Adm. Equipes
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">equipes</a></li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">
+                                        promotores
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">ranking</a></li>
+                                        <li><a href="#">vendas/periodo</a></li>
+                                        <li><a href="#">meta</a></li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">Estoque
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">brinde</a></li>
+                                <li><a href="#">máquina</a></li>
+                                <li><a href="#">movimentação brindes</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">Fornecedor
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">cadastrar</a></li>
+                                <li><a href="#">listar</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">TV Embarque
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#"  data-toggle="dropdown">cadastro</a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">TVEmbarque</a></li>
+                                        <li><a href="#">Parceiros</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">editar</a></li>
+                                <li><a href="#">todos contratos</a></li>
+                                <li><a href="#">produção</a></li>
+                                <li><a href="#">praças</a></li>
+                                <li><a href="#">cadastrados</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">Financeiro
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#" data-toggle="dropdown">cadastrar</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="">receita</a></li>
+                                        <li><a href="">despesa</a></li>
+                                    </ul>
+
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">cadastro financ.</a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">atividade</a></li>
+                                        <li><a href="#">tipo conta</a></li>
+                                        <li class="dropdown-submenu">
+                                            <a href="#">conta banco</a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#">conta nova</a></li>
+                                                <li><a href="#">lista de contas</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">plano conta</a></li>
+                                        <li><a href="#">centro custo</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">Relatórios
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#">financeiro</a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">conta banco</a></li>
+                                        <li><a href="#">plano conta</a></li>
+                                        <li><a href="#">despesas</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"> relatórios TVE</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">Minha conta
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Troca senha</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </h:body>
+</html>
+

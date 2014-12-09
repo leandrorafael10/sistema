@@ -52,7 +52,8 @@ public class PontodevendaRN {
         getPontodeVendaDAO().atualizar(pontodevenda);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualizado com sucesso!", "Atualizado com sucesso!"));
     }
-    public List listarPeriodo(Date inicio,Date fim ,int status) {
+    @SuppressWarnings("rawtypes")
+	public List listarPeriodo(Date inicio,Date fim ,int status) {
         return getPontodeVendaDAO().listarPeriodo(inicio, fim, status);
     }
 

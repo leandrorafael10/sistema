@@ -4,12 +4,13 @@
  */
 package com.green.rn;
 
-import com.green.dao.FuncaoDAO;
-import com.green.modelo.Funcao;
-import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.green.dao.FuncaoDAO;
+import com.green.modelo.Funcao;
 
 /**
  *

@@ -4,62 +4,63 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Brinde;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.green.modelo.Brinde;
+
 /**
- *
+ * 
  * @author leandro.silva
  */
 @Repository
-public class BrindeDAO {
+public class BrindeDAO extends AbstractBaseDAO<Brinde, Integer> {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Brinde> listar() {
+		return getSf().getCurrentSession().createCriteria(Brinde.class).list();
+	}
 
-    @SuppressWarnings("unchecked")
-    public List<Brinde> listar() {
-        return getSessionFactory().getCurrentSession().createCriteria(Brinde.class).list();
-    }
+	@Override
+	public Brinde buscar(Integer pk) {
+		Criteria criteria = getSf().getCurrentSession().createCriteria(
+				Brinde.class);
+		criteria.add(Restrictions.eq("iDBrinde", pk));
+		return (Brinde) criteria.uniqueResult();
+	}
 
-    public Brinde carregar(Integer id) {
-        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Brinde.class);
-        criteria.add(Restrictions.eq("iDBrinde", id));
-        return (Brinde) criteria.uniqueResult();
-    }
+	@Override
+	public Brinde salvar(Brinde brinde) {
+		return (Brinde) getSf().getCurrentSession().merge(brinde);
+	}
 
-    public void salvar(Brinde brinde) {
-        getSessionFactory().getCurrentSession().merge(brinde);
-    }
+	@SuppressWarnings("rawtypes")
+	public List listarPeriodo(Date inicio, Date fim) {
+		String sql = "select bc.iDCapalotejornal.iDPontovenda.descricao,bc.iDCapalotejornal.iDPontovenda.cidade, count(bc.iDBrinde)"
+				+ " from com.green.modelo.Brindecapalote bc "
+				+ "where bc.iDCapalotejornal.dTVenda > :inicio"
+				+ " and bc.iDCapalotejornal.dTVenda < :fim group by bc.iDCapalotejornal.iDPontovenda order by count(bc.iDBrinde) desc";
+		Query query = getSf().getCurrentSession().createQuery(sql)
+				.setDate("inicio", inicio).setDate("fim", fim);
+		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		return query.list();
+	}
 
-    public List listarPeriodo(Date inicio, Date fim) {
-        String sql = "select bc.iDCapalotejornal.iDPontovenda.descricao,bc.iDCapalotejornal.iDPontovenda.cidade, count(bc.iDBrinde)"
-                + " from com.green.modelo.Brindecapalote bc "
-                + "where bc.iDCapalotejornal.dTVenda > :inicio"
-                + " and bc.iDCapalotejornal.dTVenda < :fim group by bc.iDCapalotejornal.iDPontovenda order by count(bc.iDBrinde) desc";
-        Query query = getSessionFactory().getCurrentSession().createQuery(sql).setDate("inicio", inicio).setDate("fim", fim);
-        query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-        return query.list();
-    }
+	@Override
+	public Brinde atualizar(Brinde b) {
+		return (Brinde) getSf().getCurrentSession().merge(b);
+	}
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
+	@Override
+	public void excluir(Brinde entidade) {
+		getSf().getCurrentSession().delete(entidade);
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    public void atualizar(Brinde b) {
-        getSessionFactory().getCurrentSession().update(b);
-    }
+	}
 
 }

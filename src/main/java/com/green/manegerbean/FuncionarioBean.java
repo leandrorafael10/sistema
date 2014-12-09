@@ -4,20 +4,11 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Contato;
-import com.green.modelo.Funcao;
-import com.green.modelo.Funcionario;
-import com.green.modelo.Pessoa;
-import com.green.rn.ContatoRN;
-import com.green.rn.FuncaoRN;
-import com.green.rn.FuncionarioRN;
-import com.green.rn.PessoaRN;
-import com.green.util.CepWebService;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
@@ -28,10 +19,20 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CaptureEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
+
+import com.green.modelo.Contato;
+import com.green.modelo.Funcao;
+import com.green.modelo.Funcionario;
+import com.green.modelo.HistoricoDemicao;
+import com.green.modelo.Pessoa;
+import com.green.rn.ContatoRN;
+import com.green.rn.FuncaoRN;
+import com.green.rn.FuncionarioRN;
+import com.green.rn.PessoaRN;
+import com.green.util.CepWebService;
 
 /**
  *
@@ -41,51 +42,51 @@ import org.primefaces.model.StreamedContent;
 @ViewScoped
 public class FuncionarioBean implements Serializable {
 
-    @ManagedProperty("#{funcionarioRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{funcionarioRN}")
     private FuncionarioRN funcionarioRN;
     @ManagedProperty("#{contatoRN}")
     private ContatoRN contatoRN;
     @ManagedProperty("#{pessoaRN}")
     private PessoaRN pessoaRN;
     private Contato contato = new Contato();
-    private Funcionario funcionario = new Funcionario();
-    private Funcionario funcionarioEditado = new Funcionario();
+    private Funcionario funcionario;
+    private Funcionario funcionarioEditado;
+    private HistoricoDemicao historicoDemicao;
     private List<Funcionario> funcionarios;
     private List<Funcionario> funcionarioFiltro;
     private List<Funcionario> gerentes;
     private List<Funcionario> vendedores;
-    private Contato contatoEditado = new Contato();
-    private Boolean estadoCadastrar = Boolean.FALSE;
-    private Boolean estadoEditar = Boolean.FALSE;
-    private String telefoneF = new String();
-    private String telefoneCel = new String();
-    private String serieCTPS = new String();
-    private String foto = new String();
+    private Contato contatoEditado;
+    private String telefoneF ;
+    private String telefoneCel;
+    private String foto;
     private byte[] data;
     private String newFileName = new String();
+    private Date novaAdimicao;
+    
 
     @PostConstruct
     private void init() {
+        this.contatoEditado = new Contato();
+        this.funcionario = new Funcionario();
+        this.funcionarioEditado = new Funcionario();
+        this.historicoDemicao = new HistoricoDemicao();
         setFuncionarios(getFuncionarioRN().listar());
         this.funcionario.setIDFuncao(new Funcao());
-
-    }
-
-    public void cadastrar() {
-        this.funcionario = new Funcionario();
         this.funcionario.setIDPessoa(new Pessoa());
-        this.contato = new Contato();
-        setEstadoCadastrar(Boolean.TRUE);
-        setEstadoEditar(Boolean.FALSE);
+        this.telefoneF = new String();
+        this.telefoneCel = new String();
+        this.foto = new String();
+        
     }
 
-    public void editar() {
-        this.funcionarioEditado = new Funcionario();
-        this.funcionarioEditado.setIDPessoa(new Pessoa());
-        this.funcionarioEditado.setIDFuncao(new Funcao());
-        setEstadoCadastrar(Boolean.FALSE);
-        setEstadoEditar(Boolean.TRUE);
-    }
+    
+
+   
 
     public void listarPorFuncao() {
         setFuncionarios(getFuncionarioRN().listarPorFuncao(new FuncaoRN().carregar(1)));
@@ -155,7 +156,6 @@ public class FuncionarioBean implements Serializable {
 
     public void pesquisaFuncionario(Funcionario f) {
         setFuncionario(f);
-        RequestContext context = RequestContext.getCurrentInstance();
         if (f.getImagem() != null) {
             this.data = f.getImagem();
             Date nome = new Date();
@@ -190,9 +190,8 @@ public class FuncionarioBean implements Serializable {
             formatatel(getTelefoneF(), getTelefoneCel());
             getFuncionarioRN().Salvar(getFuncionario(), getContato());
             this.funcionario = new Funcionario();
-            setEstadoCadastrar(Boolean.FALSE);
-            setEstadoEditar(Boolean.FALSE);
             addMessage("Salvo com sucesso!");
+            init();
         }
 
     }
@@ -204,6 +203,9 @@ public class FuncionarioBean implements Serializable {
 
     public void demitirFuncionario(Funcionario f) {
         getFuncionarioRN().demitirFuncionario(f);
+    }
+    public void readimitirFuncionario(){
+        getFuncionarioRN().readimitirFuncionario(getHistoricoDemicao(),getNovaAdimicao());
     }
 
     public void addMessage(String summary) {
@@ -295,13 +297,6 @@ public class FuncionarioBean implements Serializable {
         this.funcionarioEditado = funcionarioEditado;
     }
 
-    public String getSerieCTPS() {
-        return serieCTPS;
-    }
-
-    public void setSerieCTPS(String serieCTPS) {
-        this.serieCTPS = serieCTPS;
-    }
 
     public Contato getContatoEditado() {
         return contatoEditado;
@@ -333,22 +328,6 @@ public class FuncionarioBean implements Serializable {
 
     public void setContato(Contato contato) {
         this.contato = contato;
-    }
-
-    public Boolean getEstadoCadastrar() {
-        return estadoCadastrar;
-    }
-
-    public void setEstadoCadastrar(Boolean estadoCadastrar) {
-        this.estadoCadastrar = estadoCadastrar;
-    }
-
-    public Boolean getEstadoEditar() {
-        return estadoEditar;
-    }
-
-    public void setEstadoEditar(Boolean estadoEditar) {
-        this.estadoEditar = estadoEditar;
     }
 
     public List<Funcionario> getFuncionarios() {
@@ -390,4 +369,21 @@ public class FuncionarioBean implements Serializable {
     public void setContatoRN(ContatoRN contatoRN) {
         this.contatoRN = contatoRN;
     }
+
+    public HistoricoDemicao getHistoricoDemicao() {
+        return historicoDemicao;
+    }
+
+    public void setHistoricoDemicao(HistoricoDemicao historicoDemicao) {
+        this.historicoDemicao = historicoDemicao;
+    }
+
+    public Date getNovaAdimicao() {
+        return novaAdimicao;
+    }
+
+    public void setNovaAdimicao(Date novaAdimicao) {
+        this.novaAdimicao = novaAdimicao;
+    }
+    
 }

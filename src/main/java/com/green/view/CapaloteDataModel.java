@@ -31,7 +31,8 @@ public class CapaloteDataModel extends ListDataModel<Capalotejornal> implements 
         return t.getIDCapalotejornal();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Capalotejornal getRowData(String id) {
          List<Capalotejornal> capalote = (List<Capalotejornal>) getWrappedData();
          

@@ -4,11 +4,11 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Ccusto;
-import java.math.BigInteger;
 import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -16,15 +16,17 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Ccusto;
 
 /**
  *
  * @author leandro.silva
  */
 @Repository("ccustoDAO")
+
 public class CCustoDAO extends AbstractDao<Ccusto, Integer> {
 
     @Autowired
@@ -63,7 +65,8 @@ public class CCustoDAO extends AbstractDao<Ccusto, Integer> {
         return (Ccusto)criteria.add(filtro).uniqueResult();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Ccusto> listar() {
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Ccusto c where c.iDCCusto != :trans1 and c.iDCCusto"
                 + " != :trans2").setInteger("trans1", new Integer("14")).setInteger("trans2",new Integer("15"));
@@ -80,17 +83,14 @@ public class CCustoDAO extends AbstractDao<Ccusto, Integer> {
             
         }catch(ConstraintViolationException exception){
             FacesContext facesContext = FacesContext.getCurrentInstance();
-            RequestContext context = RequestContext.getCurrentInstance();
             facesContext.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"erro "+exception.getSQLState()+". Não foi possivel excluir por ter registros em outras operações!","erro "+exception.getSQLState()+". Não foi possivel excluir por ter registros em outras operações!"));
-            context.update("formCentroCusto");
-            System.out.println("nao foi pocivel excluir "+String.valueOf(exception.getMessage()));
+            System.out.println("não foi possível excluir "+String.valueOf(exception.getMessage()));
             getSf().getCurrentSession().clear();
         }finally{
             getSf().getCurrentSession().clear();
         }
     }
     public void atualizar (Ccusto ccusto){
-        getSf().getCurrentSession().update(ccusto);
-        getSf().getCurrentSession().flush();
+        getSf().getCurrentSession().merge(ccusto);
     }
 }

@@ -50,11 +50,16 @@
 					<h:panelGrid columns="5" cellpadding="10">
 						<h:outputText value="periodo" />
 						<h:outputText value="de" />
-						<p:calendar showButtonPanel="true" navigator="true"
-							value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+						<p:calendar showButtonPanel="true" 
+                                                            navigator="true"
+                                                            locale="pt"
+							value="#{relatorioGeral.dataInicio}" 
+                                                        pattern="dd/MM/yyyy"
 							size="14" required="true" />
 						<h:outputText value=" ate " />
-						<p:calendar showButtonPanel="true" navigator="true"
+						<p:calendar showButtonPanel="true" 
+                                                            navigator="true"
+                                                            locale="pt"
 							value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
 							required="true" />
 						
@@ -75,7 +80,7 @@
 					</h:panelGrid>
 					<p:separator />
 					<h:commandLink
-						actionListener="#{relatorioGeral.geraRelatorioJornal(1)}"
+						action="#{relatorioGeral.geraRelatorioJornal(1)}"
 						target="_blank">
 						<p:graphicImage library="imagens" name="pdf.png" />
 						<br />
@@ -111,7 +116,7 @@
 						</p:selectOneMenu>
 					</h:panelGrid>
 					<p:separator />
-					<h:commandLink action="#{relatorioGeral.GeraRelatorios(8)}"
+					<h:commandLink action="#{relatorioGeral.relatorio(8)}"
 						target="_blank">
 						<p:graphicImage library="imagens" name="pdf.png" />
 						<br />

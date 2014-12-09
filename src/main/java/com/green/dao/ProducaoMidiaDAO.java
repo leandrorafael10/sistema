@@ -4,24 +4,28 @@
  */
 package com.green.dao;
 
-import com.green.modelo.ProducaoMidia;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.ProducaoMidia;
 
 /**
  *
  * @author leandro.silva
  */
 @Repository("producaoMidiaDAO")
+@SuppressWarnings("unchecked")
 public class ProducaoMidiaDAO {
 
     @Autowired
     private SessionFactory sf;
 
-    public List<ProducaoMidia> listar() {
+    
+	public List<ProducaoMidia> listar() {
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.ProducaoMidia p where p.statusProducao != 3");
         return (List<ProducaoMidia>) query.list();
     }

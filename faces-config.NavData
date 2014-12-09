@@ -2,31 +2,28 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="principal/menu_usuario.xhtml" x="150" y="150" zoom="true"/>
-        <Node id="principal/menu_tesouraria.xhtml" x="650" y="750" zoom="true"/>
-        <Node id="principal/templategreen.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="restrito/cadastro_funcionario.xhtml" x="1400" y="450" zoom="true"/>
         <Node id="tesouraria/cadastros_tesouraria/tipo_conta.xhtml" x="650" y="450" zoom="true"/>
-        <Node id="tesouraria/cadastros_tesouraria/atividades_financeira.xhtml" x="1400" y="150" zoom="true"/>
-        <Node id="tesouraria/lancamento_financeiro/receita_recebidas.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="restrito/acesso_sistema.xhtml" x="400" y="450" zoom="true"/>
         <Node id="tesouraria/cadastros_tesouraria/plano_conta.xhtml" x="900" y="300" zoom="true"/>
-        <Node id="publico/conteudo_principal.xhtml" x="900" y="600" zoom="true"/>
         <Node id="publico/conteudo_usuario.xhtml" x="900" y="150" zoom="true"/>
-        <Node id="tesouraria/lancamento_financeiro/despesa_paga.xhtml" x="1900" y="150" zoom="true"/>
-        <Node id="paginaerro/acessonegado.xhtml" x="150" y="450" zoom="true"/>
-        <Node id="publico/menu.xhtml" x="400" y="600" zoom="true"/>
-        <Node id="tesouraria/cadastros_tesouraria/contas.xhtml" x="400" y="900" zoom="true"/>
-        <Node id="principal/cadastro_cliente.xhtml" x="1400" y="300" zoom="true"/>
         <Node id="tesouraria/cadastros_tesouraria/centro_custo.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="tesouraria/tesouraria_principal.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="paginaerro/acessonegado.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="tesouraria/cadastros_tesouraria/contas.xhtml" x="400" y="900" zoom="true"/>
+        <Node id="principal/templategreen.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="principal/menu_usuario.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="tesouraria/lancamento_financeiro/receita_receber.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="principal/novo_funcionario.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="tesouraria/lancamento_financeiro/despesa_pagar.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="publico/menu.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="log/logprincipal.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="publico/conteudo_principal.xhtml" x="900" y="600" zoom="true"/>
+        <Node id="tesouraria/cadastros_tesouraria/atividades_financeira.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="principal/menu_tesouraria.xhtml" x="650" y="750" zoom="true"/>
+        <Node id="principal/cadastro_cliente.xhtml" x="1400" y="300" zoom="true"/>
         <Node id="publico/cadastro.xhtml" x="1150" y="150" zoom="true"/>
         <Node id="tesouraria/cadastros_tesouraria/lista_contas.xhtml" x="400" y="750" zoom="true"/>
-        <Node id="restrito/acesso_sistema.xhtml" x="400" y="450" zoom="true"/>
-        <Node id="tesouraria/lancamento_financeiro/receita_receber.xhtml" x="150" y="750" zoom="true"/>
-        <Node id="log/logprincipal.xhtml" x="1650" y="150" zoom="true"/>
-        <Node id="principal/usuarios.xhtml" x="150" y="600" zoom="true"/>
-        <Node id="restrito/cadastro_funcionario.xhtml" x="1400" y="450" zoom="true"/>
-        <Node id="principal/novo_funcionario.xhtml" x="650" y="600" zoom="true"/>
-        <Node id="tesouraria/tesouraria_principal.xhtml" x="650" y="300" zoom="true"/>
-        <Node id="tesouraria/lancamento_financeiro/despesa_pagar.xhtml" x="900" y="450" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

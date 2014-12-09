@@ -4,7 +4,6 @@
  */
 package com.green.rn;
 
-import com.green.dao.BrindecapaloteDAO;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.green.dao.BrindecapaloteDAO;
 import com.green.dao.CapaLoteJornalDAO;
 import com.green.dao.LogMovimentacaoDAO;
 import com.green.modelo.Brindecapalote;
@@ -42,7 +42,7 @@ public class CapaLoteJornalRN {
         return getCapaLoteJornalDAO().carregar(pk);
     }
 
-    public Capalotejornal buscarPorNumeroLike(int c) {
+    public Capalotejornal buscarPorNumeroLike(String c) {
         return getCapaLoteJornalDAO().buscarPorNumeroLike(c);
     }
 
@@ -62,7 +62,7 @@ public class CapaLoteJornalRN {
     /*
      * busca completa para usuarios internos
      */
-    public Capalotejornal buscarPorNumero(int c) {
+    public Capalotejornal buscarPorNumero(String c) {
         return getCapaLoteJornalDAO().buscarPorNumero(c);
     }
     /*
@@ -226,7 +226,8 @@ public class CapaLoteJornalRN {
         this.logMovimentacaoDAO = logMovimentacaoDAO;
     }
 
-    public List rankingEquipeFaturado(int mes, int ano, int diaFechamento) {
+    @SuppressWarnings("rawtypes")
+	public List rankingEquipeFaturado(int mes, int ano, int diaFechamento) {
         return getCapaLoteJornalDAO().rankingEquipeFaturado(mes, ano, diaFechamento);
     }
 

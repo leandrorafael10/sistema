@@ -4,21 +4,24 @@
  */
 package com.green.grafico;
 
-import com.green.modelo.Funcionario;
-import com.green.rn.CapaLoteJornalRN;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartSeries;
+import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.PieChartModel;
+
+import com.green.modelo.Funcionario;
+import com.green.rn.CapaLoteJornalRN;
 
 /**
  *
@@ -26,12 +29,17 @@ import org.primefaces.model.chart.PieChartModel;
  */
 @ManagedBean(name = "graficoGeralBean")
 @ViewScoped
+@SuppressWarnings("rawtypes")
 public class GraficoGeralBean implements Serializable {
 
-    @ManagedProperty("#{capaLoteJornalRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{capaLoteJornalRN}")
     private CapaLoteJornalRN capaLoteJornalRN;
     private CartesianChartModel modeloBarra;
-    private CartesianChartModel modeloLinear;
+    private LineChartModel modeloLinear;
     private PieChartModel modeloPizza;
     private PieChartModel modeloPizzaVendas;
 
@@ -43,7 +51,8 @@ public class GraficoGeralBean implements Serializable {
         createPizzaVendaModel();
     }
 
-    private void createPieModel() {
+    
+	private void createPieModel() {
         modeloPizza = new PieChartModel();
         List faturamentoPorEquipe = getCapaLoteJornalRN().faturamentoPorEquipe();
         for (Object object : faturamentoPorEquipe) {
@@ -67,23 +76,27 @@ public class GraficoGeralBean implements Serializable {
     }
 
     private void createLinearModel() {
-        modeloLinear = new CartesianChartModel();
+        
         List faturamentoMensal = getCapaLoteJornalRN().faturamentoGeral();
-        LineChartSeries series1 = new LineChartSeries();
+        modeloLinear = new LineChartModel();
+        ChartSeries series1 = new ChartSeries();
         series1.setLabel("Faturado");
         for (Object object : faturamentoMensal) {
             Map row = (Map) object;
             BigDecimal soma = (BigDecimal) row.get("1");
             int ano = (int) row.get("2");
             int mes = (int) row.get("3");
-            series1.set(String.valueOf(mes) + "/" + String.valueOf(ano), soma.floatValue());
+            series1.set(String.valueOf(mes) + "/" + String.valueOf(ano), soma.intValue());
         }
-
+        modeloLinear.setShowPointLabels(true);
         modeloLinear.addSeries(series1);
+        
+        
 
     }
 
-    private void createCategoriaBarra() {
+    @SuppressWarnings("deprecation")
+	private void createCategoriaBarra() {
         modeloBarra = new CartesianChartModel();
         List faturamentoPorEquipe = getCapaLoteJornalRN().faturamentoPorEquipe();
         Calendar calendar = Calendar.getInstance();

@@ -37,9 +37,10 @@
                             </p:selectOneMenu>
                         </h:panelGrid>
                     </p:panel>
-                    <p:dataTable id="tabelaContratos" value="#{contratoMidiaBean.cliente.contratos}" var="contrato">
-                        <p:column headerText="Código">
-                            <h:outputText value="#{contrato.idcontratoMidia}"/>
+                    <p:dataTable id="tabelaContratos" value="#{contratoMidiaBean.cliente.contratos}" 
+                                 var="contrato" rowStyleClass="#{contrato.ativo==0?'vermelho':''}">
+                        <p:column headerText="Nª Contrato" filterBy="#{contrato.NContrato}">
+                            <h:outputText value="#{contrato.NContrato}"/>
                         </p:column>
                         <p:column headerText="Ínicio">
                             <h:outputText value="#{contrato.dataInicioContrato}">
@@ -67,6 +68,14 @@
                             </p:commandLink>
                         </p:column>
                         <p:column>
+                            <p:commandLink rendered="#{contrato.ativo==0?true:false}" value="ativar" oncomplete="PF('dialogAtivarContrato').show()" update=":formAtivar">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                            <p:commandLink rendered="#{contrato.ativo==0?false:true}" value="cancelar" oncomplete="PF('dialogCancelarContrato').show()" update=":formCancelar">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
                             <p:commandLink value="excluir" oncomplete="PF('dialogExcluir').show()" update=":formExcluir">
                                 <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
                             </p:commandLink>
@@ -75,17 +84,17 @@
 
                 </h:form>
                 <h:form id="formParcelas">
-                    <p:dialog widgetVar="dialogParcelas" width="550px" header="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}">
+                    <p:dialog widgetVar="dialogParcelas" width="650px" header="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}">
                         <p:panel>
                             <p:messages id="msgs"/>
                             <p:dataTable value="#{contratoMidiaBean.contratoMidia.origen.receitas}" var="parcela"
                                          scrollHeight="300" scrollable="true"
-                                         style="width: 500px;" emptyMessage="Não há parcelas!"
+                                         style="width: 600px;" emptyMessage="Não há parcelas!"
                                          editable="true"
                                          id="tabelaParcela">
                                 <p:ajax event="rowEdit" listener="#{contratoMidiaBean.onRowEdit}" update=":formParcelas:msgs" />
                                 <p:ajax event="rowEditCancel" listener="#{contratoMidiaBean.onRowCancel}" update=":formParcelas:msgs" />
-                                <p:column>
+                                <p:column headerText="num." width="50">
                                     <h:outputText value="#{parcela.numero}"/>
                                 </p:column>
                                 <p:column headerText="valor">
@@ -105,7 +114,7 @@
                                     </p:cellEditor>
 
                                 </p:column>
-                                <p:column headerText="vencimento">
+                                <p:column headerText="venc.">
                                     <p:cellEditor>
                                         <f:facet name="output">
                                             <h:outputText value="#{parcela.DTVencimento}">
@@ -115,15 +124,30 @@
                                         <f:facet name="input">
                                             <p:calendar mask="true" pattern="dd/MM/yyyy" 
                                                         value="#{parcela.DTVencimento}" 
+                                                        locale="pt"
                                                         />
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
+                                <p:column headerText="situação">
+                                    <h:outputText value="#{parcela.pago?'pago':'pendente'}" styleClass="#{parcela.pago?'azul':'vermelho'}"/>
+                                </p:column>
+                                <p:column headerText="status" width="100">
+                                    <p:cellEditor>
+                                        <f:facet name="output" >
+                                            <h:outputText value="#{parcela.ativo?'ativo':'cancelado'}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectBooleanButton id="value2" value="#{parcela.ativo}" onLabel="ativo" offLabel="cancelado" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:100px"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+
+                                </p:column>
+                                <p:column headerText="editar" style="width:32px">
+                                    <p:rowEditor />
+                                </p:column>
                                 <p:column>
                                     <p:commandLink value="excluir" actionListener="#{contratoMidiaBean.excluirParcela(parcela)}" update=":formParcelas:tabelaParcela,:formParcelas:msgs"/>
-                                </p:column>
-                                <p:column style="width:32px">
-                                    <p:rowEditor />
                                 </p:column>
 
 
@@ -189,6 +213,7 @@
                                             pattern="dd/MM/yyyy"
                                             size="14"
                                             required="true"
+                                            locale="pt"
                                             requiredMessage="Data início é obrigatória!"/>
                                 <h:outputText value="Data fim:"/>
                                 <p:calendar value="#{contratoMidiaBean.contratoMidia.dataFimContrato}" 
@@ -197,6 +222,7 @@
                                             pattern="dd/MM/yyyy"
                                             size="14"
                                             required="true"
+                                            locale="pt"
                                             requiredMessage="Data término é obrigatória!"/>
                                 <h:outputText value="Produto Midia"/>
                                 <p:selectOneMenu converter="produtoMidiaConverter" 
@@ -216,6 +242,7 @@
                                             pattern="dd/MM/yyyy"
                                             size="14"
                                             required="true"
+                                            locale="pt"
                                             requiredMessage="Data da venda é obrigatória!"/>
                                 <h:outputText value="Observações:"/>
                                 <p:inputTextarea value="#{contratoMidiaBean.contratoMidia.obs}" rows="5" cols="40" maxlength="199" />  
@@ -246,7 +273,7 @@
 
                 </h:form>
 
-                <p:dialog widgetVar="dialogVisualizar">
+                <p:dialog widgetVar="dialogVisualizar" >
                     <h:form id="formVisualizar">
                         <p:panel>
                             <p:panel >
@@ -286,7 +313,7 @@
                                 <h:outputText value="Produto:"/>
                                 <h:outputText value="#{contratoMidiaBean.contratoMidia.IDproduto.descricao}  ( #{contratoMidiaBean.contratoMidia.IDproduto.tempoVideo} seg.) "/>
                                 <h:outputText value="Observações:"/>
-                                <h:outputText value="#{contratoMidiaBean.contratoMidia.obs}"/>
+                                <h:outputText  value="#{contratoMidiaBean.contratoMidia.obs}"/>
                                 <h:outputText value="Praças:"/>
                                 <p:dataList value="#{contratoMidiaBean.contratoMidia.pracas}" var="praca" type="definition">
                                     #{praca.descricao}
@@ -294,7 +321,32 @@
                             </h:panelGrid>
                         </p:panel>
                     </h:form>
+
                 </p:dialog>
+                <h:form id="formCancelar">
+                    <p:dialog widgetVar="dialogCancelarContrato" modal="true" header="Cancelar contrato" width="400">
+                        <p:panel>
+                            <h:outputText value="O cancelamento do contrato implicará  no cancelamento das parcelas que ainda estiverem em aberto!" styleClass="azul"/>
+                        </p:panel>
+                        <p:separator/>
+                        <p:commandButton value="confirmar" actionListener="#{contratoMidiaBean.cancelar(event)}" 
+                                         update=":formContratoCliente:tabelaContratos,:formContratoCliente:growl" 
+                                         oncomplete="PF('dialogCancelarContrato').hide()"/> &nbsp;
+                        <p:commandButton value="sair" oncomplete="PF('dialogCancelarContrato').hide()"/>
+                    </p:dialog>
+                </h:form>
+                <h:form id="formAtivar">
+                    <p:dialog widgetVar="dialogAtivarContrato" modal="true" header="Ativar contrato" width="400">
+                        <p:panel>
+                            <h:outputText value="A ativação do contrato implicará  na ativação das parcelas que ainda estiverem em aberto!" styleClass="azul"/>
+                        </p:panel>
+                        <p:separator/>
+                        <p:commandButton value="confirmar" actionListener="#{contratoMidiaBean.ativar(event)}" 
+                                         update=":formContratoCliente:tabelaContratos,:formContratoCliente:growl" 
+                                         oncomplete="PF('dialogAtivarContrato').hide()"/> &nbsp;
+                        <p:commandButton value="sair" oncomplete="PF('dialogAtivarContrato').hide()"/>
+                    </p:dialog>
+                </h:form>
 
             </ui:define>
 

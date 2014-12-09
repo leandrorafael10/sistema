@@ -21,7 +21,8 @@ public class PlanovendaparcelaDAO {
     @Autowired
     private SessionFactory sf;
     
-    public List<Planovendaparcela> listar(){
+    @SuppressWarnings("unchecked")
+	public List<Planovendaparcela> listar(){
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Planovendaparcela pl");
         return (List<Planovendaparcela>)query.list();
     }

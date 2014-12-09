@@ -25,7 +25,11 @@
                                 <f:convertNumber minFractionDigits="2" />
                             </p:inputText>
                             <h:outputLabel value="Data:" for="dtvenda" />
-                            <p:calendar id="dtvenda" value="#{capaLoteBean.capaLote.dtvenda}" required="true" size="8" title="Dtvenda" pattern="dd/MM/yyyy" showOn="button" requiredMessage="data da venda e obrigatorio!"/>
+                            <p:calendar id="dtvenda" value="#{capaLoteBean.capaLote.dtvenda}" 
+                                        required="true" size="8" 
+                                        locale="pt"
+                                        title="Dtvenda" pattern="dd/MM/yyyy" 
+                                        showOn="button" requiredMessage="data da venda e obrigatorio!"/>
                             <h:outputLabel value="Promotor" for="iDFornecedor" />
                             <p:selectOneMenu converter="terceirosConverter" filter="true" id="iDFornecedor" value="#{capaLoteBean.capaLote.IDTerceiros}" required="true" requiredMessage="informar o promotor e obrigatório!">
                                 <f:selectItem itemLabel=""/>

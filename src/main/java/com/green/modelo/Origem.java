@@ -7,6 +7,8 @@ package com.green.modelo;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -22,9 +24,10 @@ public class Origem implements Serializable {
     @Column(name = "idorigem")
     private Integer idorigem;
     @JoinColumn(name = "IDContrato_midia", referencedColumnName = "idcontrato_midia")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private ContratoMidia IDContratoMidia;
-    @OneToMany(mappedBy ="idorigem" ,cascade={CascadeType.MERGE,CascadeType.REMOVE})
+    @OneToMany(mappedBy ="idorigem" ,cascade={CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Receita> receitas;
     
 

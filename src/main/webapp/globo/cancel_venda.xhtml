@@ -28,11 +28,13 @@
                             <p:calendar value="#{capaLoteBean.inicioLote}" 
                                         pattern="dd/MM/yyyy"
                                         size="8" 
+                                        locale="pt"
                                         id="dtInicio"/>
                             <h:outputLabel value="date fim:"/>
                             <p:calendar value="#{capaLoteBean.fimDeLote}" 
                                         size="8" 
                                         id="dtFim"
+                                        locale="pt"
                                         pattern="dd/MM/yyyy"/>
                             <p:commandButton value="filtro" 
                                              partialSubmit="true"

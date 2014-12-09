@@ -4,11 +4,8 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Cliente;
-import com.green.modelo.Pessoa;
 import java.util.List;
-import javassist.util.proxy.MethodHandler;
-import javassist.util.proxy.ProxyObject;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -19,11 +16,15 @@ import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.green.modelo.Cliente;
+import com.green.modelo.Pessoa;
+
 /**
  *
  * @author leandro.silva
  */
 @Repository("clienteDAO")
+@SuppressWarnings("unchecked")
 public class ClienteDAO extends AbstractDao<Cliente, Integer> {
 
     @Autowired
@@ -41,7 +42,6 @@ public class ClienteDAO extends AbstractDao<Cliente, Integer> {
     public Cliente carregar(Integer k) {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Cliente.class);
         Criterion filtro = Restrictions.eq("iDCliente", k);
-        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Cliente c  where c.iDCliente = :k").setParameter("k", k);
         Cliente c =(Cliente) getUnproxyModel((Cliente)criteria.add(filtro).uniqueResult());
         return c;
     }
@@ -54,8 +54,6 @@ public class ClienteDAO extends AbstractDao<Cliente, Integer> {
 
     public Cliente carregar2(String nome) {
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Cliente c where c.iDPessoa.razao = :k").setString("k", nome);
-        Cliente c = (Cliente) query.uniqueResult();
-
         return (Cliente) query.uniqueResult();
     }
 
@@ -71,10 +69,11 @@ public class ClienteDAO extends AbstractDao<Cliente, Integer> {
         return codigo + 1;
     }
 
-    @Override
+    
+	@Override
     public List<Cliente> listar() {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Cliente.class);
-        return criteria.list();
+        return (List<Cliente>)criteria.list();
     }
     //lista somente clientes parceiros;
 

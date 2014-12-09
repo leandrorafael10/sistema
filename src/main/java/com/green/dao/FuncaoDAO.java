@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
  * @author leandro.silva
  */
 @Repository("funcaoDAO")
+@SuppressWarnings("unchecked")
 public class FuncaoDAO extends AbstractDao<Funcao, Integer> {
 
     @Autowired
@@ -40,7 +41,8 @@ public class FuncaoDAO extends AbstractDao<Funcao, Integer> {
         return (Funcao) criteria.uniqueResult();
     }
 
-    public List<Funcao> listaFuncoes(List<Integer> id) {
+    
+	public List<Funcao> listaFuncoes(List<Integer> id) {
         Query query = getSf().getCurrentSession().
                 createQuery("from com.green.modelo.Funcao f where f.iDFuncao in(:ids)").setParameterList("ids", id);
         return (List<Funcao>) query.list();

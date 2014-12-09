@@ -21,7 +21,11 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class FuncaoBean implements Serializable{
     
-    @ManagedProperty("#{funcaoRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{funcaoRN}")
     private FuncaoRN funcaoRN;
     private Funcao funcao;
     private List<Funcao> funcaos;

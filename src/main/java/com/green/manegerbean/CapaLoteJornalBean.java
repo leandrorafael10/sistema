@@ -4,6 +4,38 @@
  */
 package com.green.manegerbean;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.validation.constraints.Min;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+
 import com.green.modelo.Brinde;
 import com.green.modelo.Brindecapalote;
 import com.green.modelo.Capalotejornal;
@@ -19,34 +51,6 @@ import com.green.util.ContextoUtil;
 import com.green.util.RelatorioUtil;
 import com.green.util.Venda;
 import com.green.view.CapaloteDataModel;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.validation.constraints.Min;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -79,7 +83,7 @@ public class CapaLoteJornalBean implements Serializable {
     @Min(value = 1, message = "Valor nao pode ser igual a 0!")
     private BigDecimal valorAlt;
     private String cliente;
-    private int contrato;
+    private String contrato;
     private List<Equipe> equipe;
     private List<Equipe> faturamentoEquipe;
     private CapaloteDataModel capaloteDataModel;
@@ -113,7 +117,8 @@ public class CapaLoteJornalBean implements Serializable {
         context.execute("PF('dialogIncGestor').show()");
     }
 
-    public void calculaRanking(ActionEvent event) {
+    @SuppressWarnings("rawtypes")
+	public void calculaRanking(ActionEvent event) {
         this.vendaGeral = new Venda();
         this.equipe = new ArrayList<>();
         List lista = getCapaLoteJornalRN().rankingEquipe(getMes(), getAno());
@@ -224,7 +229,8 @@ public class CapaLoteJornalBean implements Serializable {
         RelatorioUtil.geraRelatorioBean("ranking_faturado", jrds, parametros);
     }
 
-    public void calculaRankingFaturado(ActionEvent event) {
+    @SuppressWarnings("rawtypes")
+	public void calculaRankingFaturado(ActionEvent event) {
         this.faturamentoEquipe = new ArrayList<>();
         this.vendaFaturado = new Venda();
         List lista = getCapaLoteJornalRN().rankingEquipeFaturado(getMes(), getAno(), getDiaFechamento());
@@ -687,11 +693,11 @@ public class CapaLoteJornalBean implements Serializable {
         this.cliente = cliente;
     }
 
-    public int getContrato() {
+    public String getContrato() {
         return contrato;
     }
 
-    public void setContrato(int contrato) {
+    public void setContrato(String contrato) {
         this.contrato = contrato;
     }
 

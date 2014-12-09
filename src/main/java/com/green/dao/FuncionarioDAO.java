@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
  * @author leandro.silva
  */
 @Repository("funcionarioDAO")
+@SuppressWarnings("unchecked")
 public class FuncionarioDAO extends AbstractDao<Funcionario, Integer> {
 
     @Autowired
@@ -55,7 +56,8 @@ public class FuncionarioDAO extends AbstractDao<Funcionario, Integer> {
         return codigo + 1;
     }
 
-    @Override
+    
+	@Override
     public List<Funcionario> listar() {
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Funcionario f where f.iDFuncionario>1 order by f.iDPessoa.razao");
         return (List<Funcionario>) query.list();

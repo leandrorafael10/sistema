@@ -44,28 +44,17 @@ public class DebitoRN {
     }
     @Transactional("tmGreen")
     public void salvar(Debito debito) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ContextoBean contextoBean = ContextoUtil.getContextoBean();
-        if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO") 
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
-                ||contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")
-                ||contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_2")
-                ||contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_3")) {
+       
             debito.setDTInc(new Date());
-            debito.setIDUsuario(contextoBean.getUsuarioLogado());
+            debito.setIDUsuario(ContextoUtil.getContextoBean().getUsuarioLogado());
             getDebitoDAO().salvar(debito);
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ok,salvo com sucesso!", "Ok,salvo com sucesso!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ok,salvo com sucesso!", "Ok,salvo com sucesso!"));
             
-        } else {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha ,usuário não autorizado!", "Falha ,usuário não autorizado!"));
-        }
+       
 
     }
 
-    public List<Debito> filtroDebito(Debito debito, Date fimBaixa, Date fimConciliacao) {
-        return getDebitoDAO().filtroDebito(debito, fimBaixa, fimConciliacao);
-    }
-
+   
     public void conciliarDebito(Debito[] debitos) {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
         FacesContext facesContext = FacesContext.getCurrentInstance();

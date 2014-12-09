@@ -18,12 +18,14 @@ import org.springframework.stereotype.Repository;
  * @author leandro.silva
  */
 @Repository("equipevendaDAO")
+@SuppressWarnings("unchecked")
 public class EquipevendaDAO {
 
     @Autowired
     private SessionFactory sf;
 
-    public List<Equipevenda> listar() {
+    
+	public List<Equipevenda> listar() {
         return (List<Equipevenda>) getSf().getCurrentSession().createQuery("from com.green.modelo.Equipevenda e "
                 + " where e.iDPromotor.ativo = :ativo order by e.iDPromotor.iDPessoa.razao").setBoolean("ativo", true).list();
     }

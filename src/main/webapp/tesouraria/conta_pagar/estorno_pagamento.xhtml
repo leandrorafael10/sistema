@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<body>
+
+	<ui:composition template="./../../principal/templategreen.xhtml">
+		<ui:define name="principal-interna">
+			<h:form id="formEstornoDebito">
+				<p:panel>
+					<h2>Estorno de Pagamento</h2>
+					<p:separator />
+					<p:messages />
+					<h:panelGrid columns="5">
+						<p:outputLabel value="Período de " />
+						<p:calendar value="#{despesaDebitoBean.dTInicio}" required="true" mask="true" pattern="dd/MM/yyyy"
+							requiredMessage="insira data de início" />
+						<p:outputLabel value=" até " />
+						<p:calendar value="#{despesaDebitoBean.dTFim}" required="true" mask="true" pattern="dd/MM/yyyy"
+							requiredMessage="insira data de término" />
+						<p:commandButton value="buscar" actionListener="#{despesaDebitoBean.listarPeriodo(event)}" update=":formEstornoDebito" />
+					</h:panelGrid>
+
+					<p:separator />
+					<p:dataTable value="#{despesaDebitoBean.despesadebitos}" var="debito" scrollable="true" scrollHeight="400">
+
+						<p:column headerText="Data baixa">
+							<h:outputText value="#{debito.IDDebito.DTBaixa}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Data vencimento">
+							<h:outputText value="#{debito.IDDespesa.DTVencimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="valor">
+							<h:outputText value="#{debito.IDDebito.valor}">
+								<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="estornar">
+							<p:commandLink value="estornar" oncomplete="PF('dialogEstornoDebito').show()" update=":formConfirmaEstorno">
+								<f:setPropertyActionListener value="#{debito}" target="#{despesaDebitoBean.despesadebito}"></f:setPropertyActionListener>
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+			<h:form id="formConfirmaEstorno">
+				<p:dialog widgetVar="dialogEstornoDebito" header="Confirmação estorno debito">
+					<p:panel>
+						<h:panelGrid columns="4">
+							<p:outputLabel value="Data baixa: " />
+							<p:outputLabel value="#{despesaDebitoBean.despesadebito.IDDebito.DTBaixa}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+							<p:outputLabel value="Data vencimento: " />
+							<p:outputLabel value="#{despesaDebitoBean.despesadebito.IDDespesa.DTVencimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+							<p:outputLabel value="valor: " />
+							<p:outputLabel value="#{despesaDebitoBean.despesadebito.IDDebito.valor}">
+								<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+							</p:outputLabel>
+						</h:panelGrid>
+						<p:separator/>
+						<p:commandButton value="confirmar" actionListener="#{despesaDebitoBean.estornarDebito(event)}" oncomplete="PF('dialogEstornoDebito').hide()" update=":formEstornoDebito"/>
+						<p:commandButton value="sair"/>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

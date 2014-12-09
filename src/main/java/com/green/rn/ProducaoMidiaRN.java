@@ -4,18 +4,20 @@
  */
 package com.green.rn;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.context.RequestContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.green.dao.ProducaoMidiaDAO;
 import com.green.modelo.ProducaoMidia;
 import com.green.util.ContextoBean;
 import com.green.util.ContextoUtil;
-import java.util.Date;
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletContext;
-import org.primefaces.context.RequestContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *

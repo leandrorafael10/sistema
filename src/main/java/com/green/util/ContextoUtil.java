@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author leandro.silva
  */
+@SuppressWarnings("serial")
 public class ContextoUtil implements Serializable {
     
     public static ContextoBean getContextoBean(){

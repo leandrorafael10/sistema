@@ -4,13 +4,11 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Classificacao;
-import com.green.rn.ClassificacaoRN;
-import com.green.util.RelatorioUtil;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -18,8 +16,13 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
+
+import com.green.modelo.Classificacao;
+import com.green.rn.ClassificacaoRN;
+import com.green.util.RelatorioUtil;
 
 /**
  *
@@ -29,7 +32,11 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class ClassificacaoBean implements Serializable {
 
-    @ManagedProperty("#{classificacaoRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{classificacaoRN}")
     private ClassificacaoRN classificacaoRN;
     private Classificacao classificacao = new Classificacao();
     private Classificacao classificacaoNovo = new Classificacao();
@@ -55,13 +62,11 @@ public class ClassificacaoBean implements Serializable {
     public void salvar(ActionEvent actionEvent) {
         getClassificacaoRN().salvar(getClassificacaoNovo());
         this.classificacaoNovo = new Classificacao();
-        setClassificacaos(getClassificacaoRN().listar());
     }
 
     public void excluir(ActionEvent actionEvent) {
         getClassificacaoRN().excluir(getClassificacao());
         this.classificacao = new Classificacao();
-        setClassificacaos(getClassificacaoRN().listar());
     }
 
     public void atualizar(RowEditEvent editEvent) {
@@ -75,7 +80,8 @@ public class ClassificacaoBean implements Serializable {
   
         FacesContext.getCurrentInstance().addMessage(null, msg); 
     }
-    public void arquivoRetorno(ActionEvent actionEvent) {
+    @SuppressWarnings({ "static-access", "deprecation" })
+	public void arquivoRetorno(ActionEvent actionEvent) {
         FacesContext context = FacesContext.getCurrentInstance();
         RequestContext requestContext = RequestContext.getCurrentInstance();
         Date dateNomeRelatorio = new Date();

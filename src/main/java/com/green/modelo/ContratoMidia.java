@@ -106,6 +106,8 @@ public class ContratoMidia implements Serializable {
     
     @OneToOne(mappedBy = "IDContratoMidia",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.MERGE})
     private Origem origen;
+    @OneToOne(mappedBy = "iDContratoMidia",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.MERGE})
+    private ContratoParceiro iDContratoParceiro;
     @Lob
     @Size(max = 65535)
     @Column(name = "obs_cancelamento")
@@ -398,6 +400,14 @@ public class ContratoMidia implements Serializable {
 
     public void setOrigen(Origem origen) {
         this.origen = origen;
+    }
+
+    public ContratoParceiro getIContratoParceiro() {
+        return iDContratoParceiro;
+    }
+
+    public void setIContratoParceiro(ContratoParceiro iDContratoParceiro) {
+        this.iDContratoParceiro = iDContratoParceiro;
     }
 
     

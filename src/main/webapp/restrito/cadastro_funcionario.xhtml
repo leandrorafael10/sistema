@@ -1,34 +1,23 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition >
-        <f:view>
-            <h:form >
-                <p:panel>
-                    <h2>Menu funcionários</h2>
-                    <p:commandLink actionListener="#{funcionarioBean.cadastrar()}" update=":formFuncionario"  >
-                        <h:graphicImage  library="imagens" name="user_add_48x48.png" title="Cadastrar funcionário"/>
-                        <h:outputText value="Cadastrar"/>
-                    </p:commandLink>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <p:commandLink   actionListener="#{funcionarioBean.editar()}" update=":formFuncionario">
-                        <h:graphicImage library="imagens" name="user_48x48.png" title="Editar funcionário"/>
-                        <h:outputText value="Editar"/>
-                    </p:commandLink>
+    <ui:composition template="./../principal/templategreen.xhtml">
 
-                </p:panel>
-                <p:messages/>
-            </h:form>
+        <ui:define name="principal-interna">
+
             <br/>
 
             <h:form id="formFuncionario">
-                <p:growl showDetail="true"  life="3000" id="growlmsg"/>
-                <p:panel rendered="#{funcionarioBean.estadoCadastrar}">
+
+                <p:growl showDetail="true"  life="7000" id="growlmsg"/>
+                <p:panel >
+                    <h2>Cadastro de Funcionário</h2>
+                    <p:separator/>
 
                     <h:panelGrid columns="6"  cellpadding="5"  title="Cadastro funcionário">
 
@@ -45,7 +34,7 @@
                                     size="10"
                                     mask="true"
                                     pattern="dd/MM/yyyy"
-                                    timeZone="America/Sao_Paulo"
+                                    locale="pt"
                                     yearRange="c-80:"
                                     />
                         <h:outputText value="Sexo:"/>
@@ -79,7 +68,7 @@
                                      maxlength="50"
                                      >
                         </p:inputText>
-                        
+
                         <h:outputLabel value="CPF:*"/>
                         <p:inputMask mask="999.999.999-99" value="#{funcionarioBean.funcionario.IDPessoa.cnpjCpf}"
                                      required="true"
@@ -106,7 +95,7 @@
                                     showButtonPanel="true" size="10"
                                     pattern="dd/MM/yyyy"
                                     mask="true"
-                                    timeZone="America/Sao_Paulo"
+                                    locale="pt"
                                     yearRange="c-80:"
                                     required="true"
                                     requiredMessage="Data obrigatória!"/>
@@ -125,11 +114,11 @@
                         <p:calendar  value="#{funcionarioBean.funcionario.dtValidadeCNH}"
                                      showButtonPanel="true" size="10"
                                      pattern="dd/MM/yyyy"
-                                     timeZone="America/Sao_Paulo"/>
+                                     locale="pt"/>
 
                         <h:outputText value="Nº Pis:"/>
                         <p:inputMask mask="999999999-99" value="#{funcionarioBean.funcionario.pisPasep}"
-                                     validatorMessage="Numero invalido!"
+                                     validatorMessage="Numero inválido pis!"
                                      size="12"/>
                         <h:outputLabel  value="Cep:"/>
                         <p:inputMask  mask="99999-999"  value="#{funcionarioBean.funcionario.IDPessoa.cep}"  size="10"
@@ -158,10 +147,11 @@
                                      maxlength="30"
                                      >
                         </p:inputText>
+                        <h:outputText value="Cidade:"/>
+                        <p:inputText id="inputCidade" value="#{funcionarioBean.funcionario.IDPessoa.cidade}"/>
                         <h:outputText value="UF:"/>
                         <p:inputText id="inputUF"  value="#{funcionarioBean.funcionario.IDPessoa.estado}" maxlength="2" size="4" />
-                        <h:outputText value="Cidades:"/>
-                        <p:inputText id="inputCidade" value="#{funcionarioBean.funcionario.IDPessoa.cidade}"/>
+                        
                         <h:outputText value="Pais"/>
                         <p:selectOneMenu value="#{funcionarioBean.funcionario.IDPessoa.pais}">
                             <f:selectItem itemValue="Brasil" itemLabel="Brasil"/>
@@ -194,63 +184,7 @@
                     <p:commandButton type="reset" value="Limpar"/>
                 </p:panel>
 
-                <p:panel rendered="#{funcionarioBean.estadoEditar}" id="painelEditFuncionario">
-                    <p:growl life="30000"/>
-                    <p:dataTable var="funcionarioEdit" 
-                                 value="#{funcionarioRN.listar()}" 
-                                 scrollable="true" 
-                                 scrollHeight="400" resizableColumns="true" >  
-
-                        <p:column headerText="Código" width="100" >  
-                            <h:outputText value="#{funcionarioEdit.IDFuncionario}" />  
-                        </p:column>  
-
-                        <p:column headerText="Nome"  filterBy="#{funcionarioEdit.IDPessoa.razao}" >  
-                            <h:outputText value="#{funcionarioEdit.IDPessoa.razao}"/>  
-                        </p:column>  
-
-                        <p:column headerText="Funcão" width="140" filterBy="#{funcionarioEdit.IDFuncao.descricao}" >  
-                            <h:outputText value="#{funcionarioEdit.IDFuncao.descricao}" />  
-                        </p:column>  
-                        <p:column headerText="Empresa" width="100" filterBy="#{funcionarioEdit.IDFilial.fantasia}">
-                            <h:outputText value="#{funcionarioEdit.IDFilial.fantasia}"/>
-                        </p:column>
-                        <p:column headerText="CPF" width="120"  filterBy="#{funcionarioEdit.IDPessoa.cnpjCpf}" >  
-                            <h:outputText value="#{funcionarioEdit.IDPessoa.cnpjCpf}" />  
-                        </p:column>  
-                        <p:column headerText="Status" width="50">
-                            <h:graphicImage library="imagens" name="ativo_#{funcionarioEdit.ativo}.png"/>
-                        </p:column>  
-                        <p:column width="50" headerText="pesq.">  
-                            <p:commandButton id="selectButton" 
-                                             icon="ui-icon-search" 
-                                             title="Todos dados" actionListener="#{funcionarioBean.pesquisaFuncionario(funcionarioEdit)}"
-                                             oncomplete="PF('func').show()"
-                                             update=":formInforFuncionario:displayFuncionario">  
-                            </p:commandButton>  
-                        </p:column>  
-                        <p:column width="50" headerText="Editar"> 
-
-                            <p:commandLink value="editar"  id="selectLinkEdit" 
-                                           update=":formEditFuncionario" 
-                                           oncomplete="PF('editarFuncDialog').show()" 
-                                           title="Editar dados" 
-
-                                           >
-                                <f:setPropertyActionListener value="#{funcionarioEdit}" target="#{funcionarioBean.funcionarioEditado}" />
-                            </p:commandLink>  
-                        </p:column>
-                        <p:column headerText="Baixa" width="50">
-                            <p:commandLink value="demitir"
-                                           update=":forDemisaoFuncionario"
-                                           oncomplete="PF('demitirFuncDialog').show()"
-                                           title="demissão do funcionário"
-                                           disabled="#{!funcionarioEdit.ativo}">
-                                <f:setPropertyActionListener value="#{funcionarioEdit}" target="#{funcionarioBean.funcionarioEditado}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable> 
-                </p:panel>
+               
             </h:form>
             <h:form id="formCapturaFoto">
                 <p:dialog widgetVar="dialogCapturaFoto">
@@ -265,314 +199,9 @@
                     <p:commandButton value="sair" actionListener="#{funcionarioBean.cancelarFotoPesquisa(event)}" oncomplete="PF('dialogCapturaFoto').hide();"/>
                 </p:dialog>
             </h:form>
-            <h:form id="forDemisaoFuncionario">
-                <p:dialog header="Demitir Funcionário" widgetVar="demitirFuncDialog" modal="true" width="650">
-                    <h:panelGrid id="displayFuncionario" cellpadding="4" style="margin:0 auto;" columns="1">  
-
-                        <h:panelGrid columns="6">
-                            <h:outputText value="Nome:" />  
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.razao}" style="font-weight:bold"/>  
-                            <h:outputText value="RG:" />  
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.rg}" style="font-weight:bold"/>  
-                            <h:outputText value="CPF:" />  
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.cnpjCpf}" style="font-weight:bold"/>
-                            <h:outputText value="RG:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.rg}" style="font-weight:bold"/>
-                            <h:outputText value="CTPS:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.ctrabalho}"/>
-                            <h:outputText value="Serie"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.serieCtps}"/>
-                            <h:outputText value="Naturalidade"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.naturalidade}"/>
-                            <h:outputText value="Data admissão:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.DTAdmissao}"/>
-                            <h:outputText value="NºCNH:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.cnh}"/>
-                            <h:outputText value="NºPis:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.pisPasep}"/>
-                            <h:outputText value="Rua:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.logradouro}"/>
-                            <h:outputText value="Nº:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.numero}"/>
-                            <h:outputText value="Cep:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.cep}"/>
-                            <h:outputText value="Bairro:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.bairro}"/>
-                            <h:outputText value="Cidade:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.cidade}"/>
-                            <h:outputText value="Estado:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.estado}"/>
-                            <h:outputText value="País:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.pais}"/>
-                            <h:outputText value="Empresa:"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.IDFilial.fantasia}"/>
-                            <h:outputText value="Data de admissão: " style="color: royalblue"/>
-                            <h:outputText value="#{funcionarioBean.funcionarioEditado.DTAdmissao}" style="color: royalblue">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputText>
-
-                        </h:panelGrid>
-
-                        <h:panelGrid columns="1">
-                            <p:dataTable value="#{funcionarioBean.funcionarioEditado.IDPessoa.contatosList}" 
-                                         var="contatosD" emptyMessage="Não a contatos!"
-                                         >
-                                <p:column headerText="Residencial">
-                                    (#{contatosD.dddf}) #{contatosD.telefoneF}   
-                                </p:column>
-                                <p:column headerText="Celular">
-                                    (#{contatosD.DDDCel})#{contatosD.telefoneCel}  
-                                </p:column>
-                                <p:column headerText="Email">
-                                    #{contatosD.email}
-                                </p:column>
-                            </p:dataTable>
-                            <br/>
-
-                            <h:outputText value="Data baixa:" style="color: red;"/>
-                            <h:panelGrid columns="3" cellspacing="5">
-                                <p:calendar  value="#{funcionarioBean.funcionarioEditado.DTDemissao}" mode="inline">
-                                    <p:ajax event="dateSelect" update="outData"/>
-                                </p:calendar>
-                                <h:outputText value="Demitido em:"/>
-                                <h:outputText id="outData" value="#{funcionarioBean.funcionarioEditado.DTDemissao}" style="font-size: 15px;color: red">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                    </h:outputText>
-                                
-                            </h:panelGrid>
-
-                        </h:panelGrid>
 
 
-                    </h:panelGrid>  
-                    <p:separator/>
-                    <p:commandButton value="confirmar demissão" actionListener="#{funcionarioBean.demitirFuncionario(funcionarioBean.funcionarioEditado)}"/>
-                    <p:commandButton value="sair" onclick="PF('displayFuncionario').hide();" update=":formFuncionario,:forDemisaoFuncionario"/>
-                </p:dialog>
-            </h:form>
-            <h:form id="formInforFuncionario">
-                <p:dialog header="Dados funcionário" widgetVar="func" resizable="false" id="funcDisplay"  
-                          showEffect="fade" hideEffect="explode" modal="true" closable="false" width="500">  
-                    <h:panelGrid id="displayFuncionario"  cellpadding="2" style="margin:0 auto;">  
-                        <f:facet name="header">  
-                            <h:graphicImage library="imagens" name="#{funcionarioBean.foto}.png" width="100" height="100" rendered="#{funcionarioBean.foto==''?false:true}"/>
-                        </f:facet>  
-                        <h:panelGrid columns="2">
-                            <h:outputText value="Nome:" />  
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.razao}" style="font-weight:bold"/>  
-                        </h:panelGrid>
-                        <h:panelGrid columns="4">
-                            <h:outputText value="RG:" />  
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.rg}" style="font-weight:bold"/>  
-                            <h:outputText value="CPF:" />  
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.cnpjCpf}" style="font-weight:bold"/>
-                            <h:outputText value="CTPS:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.ctrabalho}"/>
-                            <h:outputText value="Serie:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.serieCtps}"/>
-                            <h:outputText value="Naturalidade"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.naturalidade}"/>
-                            <h:outputText value="NºCNH:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.cnh}"/>
-                            <h:outputText value="NºPis:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.pisPasep}"/>
-                            <h:outputText value="Rua:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.logradouro}"/>
-                            <h:outputText value="Nº:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.numero}"/>
-                            <h:outputText value="Cep:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.cep}"/>
-                            <h:outputText value="Bairro:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.bairro}"/>
-                            <h:outputText value="Cidade:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.cidade}"/>
-                            <h:outputText value="Estado:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.estado}"/>
-                            <h:outputText value="País:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDPessoa.pais}"/>
-                            <h:outputText value="Data de admissão: " style="color: royalblue"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.DTAdmissao}" style="color: royalblue">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputText >
-                            <h:outputText value="Data de demisão"   rendered="#{funcionarioBean.funcionario.ativo==true?false:true}"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.DTDemissao}" style="color:#D20005" rendered="#{funcionarioBean.funcionario.ativo==true?false:true}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputText>
-                            <h:outputText value="Empresa:"/>
-                            <h:outputText value="#{funcionarioBean.funcionario.IDFilial.fantasia}"/>
 
-                        </h:panelGrid>
-                        <p:dataTable value="#{funcionarioBean.funcionario.IDPessoa.contatosList}" 
-                                     var="contatos" emptyMessage="Não a contatos!"
-                                     >
-                            <f:facet name="header">
-                                Contatos
-                            </f:facet>
-                            <p:column headerText="Residencial">
-                                (#{contatos.dddf}) #{contatos.telefoneF}   
-                            </p:column>
-                            <p:column headerText="Celular">
-                                (#{contatos.DDDCel})#{contatos.telefoneCel}  
-                            </p:column>
-                            <p:column headerText="Email">
-                                #{contatos.email}
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid> 
-                    <p:separator/>
-                    <p:commandButton value="sair" actionListener="#{funcionarioBean.cancelarFotoPesquisa(event)}" oncomplete="PF('func').hide();"/> 
-
-                </p:dialog>  
-            </h:form>
-            <h:form id="formEditFuncionario">
-                <p:dialog header="Edição Funcionario" widgetVar="editarFuncDialog" showEffect="explode" hideEffect="explode" modal="true">
-                    <p:growl showDetail="true"  life="3000" id="growlmsgEdit"/>
-                        <p:messages id="msgFuncEdit"/>
-                    <h:panelGrid columns="4" id="editarFuncionario">
-                                <h:outputLabel value="Nome:"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.razao}"/>
-                                <h:outputLabel  value="Data Nascimento:"/>
-                                <p:calendar value="#{funcionarioBean.funcionarioEditado.IDPessoa.DTNascimento}"
-                                            showButtonPanel="true" 
-                                            navigator="true" 
-                                            size="10"
-                                            pattern="dd/MM/yyyy"
-                                            yearRange="c-80:"
-                                            />
-                                <h:outputText value="Sexo:"/>
-                                <h:selectOneRadio value="#{funcionarioBean.funcionarioEditado.sexo}">
-                                    <f:selectItem itemLabel="Masculino" itemValue="M"/>
-                                    <f:selectItem itemLabel="Feminino" itemValue="F"/>
-                                </h:selectOneRadio>
-                                <h:outputText value="Mãe"/>
-                                <p:inputText  value="#{funcionarioBean.funcionarioEditado.filiacaoM}" maxlength="40"/>
-                                <h:outputText value="Pai:"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.filiacaoP}" maxlength="40"/>
-                                <h:outputLabel  value="Naturalidade:"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.naturalidade}"
-                                             size="10" 
-                                             maxlength="40"/>
-                                <h:outputLabel value="Telefone fixo:"/>
-                                <p:inputMask id="telFixo" mask="(99)9999-9999" label="Tel fixo" value="#{funcionarioBean.telefoneF}"
-                                             size="13"
-                                             />
-                                <h:outputText value="Telefone celular:"/>
-                                <p:inputMask mask="(99)9999-9999" value="#{funcionarioBean.telefoneCel}"
-                                             size="13"
-                                             label="Tel cel"/>
-                                <h:outputText value="E-MAIL:"/>
-                                <p:inputText id="email_fum" label="E-MAIL" value="#{funcionarioBean.funcionarioEditado.IDPessoa.email}"
-                                             size="30"
-                                             maxlength="40"/>
-                                <h:outputLabel  value="HTTP:"/>
-                                <p:inputText  value="#{funcionarioBean.funcionarioEditado.IDPessoa.http}"
-                                              size="40"
-                                              maxlength="40"
-                                              />
-                                <h:outputLabel value="CPF:*"/>
-                                <p:inputMask mask="999.999.999-99" value="#{funcionarioBean.funcionarioEditado.IDPessoa.cnpjCpf}"
-                                             size="13"
-                                             maxlength="11"/>
-                                <h:outputLabel value="RG"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.rg}"
-                                             size="10"
-                                             maxlength="10"/>
-                                <h:outputText value="Nº CTPS:"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.ctrabalho}"
-                                             size="10"
-                                             maxlength="12"
-                                             required="true"
-                                             requiredMessage="CTPS é obrigatório!"/>
-                                <h:outputText value="Serie:"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.serieCtps}"
-                                             size="8"
-                                             maxlength="10"/>
-                          
-                                <h:outputText value="Data admissão:"/>
-                                <p:calendar value="#{funcionarioBean.funcionarioEditado.DTAdmissao}"
-                                            navigator="true"
-                                            showButtonPanel="true" size="10"
-                                            pattern="dd-MM-yyyy"
-                                            timeZone="America/Sao_Paulo"
-                                            yearRange="c-80:"
-                                            />
-                                <h:outputText value="Nº CNH:"/>
-
-                                <p:inputMask mask="99999999999" 
-                                             value="#{funcionarioBean.funcionarioEditado.cnh}" requiredMessage="Numero invalido!"
-                                             size="11"/>
-
-                                <h:outputText value="Categoria (CNH):"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.cnhCategoria}"
-                                             size="2"
-                                             maxlength="3"/>
-
-                                <h:outputText value="Data validade CNH:"/>
-                                <p:calendar  value="#{funcionarioBean.funcionarioEditado.dtValidadeCNH}"
-                                             showButtonPanel="true" size="10"
-                                             pattern="dd-MM-yyyy"
-                                             timeZone="America/Sao_Paulo"/>
-                                <h:outputText value="Nº Pis:"/>
-                                <p:inputMask mask="999999999-99" value="#{funcionarioBean.funcionarioEditado.pisPasep}"
-                                             validatorMessage="Numero invalido!"
-                                             size="12"/>
-
-                                <h:outputLabel  value="Rua/Avenida:"/>
-                                <p:inputText  value="#{funcionarioBean.funcionarioEditado.IDPessoa.logradouro}"
-                                              size="40"
-                                              maxlength="40"
-                                              requiredMessage="Campo Obrigatório!"/>
-                                <h:outputLabel  value="Nº:"/>
-                                <p:inputText  value="#{funcionarioBean.funcionarioEditado.IDPessoa.numero}"
-                                              size="8"
-                                              maxlength="20"
-                                              />
-                                <h:outputLabel  value="Cep:"/>
-                                <p:inputMask  mask="99999-999"  value="#{funcionarioBean.funcionarioEditado.IDPessoa.cep}"
-                                              size="10"
-                                              />
-                                <h:outputLabel  value="Bairro:"/>
-                                <p:inputText  value="#{funcionarioBean.funcionarioEditado.IDPessoa.bairro}"
-                                              size="30"
-                                              maxlength="30"
-                                              >
-
-                                </p:inputText>
-
-                                <h:outputText value="UF:"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.estado}" maxlength="2" size="3"/>
-                                <h:outputText value="Cidades:"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.cidade}"/>
-                                <h:outputText value="Pais"/>
-                                <p:inputText value="#{funcionarioBean.funcionarioEditado.IDPessoa.pais}"/>
-                                <h:outputText value="Função:"/>
-                                <p:selectOneMenu converter="funcaoConverter" value="#{funcionarioBean.funcionarioEditado.IDFuncao}" required="true" >  
-                                    <f:selectItems value="#{funcaoRN.listar()}"
-                                                   var="funcao"
-                                                   itemLabel="#{funcao.descricao}"
-                                                   itemValue="#{funcao}"/>  
-                                </p:selectOneMenu>
-                                <h:outputText value="Empresa:"/>
-                                <p:selectOneMenu converter="filialConverter" filter="true" required="true" 
-                                                 value="#{funcionarioBean.funcionarioEditado.IDFilial}"
-                                                 requiredMessage="informe a empresa de registro.">
-                                    <f:selectItem itemLabel="" />
-                                    <f:selectItems value="#{filialRN.listar()}"
-                                                   var="filial"
-                                                   itemValue="#{filial}"
-                                                   itemLabel="#{filial.fantasia}"/>
-                                </p:selectOneMenu>
-                            
-
-                       
-
-                    </h:panelGrid>
-                    <p:separator/>
-                    <p:commandButton value="Salvar" actionListener="#{funcionarioBean.atualizar()}"   update="editarFuncionario,msgFuncEdit,growlmsgEdit" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <p:commandButton  value="Sair" onclick="PF('editarFuncDialog').hide();" />
-                </p:dialog>  
-            </h:form>
             <h:form>
                 <p:dialog widgetVar="dialogError" header="Error!" modal="true"
                           draggable="false" closable="false" resizable="false">
@@ -583,6 +212,6 @@
 
                 </p:dialog>
             </h:form>
-        </f:view>
+        </ui:define>
     </ui:composition> 
 </html>

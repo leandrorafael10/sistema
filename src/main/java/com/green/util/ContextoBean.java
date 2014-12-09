@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
  *
  * @author leandro.silva
  */
+@SuppressWarnings("serial")
 @ManagedBean(name="contextoBean")
 @SessionScoped
 public class ContextoBean implements Serializable{

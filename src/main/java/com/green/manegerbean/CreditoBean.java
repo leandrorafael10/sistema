@@ -22,7 +22,11 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class CreditoBean implements Serializable{
     
-    @ManagedProperty("#{creditoRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{creditoRN}")
     private CreditoRN creditoRN;
     private Credito credito  = new Credito();
     private List<Credito> creditos;

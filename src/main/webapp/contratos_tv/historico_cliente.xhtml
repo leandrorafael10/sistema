@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../principal/templategreen.xhtml">
+
+            <ui:define name="principal-interna">
+                <br/>
+                <br/>
+                <h:form id="formContratoCliente">
+                    <p:growl id="growl"/>
+                    <p:panel>
+                        <h2>Histórico financeiro</h2>
+                        <p:messages/>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Cliente: "/>
+                            <p:selectOneMenu converter="clienteConverter" filter="true" 
+                                             value="#{contratoMidiaBean.cliente}" 
+                                             var="t" style="width:360px"  filterMatchMode="startsWith">
+                                <f:selectItems value="#{clienteRN.listar()}"
+                                               var="cliente"
+                                               itemLabel="#{cliente.IDPessoa.razao}"
+                                               itemValue="#{cliente}"/>
+                                <p:column style="width:30%">
+                                    <h:outputText value="#{t.IDPessoa.razao}" />
+                                </p:column>
+
+                                <p:column>
+                                    <h:outputText value="#{t.IDPessoa.fantasia}" />
+                                </p:column>
+                                <p:ajax update="formContratoCliente:tabelaContratos"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:dataTable id="tabelaContratos" value="#{contratoMidiaBean.cliente.contratos}" var="contrato">
+                        <p:column headerText="Nª Contrato" filterBy="#{contrato.NContrato}">
+                            <h:outputText value="#{contrato.NContrato}"/>
+                        </p:column>
+                        <p:column headerText="Ínicio">
+                            <h:outputText value="#{contrato.dataInicioContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Fim">
+                            <h:outputText value="#{contrato.dataFimContrato}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="visualizar"  oncomplete="PF('dialogVisualizar').show()" update=":formVisualizar">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink value="parcelas" oncomplete="PF('dialogParcelas').show()" update=":formParcelas">
+                                <f:setPropertyActionListener value="#{contrato}" target="#{contratoMidiaBean.contratoMidia}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
+                <h:form id="formParcelas">
+                    <p:dialog widgetVar="dialogParcelas" width="750px" header="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}">
+                        <p:panel>
+                            <h2></h2>
+                            <h2>Numero contrato : <h:outputText value="#{contratoMidiaBean.contratoMidia.NContrato}" styleClass="azul"/></h2>
+                            <p:dataTable value="#{contratoMidiaBean.contratoMidia.origen.receitas}" var="parcela"
+                                         scrollHeight="300" scrollable="true"
+                                         style="width: 700px;" emptyMessage="Não há parcelas!"
+                                         id="tabelaParcela">
+                                <p:column headerText="num." width="50">
+                                    <h:outputText value="#{parcela.numero}"/>
+                                </p:column>
+                                <p:column headerText="valor">
+                                    <h:outputText value="#{parcela.valorLiquido}">
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="venc.">
+                                    <h:outputText value="#{parcela.DTVencimento}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="situação">
+                                    <h:outputText value="#{parcela.pago?'pago':'pendente'}" styleClass="#{parcela.pago?'azul':'vermelho'}"/>
+                                </p:column>
+                                <p:column headerText="valor pago">
+                                    <h:outputText value="#{parcela.IDReceitacredito.IDCredito.valor}">
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                    </h:outputText>
+
+                                </p:column>
+                                <p:column headerText="data pagamento">
+                                    <h:outputText  value="#{parcela.IDReceitacredito.IDCredito.DTBaixa}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="status">
+                                    <h:outputText value="#{parcela.ativo?'ativa':'cancelada'}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </p:dialog>
+
+                </h:form>
+                <p:dialog widgetVar="dialogVisualizar">
+                    <h:form id="formVisualizar">
+                        <p:panel>
+                            <p:panel >
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="Nome/Razão social:"/>
+                                    <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.razao}"/>
+
+                                    <h:outputText value="Fantasia:"/>
+                                    <h:outputText value="#{contratoMidiaBean.contratoMidia.IDcliente.IDPessoa.fantasia}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                            <h:panelGrid columns="4">
+
+                                <h:outputText value="Numero: "/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.NContrato}"/>
+                                <h:outputText value="Agência:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDagencia.IDPessoa.fantasia}"/>
+                                <h:outputText value="Gerente:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDgerentevendas.IDPessoa.razao}"/>
+                                <h:outputText value="Vendido por:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDvendedor.IDPessoa.razao}"/>
+
+                                <h:outputText value="Período de :"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.dataInicioContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="até :"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.dataFimContrato}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="Condição pag.:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDtipopagamento.descricao}"/>
+                                <h:outputText value="Data Venda:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.DTVend}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                                <h:outputText value="Produto:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.IDproduto.descricao}  ( #{contratoMidiaBean.contratoMidia.IDproduto.tempoVideo} seg.) "/>
+                                <h:outputText value="Observações:"/>
+                                <h:outputText value="#{contratoMidiaBean.contratoMidia.obs}"/>
+                                <h:outputText value="Praças:"/>
+                                <p:dataList value="#{contratoMidiaBean.contratoMidia.pracas}" var="praca" type="definition">
+                                    #{praca.descricao}
+                                </p:dataList>
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

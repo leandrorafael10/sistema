@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+        <ui:composition template="/principal/templategreen.xhtml">
+            <ui:define name="principal-interna">
+                <br/>
+                <h:form id="formEstorno">
+                    
+                    <p:panel>
+                    <h2>Estorno de Receita</h2>
+                    <p:separator/>
+                        <p:messages id="msgEstornoFiltro"/>
+                        <h:panelGrid columns="5" cellpadding="5">
+                            <h:outputText value="Período de "/>
+                            <p:calendar value="#{receitaCreditoBean.inicio}"
+                                        required="true"
+                                        locale="pt"
+                                        requiredMessage="data inicio e obrigatória!"
+                                        pattern="dd/MM/yyyy" mask="true"/>
+                            
+                            <h:outputText value=" até "/>
+                            <p:calendar value="#{receitaCreditoBean.fim}" 
+                                        pattern="dd/MM/yyyy" mask="true"
+                                        required="true"
+                                        locale="pt"
+                                        requiredMessage="data fim e obrigatória!"/>
+                            <p:commandButton value="buscar" actionListener="#{receitaCreditoBean.listarFiltroData(event)}" update=":formEstorno:creditoEstorno,:formEstorno:msgEstornoFiltro"/>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:dataTable id="creditoEstorno" value="#{receitaCreditoBean.receitacreditos}" var="credito"
+                                     scrollHeight="400" scrollable="true"
+                                     emptyMessage="não há registros.">
+                            <p:column headerText="Razão" filterBy="#{credito.IDReceita.IDCliente.IDPessoa.razao}">
+                                <h:outputText value="#{credito.IDReceita.IDCliente.IDPessoa.razao}"/>
+                            </p:column>
+                            <p:column headerText="Fantasia">
+                                <h:outputText value="#{credito.IDReceita.IDCliente.IDPessoa.fantasia}"/>
+                            </p:column>
+                            <p:column headerText="Vencimento">
+                                <h:outputText value="#{credito.IDReceita.DTVencimento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Data baixa" width="80">
+                                <h:outputText value="#{credito.IDCredito.DTBaixa}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="documento" width="80">
+                                <h:outputText value="#{credito.IDReceita.idorigem.IDContratoMidia.NContrato}"/>
+
+                            </p:column>
+                            <p:column headerText="parcela" width="50">
+                                <h:outputText value="#{credito.IDReceita.numero}/#{credito.IDReceita.idorigem.IDContratoMidia.numeroParcelas}"/>
+                            </p:column>
+                            <p:column headerText="valor" width="80">
+                                <h:outputText value="#{credito.IDCredito.valor}">
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="estorno" width="60">
+                                <p:commandLink value="estornar" oncomplete="PF('dialogConfEstorno').show()" update=":forConfEstorno">
+                                    <f:setPropertyActionListener value="#{credito}" target="#{receitaCreditoBean.receitacredito}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+                <h:form id="forConfEstorno">
+                    <p:dialog modal="true" header="Confirmação de estorno" widgetVar="dialogConfEstorno">
+                        <h:panelGrid columns="2" cellspacing="5">
+                            <h:outputText value="Cliente: "/>
+                            <h:outputText value="#{receitaCreditoBean.receitacredito.IDReceita.IDCliente.IDPessoa.razao}"/>
+                            <h:outputText value="Parcela "/>
+                            <h:outputText value="#{receitaCreditoBean.receitacredito.IDReceita.numero}  de #{receitaCreditoBean.receitacredito.IDReceita.idorigem.IDContratoMidia.numeroParcelas}"/>
+                            <h:outputText value="Documento: "/>
+                            <h:outputText value="#{receitaCreditoBean.receitacredito.IDReceita.idorigem.IDContratoMidia.NContrato}"/>
+                            <h:outputText value="valor:"/>
+                            <h:outputText value="#{receitaCreditoBean.receitacredito.IDCredito.valor}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                            </h:outputText>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="estornar" actionListener="#{receitaCreditoBean.estorno(event)}" update=":formEstorno" oncomplete="PF('dialogConfEstorno').hide();"/>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

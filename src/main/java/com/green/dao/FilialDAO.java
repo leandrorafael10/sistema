@@ -21,7 +21,8 @@ public class FilialDAO {
     @Autowired
     private SessionFactory sf;
 
-    public List<Filial> listar(){
+    @SuppressWarnings("unchecked")
+	public List<Filial> listar(){
         Query query=getSf().getCurrentSession().createQuery("from com.green.modelo.Filial ");
         return (List<Filial>)query.list();
     }

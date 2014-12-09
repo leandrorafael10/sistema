@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 /**
  *
  * @author leandro.silva
@@ -21,7 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pessoa")
 @XmlRootElement
 public class Pessoa implements Serializable {
-    @Column(name =     "DTNascimento")
+
+    @Column(name = "DTNascimento")
     @Temporal(TemporalType.DATE)
     private Date dTNascimento;
     private static final long serialVersionUID = 1L;
@@ -97,9 +97,10 @@ public class Pessoa implements Serializable {
     @Size(max = 50)
     @Column(name = "Email")
     private String email;
-    @OneToMany(mappedBy ="iDPessoa" ,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "iDPessoa", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Contato> contatosList;
     
+
     public Pessoa() {
     }
 
@@ -283,7 +284,6 @@ public class Pessoa implements Serializable {
         this.email = email;
     }
 
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -326,5 +326,5 @@ public class Pessoa implements Serializable {
     }
 
     
-    
+
 }

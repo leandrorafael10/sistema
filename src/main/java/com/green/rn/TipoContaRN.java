@@ -60,14 +60,13 @@ public class TipoContaRN {
         return getTipoContaDAO().carregar(codigo);
     }
 
+    @Transactional(value = "tmGreen")
     public void excluir(Tipoconta tipoconta) {
         getTipoContaDAO().excluir(tipoconta);
     }
 
     public void atualizar(Tipoconta tipoconta) {
         ContextoBean contextoBean = ContextoUtil.getContextoBean();
-        FacesContext context = FacesContext.getCurrentInstance();
-        FacesMessage message;
         if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO") 
                 || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
                 ||contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")
@@ -75,9 +74,9 @@ public class TipoContaRN {
             tipoconta.setDTAlt(new Date(System.currentTimeMillis()));
             tipoconta.setIDUsuarioAlt(contextoBean.getUsuarioLogado());
             getTipoContaDAO().atualizar(tipoconta);
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ok!Salvo com sucesso!", "Ok!Salvo com sucesso!");
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Ok!Salvo com sucesso!", "Ok!Salvo com sucesso!"));
         } else {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha !Usuario não autorizado!", "Falha !Usuario não autorizado!");
+        	FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha !Usuario não autorizado!", "Falha !Usuario não autorizado!"));
         }
     }
 }

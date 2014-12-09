@@ -1,580 +1,521 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
 
-    <body>
+<body>
 
-        <ui:composition template="./../principal/templategreen.xhtml">
-            <ui:define name="principal-interna">
-                <h:form>
-                    <br/>
-                    <br/>
-                    <p:panel>
-                        <h2>Relatorio geral</h2>
-                        <h:panelGrid columns="3" cellpadding="10" cellspacing="20" >
-                            <h:panelGrid columns="1" cellspacing="8">
-                                <h2>Financeiro</h2>
-                                <p:commandLink value="todas parcelas" oncomplete="PF('parAReceber').show()">
+	<ui:composition template="./../principal/templategreen.xhtml">
+		<ui:define name="principal-interna">
+			<h:form>
+				<br />
+				<br />
+				<p:panel>
+					<h2>Relatorio geral</h2>
+					<h:panelGrid columns="3" cellpadding="10" cellspacing="20">
+						<h:panelGrid columns="1" cellspacing="8">
+							<h2>Financeiro</h2>
+							<p:commandLink value="todas parcelas"
+								oncomplete="PF('parAReceber').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="finaceiro por cliente" oncomplete="PF('finaceiroCliente').show()">
+							</p:commandLink>
+							<p:commandLink value="finaceiro por cliente"
+								oncomplete="PF('finaceiroCliente').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="parcelas recebidas" oncomplete="PF('parcelasPagas').show()">
+							</p:commandLink>
+							<p:commandLink value="parcelas recebidas"
+								oncomplete="PF('parcelasPagas').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="parcelas à receber em aberto" oncomplete="PF('receberEmAberto').show()">
+							</p:commandLink>
+							<p:commandLink value="parcelas à receber em aberto"
+								oncomplete="PF('receberEmAberto').show()">
 
-                                </p:commandLink>
-                                <h:commandLink value=" parcelas atrazadas" action="#{relatorioGeral.GeraRelatorios(6)}"
-                                               target="_blank">
+							</p:commandLink>
+							<h:commandLink value=" parcelas atrazadas"
+								action="#{relatorioGeral.relatorio(6)}" target="_blank">
 
-                                </h:commandLink>
-                                <!--  <p:commandLink value="parcelas á receber parceiro" oncomplete="PF('receberParceiro').show()">
+							</h:commandLink>
+							<p:commandLink value="faturamento praças por periodo"
+								oncomplete="PF('dialogFaturamentoPracaPeriodo').show()" />
+							<!--  <p:commandLink value="parcelas á receber parceiro" oncomplete="PF('receberParceiro').show()">
   
                                   </p:commandLink>
                                    <p:commandLink value="contas a acertar parceiros" oncomplete="PF('acertarParceiro').show()">
   
                                   </p:commandLink>-->
 
-                            </h:panelGrid>
-                            <h:panelGrid columns="1" cellspacing="8">
-                                <h2>Vendas</h2>
-                                <p:commandLink value="vendas por periodo" oncomplete="PF('vendasPeriodo').show()">
+						</h:panelGrid>
+						<h:panelGrid columns="1" cellspacing="8">
+							<h2>Vendas</h2>
+							<p:commandLink value="vendas por periodo"
+								oncomplete="PF('vendasPeriodo').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="vendas por vendedor" oncomplete="PF('vendasPeriodoVend').show()">
+							</p:commandLink>
+							<p:commandLink value="vendas por vendedor"
+								oncomplete="PF('vendasPeriodoVend').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="vendas por praça *">
+							</p:commandLink>
+							<p:commandLink value="vendas por praça *">
 
-                                </p:commandLink>
-                                <p:commandLink value="vendas por gerente +">
+							</p:commandLink>
+							<p:commandLink value="vendas por gerente +">
 
-                                </p:commandLink>
-                                <p:commandLink value="comissão" oncomplete="PF('dialogComissao').show();"/>
-                                <br/>
+							</p:commandLink>
+							<p:commandLink value="comissão"
+								oncomplete="PF('dialogComissao').show();" />
+							<br />
 
-                            </h:panelGrid>
-                            <h:panelGrid columns="1" cellspacing="8">
-                                <h2>Contratos</h2>
-                                <p:commandLink value="contratos por período " oncomplete="PF('contratoPeriodo').show()">
+						</h:panelGrid>
+						<h:panelGrid columns="1" cellspacing="8">
+							<h2>Contratos</h2>
+							<p:commandLink value="contratos por período "
+								oncomplete="PF('contratoPeriodo').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="contratos por período parceiro" oncomplete="PF('contratoPeriodoParceiro').show()">
+							</p:commandLink>
+							<p:commandLink value="contratos por período parceiro"
+								oncomplete="PF('contratoPeriodoParceiro').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="Contratos por vendedor *">
+							</p:commandLink>
+							<p:commandLink value="Contratos por vendedor *">
 
-                                </p:commandLink>
-                                <p:commandLink value="contratos sob permulta" oncomplete="PF('dialogContratoPermuta').show()">
+							</p:commandLink>
+							<p:commandLink value="contratos sob permulta"
+								oncomplete="PF('dialogContratoPermuta').show()">
 
-                                </p:commandLink>
-                                <p:commandLink value="contratos bonificados" oncomplete="PF('dialogContratoBonificao').show()">
+							</p:commandLink>
+							<p:commandLink value="contratos bonificados"
+								oncomplete="PF('dialogContratoBonificao').show()">
 
-                                </p:commandLink>
-                                <br/>
+							</p:commandLink>
+							<br />
 
-                            </h:panelGrid>
-                        </h:panelGrid>
-                    </p:panel>
+						</h:panelGrid>
+					</h:panelGrid>
+				</p:panel>
 
-                </h:form>
-                <h:form>
-                    <p:dialog id="dialogfinaceiroCliente" widgetVar="finaceiroCliente" header="Receitas recebidas por cliente">
-                        <p:messages/>
-                        <h:panelGrid columns="6" cellspacing="5">
-                            <h:outputText value="periodo de "/>
-                            <p:calendar value="#{relatorioGeral.dataInicio}" 
-                                        size="12"
-                                        navigator="true" mask="true" pattern="dd/MM/yyyy"
-                                        required="true"
-                                        requiredMessage="insira o período inicial"/>
-                            <h:outputText value="até " />
-                            <p:calendar value="#{relatorioGeral.dataFim}" 
-                                        size="12"
-                                        required="true"
-                                        navigator="true" mask="true" pattern="dd/MM/yyyy"
-                                        requiredMessage="insira o periodo final"/>
-                            <h:outputText value="pago : "/>
-                            <p:selectBooleanCheckbox value="#{relatorioGeral.tipo}" required="true"
-                                                     requiredMessage="escolha uma opção"/>
-                        </h:panelGrid>
-                        <br/>
-                        <h:panelGrid columns="2" cellspacing="5">
-                            <h:outputText value="cliente :  "/>
-                            <p:selectOneMenu converter="clienteConverter" value="#{relatorioGeral.receita.IDCliente}">
-                                <f:selectItems value="#{clienteRN.listar()}"
-                                               var="cliente"
-                                               itemLabel="#{cliente.IDPessoa.razao}"
-                                               itemValue="#{cliente}"/>
-                            </p:selectOneMenu>
+			</h:form>
+			<h:form>
+				<p:dialog id="dialogfinaceiroCliente" widgetVar="finaceiroCliente"
+					header="Receitas recebidas por cliente">
+					<p:messages />
+					<h:panelGrid columns="6" cellspacing="5">
+						<h:outputText value="periodo de " />
+						<p:calendar value="#{relatorioGeral.dataInicio}" size="12"
+							navigator="true" mask="true" pattern="dd/MM/yyyy" required="true"
+							locale="pt" requiredMessage="insira o período inicial" />
+						<h:outputText value="até " />
+						<p:calendar value="#{relatorioGeral.dataFim}" size="12"
+							required="true" locale="pt" navigator="true" mask="true"
+							pattern="dd/MM/yyyy" requiredMessage="insira o periodo final" />
+						<h:outputText value="pago : " />
+						<p:selectBooleanCheckbox value="#{relatorioGeral.tipo}"
+							required="true" requiredMessage="escolha uma opção" />
+					</h:panelGrid>
+					<br />
+					<h:panelGrid columns="2" cellspacing="5">
+						<h:outputText value="cliente :  " />
+						<p:selectOneMenu converter="clienteConverter" filter="true"
+							value="#{relatorioGeral.receita.IDCliente}">
+							<f:selectItems value="#{clienteRN.listar()}" var="cliente"
+								itemLabel="#{cliente.IDPessoa.razao}" itemValue="#{cliente}" />
+						</p:selectOneMenu>
 
-                        </h:panelGrid>
-                        <p:separator/>
-                        <h:commandLink value="gerar relatório" actionListener="#{relatorioGeral.GeraRelatorios(9)}"
-                                        target="_blank" >
-                        </h:commandLink>
-                    </p:dialog>
-                </h:form>
+					</h:panelGrid>
+					<p:separator />
+					<h:commandLink value="imprimir"
+						action="#{relatorioGeral.relatorio(9)}" target="_blank">
+					</h:commandLink>
+				</p:dialog>
+			</h:form>
 
-                <h:form>
-                    <p:dialog widgetVar="parAReceber" header="Contas á receber">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatório"  action="#{relatorioGeral.GeraRelatorios(1)}"
-                                            target="_blank" >
-                            </h:commandLink>
+			<h:form>
+				<p:dialog widgetVar="parAReceber" header="Contas á receber">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" required="true" locale="pt" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(1)}" target="_blank">
+						</h:commandLink>
 
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="parcelasPagas" header="Contas recebidas">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar mask="true"
-                                            showButtonPanel="true" 
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatótio"  action="#{relatorioGeral.GeraRelatorios(2)}"
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="receberEmAberto" header="Contas a receber em aberto">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatório" action="#{relatorioGeral.GeraRelatorios(3)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="receberParceiro" header="Contas á receber parceiro">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="parcelasPagas" header="Contas recebidas">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar mask="true" showButtonPanel="true" navigator="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" required="true" locale="pt" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(2)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="receberEmAberto"
+					header="Contas a receber em aberto">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(3)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="receberParceiro"
+					header="Contas á receber parceiro">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
 
-                                <h:outputText value="Parceiro:"/>
-                                <p:selectOneMenu converter="clienteConverter" value="#{relatorioGeral.receita.IDCliente}" required="true">
-                                    <f:selectItems value="#{clienteRN.listarParceiros()}"
-                                                   var="parceiros"
-                                                   itemLabel="#{parceiros.IDPessoa.fantasia}"
-                                                   itemValue="#{parceiros}"
-                                                   />
+							<h:outputText value="Parceiro:" />
+							<p:selectOneMenu converter="clienteConverter"
+								value="#{relatorioGeral.receita.IDCliente}" required="true">
+								<f:selectItems value="#{clienteRN.listarParceiros()}"
+									var="parceiros" itemLabel="#{parceiros.IDPessoa.fantasia}"
+									itemValue="#{parceiros}" />
 
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatório"  action="#{relatorioGeral.GeraRelatorios(4)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="acertarParceiro" header="Contas á receber parceiro">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(4)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="acertarParceiro"
+					header="Contas á receber parceiro">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
 
-                                <h:outputText value="Parceiro:"/>
-                                <p:selectOneMenu converter="clienteConverter" value="#{relatorioGeral.receita.IDCliente}" required="true">
-                                    <f:selectItems value="#{clienteRN.listarParceiros()}"
-                                                   var="parceiros"
-                                                   itemLabel="#{parceiros.IDPessoa.fantasia}"
-                                                   itemValue="#{parceiros}"
-                                                   />
+							<h:outputText value="Parceiro:" />
+							<p:selectOneMenu converter="clienteConverter"
+								value="#{relatorioGeral.receita.IDCliente}" required="true">
+								<f:selectItems value="#{clienteRN.listarParceiros()}"
+									var="parceiros" itemLabel="#{parceiros.IDPessoa.fantasia}"
+									itemValue="#{parceiros}" />
 
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerer relatório"  action="#{relatorioGeral.GeraRelatorios(5)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="vendasPeriodo" header="Vendas por periodo">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerer relatório"  action="#{relatorioGeral.GeraRelatorios(7)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="vendasPeriodoVend" header="Vendas por periodo e vendedor">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(5)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="vendasPeriodo" header="Vendas por periodo">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" navigator="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(7)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="vendasPeriodoVend"
+					header="Vendas por periodo e vendedor">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
 
-                            </h:panelGrid>
-                            <br/>
-                            <h:panelGrid columns="2" cellpadding="10">
-                                <h:outputText value="Executivo de contas:"/>
-                                <p:selectOneMenu filter="true" converter="funcionarioConverter" required="true" value="#{relatorioGeral.contratoMidia.IDvendedor}">
-                                    <f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
-                                                   var="funcionario"
-                                                   itemLabel="#{funcionario.IDPessoa.razao}"
-                                                   itemValue="#{funcionario}"/>
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerear relatório"  action="#{relatorioGeral.GeraRelatorios(8)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="dialogContratoPermuta">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            mask="true"
-                                            navigator="true" 
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
+						</h:panelGrid>
+						<br />
+						<h:panelGrid columns="2" cellpadding="10">
+							<h:outputText value="Executivo de contas:" />
+							<p:selectOneMenu filter="true" converter="funcionarioConverter"
+								required="true"
+								value="#{relatorioGeral.contratoMidia.IDvendedor}">
+								<f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+									var="funcionario" itemLabel="#{funcionario.IDPessoa.razao}"
+									itemValue="#{funcionario}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(8)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="dialogContratoPermuta">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" mask="true" navigator="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
 
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatório" action="#{relatorioGeral.GeraRelatorios(13)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="dialogContratoBonificao">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            />
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(13)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="dialogContratoBonificao">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true" />
 
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatório" action="#{relatorioGeral.GeraRelatorios(14)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="dialogComissao" header="Relatório de comissões">
-                        <p:panel>
-                            <h:panelGrid columns="4">
-                                <h:outputText value="Período de "/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            requiredMessage="data inicio e obrigatório!"
-                                            />
-                                <h:outputText value=" até "/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            requiredMessage="data fim e obrigatório"
-                                            />
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(14)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="dialogComissao" header="Relatório de comissões">
+					<p:panel>
+						<h:panelGrid columns="4">
+							<h:outputText value="Período de " />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true"
+								requiredMessage="data inicio e obrigatório!" />
+							<h:outputText value=" até " />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true"
+								requiredMessage="data fim e obrigatório" />
 
-                                <h:outputText value="valor: "/>
-                                <p:inputText size="10" value="#{relatorioGeral.receita.valorLiquido}"
-                                             required="true"
-                                             requiredMessage="porcentagem de comissão e obrigatório!">
-                                    <f:convertNumber maxFractionDigits="2" />
-                                    <f:validateDoubleRange maximum="100" minimum="0"/>
-                                </p:inputText>
-                                <h:outputText value="%"/>
-                            </h:panelGrid>
-                            <br/>
-                            <h:panelGrid>
-                                <h:outputText value="Executivo de contas:"/>
-                                <p:selectOneMenu filter="true" converter="funcionarioConverter" required="true" value="#{relatorioGeral.contratoMidia.IDvendedor}">
-                                    <f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
-                                                   var="funcionario"
-                                                   itemLabel="#{funcionario.IDPessoa.razao}"
-                                                   itemValue="#{funcionario}"/>
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink  value="gerar relatório"  target="_blank" action="#{relatorioGeral.GeraRelatorios(15)}"/>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="contratoPeriodo" header="Contratos clientes">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            requiredMessage="data inicio e obrigatório!"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            requiredMessage="data fim e obrigatório"
-                                            />
-                                <p:outputLabel for="console" value="Tipo:" />
-                                <p:selectOneRadio id="console" value="#{relatorioGeral.status}">
-                                    <f:selectItem itemLabel="ativo" itemValue="1" />
-                                    <f:selectItem itemLabel="inativo" itemValue="0" />
-                                    <f:selectItem itemLabel="todos" itemValue="2" />
-                                </p:selectOneRadio>
+							<h:outputText value="valor: " />
+							<p:inputText size="10"
+								value="#{relatorioGeral.receita.valorLiquido}" required="true"
+								requiredMessage="porcentagem de comissão e obrigatório!">
+								<f:convertNumber maxFractionDigits="2" />
+								<f:validateDoubleRange maximum="100" minimum="0" />
+							</p:inputText>
+							<h:outputText value="%" />
+						</h:panelGrid>
+						<br />
+						<h:panelGrid>
+							<h:outputText value="Executivo de contas:" />
+							<p:selectOneMenu filter="true" converter="funcionarioConverter"
+								required="true"
+								value="#{relatorioGeral.contratoMidia.IDvendedor}">
+								<f:selectItems value="#{funcionarioRN.listarGerenteVendedor()}"
+									var="funcionario" itemLabel="#{funcionario.IDPessoa.razao}"
+									itemValue="#{funcionario}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir" target="_blank"
+							action="#{relatorioGeral.relatorio(15)}" />
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="contratoPeriodo" header="Contratos clientes">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" locale="pt" required="true"
+								requiredMessage="data inicio e obrigatório!" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true"
+								requiredMessage="data fim e obrigatório" />
+							<p:outputLabel for="console" value="Tipo:" />
+							<p:selectOneRadio id="console" value="#{relatorioGeral.status}">
+								<f:selectItem itemLabel="ativo" itemValue="1" />
+								<f:selectItem itemLabel="inativo" itemValue="0" />
+								<f:selectItem itemLabel="todos" itemValue="2" />
+							</p:selectOneRadio>
 
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatório"  action="#{relatorioGeral.GeraRelatorios(10)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
-                <h:form>
-                    <p:dialog widgetVar="contratoPeriodoParceiro" header="Contratos cliente parceiro">
-                        <p:panel>
-                            <h:panelGrid columns="5" cellpadding="10">
-                                <h:outputText value="Parceiro:"/>
-                                <p:selectOneMenu converter="clienteConverter" value="#{relatorioGeral.receita.IDCliente}" required="true">
-                                    <f:selectItems value="#{clienteRN.listarParceiros()}"
-                                                   var="parceiros"
-                                                   itemLabel="#{parceiros.IDPessoa.fantasia}"
-                                                   itemValue="#{parceiros}"
-                                                   />
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(10)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog widgetVar="contratoPeriodoParceiro"
+					header="Contratos cliente parceiro">
+					<p:panel>
+						<h:panelGrid columns="5" cellpadding="10">
+							<h:outputText value="Parceiro:" />
+							<p:selectOneMenu converter="clienteConverter"
+								value="#{relatorioGeral.receita.IDCliente}" required="true">
+								<f:selectItems value="#{clienteRN.listarParceiros()}"
+									var="parceiros" itemLabel="#{parceiros.IDPessoa.fantasia}"
+									itemValue="#{parceiros}" />
 
-                                </p:selectOneMenu>
-                                <h:outputText value="periodo"/>
-                                <h:outputText value="de"/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataInicio}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            requiredMessage="data inicio e obrigatório!"
-                                            />
-                                <h:outputText value=" ate "/>
-                                <p:calendar showButtonPanel="true" 
-                                            navigator="true" 
-                                            mask="true"
-                                            value="#{relatorioGeral.dataFim}"
-                                            pattern="dd/MM/yyyy"
-                                            size="14"
-                                            required="true"
-                                            requiredMessage="data fim e obrigatório"
-                                            />
-                                <p:outputLabel for="console" value="Tipo:" />
-                                <p:selectOneRadio id="console" value="#{relatorioGeral.status}">
-                                    <f:selectItem itemLabel="ativo" itemValue="1" />
-                                    <f:selectItem itemLabel="inativo" itemValue="0" />
-                                    <f:selectItem itemLabel="todos" itemValue="2" />
-                                </p:selectOneRadio>
+							</p:selectOneMenu>
+							<h:outputText value="periodo" />
+							<h:outputText value="de" />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataInicio}" pattern="dd/MM/yyyy"
+								size="14" required="true" locale="pt"
+								requiredMessage="data inicio e obrigatório!" />
+							<h:outputText value=" ate " />
+							<p:calendar showButtonPanel="true" navigator="true" mask="true"
+								value="#{relatorioGeral.dataFim}" pattern="dd/MM/yyyy" size="14"
+								locale="pt" required="true"
+								requiredMessage="data fim e obrigatório" />
+							<p:outputLabel for="console" value="Tipo:" />
+							<p:selectOneRadio id="console" value="#{relatorioGeral.status}">
+								<f:selectItem itemLabel="ativo" itemValue="1" />
+								<f:selectItem itemLabel="inativo" itemValue="0" />
+								<f:selectItem itemLabel="todos" itemValue="2" />
+							</p:selectOneRadio>
 
-                            </h:panelGrid>
-                            <p:separator/>
-                            <h:commandLink value="gerar relatório" action="#{relatorioGeral.GeraRelatorios(11)}" 
-                                            target="_blank" >
-                            </h:commandLink>
-                        </p:panel>
-                    </p:dialog>
-                </h:form>
+						</h:panelGrid>
+						<p:separator />
+						<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(11)}" target="_blank">
+						</h:commandLink>
+					</p:panel>
+				</p:dialog>
+			</h:form>
 
-            </ui:define>
-        </ui:composition>
+			<h:form id="formFaturamentoPracaPeriodo">
+				<p:dialog widgetVar="dialogFaturamentoPracaPeriodo"
+					header="Faturamento por praça e período">
+					<p:panel>
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputLabel value="Praça">
+								<br />
+								<p:selectOneMenu converter="pracaConverter"
+									value="#{relatorioGeral.praca}" filter="true">
+									<f:selectItems value="#{pracaBean.pracas}" var="praca"
+										itemLabel="#{praca.descricao}" itemValue="#{praca}" />
+								</p:selectOneMenu>
+							</h:outputLabel>
+							<h:outputLabel value="Período">
+								<br />
+								<p:selectOneMenu value="#{relatorioGeral.mes}" filter="true">
+									<f:selectItem itemLabel="janeiro" itemValue="0" />
+									<f:selectItem itemLabel="fevereiro" itemValue="1" />
+									<f:selectItem itemLabel="março" itemValue="2" />
+									<f:selectItem itemLabel="abril" itemValue="3" />
+									<f:selectItem itemLabel="maio" itemValue="4" />
+									<f:selectItem itemLabel="junho" itemValue="5" />
+									<f:selectItem itemLabel="julho" itemValue="6" />
+									<f:selectItem itemLabel="agosto" itemValue="7" />
+									<f:selectItem itemLabel="setembro" itemValue="8" />
+									<f:selectItem itemLabel="outubro" itemValue="9" />
+									<f:selectItem itemLabel="novembro" itemValue="10" />
+									<f:selectItem itemLabel="dezembro" itemValue="11" />
+								</p:selectOneMenu>
+								<p:selectOneMenu value="#{relatorioGeral.ano}" filter="true">
+									<f:selectItem itemLabel="2014" itemValue="2014" />
+									<f:selectItem itemLabel="2015" itemValue="2015" />
+									<f:selectItem itemLabel="2016" itemValue="2016" />
+									<f:selectItem itemLabel="2017" itemValue="2017" />
+									<f:selectItem itemLabel="2018" itemValue="2018" />
 
-    </body>
+								</p:selectOneMenu>
+							</h:outputLabel>
+						</h:panelGrid>
+					</p:panel>
+					<p:separator />
+					<h:commandLink value="imprimir"
+							action="#{relatorioGeral.relatorio(16)}" target="_blank">
+						</h:commandLink>
+				</p:dialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</body>
 </html>

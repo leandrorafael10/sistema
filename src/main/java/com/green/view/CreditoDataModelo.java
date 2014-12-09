@@ -28,7 +28,8 @@ public class CreditoDataModelo extends ListDataModel<Credito> implements Selecta
         return t.getIDCredito().toString();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Credito getRowData(String string) {
         List<Credito> credito= (List<Credito>)getWrappedData();
         for(Credito c : credito){

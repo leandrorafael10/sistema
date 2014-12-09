@@ -27,7 +27,8 @@ public class DespesaDataModelo extends ListDataModel<Despesa> implements Selecta
         return t.getIDDespesa().toString();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Despesa getRowData(String string) {
         List<Despesa> despesa = (List<Despesa>) getWrappedData();
         for (Despesa d : despesa) {

@@ -4,6 +4,25 @@
  */
 package com.green.manegerbean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
+
 import com.green.modelo.Brinde;
 import com.green.modelo.BrindeEntrada;
 import com.green.rn.BrindeEntradaRN;
@@ -11,21 +30,6 @@ import com.green.rn.BrindeRN;
 import com.green.util.ContadorPontoBrinde;
 import com.green.util.ContextoUtil;
 import com.green.util.RelatorioUtil;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -35,7 +39,11 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class BrindeBean implements Serializable {
     
-    @ManagedProperty("#{brindeRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{brindeRN}")
     private BrindeRN brindeRN;
     @ManagedProperty("#{brindeEntradaRN}")
     private BrindeEntradaRN brindeEntradaRN;
@@ -61,7 +69,8 @@ public class BrindeBean implements Serializable {
         
     }
     
-    public void listarPeriodo(ActionEvent event) {
+    @SuppressWarnings("rawtypes")
+	public void listarPeriodo(ActionEvent event) {
         List lista = getBrindeRN().listarPeriodo(inicio, fim);
         this.contadorBrindes = new ArrayList<>();
         for (Object object : lista) {
@@ -98,7 +107,7 @@ public class BrindeBean implements Serializable {
     }
     
     public void onCancel(RowEditEvent event) {
-        Brinde f = (Brinde) event.getObject();
+        
     }
     
     public BrindeRN getBrindeRN() {

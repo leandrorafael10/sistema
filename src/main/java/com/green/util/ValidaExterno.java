@@ -6,9 +6,6 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.context.RequestContext;
@@ -18,6 +15,11 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class ValidaExterno implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public void direciona(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();  
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();  

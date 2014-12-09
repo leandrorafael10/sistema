@@ -4,19 +4,20 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Equipevenda;
-import com.green.modelo.Funcionario;
-import com.green.modelo.Funcionariometa;
-import com.green.rn.CapaLoteJornalRN;
-import com.green.rn.EquipevendaRN;
 import java.io.Serializable;
 import java.util.Calendar;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
-import org.primefaces.context.RequestContext;
+
+import com.green.modelo.Equipevenda;
+import com.green.modelo.Funcionario;
+import com.green.modelo.Funcionariometa;
+import com.green.rn.CapaLoteJornalRN;
+import com.green.rn.EquipevendaRN;
 
 /**
  *
@@ -26,7 +27,11 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class EquipevendaBean implements Serializable {
 
-    @ManagedProperty("#{equipevendaRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{equipevendaRN}")
     private EquipevendaRN equipevendaRN;
     @ManagedProperty("#{capaLoteJornalRN}")
     private CapaLoteJornalRN capaLoteJornalRN;

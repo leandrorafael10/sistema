@@ -37,3 +37,9 @@
 #j_idt8:dockStile{
 	background: none;
 }
+@media ( max-width : 480px) {
+	#tudo-log{
+	max-height: 500px;
+	min-width: 200px;
+	}
+}

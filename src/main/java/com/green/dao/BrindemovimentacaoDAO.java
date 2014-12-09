@@ -5,18 +5,19 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Brinde;
-import com.green.modelo.BrindeTermo;
-import com.green.modelo.Brindemovimentacao;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Brinde;
+import com.green.modelo.BrindeTermo;
+import com.green.modelo.Brindemovimentacao;
 
 /**
  *
@@ -40,11 +41,13 @@ public class BrindemovimentacaoDAO {
         getSf().getCurrentSession().delete(b);
     }
 
-    public List<Brindemovimentacao> listar() {
+    @SuppressWarnings("unchecked")
+	public List<Brindemovimentacao> listar() {
         return (List<Brindemovimentacao>) getSf().getCurrentSession().createQuery("from com.green.modelo.Brindemovimentacao ").list();
     }
 
-    public List<BrindeTermo> somaBrindeMovimentacao(Brindemovimentacao b) {
+    @SuppressWarnings("rawtypes")
+	public List<BrindeTermo> somaBrindeMovimentacao(Brindemovimentacao b) {
         String sql = "select br.iDBrinde,  "
                 +"sum(case  br.iDTermoResponsabilidade.entradaSaida when 0 then br.qtd when 1 then 0 end)"
                 + "-sum( case br.iDTermoResponsabilidade.entradaSaida when 1 then br.qtd when 0 then 0 end) "

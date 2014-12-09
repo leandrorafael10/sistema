@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
  * @author leandro.silva
  */
 @Repository("fornecedorDAO")
+@SuppressWarnings("unchecked")
 public class FornecedorDAO {
 
     @Autowired
@@ -28,7 +29,8 @@ public class FornecedorDAO {
         getSf().getCurrentSession().save(fornecedor);
     }
 
-    public List<Fornecedor> listar() {
+    
+	public List<Fornecedor> listar() {
         return getSf().getCurrentSession().createCriteria(Fornecedor.class).list();
 
     }

@@ -85,6 +85,19 @@ public class UsuarioRn {
            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL,"Falha! Senha atual não confere.","Senha atual não confere."));
        }
     }
+    @Transactional("tmGreen")
+    public boolean atualizarSenhasExterno(Usuario usuario,String senhaAtual){
+        ContextoBean contextoBean = ContextoUtil.getContextoBean();
+        senhaAtual = senhaCripto(senhaAtual);
+       if (senhaAtual.equals(contextoBean.getUsuarioLogado().getSenha())){
+            contextoBean.getUsuarioLogado().setSenha(senhaCripto(usuario.getSenha()));
+            getUsuarioDao().atualizar(contextoBean.getUsuarioLogado());
+            
+            return true;
+       }else{
+           return false;
+       }
+    }
 
     @Transactional("tmGreen")
     public void atualizar(Usuario usuario) {

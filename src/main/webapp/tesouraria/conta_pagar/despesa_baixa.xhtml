@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<body>
+
+	<ui:composition template="./../../principal/templategreen.xhtml">
+
+		<ui:define name="principal-interna">
+
+			<h:form id="formContasAPagar">
+				<p:panel>
+					<h2>Contas a pagar</h2>
+
+					<p:tabView>
+						<p:tab title="Despesas vencidas">
+							<p:dataTable value="#{despesaBean.despesaVencidas}" var="despesaVencida" scrollable="true" scrollHeight="400">
+								<p:column headerText="Código">
+									<h:outputText value="#{despesaVencida.codigo}"></h:outputText>
+								</p:column>
+								<p:column headerText="DT Vencimento">
+									<h:outputText value="#{despesaVencida.DTVencimento}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Valor Nominal">
+									<h:outputText value="#{despesaVencida.valorNominal}">
+										<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+									</h:outputText>
+								</p:column>
+
+								<p:column headerText="Credor">
+									<h:outputText value="#{despesaVencida.IDFornecedor.IDPessoa.razao}"></h:outputText>
+								</p:column>
+								<p:column headerText="Confirmar Pag">
+									<p:commandLink value="confirmar pagamento" oncomplete="PF('dialogBaixaPag').show();" immediate="true"
+										update=":formBaixaPag, :formContasAPagar">
+										<f:setPropertyActionListener value="#{despesaVencida}" target="#{despesaDebitoBean.despesadebito.IDDespesa}" />
+									</p:commandLink>
+								</p:column>
+							</p:dataTable>
+						</p:tab>
+						<p:tab title="Despesas a pagar">
+							<h:form id="formDespesasAPagar">
+								<p:panel>
+									<h:panelGrid columns="5">
+										<h:outputText value="Período de " />
+										<p:calendar value="#{despesaBean.dTInicio}" pattern="dd/MM/yyyy" mask="true" locale="pt" size="10" required="true"
+											requiredMessage="Data de inicio do filtro."></p:calendar>
+										<h:outputText value=" até " />
+										<p:calendar value="#{despesaBean.dTFim}" pattern="dd/MM/yyyy" mask="true" locale="pt" size="10" required="true"
+											requiredMessage="Data fim filtro." />
+										<p:commandButton value="buscar" actionListener="#{despesaBean.filtroPeriodoSituacao}" update=":formContasAPagar" />
+									</h:panelGrid>
+								</p:panel>
+								<p:dataTable value="#{despesaBean.despesas}" var="despesa" scrollable="true" scrollHeight="400">
+									<p:column headerText="Código">
+										<h:outputText value="#{despesa.codigo}"></h:outputText>
+									</p:column>
+									<p:column headerText="DT Vencimento">
+										<h:outputText value="#{despesa.DTVencimento}">
+											<f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Valor Nominal">
+										<h:outputText value="#{despesa.valorNominal}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Credor">
+										<h:outputText value="#{despesa.IDFornecedor.IDPessoa.razao}"></h:outputText>
+									</p:column>
+									<p:column headerText="Confirmar Pag">
+										<p:commandLink value="confirmar pagamento" oncomplete="PF('dialogBaixaPag').show();" update=":formBaixaPag">
+											<f:setPropertyActionListener value="#{despesa}" target="#{despesaDebitoBean.despesadebito.IDDespesa}" />
+										</p:commandLink>
+									</p:column>
+								</p:dataTable>
+							</h:form>
+						</p:tab>
+					</p:tabView>
+				</p:panel>
+			</h:form>
+			<h:form id="formBaixaPag">
+				<p:dialog modal="true" widgetVar="dialogBaixaPag" header="Confirmar pagamento">
+					<p:panel>
+						<h:panelGrid columns="2">
+							<p:outputLabel value="Codigo :" />
+							<p:outputLabel value="#{despesaDebitoBean.despesadebito.IDDespesa.codigo}"></p:outputLabel>
+							<p:outputLabel value="Data vencic. :"></p:outputLabel>
+							<p:outputLabel value="#{despesaDebitoBean.despesadebito.IDDespesa.DTVencimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+							</p:outputLabel>
+							<p:outputLabel value="Valor :" />
+							<p:outputLabel value="#{despesaDebitoBean.despesadebito.IDDespesa.valorNominal}">
+								<f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+							</p:outputLabel>
+							<p:outputLabel value="Data baixa:" />
+							<p:calendar value="#{despesaDebitoBean.despesadebito.IDDebito.DTBaixa}" required="true"
+								requiredMessage="data da baixa e obrigatório!" />
+							<p:outputLabel value="Valor pago:" />
+							<p:inputText value="#{despesaDebitoBean.despesadebito.IDDespesa.valorLiquido}" required="true"
+								requiredMessage="valor pago é obrigatório!">
+								<f:convertNumber minFractionDigits="2" />
+							</p:inputText>
+						</h:panelGrid>
+						<p:separator />
+						<p:commandButton value="confirmar" actionListener="#{despesaDebitoBean.salvar(event)}"
+							oncomplete="PF('dialogBaixaPag').hide();" update=":formBaixaPag,:formContasAPagar" />
+					</p:panel>
+				</p:dialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

@@ -4,9 +4,8 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Contato;
-import com.green.modelo.Pessoa;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -14,6 +13,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Contato;
+import com.green.modelo.Pessoa;
 
 /**
  *
@@ -63,7 +65,8 @@ public class ContatoDAO extends AbstractDao<Contato, Integer> {
         getSf().getCurrentSession().delete(obj);
         getSf().getCurrentSession().flush();
     }
-    public List<Contato> contatoPessoa(Pessoa pessoa){
+    @SuppressWarnings("unchecked")
+	public List<Contato> contatoPessoa(Pessoa pessoa){
         Criterion filtro = Restrictions.eq("iDPessoa", pessoa);
         Criteria criteria = getSf().getCurrentSession().createCriteria(Contato.class);
         criteria.add(filtro);

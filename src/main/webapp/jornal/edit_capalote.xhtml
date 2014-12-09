@@ -195,6 +195,7 @@
                                             value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}"
                                             required="#{capaLoteJornalBean.capalotejornal.gerador!=''?(capaLoteJornalBean.capalotejornal.gerador!=null?true:false):false}"
                                             pattern="dd/MM/yyyy"
+                                            locale="pt"
                                             requiredMessage="Quando há numero de gestor e obrigatório data de gestor!">
 
                                 </p:calendar>
@@ -292,7 +293,9 @@
                                     value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}" />
                                 <h:outputText value="Data cancelamento:" />
                                 <p:calendar value="#{capaLoteJornalBean.capalotejornal.DTCancel}"
-                                            pattern="dd/MM/yyyy" required="true" showOn="button"
+                                            pattern="dd/MM/yyyy" required="true" 
+                                            locale="pt"
+                                            showOn="button"
                                             requiredMessage="Para o cancelamento e obrigatório a tata do cancelamento!" />
 
 
@@ -354,7 +357,9 @@
                                 </h:outputText>
                                 <h:outputText value="Data estorno:" />
                                 <p:calendar value="#{capaLoteJornalBean.vendaestorno.DTEstorno}"
-                                            pattern="dd/MM/yyyy" required="true" showOn="button"
+                                            pattern="dd/MM/yyyy" required="true" 
+                                            showOn="button"
+                                            locale="pt"
                                             requiredMessage="data de estorno e obrigatório!" />
                                 <h:outputText value="valor a ser estornado: " />
                                 <p:inputText value="#{capaLoteJornalBean.vendaestorno.valor}"

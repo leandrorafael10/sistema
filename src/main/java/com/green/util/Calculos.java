@@ -24,7 +24,8 @@ public class Calculos {
      * sempre para todo dia 10 de cada mês
      * 
      */
-    public static Map<Date, BigDecimal> calculaProRata(Date inicio, Date fim, BigDecimal valor, Integer dia) {
+    @SuppressWarnings({ "rawtypes", "deprecation" })
+	public static Map<Date, BigDecimal> calculaProRata(Date inicio, Date fim, BigDecimal valor, Integer dia) {
         Map<Date, BigDecimal> map = new HashMap<>();
         Calendar dataInicio = Calendar.getInstance();
         Calendar dataFim = Calendar.getInstance();
@@ -67,8 +68,6 @@ public class Calculos {
             BigDecimal primeiraParcela = valor.divide(new BigDecimal(ultimoDiaMesInicio), 2, RoundingMode.UP);
             primeiraParcela = primeiraParcela.multiply(new BigDecimal(prorataInicio));//calculo do valor da pro-rata da primeira parcela
 
-            //Calendar date = dataInicio;
-            Calendar dataF = dataFim;
             dataInicio.add(Calendar.MONTH, +1);
             map.put(dataInicio.getTime(), primeiraParcela);//salvando mês evalor da primeira parcela
             // dataFim.roll(Calendar.MONTH, false);

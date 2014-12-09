@@ -6,6 +6,7 @@ package com.green.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,6 +18,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "funcionario")
 public class Funcionario implements Serializable {
+
     @Lob
     @Column(name = "Imagem")
     private byte[] imagem;
@@ -73,8 +75,7 @@ public class Funcionario implements Serializable {
     @Size(max = 120)
     @Column(name = "MotivoDemissao")
     private String motivoDemissao;
-    
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "Sexo")
@@ -90,7 +91,7 @@ public class Funcionario implements Serializable {
     @Column(name = "serieCtps")
     @Size(max = 10)
     private String serieCtps;
-    @JoinColumn(name = "IDFilial",referencedColumnName = "IDFilial")
+    @JoinColumn(name = "IDFilial", referencedColumnName = "IDFilial")
     @ManyToOne(optional = false)
     private Filial iDFilial;
     @JoinColumn(name = "IDUsuario", referencedColumnName = "IDUsuario")
@@ -105,7 +106,8 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "idfornecedor", referencedColumnName = "IDFornecedor")
     @ManyToOne
     private Fornecedor idfornecedor;
-    
+    @OneToMany(mappedBy = "iDFuncionario")
+    private List<HistoricoDemicao> iDHistoricoDemicao;
 
     public Funcionario() {
     }
@@ -350,6 +352,12 @@ public class Funcionario implements Serializable {
         this.imagem = imagem;
     }
 
+    public List<HistoricoDemicao> getIDHistoricoDemicao() {
+        return iDHistoricoDemicao;
+    }
 
-    
+    public void setIDHistoricoDemicao(List<HistoricoDemicao> iDHistoricoDemicao) {
+        this.iDHistoricoDemicao = iDHistoricoDemicao;
+    }
+
 }

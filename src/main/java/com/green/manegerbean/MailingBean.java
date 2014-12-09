@@ -31,7 +31,11 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class MailingBean implements Serializable {
 
-    private Mailing mailing;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Mailing mailing;
     private Mailing mailingAtualizar;
     @ManagedProperty("#{mailingRN}")
     private MailingRN mailingRN;
@@ -40,7 +44,6 @@ public class MailingBean implements Serializable {
     private static final int LIVRE = 1;
     private static final int PROSPEQUITANDO = 2;
     private static final int NEGOCIACAO = 3;
-    private static final int FINALIZADO = 4;
     private Obsmailing obsmailing;
     private Date dataObs;
     private Funcionario funcionario  = new Funcionario();

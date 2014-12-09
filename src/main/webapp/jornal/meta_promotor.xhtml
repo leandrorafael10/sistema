@@ -27,12 +27,12 @@
                             <h:outputText value="#{equipe.IDGerente.IDPessoa.razao}"/>
                         </p:column>
                         <p:column headerText="Alterar atual" width="80">
-                            <p:commandButton value="alterar" oncomplete="dialogAltMeta.show()" update=":formAltMeta" onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                            <p:commandButton value="alterar" oncomplete="PF('dialogAltMeta').show()" update=":formAltMeta" >
                                 <f:setPropertyActionListener value="#{equipe}" target="#{equipevendaBean.equipevenda}"/>
                             </p:commandButton>
                         </p:column>
                         <p:column headerText="Nova meta" width="80">
-                            <p:commandButton value="nova" actionListener="#{graficoVendedorTv.graficoVendedorMeta(equipe)}" onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                            <p:commandButton value="nova" actionListener="#{graficoVendedorTv.graficoVendedorMeta(equipe)}" >
                                 <f:setPropertyActionListener value="#{equipe}" target="#{equipevendaBean.equipevenda}"/>
                                 <f:setPropertyActionListener value="#{equipe}" target="#{funcionariometaBean.funcionariometa.IDEquipevenda}"/>
                             </p:commandButton>
@@ -40,7 +40,7 @@
                     </p:dataTable>
                 </h:form>
                 <h:form id="formAltMeta">
-                    <p:dialog widgetVar="dialogAltMeta" modal="true">
+                    <p:dialog widgetVar="dialogAltMeta" modal="true" width="500">
                         <p:panel>
                             <p:messages id="messages"/>
                             <h:panelGrid columns="2">
@@ -84,11 +84,12 @@
                             </p:dataTable>
 
                         </p:panel>
-                        <p:commandButton value="sair" onclick="dialogAltMeta.hide();"/>
+                        <p:separator/>
+                        <p:commandButton value="sair" onclick="PF('dialogAltMeta').hide();"/>
                     </p:dialog>
                 </h:form>
                 <h:form id="formNovaMeta">
-                    <p:dialog widgetVar="dialogNovaMeta" modal="true">
+                    <p:dialog widgetVar="dialogNovaMeta" modal="true" header="Meta Promotor">
                         <p:panel>
                             <h:panelGrid columns="4">
                                 
@@ -144,18 +145,13 @@
                             <h:outputText value="#{graficoVendedorTv.media}"  styleClass="azul">
                                 <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
                             </h:outputText>
-                            <p:separator/>
-                            <p:barChart  value="#{graficoVendedorTv.linearModel}" legendPosition="ne"
-                                         animate="true" style="width: 750px"
-                                        />  
-                            <p:barChart  value="#{graficoVendedorTv.linearModelFat}" legendPosition="ne"
-                                         animate="true" style="width: 750px"
-                                        />  
-
+                           
                         </p:panel>
-
-                        <p:commandButton value="salvar" actionListener="#{funcionariometaBean.salvar(equipevendaBean.equipevenda)}" update=":formAdmMeta,:formNovaMeta" oncomplete="dialogNovaMeta.hide();" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                        <p:commandButton value="sair" onclick="dialogNovaMeta.hide();"/>
+                        <br/>
+                        <p:separator/>
+						<br/>
+                        <p:commandButton value="salvar" actionListener="#{funcionariometaBean.salvar(equipevendaBean.equipevenda)}" update=":formAdmMeta,:formNovaMeta" oncomplete="PF('dialogNovaMeta').hide();" />
+                        <p:commandButton value="sair" onclick="PF('dialogNovaMeta').hide();"/>
                     </p:dialog>
                 </h:form>
             </ui:define>

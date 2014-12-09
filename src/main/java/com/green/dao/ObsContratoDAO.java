@@ -39,7 +39,8 @@ public class ObsContratoDAO {
         this.sf = sf;
     }
 
-    public List<ObsContrato> buscaPorContrato(ContratoMidia midia) {
+    @SuppressWarnings("unchecked")
+	public List<ObsContrato> buscaPorContrato(ContratoMidia midia) {
         Query query =getSf().getCurrentSession().createQuery("from com.green.modelo.ObsContrato c where c.iDContratoMidia = :cm").setParameter("cm", midia);
         return (List<ObsContrato>)query.list();
     }

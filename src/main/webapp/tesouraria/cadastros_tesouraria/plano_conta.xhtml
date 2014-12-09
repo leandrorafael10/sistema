@@ -3,172 +3,181 @@
 To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/principal/templategreen.xhtml">
-    <ui:define name="principal-interna">
-        <f:view>
-            <h:form id="formPlanoContas">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" template="/principal/templategreen.xhtml">
+	<ui:define name="principal-interna">
 
-                <p:growl id="growlPlanoContas" life="30000"/>
-                <p:messages id="msgPl"/>
-                <p:fieldset legend="filtro">
-                    <h:panelGrid columns="4" cellspacing="20">
-                        <h:outputText value="Codigo: "/>
-                        <p:inputMask value="#{classificacaoBean.filtroCodigo}"   
-                                     mask="9.99.99.99?.99" size="10"/>  
-                        <h:outputText value="Descricão"/>
-                        <p:inputText  value="#{classificacaoBean.filtroDescricao}"/>
-                    </h:panelGrid>
-                </p:fieldset>
-                <p:commandButton value="filtrar" actionListener="#{classificacaoBean.filtroClassificacao}" update="formPlanoContas:tabelaPlanoContas" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                <p:commandButton value="listar tudo" actionListener="#{classificacaoBean.listando()}" update="formPlanoContas:tabelaPlanoContas" onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-                <p:commandButton value="inserir novo" onclick="dialogPlanoContas.show();"/>
-                <p:separator/>
-                <p:panel header="Plano de conta" id="panelPlanocontas">
-                    <p:messages/>
-                    <p:dataTable value="#{classificacaoBean.classificacaos}" var="classificacao"  
-                                 scrollable="true" 
-                                 scrollHeight="350" 
-                                 emptyMessage="Sem registros"
-                                 editable="true"
-                                 id="tabelaPlanoContas"
-                                 >
-                        <p:ajax event="rowEdit"  listener="#{classificacaoBean.atualizar}" update=":formPlanoContas:msgPl" />  
-                        <p:ajax event="rowEditCancel"  listener="#{classificacaoBean.cancelarEdicao}" update=":formPlanoContas:msgPl" />  
-                        <p:column width="">
-                            <f:facet name="header">código est. </f:facet>
-                            #{classificacao.codigo}
-                        </p:column>
-                        <p:column  headerText="descrição ">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{classificacao.descricao}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <h:inputText value="#{classificacao.descricao}"/>
-                                </f:facet>
-                            </p:cellEditor>
+		<h:form id="formPlanoContas">
+			<br />
+			<br />
+			<p:growl id="growlPlanoContas" life="30000" />
 
-                        </p:column>
-                        <p:column headerText="status">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:graphicImage library="imagens" name="ativo_#{classificacao.ativo}.png"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <h:selectOneMenu value="#{classificacao.ativo}" >  
-                                        <f:selectItem  itemLabel="ativar"  itemValue="#{true}" />  
-                                        <f:selectItem  itemLabel="desativar"  itemValue="#{false}"/>  
-                                    </h:selectOneMenu> 
-                                </f:facet>
-                            </p:cellEditor>
+			<p:panel id="panelPlanocontas">
+				<h2>Plano de Contas</h2>
+				<p:messages />
+				<p:commandLink onclick="PF('dialogPlanoContas').show();">
+					<h:graphicImage library="imagens" name="new.png" />
+					<br />
+					<h:outputText value="incluir novo" />
+				</p:commandLink>
+				<br />
+				<p:separator />
+				<br />
+				<p:dataTable value="#{classificacaoRN.listar()}" var="classificacao" scrollable="true" scrollHeight="350"
+					emptyMessage="Sem registros" editable="true" id="tabelaPlanoContas" widgetVar="classificacaoTable">
+					<p:ajax event="rowEdit" listener="#{classificacaoBean.atualizar}" update=":formPlanoContas:tabelaPlanoContas" />
+					<p:ajax event="rowEditCancel" listener="#{classificacaoBean.cancelarEdicao}" update=":formPlanoContas:tabelaPlanoContas" />
+					<p:column filterBy="#{classificacao.codigo}" headerText="código est.">
 
-                        </p:column>
-                        <p:column  headerText="natureza ">
-                            <h:graphicImage library="imagens" name="entrada_#{classificacao.natureza}.png"/>
-                        </p:column>
-                        <p:column  headerText="tipo">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{classificacao.tipo?'variavel':'fixa'}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <h:selectOneMenu value="#{classificacao.tipo}">
-                                        <f:selectItem itemLabel="variavel" itemValue="#{true}"/>
-                                        <f:selectItem itemLabel="fixa" itemValue="#{false}"/>
-                                    </h:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="usuario inc.">
-                            <h:outputText value="#{classificacao.IDUsuario.IDFuncionario.IDPessoa.razao}"/> 
-                        </p:column>
-                        <p:column >
-                            <f:facet name="header">data inc. </f:facet>
-                            <h:outputText value="#{classificacao.DTInc}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="excluir">
-                            <p:commandLink oncomplete="dialogExcluirPC.show()" update=":formExcluirPlanoContas:gridExcluirPlanoContas" immediate="true">
-                                <h:graphicImage library="imagens" name="Delete-10.png"/>
-                                <f:setPropertyActionListener value="#{classificacao}" target="#{classificacaoBean.classificacao}"/>
-                            </p:commandLink>
-                        </p:column>
-                        <p:column headerText="editar">
-                            <p:rowEditor /> 
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
 
-                <p:panel header="Legenda natureza" style="width: 100px;float: right">
-                    <h:graphicImage library="imagens" name="entrada_true.png" />Entrada
-                    <br/>
-                    <h:graphicImage library="imagens" name="entrada_false.png" />Saida
-                </p:panel>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{classificacao.codigo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputMask mask="9.99.99.99.99" size="11" value="#{classificacao.codigo}" required="true" requiredMessage="código estrutual e obrigatório!"></p:inputMask>
+							</f:facet>
+						</p:cellEditor>
 
-            </h:form>
-            <h:form id="formNovoPlanoContas">
-                <p:dialog id="dialogPC" widgetVar="dialogPlanoContas" header="Novo plano de contas" modal="true">
-                    <p:growl id="growlNovoPC" life="30000"/>
-                    <p:panel>
-                        <h:outputText value="Código estrutural: "/>
-                        <p:inputMask  mask="9.99.99.99.99"
-                                      size="11" 
 
-                                      value="#{classificacaoBean.classificacaoNovo.codigo}" required="true" requiredMessage="Código Estrutural é obrigatório!"/>
-                        <br/>
-                        <br/>
-                        <h:outputText value="Descrição: "/>
-                        <p:inputText size="40" value="#{classificacaoBean.classificacaoNovo.descricao}"
-                                     maxlength="50"
-                                     required="true" requiredMessage="Descrição e obrigatório!"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <p:selectBooleanCheckbox value="#{classificacaoBean.classificacaoNovo.ativo}" required="true"/>
-                        <h:outputText value="ativo"/>
-                        <br/>
-                        <br/>
-                        <h:outputText value="Natureza: "/>
-                        <p:selectOneMenu value="#{classificacaoBean.classificacaoNovo.natureza}" required="true">
-                            <f:selectItem itemLabel="Entrada" itemValue="#{true}"/>
-                            <f:selectItem itemLabel="Saida" itemValue="#{false}"/>
-                        </p:selectOneMenu>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <h:outputText value="Tipo: "/>
-                        <p:selectOneMenu value="#{classificacaoBean.classificacaoNovo.tipo}" required="true">
-                            <f:selectItem itemLabel="Fixa" itemValue="#{false}"/>
-                            <f:selectItem itemLabel="Váriavel" itemValue="#{true}"/>
-                        </p:selectOneMenu>
-                        <p:separator/>
-                        <p:commandButton value="Salvar" actionListener="#{classificacaoBean.salvar}" 
-                                         update="growlNovoPC"/>&nbsp;&nbsp;&nbsp;
-                        <p:commandButton value="Cancelar" onclick="dialogPlanoContas.hide()"/>
-                    </p:panel>
-                </p:dialog>
-            </h:form>
-            <h:form id="formExcluirPlanoContas">
-                <p:dialog widgetVar="dialogExcluirPC" header="Excluir plano de contas" modal="true">
-                    <p:panel>
-                        <h:panelGrid columns="2" id="gridExcluirPlanoContas">
-                            <h:outputText value="Código: "/>
-                            <h:outputLabel value="#{classificacaoBean.classificacao.IDClassificacao}"/>
-                            <h:outputText value="Código estrutural: "/>
-                            <h:outputLabel value="#{classificacaoBean.classificacao.codigo}"/>
-                            <h:outputText value="Descrição: "/>
-                            <h:outputLabel value="#{classificacaoBean.classificacao.descricao}"/>
-                        </h:panelGrid>
-                        <p:separator/>
-                        <p:commandButton value="Confirmar" actionListener="#{classificacaoBean.excluir(actionEvent)}" update=":formPlanoContas" oncomplete="dialogExcluirPC.hide()"/>
-                    </p:panel>
-                </p:dialog>
-            </h:form>
+					</p:column>
+					<p:column headerText="descrição " filterBy="#{classificacao.descricao}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{classificacao.descricao}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{classificacao.descricao}" />
+							</f:facet>
+						</p:cellEditor>
 
-        </f:view>
-    </ui:define>
+					</p:column>
+					<p:column filterBy="#{classificacao.ativo}" headerText="status">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('classificacaoTable').filter()">
+								<f:selectItem itemLabel="ativo" itemValue="#{true}" />
+								<f:selectItem itemLabel="inativo" itemValue="#{false}" />
+							</p:selectOneMenu>
+						</f:facet>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:graphicImage library="imagens" name="ativo_#{classificacao.ativo}.png" />
+							</f:facet>
+							<f:facet name="input">
+								<h:selectOneMenu value="#{classificacao.ativo}">
+									<f:selectItem itemLabel="ativar" itemValue="#{true}" />
+									<f:selectItem itemLabel="desativar" itemValue="#{false}" />
+								</h:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+
+					</p:column>
+					<p:column filterBy="#{classificacao.natureza}" headerText="natureza ">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('classificacaoTable').filter()">
+								<f:selectItem itemLabel="Entrada" itemValue="#{true}" />
+								<f:selectItem itemLabel="Saida" itemValue="#{false}" />
+							</p:selectOneMenu>
+						</f:facet>
+						<h:graphicImage library="imagens" name="entrada_#{classificacao.natureza}.png" />
+					</p:column>
+					<p:column headerText="tipo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{classificacao.tipo?'variavel':'fixa'}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:selectOneMenu value="#{classificacao.tipo}">
+									<f:selectItem itemLabel="variavel" itemValue="#{true}" />
+									<f:selectItem itemLabel="fixa" itemValue="#{false}" />
+								</h:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="usuario inc.">
+						<h:outputText value="#{classificacao.IDUsuario.IDFuncionario.IDPessoa.razao}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">data inc. </f:facet>
+						<h:outputText value="#{classificacao.DTInc}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="excluir">
+						<p:commandLink oncomplete="PF('dialogExcluirPC').show()" update=":formExcluirPlanoContas:gridExcluirPlanoContas"
+							immediate="true">
+							<h:graphicImage library="imagens" name="Delete-10.png" />
+							<f:setPropertyActionListener value="#{classificacao}" target="#{classificacaoBean.classificacao}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="editar">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+
+			<p:panel header="Legenda natureza" style="width: 100px;float: right">
+				<h:graphicImage library="imagens" name="entrada_true.png" />Entrada
+                <br />
+				<h:graphicImage library="imagens" name="entrada_false.png" />Saida
+            </p:panel>
+
+		</h:form>
+		<h:form id="formNovoPlanoContas">
+			<p:dialog id="dialogPC" widgetVar="dialogPlanoContas" header="Novo plano de contas" modal="true">
+				<p:growl id="growlNovoPC" life="30000" />
+				<p:panel>
+					<h:panelGrid columns="3">
+						<h:outputLabel value="Código estrutural: " />
+						<p:inputMask mask="9.99.99.99.99" size="11" value="#{classificacaoBean.classificacaoNovo.codigo}" required="true"
+							requiredMessage="Código Estrutural é obrigatório!" />
+
+						<p:selectBooleanCheckbox itemLabel="ativo" value="#{classificacaoBean.classificacaoNovo.ativo}" />
+						<h:outputLabel value="Descrição: " />
+						<p:inputText size="40" value="#{classificacaoBean.classificacaoNovo.descricao}" maxlength="50" required="true"
+							requiredMessage="Descrição e obrigatório!" />
+						<br />
+						<h:outputLabel value="Natureza: " />
+						<p:selectOneMenu value="#{classificacaoBean.classificacaoNovo.natureza}" required="true">
+							<f:selectItem itemLabel="Entrada" itemValue="#{true}" />
+							<f:selectItem itemLabel="Saida" itemValue="#{false}" />
+						</p:selectOneMenu>
+						<br />
+						<h:outputLabel value="Tipo: " />
+						<p:selectOneMenu value="#{classificacaoBean.classificacaoNovo.tipo}" required="true">
+							<f:selectItem itemLabel="Fixa" itemValue="#{false}" />
+							<f:selectItem itemLabel="Váriavel" itemValue="#{true}" />
+						</p:selectOneMenu>
+
+
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar" actionListener="#{classificacaoBean.salvar(actionEvent)}" update=":formPlanoContas"
+						oncomplete="PF('dialogPlanoContas').hide();" />&nbsp;&nbsp;
+                    <p:commandButton value="Cancelar" onclick="PF('dialogPlanoContas').hide();" />
+				</p:panel>
+			</p:dialog>
+		</h:form>
+		<h:form id="formExcluirPlanoContas">
+			<p:dialog widgetVar="dialogExcluirPC" header="Excluir plano de contas" modal="true">
+				<p:panel>
+					<h:panelGrid columns="2" id="gridExcluirPlanoContas">
+						<h:outputText value="Código: " />
+						<h:outputLabel value="#{classificacaoBean.classificacao.IDClassificacao}" />
+						<h:outputText value="Código estrutural: " />
+						<h:outputLabel value="#{classificacaoBean.classificacao.codigo}" />
+						<h:outputText value="Descrição: " />
+						<h:outputLabel value="#{classificacaoBean.classificacao.descricao}" />
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Confirmar" actionListener="#{classificacaoBean.excluir(actionEvent)}" update=":formPlanoContas"
+						oncomplete="PF('dialogExcluirPC').hide()" />
+				</p:panel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
 </ui:composition>
 

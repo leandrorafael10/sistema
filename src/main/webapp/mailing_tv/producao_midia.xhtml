@@ -123,8 +123,19 @@
                         <p:dialog widgetVar="dialogForData" modal="true">
                             <h2>Alterar datas de veiculação</h2><br/>
                             <h:panelGrid columns="2" cellspacing="20">
-                                <h:outputLabel value="Data inic. :"><p:calendar value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.dataInicioContrato}" locale="pt"  navigator="true" pattern="dd/MM/yyyy" mode="inline"/></h:outputLabel>
-                                <h:outputLabel value="Data Fim:"><p:calendar value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.dataFimContrato}" locale="pt"  navigator="true" pattern="dd/MM/yyyy" mode="inline"/></h:outputLabel>
+                                <h:outputLabel value="Data inic. :">
+                                    <p:calendar 
+                                        value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.dataInicioContrato}" 
+                                        locale="pt"  navigator="true" pattern="dd/MM/yyyy" 
+                                        mode="inline"/>
+                                </h:outputLabel>
+                                <h:outputLabel value="Data Fim:">
+                                    <p:calendar 
+                                        value="#{producaoMidiaBean.producaoMidia.IDContratoMidia.dataFimContrato}" 
+                                        locale="pt"  navigator="true"
+                                        pattern="dd/MM/yyyy" mode="inline"
+                                        />
+                                </h:outputLabel>
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="alterar" actionListener="#{contratoMidiaRN.atualizar(producaoMidiaBean.producaoMidia.IDContratoMidia)}" update=":formListaProducao" oncomplete="dialogForData.hide()"/>

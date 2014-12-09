@@ -64,9 +64,9 @@
                             </p:commandLink>
                         </p:column>
                         <p:column width="50"> 
-                            <p:commandLink value="imprimir">
-                                
-                            </p:commandLink>
+                            <h:commandLink value="imprimir" 
+                                           action="#{brindemovimentacaoBean.geraPdfMovimentacao(movimentacao)}" 
+                                           target="_blank"/>
                         </p:column>
 
                     </p:dataTable>
@@ -104,13 +104,12 @@
                             </p:column>
                         </p:dataTable>
                         <br/>
-                        <h:commandLink value="pdf"  target="_blank" action="#{brindemovimentacaoBean.geraPdfTermo()}"/>
+                        <h:commandLink value="imprimir"  target="_blank" action="#{brindemovimentacaoBean.geraPdfTermo()}"/>
                     </p:dialog>
                 </h:form>
                 <h:form id="formRetorno">
-                    <p:dialog widgetVar="dialogRetorno">
+                    <p:dialog widgetVar="dialogRetorno" header="Retorno">
                         <p:panel>
-                            <h2>Retorno</h2>
                             <h:panelGrid columns="2">
                                 <h:outputText value="Responsável:"/>
                                 <p:selectOneMenu value="#{brindemovimentacaoBean.termoRetorno.IDFuncionario}" converter="funcionarioConverter" filter="true">
@@ -121,6 +120,7 @@
                                 </p:selectOneMenu>
                                 <h:outputText value="data do retorno:"/>
                                 <p:calendar mask="true" pattern="dd/MM/yyyy" size="10"
+                                            locale="pt"
                                             value="#{brindemovimentacaoBean.termoRetorno.dataTermo}"/>
                             </h:panelGrid>
                             <br/>
@@ -133,15 +133,21 @@
                                     <p:spinner value="#{brindeRet.qtd}" min="0" size="6"/>
                                 </p:column>
                             </p:dataTable>
+                            <h:panelGrid columns="1">
+                                <h:outputText value="Obs:"/>
+
+                                <p:inputTextarea value="#{brindemovimentacaoBean.termoRetorno.obs}" cols="50"
+                                                 rows="2"/>
+                            </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="confirmar" actionListener="#{brindemovimentacaoBean.salvarRetorno(event)}" update=":formRetorno"
                                              />
                         </p:panel>
                     </p:dialog>
                 </h:form>
-                
+
                 <h:form id="formTermo">
-                    <p:dialog widgetVar="dialogTermo">
+                    <p:dialog widgetVar="dialogTermo" header="Termo Responsabilidade">
                         <p:panel>
                             <h:panelGrid columns="2">
                                 <h:outputText value="Responsável:"/>
@@ -153,6 +159,7 @@
                                 </p:selectOneMenu>
                                 <h:outputText value="data do termo:"/>
                                 <p:calendar mask="true" pattern="dd/MM/yyyy" size="10"
+                                            locale="pt"
                                             value="#{brindemovimentacaoBean.termoResponsabilidade.dataTermo}"/>
                             </h:panelGrid>
                             <p:dataTable value="#{brindemovimentacaoBean.brindeTermos}" var="brinde"
@@ -164,6 +171,14 @@
                                     <p:spinner value="#{brinde.qtd}" min="0" size="8"/>
                                 </p:column>
                             </p:dataTable>
+                            <br/>
+                            <h:panelGrid columns="1">
+                                <h:outputText value="Obs:"/>
+
+                                <p:inputTextarea value="#{brindemovimentacaoBean.termoResponsabilidade.obs}" cols="50"
+                                                 rows="2"/>
+                            </h:panelGrid>
+                            <p:separator/>
 
                             <p:commandButton value="confirmar" actionListener="#{brindemovimentacaoBean.salvar(event)}" update=":formNovoTermo"
                                              oncomplete="PF('dialogTermo').hide();"/>
@@ -171,10 +186,9 @@
                     </p:dialog>
                 </h:form>
                 <h:form id="formExtra">
-                    <p:dialog widgetVar="dialogExtra">
-                        
+                    <p:dialog widgetVar="dialogExtra" header="Retirada extra">
+
                         <p:panel>
-                            <h2> Retirada extra</h2>
                             <h:panelGrid columns="2">
                                 <h:outputText value="Responsável:"/>
                                 <p:selectOneMenu value="#{brindemovimentacaoBean.termoRetorno.IDFuncionario}" converter="funcionarioConverter" filter="true">
@@ -185,6 +199,7 @@
                                 </p:selectOneMenu>
                                 <h:outputText value="data do termo:"/>
                                 <p:calendar mask="true" pattern="dd/MM/yyyy" size="10"
+                                            locale="pt"
                                             value="#{brindemovimentacaoBean.termoRetorno.dataTermo}"/>
                             </h:panelGrid>
                             <p:dataTable value="#{brindemovimentacaoBean.termoRetorno.brindeTermoList}" var="brinde"
@@ -197,6 +212,12 @@
                                 </p:column>
                             </p:dataTable>
 
+                            <h:panelGrid columns="1">
+                                <h:outputText value="Obs:"/>
+                                <p:inputTextarea value="#{brindemovimentacaoBean.termoRetorno.obs}" cols="50"
+                                                 rows="2"/>
+                            </h:panelGrid>
+                            <p:separator/>
                             <p:commandButton value="confirmar" actionListener="#{brindemovimentacaoBean.salvarExtra(event)}" update=":formExtra"
                                              oncomplete="PF('dialogExtra').hide();"/>
                         </p:panel>

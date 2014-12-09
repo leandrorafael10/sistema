@@ -34,7 +34,8 @@ public class CapaLoteRN {
         return getCapaLoteDAO().listar();
     }
 
-    @Transactional(value = "tmGreen")
+    @SuppressWarnings("deprecation")
+	@Transactional(value = "tmGreen")
     public void salvar(CapaLote capaLote) {
         CapaLote cl = getCapaLoteDAO().buscaPorCodigo(capaLote.getNumeroContrato());
         if (cl == null) {

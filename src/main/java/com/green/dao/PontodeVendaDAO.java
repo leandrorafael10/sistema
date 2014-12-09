@@ -4,20 +4,23 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Pontodevenda;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.green.modelo.Pontodevenda;
+
 /**
  *
  * @author leandro.silva
  */
 @Repository("pontodeVendaDAO")
+@SuppressWarnings("unchecked")
 public class PontodeVendaDAO extends AbstractDao<Pontodevenda, Integer> {
 
     @Autowired
@@ -35,13 +38,15 @@ public class PontodeVendaDAO extends AbstractDao<Pontodevenda, Integer> {
         return 1;
     }
 
-    @Override
+    
+	@Override
     public List<Pontodevenda> listar() {
-        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Pontodevenda");
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Pontodevenda p order by p.descricao");
         return (List<Pontodevenda>) query.list();
     }
 
-    public List listarPeriodo(Date inicio, Date fim, int status) {
+    @SuppressWarnings("rawtypes")
+	public List listarPeriodo(Date inicio, Date fim, int status) {
         String opcao;
         switch (status) {
             case 0:

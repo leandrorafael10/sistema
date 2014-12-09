@@ -4,15 +4,16 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Tipopagamento;
-import com.green.rn.TipoPagamentoRN;
 import java.io.Serializable;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+
+import com.green.modelo.Tipopagamento;
+import com.green.rn.TipoPagamentoRN;
 
 /**
  *
@@ -22,7 +23,11 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class TipoPagamentoBean implements Serializable{
     
-    @ManagedProperty("#{tipoPagamentoRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{tipoPagamentoRN}")
     private TipoPagamentoRN tipoPagamentoRN;
     private Tipopagamento tipopagamento ;
     private List<Tipopagamento> tipoPagamentos;

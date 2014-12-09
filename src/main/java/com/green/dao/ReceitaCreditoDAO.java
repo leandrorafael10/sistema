@@ -23,16 +23,21 @@ import org.springframework.stereotype.Repository;
  * @author leandro.silva
  */
 @Repository("receitaCreditoDAO")
+@SuppressWarnings({"deprecation","unchecked"})
 public class ReceitaCreditoDAO {
+
     @Autowired
     private SessionFactory sf;
 
-    public void salvar(Receitacredito receitacredito){
+    public void salvar(Receitacredito receitacredito) {
         receitacredito.setTipoPagamento(true);
         getSf().getCurrentSession().save(receitacredito);
         getSf().getCurrentSession().flush();
     }
-    public List<Receitacredito> filtro(Receita receitaFiltro, Date fimVenc, int pag, BigDecimal valorIni, BigDecimal valorFim){
+
+    
+	
+	public List<Receitacredito> filtro(Receita receitaFiltro, Date fimVenc, int pag, BigDecimal valorIni, BigDecimal valorFim) {
         Map<String, Object> params = new HashMap<>();
         String sql = " From com.green.modelo.Receitacredito d where ";
         Query query;
@@ -57,11 +62,9 @@ public class ReceitaCreditoDAO {
                 sql = sql + " d.iDCredito.dTBaixa >= :inicio and d.iDCredito.dTBaixa <= :fim ";
             }
         }
-         
-        
-        
+
         if (receitaFiltro.getIDCliente() != null) {
-            params.put("cliente",receitaFiltro.getIDCliente());
+            params.put("cliente", receitaFiltro.getIDCliente());
             sql = sql + " and iDCliente = :cliente ";
         }
         if (!valorFim.equals(new BigDecimal("0.00")) || !valorIni.equals(new BigDecimal("0.00"))) {
@@ -74,15 +77,31 @@ public class ReceitaCreditoDAO {
 
         return query.list();
     }
-    
-    public List<Receitacredito> listaReceitaPorVendedor(Date inicio ,Date fim,Funcionario f){
+
+    public List<Receitacredito> listaReceitaPorVendedor(Date inicio, Date fim, Funcionario f) {
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Receitacredito rc"
                 + " where rc.iDReceita.idorigem.IDContratoMidia.iDvendedor = :vendedor "
                 + "and rc.iDCredito.dTBaixa >= :inicio and rc.iDCredito.dTBaixa <= :fim and rc.iDReceita.pago = true").setDate("inicio", inicio)
                 .setDate("fim", fim).setParameter("vendedor", f);
         return query.list();
     }
-    
+
+    public List<Receitacredito> listaCreditoPorPeriodo(Date inicio, Date fim) {
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Receitacredito rc "
+                + "where rc.iDCredito.dTBaixa >= :inicio and rc.iDCredito.dTBaixa <= :fim and rc.iDReceita.pago = true order by"
+                + " rc.iDReceita.iDCliente.iDPessoa.razao").
+                setDate("inicio", inicio).setDate("fim", fim);
+        return query.list();
+    }
+    public List<Receitacredito> listaCreditoClienterPorPeriodo(Date inicio, Date fim) {
+        Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Receitacredito rc "
+                + "where rc.iDCredito.dTBaixa >= :inicio and rc.iDCredito.dTBaixa <= :fim and rc.iDReceita.pago = true "
+                + "and rc.iDReceita.iDCliente.iDTipocliente is null and rc.iDReceita.ativo = true order by"
+                + " rc.iDReceita.iDCliente.iDPessoa.razao").
+                setDate("inicio", inicio).setDate("fim", fim);
+        return query.list();
+    }
+
     public SessionFactory getSf() {
         return sf;
     }
@@ -90,6 +109,9 @@ public class ReceitaCreditoDAO {
     public void setSf(SessionFactory sf) {
         this.sf = sf;
     }
-    
-    
+
+    public void excluir(Receitacredito receitacredito) {
+        getSf().getCurrentSession().delete(receitacredito);
+    }
+
 }

@@ -46,8 +46,9 @@
                             <h:outputText value="Data da venda:" />
                             <p:calendar value="#{capaLoteJornalBean.capalotejornal.DTVenda}"
                                         pattern="dd/MM/yyyy" required="true"
+                                        locale="pt"
                                         requiredMessage="Data da venda e obrigatorio!" showOn="button"
-                                        size="14" locale="pt" navigator="true" />
+                                        size="14" navigator="true" />
                             <h:outputText value="Forma Pagamento :" />
                             <p:selectOneMenu converter="tipoPagamentoConverter"
                                              required="true" requiredMessage="Escolha uma forma de pagamento."

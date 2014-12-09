@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
  * @author leandro.silva
  */
 @Repository("capaLoteJornalDAO")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CapaLoteJornalDAO {
 
     @Autowired
@@ -38,7 +39,7 @@ public class CapaLoteJornalDAO {
     
     
 
-    @SuppressWarnings("unchecked")
+    
     public List<Capalotejornal> listar() {
         return (List<Capalotejornal>) getSf()
                 .getCurrentSession()
@@ -47,7 +48,7 @@ public class CapaLoteJornalDAO {
                 .list();
     }
 
-    @SuppressWarnings("unchecked")
+    
     public List<Capalotejornal> listarMesAtual() {
 
         Calendar calendar = Calendar.getInstance();
@@ -62,7 +63,7 @@ public class CapaLoteJornalDAO {
         return (List<Capalotejornal>) query.list();
     }
 
-    @SuppressWarnings("unchecked")
+    
     public List<Capalotejornal> listarDia() {
 
         Calendar calendar = Calendar.getInstance();
@@ -82,13 +83,13 @@ public class CapaLoteJornalDAO {
      * Busca por numero  para usuarios externos
      * Não retorna contratos agendados
      */
-    public Capalotejornal buscarPorNumeroLike(int c) {
+    public Capalotejornal buscarPorNumeroLike(String c) {
         Query query = getSf()
                 .getCurrentSession()
                 .createQuery(
                         "from com.green.modelo.Capalotejornal "
                         + "cp where cp.contrato = :numero and cp.status !=3")
-                .setInteger("numero", c);
+                .setString("numero", c);
         return (Capalotejornal) query.uniqueResult();
     }
 
@@ -124,13 +125,13 @@ public class CapaLoteJornalDAO {
      * Busca referente o numero contrato para usuarios internos
      */
 
-    public Capalotejornal buscarPorNumero(int c) {
+    public Capalotejornal buscarPorNumero(String c) {
         Query query = getSf()
                 .getCurrentSession()
                 .createQuery(
                         "from com.green.modelo.Capalotejornal "
                         + "cp where cp.contrato = :numero ")
-                .setInteger("numero", c);
+                .setString("numero", c);
         return (Capalotejornal) query.uniqueResult();
     }
     /*
@@ -160,7 +161,7 @@ public class CapaLoteJornalDAO {
         return (Capalotejornal) query.uniqueResult();
     }
 
-    @SuppressWarnings("unchecked")
+    
     public List<Capalotejornal> listarSemGestor() {
         Query query = getSf()
                 .getCurrentSession()
@@ -169,7 +170,8 @@ public class CapaLoteJornalDAO {
         return (List<Capalotejornal>) query.list();
     }
 
-    public List rankingEquipe(int mes, int ano) {
+    
+	public List rankingEquipe(int mes, int ano) {
 
         //ultimo dia do mes da consulta
         GregorianCalendar fimMes = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -231,7 +233,7 @@ public class CapaLoteJornalDAO {
         return obj;
     }
 
-    @SuppressWarnings("unchecked")
+    
     public List<Capalotejornal> listarComFiltro(int mes, int ano, int status) {
         String sql;
         Query query = null;
@@ -248,7 +250,7 @@ public class CapaLoteJornalDAO {
         return (List<Capalotejornal>) query.list();
     }
 
-    @SuppressWarnings("unchecked")
+    
     public List<Capalotejornal> listarPorPeriodo(Date inicio, Date fim, int status) {
         String sql;
         Query query = null;
@@ -270,20 +272,20 @@ public class CapaLoteJornalDAO {
         getSf().getCurrentSession().update(capalotejornal);
     }
 
-    public Capalotejornal buscarPorNumContrato(int codigo) {
+    public Capalotejornal buscarPorNumContrato(String codigo) {
         Query query = getSf()
                 .getCurrentSession()
                 .createQuery(
                         "from com.green.modelo.Capalotejornal cp where cp.contrato = :codigo")
-                .setInteger("codigo", codigo);
+                .setString("codigo", codigo);
         return (Capalotejornal) query.uniqueResult();
 
     }
 
-    @SuppressWarnings("rawtypes")
+    
     public List vendasEquipe(Equipevenda equipevenda) {
         String sql = "Select count(cj.iDCapalotejornal) ,month(cj.dTVenda),year(cj.dTVenda),sum(cj.valor),"
-                + "avg(cj.valor * cp.modalidade)  from com.green.modelo.Capalotejornal cj "
+                + "avg(cj.valor)  from com.green.modelo.Capalotejornal cj "
                 + "where cj.iDFuncionarioPromotor = :promotor group by cj.iDFuncionarioPromotor, month(cj.dTVenda) ,"
                 + "year(cj.dTVenda) order by year(cj.dTVenda) desc,month(cj.dTVenda) desc ";
         Query query = getSf().getCurrentSession().createQuery(sql)
@@ -295,21 +297,21 @@ public class CapaLoteJornalDAO {
         return obj;
     }
 
-    @SuppressWarnings("rawtypes")
+    
     public List faturamentoGeral() {
-        String sql = "select count(cj.iDCapalotejornal), sum(cj.valor * cj.modalidade),year(cj.dTVenda),month(cj.dTVenda)"
-                + " from com.green.modelo.Capalotejornal cj where cj.status = 1 group by year(cj.dTVenda) ,month(cj.dTVenda)";
+        String sql = "select count(cj.iDCapalotejornal), sum(cj.valor), year(cj.dTVenda), month(cj.dTVenda)"
+                + " from com.green.modelo.Capalotejornal cj where cj.status = 1 and cj.dTVenda >= '2014-03-01' group by year(cj.dTVenda) ,month(cj.dTVenda)";
         Query query = getSf().getCurrentSession().createQuery(sql)
-                .setMaxResults(12);
+                ;
         // midias = query.list();
         query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
         List obj = query.list();
         return obj;
     }
 
-    @SuppressWarnings("rawtypes")
+    
     public List faturamentoPorEquipe() {
-        String sql = "select cp.iDGerente,sum(cp.valor * cp.modalidade),count(cp.iDCapalotejornal)  from com.green.modelo.Capalotejornal cp  group by cp.iDGerente";
+        String sql = "select cp.iDGerente,sum(cp.valor),count(cp.iDCapalotejornal)  from com.green.modelo.Capalotejornal cp  group by cp.iDGerente";
         Query query = getSf().getCurrentSession().createQuery(sql);
         // midias = query.list();
         query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
@@ -317,7 +319,7 @@ public class CapaLoteJornalDAO {
         return obj;
     }
 
-    @SuppressWarnings("rawtypes")
+    
     public List situacaoVendas() {
         String sql = "select count(cp.iDCapalotejornal),case cp.status when 0 then 'cancelado' "
                 + "when 1 then 'faturado' when 2 "

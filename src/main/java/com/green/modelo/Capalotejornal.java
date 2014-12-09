@@ -43,7 +43,7 @@ public class Capalotejornal implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "contrato")
-    private int contrato;
+    private String contrato;
     @Size(max = 45)
     @Column(name = "gerador")
     private String gerador;
@@ -131,7 +131,7 @@ public class Capalotejornal implements Serializable {
         this.iDCapalotejornal = iDCapalotejornal;
     }
 
-    public Capalotejornal(Integer iDCapalotejornal, int contrato, String nome, int status, boolean statusBrinde, BigDecimal valor) {
+    public Capalotejornal(Integer iDCapalotejornal, String contrato, String nome, int status, boolean statusBrinde, BigDecimal valor) {
         this.iDCapalotejornal = iDCapalotejornal;
         this.contrato = contrato;
         this.nome = nome;
@@ -156,11 +156,11 @@ public class Capalotejornal implements Serializable {
         this.unidade = unidade;
     }
 
-    public int getContrato() {
+    public String getContrato() {
         return contrato;
     }
 
-    public void setContrato(int contrato) {
+    public void setContrato(String contrato) {
         this.contrato = contrato;
     }
 

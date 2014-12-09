@@ -4,52 +4,55 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Ccusto;
-import com.green.rn.CCustoRN;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
+
+import org.primefaces.event.RowEditEvent;
+
+import com.green.modelo.Ccusto;
+import com.green.rn.CCustoRN;
 
 /**
  *
  * @author leandro.silva
  */
-@ManagedBean(name="ccustoBean")
+@ManagedBean(name = "ccustoBean")
 @ViewScoped
-public class CCustoBean implements Serializable{
-    
-    @ManagedProperty("#{ccustoRN}")
+public class CCustoBean implements Serializable {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{ccustoRN}")
     private CCustoRN cCustoRN;
-    
-    private List<Ccusto> ccustos = new ArrayList<Ccusto>();
-    private List<Ccusto> filtroccustos = new ArrayList<Ccusto>();
-    private Ccusto ccustoNovo = new Ccusto();
-    private Ccusto ccustoEditado =new Ccusto();
-    private Ccusto ccusto = new Ccusto();
-    
+    private Ccusto ccusto;
+
     @PostConstruct
-    private void init(){
-        setCcustos(getcCustoRN().listar());
-    }
-    
-    public void listando(){
-        setCcustos(getcCustoRN().listar());
-    }
-    public void salvar(){
-        getcCustoRN().salvar(getCcustoNovo());
-        setCcustos(getcCustoRN().listar());
-    }
-    public void atualizar(){
-        getcCustoRN().atualizar(getCcustoEditado(),getCcusto());
-    }
-    public void excluir(){
-        getcCustoRN().excluir(getCcusto());
+    private void init() {
+        this.ccusto = new Ccusto();
     }
 
+    public void salvar(ActionEvent event) {
+        getcCustoRN().salvar(getCcusto());
+        setCcusto(new Ccusto());
+    }
+
+    public void atualizar(ActionEvent event) {
+        getcCustoRN().atualizar(getCcusto());
+    }
+    public void atualizarLinha(RowEditEvent editEvent){
+        getcCustoRN().atualizar((Ccusto)editEvent.getObject());
+    }
+
+    public void excluir() {
+        getcCustoRN().excluir(getCcusto());
+    }
 
     public Ccusto getCcusto() {
         return ccusto;
@@ -58,32 +61,7 @@ public class CCustoBean implements Serializable{
     public void setCcusto(Ccusto ccusto) {
         this.ccusto = ccusto;
     }
-     
-    public Ccusto getCcustoNovo() {
-        return ccustoNovo;
-    }
 
-    public void setCcustoNovo(Ccusto ccustoNovo) {
-        this.ccustoNovo = ccustoNovo;
-    }
-    
-    
-    public Ccusto getCcustoEditado() {
-        return ccustoEditado;
-    }
-
-    public void setCcustoEditado(Ccusto ccustoEditado) {
-        this.ccustoEditado = ccustoEditado;
-    }
-    
-    public List<Ccusto> getCcustos() {
-        return ccustos;
-    }
-
-    public void setCcustos(List<Ccusto> ccustos) {
-        this.ccustos = ccustos;
-    }
-    
     public CCustoRN getcCustoRN() {
         return cCustoRN;
     }
@@ -92,13 +70,4 @@ public class CCustoBean implements Serializable{
         this.cCustoRN = cCustoRN;
     }
 
-    public List<Ccusto> getFiltroccustos() {
-        return filtroccustos;
-    }
-
-    public void setFiltroccustos(List<Ccusto> filtroccustos) {
-        this.filtroccustos = filtroccustos;
-    }
-    
-     
 }

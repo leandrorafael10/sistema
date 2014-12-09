@@ -13,6 +13,7 @@ package com.green.util;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -29,7 +30,7 @@ public class CepWebService {
     private String bairro = "";
     private String tipo_logradouro = "";
     private String logradouro = "";
-    private String cep;
+    
 
     private int resultado = 0;
     private String resultado_txt = "";
@@ -38,7 +39,8 @@ public class CepWebService {
      * Creates a new instance of CepWebService
      * @param cep
      */
-    public CepWebService(String cep) {
+    @SuppressWarnings("rawtypes")
+	public CepWebService(String cep) {
         try {
             URL url = new URL("http://cep.republicavirtual.com.br/web_cep.php?cep=" + cep + "&formato=xml");
 

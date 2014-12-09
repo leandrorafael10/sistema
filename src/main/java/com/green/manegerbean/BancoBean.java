@@ -4,15 +4,16 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Banco;
-import com.green.rn.BancoRN;
 import java.io.Serializable;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+
+import com.green.modelo.Banco;
+import com.green.rn.BancoRN;
 
 /**
  *
@@ -22,7 +23,11 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class BancoBean implements Serializable{
     
-    @ManagedProperty("#{bancoRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{bancoRN}")
     private BancoRN bancoRN;
     private List<Banco> bancos;
     private Banco banco;

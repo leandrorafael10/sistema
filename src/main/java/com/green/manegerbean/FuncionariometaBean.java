@@ -4,18 +4,20 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.Equipevenda;
-import com.green.modelo.Funcionariometa;
-import com.green.rn.FuncionariometaRN;
 import java.io.Serializable;
-import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.LineChartSeries;
+
+import com.green.modelo.Equipevenda;
+import com.green.modelo.Funcionariometa;
+import com.green.rn.FuncionariometaRN;
 
 /**
  *
@@ -25,7 +27,11 @@ import org.primefaces.model.chart.LineChartSeries;
 @ViewScoped
 public class FuncionariometaBean implements Serializable {
 
-    @ManagedProperty("#{funcionariometaRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{funcionariometaRN}")
     private FuncionariometaRN funcionariometaRN;
     private Funcionariometa funcionariometa;
     private CartesianChartModel linearModel;
@@ -96,7 +102,7 @@ public class FuncionariometaBean implements Serializable {
     }
 
     public void onCancel(RowEditEvent event) {
-        Funcionariometa f = (Funcionariometa) event.getObject();
+       
     }
 
     public CartesianChartModel getLinearModel() {

@@ -25,10 +25,10 @@ public class Despesadebito implements Serializable {
     @Column(name = "TipoPagamento")
     private boolean tipoPagamento;
     @JoinColumn(name = "IDDespesa", referencedColumnName = "IDDespesa")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade={CascadeType.MERGE})
     private Despesa iDDespesa;
     @JoinColumn(name = "IDDebito", referencedColumnName = "IDDebito")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE})
     private Debito iDDebito;
 
     public Despesadebito() {

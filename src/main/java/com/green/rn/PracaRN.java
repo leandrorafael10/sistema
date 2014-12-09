@@ -43,10 +43,7 @@ public class PracaRN {
 
     
 
-    public List<String> listarPraca() {
-        return getPracaDAO().listarPraca();
-    }
-
+   
     
     public List<Praca> listarPorPessoa(Pessoa p){
         return getPracaDAO().listarPorPessoa(p);

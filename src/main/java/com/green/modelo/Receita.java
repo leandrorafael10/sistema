@@ -67,8 +67,8 @@ public class Receita implements Serializable {
     @NotNull
     @Column(name = "IsentoJuros")
     private boolean isentoJuros;
-    @Column(name = "del")
-    private boolean del;
+    @Column(name = "ativo")
+    private boolean ativo;
     @Column(name = "DTDesconto")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dTDesconto;
@@ -103,10 +103,13 @@ public class Receita implements Serializable {
     private Boolean tipoJuros;
     @Column(name = "iss")
     private BigDecimal iss;
+    @Column(name="Codigo")
+    private String codigo;
     @JoinColumn(name = "IDUsuario", referencedColumnName = "IDUsuario")
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     private Usuario iDUsuario;
-    
+    @OneToOne(fetch = FetchType.LAZY, mappedBy="iDReceita", optional = true)
+    private Receitacredito iDReceitacredito;
     @JoinColumn(name = "IDOrigem", referencedColumnName = "idorigem")
     @ManyToOne(fetch = FetchType.EAGER)
     private Origem idorigem;
@@ -159,12 +162,12 @@ public class Receita implements Serializable {
         this.valorNominal = valorNominal;
     }
 
-    public boolean getDel() {
-        return del;
+    public boolean getAtivo() {
+        return ativo;
     }
 
-    public void setDel(boolean del) {
-        this.del = del;
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     public Integer getIDReceita() {
@@ -342,8 +345,16 @@ public class Receita implements Serializable {
     public void setTipoJuros(Boolean tipoJuros) {
         this.tipoJuros = tipoJuros;
     }
+    
+    public String getCodigo() {
+		return codigo;
+	}
 
-    public Usuario getIDUsuario() {
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public Usuario getIDUsuario() {
         return iDUsuario;
     }
 
@@ -430,6 +441,15 @@ public class Receita implements Serializable {
     public void setIss(BigDecimal iss) {
         this.iss = iss;
     }
+
+    public Receitacredito getIDReceitacredito() {
+        return iDReceitacredito;
+    }
+
+    public void setIDReceitacredito(Receitacredito iDReceitacredito) {
+        this.iDReceitacredito = iDReceitacredito;
+    }
+    
 
     
 

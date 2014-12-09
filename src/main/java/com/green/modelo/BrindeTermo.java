@@ -7,6 +7,7 @@
 package com.green.modelo;
 
 import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +48,9 @@ public class BrindeTermo implements Serializable {
     @Column(name = "Qtd")
     @NotNull
     private int qtd;
+    
+    
+
 
     public BrindeTermo() {
     }
@@ -100,6 +104,8 @@ public class BrindeTermo implements Serializable {
     public void setQtd(int qtd) {
         this.qtd = qtd;
     }
+
+    
     
     
     

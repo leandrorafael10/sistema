@@ -4,11 +4,13 @@
  */
 package com.green.view;
 
-import com.green.modelo.Conta;
-import com.green.modelo.Credito;
 import java.util.List;
+
 import javax.faces.model.ListDataModel;
+
 import org.primefaces.model.SelectableDataModel;
+
+import com.green.modelo.Conta;
 
 /**
  *
@@ -29,7 +31,8 @@ public class ContaDataModelo extends ListDataModel<Conta> implements SelectableD
         return t.getIDConta().toString();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Conta getRowData(String string) {
         List<Conta> conta= (List<Conta>)getWrappedData();
         for(Conta c : conta){

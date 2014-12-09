@@ -25,7 +25,7 @@ public class Receitacredito implements Serializable {
     @Column(name = "TipoPagamento")
     private boolean tipoPagamento;
     @JoinColumn(name = "IDReceita", referencedColumnName = "IDReceita")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Receita iDReceita;
     @JoinColumn(name = "IDCredito", referencedColumnName = "IDCredito")
     @ManyToOne(optional = false)

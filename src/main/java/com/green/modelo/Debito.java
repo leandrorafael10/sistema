@@ -60,18 +60,7 @@ public class Debito implements Serializable {
     @JoinColumn(name = "IDTpDocumento", referencedColumnName = "IDDocumento")
     @ManyToOne(optional = false)
     private Documento iDTpDocumento;
-    @JoinColumn(name = "IDConta", referencedColumnName = "IDConta")
-    @ManyToOne(optional = false)
-    private Conta iDConta;
-    @JoinColumn(name = "IDClassificacao", referencedColumnName = "IDClassificacao")
-    @ManyToOne(optional = false)
-    private Classificacao iDClassificacao;
-    @JoinColumn(name = "IDCCusto", referencedColumnName = "IDCCusto")
-    @ManyToOne(optional = false)
-    private Ccusto iDCCusto;
-    @JoinColumn(name = "IDAtividade", referencedColumnName = "IDAtividade")
-    @ManyToOne(optional = false)
-    private Atividade iDAtividade;
+    
 
     public Debito() {
     }
@@ -176,38 +165,7 @@ public class Debito implements Serializable {
         this.iDTpDocumento = iDTpDocumento;
     }
 
-    public Conta getIDConta() {
-        return iDConta;
-    }
-
-    public void setIDConta(Conta iDConta) {
-        this.iDConta = iDConta;
-    }
-
-    public Classificacao getIDClassificacao() {
-        return iDClassificacao;
-    }
-
-    public void setIDClassificacao(Classificacao iDClassificacao) {
-        this.iDClassificacao = iDClassificacao;
-    }
-
-    public Ccusto getIDCCusto() {
-        return iDCCusto;
-    }
-
-    public void setIDCCusto(Ccusto iDCCusto) {
-        this.iDCCusto = iDCCusto;
-    }
-
-    public Atividade getIDAtividade() {
-        return iDAtividade;
-    }
-
-    public void setIDAtividade(Atividade iDAtividade) {
-        this.iDAtividade = iDAtividade;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

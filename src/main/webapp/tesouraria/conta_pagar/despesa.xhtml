@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<body>
+
+	<ui:composition template="./../../principal/templategreen.xhtml">
+
+		<ui:define name="principal-interna">
+			<br />
+			<br />
+			<h:form id="formNovaDespesa">
+				<p:panel>
+					<h2>Cadastro Despesa</h2>
+					<p:separator />
+					<p:messages />
+
+					<p:fieldset legend="Documento a Pagar">
+						<h:panelGrid columns="3" cellpadding="5">
+							<h:outputLabel value="Credor :">
+								<br />
+								<p:selectOneMenu filter="true" converter="fornecedorConverter" value="#{despesaBean.despesaNovo.IDFornecedor}">
+									<f:selectItem itemLabel="" itemValue="#{null}" />
+									<f:selectItems value="#{fornecedorRN.listar()}" var="fornecedor" itemLabel="#{fornecedor.IDPessoa.fantasia}"
+										itemValue="#{fornecedor}" />
+
+								</p:selectOneMenu>
+							</h:outputLabel>
+							<h:outputLabel value="Número : ">
+								<br />
+								<p:inputText value="#{despesaBean.despesaNovo.codigo}" maxlength="100" size="15" />
+							</h:outputLabel>
+							<p:fieldset legend="Desconto">
+								<h:panelGrid columns="4">
+									<h:outputLabel value="Valor : ">
+										<p:inputText value="#{despesaBean.despesaNovo.valorDesconto}" size="10">
+											<f:convertNumber minFractionDigits="2" />
+										</p:inputText>
+									</h:outputLabel>
+									<h:outputLabel value="Data Limite : ">
+										<p:calendar mask="true" pattern="dd/MM/yyyy" value="#{despesaBean.despesaNovo.DTDesconto}" locale="pt" size="12" />
+									</h:outputLabel>
+								</h:panelGrid>
+							</p:fieldset>
+							<h:outputLabel value="Atividade:">
+								<br />
+								<p:selectOneMenu converter="atividadeConverter" value="#{despesaBean.despesaNovo.IDAtividade}" filter="true">
+									<f:selectItems value="#{atividadeRN.listar()}" var="atividade" itemLabel="#{atividade.descricao}"
+										itemValue="#{atividade}" />
+								</p:selectOneMenu>
+							</h:outputLabel>
+							<h:outputLabel value="Tipo documento :">
+								<br />
+								<p:selectOneMenu filter="true" converter="documentoConverter" value="#{despesaBean.despesaNovo.IDDocumento}">
+									<f:selectItems value="#{documentoRN.listar()}" var="documento" itemLabel="#{documento.descricao}"
+										itemValue="#{documento}" />
+								</p:selectOneMenu>
+							</h:outputLabel>
+							<p:fieldset legend="Multa">
+								<h:panelGrid>
+									<h:outputLabel value="valor : ">
+										<p:inputText value="#{despesaBean.despesaNovo.valorMulta}">
+											<f:convertNumber minFractionDigits="2" />
+										</p:inputText>
+									</h:outputLabel>
+								</h:panelGrid>
+							</p:fieldset>
+							<h:outputLabel value="Classificação :">
+								<br />
+								<p:selectOneMenu filter="true" converter="classificacaoConverter" value="#{despesaBean.despesaNovo.IDClassificacao}">
+									<f:selectItems value="#{classificacaoRN.listarNatureza(false)}" var="classificacao" itemLabel="#{classificacao.descricao}"
+										itemValue="#{classificacao}" />
+								</p:selectOneMenu>
+							</h:outputLabel>
+							<h:outputLabel value="Centro de custo:">
+								<br />
+								<p:selectOneMenu filter="true" converter="ccustoConverter" value="#{despesaBean.despesaNovo.IDCCusto}">
+									<f:selectItems value="#{ccustoRN.listar()}" var="ccusto" itemLabel="#{ccusto.descricao}" itemValue="#{ccusto}" />
+								</p:selectOneMenu>
+							</h:outputLabel>
+							<p:fieldset legend="Juros ao Dia :">
+								<h:outputLabel value="Valor : ">
+									<p:inputText value="#{despesaBean.despesaNovo.valorJuros}">
+										<f:convertNumber minFractionDigits="2" maxIntegerDigits="2" />
+									</p:inputText>
+								</h:outputLabel>
+							</p:fieldset>
+							<h:outputLabel value="Data emissão:">
+								<br />
+								<p:calendar value="#{despesaBean.despesaNovo.DTEmissao}" mask="true" locale="pt" pattern="dd/MM/yyyy" size="10" />
+							</h:outputLabel>
+						</h:panelGrid>
+					</p:fieldset>
+					<p:separator />
+					<h:panelGrid columns="7">
+						<h:outputLabel value="valor :">
+							<br />
+							<p:inputText value="#{despesaBean.despesaNovo.valorNominal}" required="true" requiredMessage="Valor liquído e obrigatório!"
+								size="10">
+								<f:convertNumber minFractionDigits="2" />
+							</p:inputText>
+						</h:outputLabel>
+						<h:outputLabel value="Data 1º vencimento:">
+							<br />
+							<p:calendar value="#{despesaBean.despesaNovo.DTVencimento}" mask="true" locale="pt" pattern="dd/MM/yyyy" size="10"
+								required="true" requiredMessage="data vencimento e obrigatório!" />
+						</h:outputLabel>
+						<h:outputLabel value="Parcelas:">
+							<br />
+							<p:inputText value="#{despesaBean.despesaNovo.quantidadeParcela}" size="2" maxlength="3"
+								converterMessage="Quantidade minimo de uma máximo de 100">
+								<f:validateLongRange minimum="1" maximum="100" />
+							</p:inputText>
+						</h:outputLabel>
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="salvar" actionListener="#{despesaBean.confirmacaoDespesa}" update=":formNovaDespesa"/>
+				</p:panel>
+			</h:form>
+			<h:form id="formConfirmaDespesa">
+				<p:dialog header="Despesa" widgetVar="dialogDespesa" modal="true">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel value="Atividade:">
+							<h:outputText value="#{despesaBean.despesaNovo.IDAtividade.descricao}" />
+						</h:outputLabel>
+						<h:outputLabel value="Tipo documento : ">
+							<h:outputText value="#{despesaBean.despesaNovo.IDDocumento.descricao}" />
+						</h:outputLabel>
+						<h:outputLabel value="Classificação:">
+							<h:outputText value="#{despesaBean.despesaNovo.IDClassificacao.descricao}" />
+						</h:outputLabel>
+						<h:outputLabel value="Centro de Custo:">
+							<h:outputText value="#{despesaBean.despesaNovo.IDCCusto.descricao}" />
+						</h:outputLabel>
+						<h:outputLabel value="Fornecedor:">
+							<h:outputText value="#{despesaBean.despesaNovo.IDFornecedor.IDPessoa.fantasia}" />
+						</h:outputLabel>
+						<h:outputLabel value="Data emição:">
+							<h:outputText value="#{despesaBean.despesaNovo.DTEmissao}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:outputLabel>
+
+						<h:outputLabel value="Valor  :  " styleClass="azul">
+							<h:outputText value="#{despesaBean.despesaNovo.valorNominal}">
+								<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+							</h:outputText>
+							<h:outputText value="  em  " />
+							<h:outputText value="#{despesaBean.despesaNovo.quantidadeParcela}" />
+							<h:outputText value="  vez(es)  " />
+						</h:outputLabel>
+
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="salvar" actionListener="#{despesaBean.salvar(actionEvent)}" update=":formNovaDespesa"
+						oncomplete="PF('dialogDespesa').hide()" />
+                        &nbsp;
+                        <p:commandButton value="cancelar" oncomplete="PF('dialogDespesa').hide()" />
+				</p:dialog>
+
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

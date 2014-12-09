@@ -4,7 +4,28 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.CalculoComissao;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.primefaces.context.RequestContext;
+import org.primefaces.model.chart.CartesianChartModel;
+
 import com.green.modelo.CapaLote;
 import com.green.modelo.Terceiros;
 import com.green.rn.CalculoComissaoRN;
@@ -14,24 +35,6 @@ import com.green.rn.TerceirosRN;
 import com.green.util.ComissaoVendas;
 import com.green.util.ContextoUtil;
 import com.green.util.RelatorioUtil;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.primefaces.context.RequestContext;
-import org.primefaces.model.chart.CartesianChartModel;
 
 /**
  *
@@ -41,7 +44,11 @@ import org.primefaces.model.chart.CartesianChartModel;
 @ViewScoped
 public class CapaLoteBean implements Serializable {
 
-    @ManagedProperty("#{capaLoteRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{capaLoteRN}")
     private CapaLoteRN capaLoteRN;
     @ManagedProperty("#{funcaoRN}")
     private FuncaoRN funcaoRN;
@@ -216,7 +223,8 @@ public class CapaLoteBean implements Serializable {
         RelatorioUtil.geraRelatorioBean("lote", jrds, parametros);
     }
 
-    public String conterterPeriodo(Integer mes, Integer ano) {
+    @SuppressWarnings("deprecation")
+	public String conterterPeriodo(Integer mes, Integer ano) {
         Date date = new Date();
         String periodo = "";
         if (mes == 0) {
@@ -266,9 +274,11 @@ public class CapaLoteBean implements Serializable {
         }
         return periodo;
     }
-    private void carregaGrafico(){
+    
+	@SuppressWarnings("unused")
+	private void carregaGrafico(){
         this.graficoBarra = new CartesianChartModel();
-        List<CapaLote> lotes = getCapaLoteRN().listar();
+        
         
     }
 

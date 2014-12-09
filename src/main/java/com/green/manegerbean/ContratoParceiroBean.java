@@ -24,22 +24,25 @@ import org.primefaces.context.RequestContext;
  *
  * @author leandro.silva
  */
+@SuppressWarnings("serial")
 @ManagedBean(name = "contratoParceiroBean")
 @ViewScoped
-public class ContratoParceiroBean implements Serializable{
+public class ContratoParceiroBean implements Serializable {
 
     @ManagedProperty("#{contratoParceiroRN}")
     private ContratoParceiroRN contratoParceiroRN;
     private ContratoParceiro contratoParceiro;
     private BigDecimal receitaLiquida;
-    private BigDecimal lucro ;
+    private BigDecimal lucro;
     private BigDecimal comissaoVendResp;
-    private BigDecimal impostoResp ;
+    private BigDecimal impostoResp;
     private BigDecimal bvResp;
     private BigDecimal despesaSoma;
+    private BigDecimal valorBruto ;
     
+
     @PostConstruct
-    private void init(){
+    private void init() {
         this.contratoParceiro = new ContratoParceiro();
         this.contratoParceiro.setIDContratoMidia(new ContratoMidia());
         this.contratoParceiro.getIDContratoMidia().setPracas(new ArrayList<Praca>());
@@ -50,9 +53,10 @@ public class ContratoParceiroBean implements Serializable{
         this.impostoResp = new BigDecimal("0.00");
         this.bvResp = new BigDecimal("0.00");
         this.despesaSoma = new BigDecimal("0.00");
+        this.valorBruto = new BigDecimal("0.00");
     }
 
-    public void calculoTaxas(ActionEvent event){
+    public void calculoTaxas(ActionEvent event) {
         setBvResp(getReceitaLiquida().divide(new BigDecimal("100.00")).multiply(getContratoParceiro().getBv()));
         setComissaoVendResp(getReceitaLiquida().subtract(getBvResp()).divide(new BigDecimal("100.00")).multiply(getContratoParceiro().getComissao()));
         setImpostoResp(getReceitaLiquida().divide(new BigDecimal("100.00")).multiply(getContratoParceiro().getImposto()));
@@ -61,18 +65,21 @@ public class ContratoParceiroBean implements Serializable{
         RequestContext.getCurrentInstance().update("formInsereContrato");
         RequestContext.getCurrentInstance().execute("PF('dialogInsereContrato').show()");
     }
-    
-    public void salvar(ActionEvent event){
+
+    public void calcula_receita() {
+        setReceitaLiquida(getValorBruto().subtract(getValorBruto().divide(new BigDecimal("100.00")).multiply(getContratoParceiro().getComissaoAgencia())));
+    }
+
+    public void salvar(ActionEvent event) {
         getContratoParceiro().getIDContratoMidia().setValor(this.receitaLiquida);
-        getContratoParceiroRN().salvar(getContratoParceiro(),this.lucro);
+        getContratoParceiroRN().salvar(getContratoParceiro(), this.lucro);
         init();
     }
-    
+
     public ContratoParceiroRN getContratoParceiroRN() {
         return contratoParceiroRN;
     }
 
-    
     public void setContratoParceiroRN(ContratoParceiroRN contratoParceiroRN) {
         this.contratoParceiroRN = contratoParceiroRN;
     }
@@ -132,5 +139,13 @@ public class ContratoParceiroBean implements Serializable{
     public void setDespesaSoma(BigDecimal despesaSoma) {
         this.despesaSoma = despesaSoma;
     }
-    
+
+    public BigDecimal getValorBruto() {
+        return valorBruto;
+    }
+
+    public void setValorBruto(BigDecimal valorBruto) {
+        this.valorBruto = valorBruto;
+    }
+
 }

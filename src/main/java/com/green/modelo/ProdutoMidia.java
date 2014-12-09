@@ -37,8 +37,6 @@ public class ProdutoMidia implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "descricao")
     private String descricao;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "quantidade_insercao_diaria")
     private int quantidadeInsercaoDiaria;
     @Column(name = "DTinc")

@@ -6,21 +6,23 @@
 
 package com.green.dao;
 
-import com.green.modelo.Cliente;
-import com.green.modelo.ContratoMidia;
-import com.green.modelo.ContratoParceiro;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Cliente;
+import com.green.modelo.ContratoParceiro;
 
 /**
  *
  * @author leandro.silva
  */
 @Repository("contratoParceiroDAO")
+@SuppressWarnings("unchecked")
 public class ContratoParceiroDAO implements Crud<ContratoParceiro>{
 
     @Autowired
@@ -41,7 +43,8 @@ public class ContratoParceiroDAO implements Crud<ContratoParceiro>{
         getSf().getCurrentSession().update(o);
     }
     
-    public List<ContratoParceiro> buscaPorPeriodoTipo_parceiro(Date inicio,Date fim,int tipo,Cliente c){
+    
+	public List<ContratoParceiro> buscaPorPeriodoTipo_parceiro(Date inicio,Date fim,int tipo,Cliente c){
         String opcao = "";
         switch(tipo){
             case 0: opcao = "= 0 ";

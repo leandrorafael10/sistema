@@ -4,15 +4,17 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Funcionario;
-import com.green.modelo.Usuario;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Funcionario;
+import com.green.modelo.Usuario;
 
 /**
  *
@@ -56,7 +58,8 @@ public class UsuarioDao  {
         }
             
     }
-    public List<Usuario> listar(){
+    @SuppressWarnings("unchecked")
+	public List<Usuario> listar(){
         Criteria criteria = getSf().getCurrentSession().createCriteria(Usuario.class);
         return criteria.list();
     }

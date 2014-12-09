@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "conta")
 public class Conta implements Serializable {
+
     @NotNull
     @Column(name = "DTInc")
     @Temporal(TemporalType.TIMESTAMP)
@@ -64,22 +65,22 @@ public class Conta implements Serializable {
     @Column(name = "Del")
     private boolean del;
     @NotNull
-    @Size(max=45)
-    @Column(name="nomeAgencia")
+    @Size(max = 45)
+    @Column(name = "nomeAgencia")
     private String nomeAgencia;
     @JoinColumn(name = "IDUsuario", referencedColumnName = "IDUsuario")
-    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario iDUsuario;
     @JoinColumn(name = "IDTipoConta", referencedColumnName = "idtipoconta")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tipoconta iDTipoConta;
-    @JoinColumn(name = "IDPessoa", referencedColumnName = "IDPessoa")
+    @JoinColumn(name = "IDEmpresa", referencedColumnName = "IDEmpresa")
     @ManyToOne(optional = false)
-    private Pessoa iDPessoa;
+    private Empresa iDEmpresa;
     @JoinColumn(name = "IDBanco", referencedColumnName = "IDBanco")
     @ManyToOne(fetch = FetchType.LAZY)
     private Banco iDBanco;
-    @OneToOne(mappedBy = "iDConta",fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE,CascadeType.MERGE})
+    @OneToOne(mappedBy = "iDConta", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     private Boleto iDBoleto;
 
     public Conta() {
@@ -179,8 +180,6 @@ public class Conta implements Serializable {
         this.del = del;
     }
 
-    
-
     public Usuario getIDUsuario() {
         return iDUsuario;
     }
@@ -197,12 +196,12 @@ public class Conta implements Serializable {
         this.iDTipoConta = iDTipoConta;
     }
 
-    public Pessoa getIDPessoa() {
-        return iDPessoa;
+    public Empresa getIDEmpresa() {
+        return iDEmpresa;
     }
 
-    public void setIDPessoa(Pessoa iDPessoa) {
-        this.iDPessoa = iDPessoa;
+    public void setIDEmpresa(Empresa iDEmpresa) {
+        this.iDEmpresa = iDEmpresa;
     }
 
     public Banco getIDBanco() {
@@ -220,8 +219,6 @@ public class Conta implements Serializable {
     public void setIDBoleto(Boleto iDBoleto) {
         this.iDBoleto = iDBoleto;
     }
-
-    
 
     @Override
     public int hashCode() {
@@ -279,6 +276,5 @@ public class Conta implements Serializable {
     public void setNomeAgencia(String nomeAgencia) {
         this.nomeAgencia = nomeAgencia;
     }
-    
-    
+
 }

@@ -17,6 +17,7 @@ import javax.faces.bean.RequestScoped;
  *
  * @author leandro.silva
  */
+@SuppressWarnings("serial")
 @ManagedBean(name="produtoMidiaBean")
 @RequestScoped
 public class ProdutoMidiaBean implements Serializable{

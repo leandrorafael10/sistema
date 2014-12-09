@@ -5,6 +5,7 @@
  */
 package com.green.rn;
 
+import static br.com.caelum.stella.boleto.utils.StellaStringUtils.leftPadWithZeros;
 import com.green.dao.AtividadeDAO;
 import com.green.dao.CCustoDAO;
 import com.green.dao.ClassificacaoDAO;
@@ -59,10 +60,9 @@ public class ContratoParceiroRN {
     private ProducaoMidiaDAO producaoMidiaDAO;
     @Autowired
     private ReceitaDAO receitaDAO;
-    
 
     @Transactional("tmGreen")
-    public void salvar(ContratoParceiro parceiro,BigDecimal valor) {
+    public void salvar(ContratoParceiro parceiro, BigDecimal valor) {
         Receita receitaContrato = new Receita();
         try {
             parceiro.getIDContratoMidia().setDTinc(new Date());
@@ -76,12 +76,14 @@ public class ContratoParceiroRN {
                 getContratoParceiroDAO().salvar(parceiro);
                 ProducaoMidia midia = new ProducaoMidia();
                 midia.setIDContratoMidia(parceiro.getIDContratoMidia());
-                
+
             } else {
 
                 receitaContrato.setValorNominal(valor.divide(new BigDecimal("2")));
                 parceiro.getIDContratoMidia().setValor(parceiro.getIDContratoMidia().getValor().multiply(new BigDecimal(parceiro.getIDContratoMidia().getNumeroParcelas())));
+
                 getContratoMidiaDAO().salvarContrato(parceiro.getIDContratoMidia());
+                parceiro.getIDContratoMidia().setNContrato("P" + leftPadWithZeros(parceiro.getIDContratoMidia().getIdcontratoMidia().toString(), 9));
                 getContratoParceiroDAO().salvar(parceiro);
                 Origem origem = new Origem();
                 origem.setIDContratoMidia(parceiro.getIDContratoMidia());
@@ -101,7 +103,7 @@ public class ContratoParceiroRN {
                 receitaContrato.setValorDesconto(BigDecimal.ZERO);
                 receitaContrato.setValorJuros(BigDecimal.ZERO);
                 receitaContrato.setValorMulta(BigDecimal.ZERO);
-                salvarRecContr(receitaContrato,parceiro.getIDContratoMidia().getDataInicioContrato(), Integer.parseInt(parceiro.getIDContratoMidia().getNumeroParcelas()), parceiro.getIDContratoMidia().getNContrato());
+                salvarRecContr(receitaContrato, parceiro.getIDContratoMidia().getDataInicioContrato(), Integer.parseInt(parceiro.getIDContratoMidia().getNumeroParcelas()), parceiro.getIDContratoMidia().getNContrato());
                 ProducaoMidia midia = new ProducaoMidia();
                 midia.setIDContratoMidia(parceiro.getIDContratoMidia());
             }
@@ -116,9 +118,9 @@ public class ContratoParceiroRN {
         }
 
     }
-    
-    public List<ContratoParceiro> buscaPorPeriodoTipo_parceiro(Date inicio,Date fim,int tipo,Cliente c){
-       return getContratoParceiroDAO().buscaPorPeriodoTipo_parceiro(inicio, fim, tipo, c);
+
+    public List<ContratoParceiro> buscaPorPeriodoTipo_parceiro(Date inicio, Date fim, int tipo, Cliente c) {
+        return getContratoParceiroDAO().buscaPorPeriodoTipo_parceiro(inicio, fim, tipo, c);
     }
 
     public void excluir(ContratoParceiro cp) {
@@ -132,7 +134,7 @@ public class ContratoParceiroRN {
     public List<ContratoParceiro> listar() {
         return getContratoParceiroDAO().listar();
     }
-    
+
     public void salvarRecContr(Receita r, Date inicio, int numParc, String numero) {
         Calendar nova = new GregorianCalendar();
         nova.setTime(inicio);
@@ -143,7 +145,7 @@ public class ContratoParceiroRN {
             r.setDTVencimento(nova.getTime());
             r.setNumero(String.valueOf(1));
             this.receitaDAO.salvar(r);
-            
+
         }
 
     }
@@ -228,5 +230,4 @@ public class ContratoParceiroRN {
         this.receitaDAO = receitaDAO;
     }
 
-    
 }

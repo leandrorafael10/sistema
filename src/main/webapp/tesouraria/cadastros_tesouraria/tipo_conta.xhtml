@@ -3,7 +3,7 @@
 To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -14,18 +14,26 @@ and open the template in the editor.
     <ui:composition template="/principal/templategreen.xhtml">
         <ui:define name="principal-interna">
             <h:form id="formTipoConta">
-                <p:messages/>
+                <p:messages id="msgTipoConta"/>
                 <p:growl life="30000" id="growlTipoConta"/>
-                <h:inputHidden value="#{tipoContaBean.listando()}"/>
-                <p:panel header="Tipo Conta">
-                    
-                    <p:dataTable var="tipoConta" value="#{tipoContaBean.tipocontas}" editable="true" scrollable="true"
+                
+                <p:panel >
+                    <h2>Tipo Conta</h2>
+                    <p:commandLink onclick="PF('dialogTipoConta').show();">
+                        <h:graphicImage library="imagens" name="new.png" />
+                        <br/>
+                        <h:outputText  value="incluir novo" />
+                    </p:commandLink>
+                    <br/>
+                    <p:separator/>
+                    <br/>
+                    <p:dataTable id="dataTipoConta"
+                        var="tipoConta" value="#{tipoContaRN.listar()}" editable="true" scrollable="true"
                                  scrollHeight="400" emptyMessage="Nenhum registro">
-                        <p:ajax event="rowEdit"  listener="#{tipoContaBean.atualizar}" update=":formTipoConta:growlTipoConta" />  
+                        <p:ajax event="rowEdit"  listener="#{tipoContaBean.atualizar}" update=":formTipoConta:dataTipoConta ,:formTipoConta:msgTipoConta " />  
                         <p:column headerText="Código">
                             <h:outputText value="#{tipoConta.idtipoconta}"/>
                         </p:column>
-
                         <p:column headerText="Descrição">
                             <p:cellEditor>
                                 <f:facet name="output">
@@ -58,11 +66,11 @@ and open the template in the editor.
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Editar">
+                        <p:column headerText="Editar" width="50">
                             <p:rowEditor />
                         </p:column>
-                        <p:column headerText="Excluir">
-                            <p:commandLink oncomplete="dialogExcluirTipoConta.show()" update=":formExcluirTipoConta" immediate="true" >
+                        <p:column headerText="Excluir" width="80">
+                            <p:commandLink oncomplete="PF('dialogExcluirTipoConta').show()" update=":formExcluirTipoConta" >
                                 <f:setPropertyActionListener value="#{tipoConta}" target="#{tipoContaBean.tipoconta}"/>
                                 <h:graphicImage library="imagens" name="Delete-10.png"/>
                             </p:commandLink>
@@ -70,24 +78,22 @@ and open the template in the editor.
 
                     </p:dataTable>
                     <br/>
-                    <p:commandLink>
-                        <h:graphicImage library="imagens" name="new.png" onclick="dialogTipoConta.show();"/>
-                        <h:outputText  value="incluir novo" />
-                    </p:commandLink>
+                    
                 </p:panel>
 
             </h:form>
             <h:form id="formNovaTipoConta">
-                <p:dialog widgetVar="dialogTipoConta" modal="true">
+                <p:dialog widgetVar="dialogTipoConta" header="Novo Tipo de Conta" modal="true">
+                    
                     <p:panel>
+                        <h:panelGrid columns="4" cellpadding="5">
                         <h:outputText value="Descrição: "/>
-                        <p:inputText value="#{tipoContaBean.tipoconta.descricao}" maxlength="40" size="40"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <p:inputText value="#{tipoContaBean.tipoconta.descricao}" maxlength="40" size="30"/>
                         <p:selectBooleanCheckbox  value="#{tipoContaBean.tipoconta.cxint}"/>
                         <h:outputText value="caixa interno"/>
-                        <br/>
-                        <br/>
+                        </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="Salvar" actionListener="#{tipoContaBean.salvar}" oncomplete="dialogTipoConta.hide()" update=":formTipoConta"/>
+                        <p:commandButton value="Salvar" actionListener="#{tipoContaBean.salvar(actionEvent)}" oncomplete="PF('dialogTipoConta').hide()" update=":formTipoConta"/>
                     </p:panel>
                 </p:dialog>
             </h:form>
@@ -100,8 +106,10 @@ and open the template in the editor.
                             <h:outputText value="Caixa : "/>
                             <h:outputLabel value="#{tipoContaBean.tipoconta.cxint?'interno':'externo'}"/>
                         </h:panelGrid>
-                        <p:commandButton actionListener="#{tipoContaBean.excluir(actionEvent)}" value="confirmar" update=":formTipoConta" oncomplete="dialogExcluirTipoConta.hide()"/>
-                        <p:commandButton value="sair" onclick="dialogExcluirTipoConta.hide()"/>
+                        <p:commandButton actionListener="#{tipoContaBean.excluir(actionEvent)}" 
+                                         value="confirmar" update=":formTipoConta" 
+                                         oncomplete="PF('dialogExcluirTipoConta').hide()"/>
+                        <p:commandButton value="sair" onclick="PF('dialogExcluirTipoConta').hide()"/>
                     </p:panel>
                 </p:dialog>
             </h:form>

@@ -21,7 +21,11 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class PlanovendaparcelaBean implements Serializable{
     
-    @ManagedProperty("#{planovendaparcelaRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{planovendaparcelaRN}")
     private PlanovendaparcelaRN planovendaparcelaRN;
     private Planovendaparcela planovendaparcela = new Planovendaparcela();
 
@@ -36,7 +40,7 @@ public class PlanovendaparcelaBean implements Serializable{
     }
 
     public void onCancel(RowEditEvent event) {
-        Planovendaparcela pl = (Planovendaparcela) event.getObject();
+       
     }
     
     

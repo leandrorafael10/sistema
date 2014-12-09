@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="480,510" key="UserLibraryLoadSaveDialog.size"/>
+	<item value="true" key="ProjectSelectionDialog.show_all"/>
+	<item value="D:\BK\sistema_bk\target\classes" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="C:\Users\leandro.silva\Desktop\Jasper_PDF" key="org.eclipse.jdt.ui.last.external.project"/>
+	<section name="org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog">
+		<item value="true" key="ShowStatusLine"/>
+		<item value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;&#x0A;&lt;History/&gt;" key="History"/>
+		<section name="DialogBoundsSettings">
+			<item value="1068" key="DIALOG_WIDTH"/>
+			<item value="-31" key="DIALOG_Y_ORIGIN"/>
+			<item value="0" key="DIALOG_X_ORIGIN"/>
+			<item value="500" key="DIALOG_HEIGHT"/>
+			<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		</section>
+	</section>
+	<section name="JavaElementSearchActions">
+	</section>
+	<section name="BuildPathsPropertyPage">
+		<item value="2" key="pageIndex"/>
+	</section>
+	<section name="ProblemSeveritiesConfigurationBlock">
+		<item value="false" key="expanded4"/>
+		<item value="true" key="expanded3"/>
+		<item value="false" key="expanded2"/>
+		<item value="false" key="expanded1"/>
+		<item value="false" key="expanded7"/>
+		<item value="false" key="expanded6"/>
+		<item value="false" key="expanded5"/>
+		<item value="false" key="expanded0"/>
+	</section>
+	<section name="JavaBuildConfigurationBlock">
+		<item value="false" key="expanded2"/>
+		<item value="false" key="expanded1"/>
+		<item value="true" key="expanded0"/>
+	</section>
+	<section name="org.eclipse.jdt.internal.ui.dialogs.PackageSelectionDialog">
+		<item value="692" key="height"/>
+		<item value="398" key="width"/>
+		<item value="0" key="y"/>
+		<item value="761" key="x"/>
+	</section>
+</section>

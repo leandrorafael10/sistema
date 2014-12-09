@@ -28,7 +28,7 @@ public class BrindeRN {
     }
     
     public Brinde carregar(Integer id){
-        return getBrindeDAO().carregar(id);
+        return getBrindeDAO().buscar(id);
     }
     @Transactional (value = "tmGreen")
     public void salvar(Brinde brinde){
@@ -38,7 +38,8 @@ public class BrindeRN {
         brinde.setAtivo(true);
         getBrindeDAO().salvar(brinde);
     }
-    public List listarPeriodo(Date inicio, Date fim) {
+    @SuppressWarnings("rawtypes")
+	public List listarPeriodo(Date inicio, Date fim) {
         return getBrindeDAO().listarPeriodo(inicio, fim);
     }
     public BrindeDAO getBrindeDAO() {

@@ -5,13 +5,15 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Brinde;
-import com.green.modelo.BrindeEntrada;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Brinde;
+import com.green.modelo.BrindeEntrada;
 
 /**
  *
@@ -27,7 +29,8 @@ public class BrindeEntradaDAO {
         getSf().getCurrentSession().merge(brindeEntrada);
     }
 
-    public List<BrindeEntrada> listar() {
+    @SuppressWarnings("unchecked")
+	public List<BrindeEntrada> listar() {
         return (List<BrindeEntrada>) getSf().getCurrentSession().createQuery("from com.green.modelo.BrindeEntrada").list();
     }
 
@@ -35,7 +38,8 @@ public class BrindeEntradaDAO {
         getSf().getCurrentSession().update(brindeEntrada);
     }
 
-    public List<BrindeEntrada> listarPorBrinde(Brinde brinde) {
+    @SuppressWarnings("unchecked")
+	public List<BrindeEntrada> listarPorBrinde(Brinde brinde) {
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.BrindeEntrada b "
                 + "where b.iDBrinde = :brinde order by b.iDBrinde desc").setParameter("brinde", brinde);
         return (List<BrindeEntrada>) query.list();

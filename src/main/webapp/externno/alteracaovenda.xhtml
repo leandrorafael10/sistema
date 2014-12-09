@@ -4,8 +4,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/principal/templategreen.xhtml">
 	<ui:define name="principal-externa">
@@ -154,6 +153,7 @@
 							value="#{capaLoteJornalBean.capalotejornal.DTIncGerador}"
 							required="#{capaLoteJornalBean.capalotejornal.gerador!=''?(capaLoteJornalBean.capalotejornal.gerador!=null?true:false):false}"
 							pattern="dd/MM/yyyy"
+                                                        locale="pt"
 							requiredMessage="Quando há numero de gestor e obrigatório data de gestor!">
 
 						</p:calendar>
@@ -247,7 +247,8 @@
 						<p:calendar value="#{capaLoteJornalBean.capalotejornal.DTCancel}"
 							pattern="dd/MM/yyyy" required="true"
 							requiredMessage="Para o cancelamento e obrigatório a tata do cancelamento!"
-							showOn="button" />
+							showOn="button" 
+                                                        locale="pt"/>
 
 
 						<h:outputText value="Motivo cancelamento: " />
@@ -294,7 +295,9 @@
 							value="#{capaLoteJornalBean.capalotejornal.IDGerente.IDPessoa.razao}" />
 						<h:outputText value="Data estorno:" />
 						<p:calendar value="#{capaLoteJornalBean.vendaestorno.DTEstorno}"
-							pattern="dd/MM/yyyy" required="true" showOn="button"
+							pattern="dd/MM/yyyy" 
+                                                        required="true" showOn="button"
+                                                        locale="pt"
 							requiredMessage="data de estorno e obrigatório!" />
 						<h:outputText value="valor: " />
 						<p:inputText value="#{capaLoteJornalBean.vendaestorno.valor}"

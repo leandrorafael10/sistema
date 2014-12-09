@@ -27,7 +27,8 @@ public class DebitoDataModelo extends ListDataModel<Debito> implements Selectabl
         return  t.getIDDebito().toString();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Debito getRowData(String string) {
         List<Debito> dedito= (List<Debito>)getWrappedData();
         for(Debito d : dedito){

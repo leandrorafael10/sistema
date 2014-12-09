@@ -7,7 +7,19 @@ package com.green.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,6 +30,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "despesa")
 public class Despesa implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue
@@ -31,7 +44,7 @@ public class Despesa implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "DTVencimento")
-    @Temporal(TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dTVencimento;
     @Basic(optional = false)
     @NotNull
@@ -64,8 +77,6 @@ public class Despesa implements Serializable {
     @NotNull
     @Column(name = "IsentoMulta")
     private boolean isentoMulta;
-    @Column(name="del")
-    private boolean del;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IsentoJuros")
@@ -91,20 +102,19 @@ public class Despesa implements Serializable {
     @Column(name = "DTAlt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dTAlt;
-    @JoinColumn(name = "IDUsuarioAlt",referencedColumnName="IDUsuario")
+    @JoinColumn(name = "IDUsuarioAlt", referencedColumnName = "IDUsuario")
     @ManyToOne
     private Usuario iDUsuarioAlt;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "Numero")
-    private String numero;
+    private Integer numero;
     @JoinColumn(name = "IDUsuario", referencedColumnName = "IDUsuario")
-    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario iDUsuario;
-    @JoinColumn(name="IDOrigem", referencedColumnName="idorigem")
+    @JoinColumn(name = "IDOrigem", referencedColumnName = "idorigem")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Origem idorigem ;
+    private Origem idorigem;
     @JoinColumn(name = "IDFuncionario", referencedColumnName = "IDFuncionario")
     @ManyToOne(fetch = FetchType.LAZY)
     private Funcionario iDFuncionario;
@@ -112,32 +122,31 @@ public class Despesa implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Fornecedor iDFornecedor;
     @JoinColumn(name = "IDDocumento", referencedColumnName = "IDDocumento")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Documento iDDocumento;
     @JoinColumn(name = "IDCliente", referencedColumnName = "IDCliente")
     @ManyToOne(fetch = FetchType.LAZY)
     private Cliente iDCliente;
     @JoinColumn(name = "IDClassificacao", referencedColumnName = "IDClassificacao")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Classificacao iDClassificacao;
     @JoinColumn(name = "IDCCusto", referencedColumnName = "IDCCusto")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Ccusto iDCCusto;
     @JoinColumn(name = "IDAtividade", referencedColumnName = "IDAtividade")
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Atividade iDAtividade;
-    @JoinColumn(name = "IDConta",referencedColumnName = "IDConta")
+    @JoinColumn(name = "IDConta", referencedColumnName = "IDConta")
     @ManyToOne(fetch = FetchType.EAGER)
     private Conta IDConta;
-    @Column(name = "tipo_juros")
+    @Column(name = "TipoJuros")
     private Boolean tipoJuros;
-    @Column(name ="pago")
+    @Column(name = "Pago")
     private boolean pago;
-    @Column(name = "atz_pg")
-    private Integer atzPg;
-    @Column(name = "dt_atz")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dtAtz;
+    @Column(name = "QuantidadeParcela")
+    private Integer quantidadeParcela;
+    @Column(name = "Codigo")
+    private String codigo;
 
     public Despesa() {
     }
@@ -146,7 +155,7 @@ public class Despesa implements Serializable {
         this.iDDespesa = iDDespesa;
     }
 
-    public Despesa(Integer iDDespesa, Date dTInc, Date dTVencimento, Date dTEmissao, BigDecimal valorLiquido, BigDecimal valorMulta, BigDecimal valorJuros, BigDecimal valorDesconto, boolean isentoMulta, boolean isentoJuros, BigDecimal valorNominal, String numero) {
+    public Despesa(Integer iDDespesa, Date dTInc, Date dTVencimento, Date dTEmissao, BigDecimal valorLiquido, BigDecimal valorMulta, BigDecimal valorJuros, BigDecimal valorDesconto, boolean isentoMulta, boolean isentoJuros, BigDecimal valorNominal, Integer numero) {
         this.iDDespesa = iDDespesa;
         this.dTInc = dTInc;
         this.dTVencimento = dTVencimento;
@@ -159,16 +168,10 @@ public class Despesa implements Serializable {
         this.isentoJuros = isentoJuros;
         this.valorNominal = valorNominal;
         this.numero = numero;
-       
+
     }
 
-    public boolean getDel() {
-        return del;
-    }
-
-    public void setDel(boolean del) {
-        this.del = del;
-    }
+   
 
     public Integer getIDDespesa() {
         return iDDespesa;
@@ -322,11 +325,11 @@ public class Despesa implements Serializable {
         this.iDUsuarioAlt = iDUsuarioAlt;
     }
 
-    public String getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 
@@ -365,7 +368,6 @@ public class Despesa implements Serializable {
     public Documento getIDDocumento() {
         return iDDocumento;
     }
-    
 
     public void setIDDocumento(Documento iDDocumento) {
         this.iDDocumento = iDDocumento;
@@ -378,7 +380,6 @@ public class Despesa implements Serializable {
     public void setIDConta(Conta IDConta) {
         this.IDConta = IDConta;
     }
-    
 
     public Cliente getIDCliente() {
         return iDCliente;
@@ -411,7 +412,6 @@ public class Despesa implements Serializable {
     public void setIDAtividade(Atividade iDAtividade) {
         this.iDAtividade = iDAtividade;
     }
-    
 
     public Boolean getTipoJuros() {
         return tipoJuros;
@@ -429,24 +429,21 @@ public class Despesa implements Serializable {
         this.pago = pago;
     }
 
-    public Integer getAtzPg() {
-        return atzPg;
+    public Integer getQuantidadeParcela() {
+        return quantidadeParcela;
     }
 
-    public void setAtzPg(Integer atzPg) {
-        this.atzPg = atzPg;
+    public void setQuantidadeParcela(Integer quantidadeParcela) {
+        this.quantidadeParcela = quantidadeParcela;
     }
 
-    public Date getDtAtz() {
-        return dtAtz;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setDtAtz(Date dtAtz) {
-        this.dtAtz = dtAtz;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
-    
-
-    
 
     @Override
     public int hashCode() {
@@ -472,5 +469,5 @@ public class Despesa implements Serializable {
     public String toString() {
         return "com.green.modelo.Despesa[ iDDespesa=" + iDDespesa + " ]";
     }
-    
+
 }

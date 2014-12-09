@@ -23,7 +23,8 @@ public class TaxaParceiroDAO {
     public void salvar(TaxaParceiro tp){
         getSf().getCurrentSession().save(tp);
     }
-    public List<TaxaParceiro> listar(){
+    @SuppressWarnings("unchecked")
+	public List<TaxaParceiro> listar(){
         return  (List<TaxaParceiro>)getSf().getCurrentSession().createCriteria(TaxaParceiro.class).list();
     }
     

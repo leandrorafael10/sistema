@@ -8,6 +8,7 @@ package com.green.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -37,9 +37,11 @@ public class Boleto implements Serializable {
     private BigDecimal mora;
     @Column(name = "multa")
     private BigDecimal multa;
+    @Column(name = "ativo")
+    private boolean ativo;
 
     @JoinColumn(name = "IDConta", referencedColumnName = "IDConta")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private Conta iDConta;
 
     public Integer getIdboleto() {
@@ -73,6 +75,15 @@ public class Boleto implements Serializable {
     public void setIDConta(Conta iDConta) {
         this.iDConta = iDConta;
     }
+
+    public boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+    
 
     @Override
     public int hashCode() {

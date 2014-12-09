@@ -60,7 +60,8 @@ public class PessoaDao extends AbstractDao<Pessoa, Integer> {
         sf.getCurrentSession().save(p);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Pessoa> listar() {
         Criteria c = getSf().getCurrentSession().createCriteria(Pessoa.class);
         return c.list();

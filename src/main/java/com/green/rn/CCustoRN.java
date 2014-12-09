@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -38,9 +39,9 @@ public class CCustoRN {
         Ccusto c = getCustoDAO().carregarCodigoEstrutural(ccusto.getCodigo());
         FacesMessage message;
         if (c == null) {
-            if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO") 
+            if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO")
                     || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
-                    ||contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")) {
+                    || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")) {
                 ccusto.setIDUsuario(contextoBean.getUsuarioLogado());
                 ccusto.setDTInc(new Date(System.currentTimeMillis()));
                 getCustoDAO().salvar(ccusto);
@@ -53,30 +54,18 @@ public class CCustoRN {
         }
         FacesContext.getCurrentInstance().addMessage(null, message);
 
-
     }
 
     public Ccusto carregar(Integer integer) {
         return getCustoDAO().carregar(integer);
     }
 
-    public void atualizar(Ccusto ccustoEditado, Ccusto ccusto) {
-        ContextoBean contextoBean = ContextoUtil.getContextoBean();
-        FacesMessage message = null;
-        if (contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_ADMINISTRACAO")
-                || contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO")
-                ||contextoBean.getUsuarioLogado().getIDGrupoAcesso().getDescricao().equals("ROLE_FINANCEIRO_1")) {
-            ccustoEditado.setDTInc(ccusto.getDTInc());
-            ccustoEditado.setIDUsuario(ccusto.getIDUsuario());
-            ccustoEditado.setIDCCusto(ccusto.getIDCCusto());
-            ccustoEditado.setDTalt(new Date(System.currentTimeMillis()));
-            ccustoEditado.setIDUsuarioAlt(contextoBean.getUsuarioLogado());
-            getCustoDAO().atualizar(ccustoEditado);
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ok! Atualizado com sucesso!", "Ok! Atualizado com sucesso!");
-        } else {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Falha! Usuario não autorizado!", "Falha! Usuario não autorizado!");
-        }
-        FacesContext.getCurrentInstance().addMessage(null, message);
+    @Transactional(value = "tmGreen")
+    public void atualizar(Ccusto ccustoEditado) {
+        ccustoEditado.setDTalt(new Date(System.currentTimeMillis()));
+        ccustoEditado.setIDUsuarioAlt(ContextoUtil.getContextoBean().getUsuarioLogado());
+        getCustoDAO().atualizar(ccustoEditado);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ok! Atualizado com sucesso!", "Ok! Atualizado com sucesso!"));
     }
 
     public CCustoDAO getCustoDAO() {

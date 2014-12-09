@@ -3,7 +3,7 @@
 To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -12,112 +12,114 @@ and open the template in the editor.
 
     <ui:composition template="/principal/templategreen.xhtml">
         <ui:define name="principal-interna">
-            <f:view>
-                <h:panelGroup>
-                    <h:form id="formDadosBancoNovo">
 
-                        <p:growl id="growlBancoNovo"/>
-                        <p:messages id="msgBancoNovo"/>
-                        <p:panel>
-                            <p:panel header="Tipo de conta">
-                                <h:panelGrid columns="2">
-                                    <h:outputText value="Banco: "/>
-                                    <p:selectOneMenu  value="#{contaBean.contaNova.IDBanco}" filter="true" converter="bancoConverter" required="true" >
-                                        <f:selectItems value="#{bancoBean.bancos}"
-                                                       var="banco"
-                                                       itemLabel="#{banco.descricao}"
-                                                       itemValue="#{banco}"/>
-                                    </p:selectOneMenu>
-                                    <h:outputText value="Tipo de conta: "/>
-                                    <p:selectOneMenu value="#{contaBean.contaNova.IDTipoConta}" filter="true" converter="tipoContaConverter" required="true" >
-                                        <f:selectItems value="#{tipoContaBean.tipocontas}"
-                                                       var="tipoconta"
-                                                       itemLabel="#{tipoconta.descricao}"
-                                                       itemValue="#{tipoconta}"/>
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
-                            </p:panel>
+            <br/>
+            <br/>
+            <h:form id="formDadosBancoNovo">
 
-                            <p:panel header="Registrar conta">
+                <p:growl id="growlBancoNovo"/>
+                <p:messages id="msgBancoNovo"/>
+                <p:panel>
+                    <p:panel header="Tipo de conta">
+                        <h:panelGrid columns="6" cellpadding="5">
+                            <h:outputText value="Banco: "/>
+                            <p:selectOneMenu  value="#{contaBean.contaNova.IDBanco}" filter="true" converter="bancoConverter" required="true" >
+                                <f:selectItems value="#{bancoBean.bancos}"
+                                               var="banco"
+                                               itemLabel="#{banco.descricao}"
+                                               itemValue="#{banco}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Tipo de conta: "/>
+                            <p:selectOneMenu value="#{contaBean.contaNova.IDTipoConta}" filter="true" converter="tipoContaConverter" required="true" >
+                                <f:selectItems value="#{tipoContaBean.tipocontas}"
+                                               var="tipoconta"
+                                               itemLabel="#{tipoconta.descricao}"
+                                               itemValue="#{tipoconta}"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="Empresa:"/>
+                            <p:selectOneMenu converter="empresaConverter" value="#{contaBean.contaNova.IDEmpresa}">
+                                <f:selectItems value="#{empresaRN.listar()}"
+                                               var="empresa"
+                                               itemLabel="#{empresa.fantasia}"
+                                               itemValue="#{empresa}"
+                                               />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </p:panel>
 
-                                <h:panelGrid columns="2">
-                                    <h:outputText value="Titular: "/>
-                                    <p:inputText size="50" maxlength="50" value="#{contaBean.contaNova.titular}"  requiredMessage="Titular e obrigatorio!" required="true"/>
-                                    <h:outputText value="Nome da agencia: "/>
-                                    <p:inputText size="30" maxlength="45" value="#{contaBean.contaNova.nomeAgencia}"/>
-                                    <h:outputText value="Numero agencia: "/>
-                                    <p:inputText size="15" maxlength="15" value="#{contaBean.contaNova.agencia}"/>
-                                    <h:outputText value="Digito agencia"/>
-                                    <p:inputText size="3" value="#{contaBean.contaNova.agenciaDigito}" maxlength="3"/>
-                                </h:panelGrid>
-                                <h:outputText value="Numero conta: "/>
-                                <p:inputText size="8" value="#{contaBean.contaNova.numero}" maxlength="20"/>--<p:inputText size="3" value="#{contaBean.contaNova.numeroDigito}" maxlength="3"/>
-                                <h:outputText value="   ativar: "/>
-                                <p:selectBooleanCheckbox value="#{contaBean.contaNova.ativa}"/>
-                                <h:panelGrid columns="2">
-                                    <h:outputText value="Data abertura: "/>
-                                    <p:calendar size="7" value="#{contaBean.contaNova.DTAbertura}" 
-                                                requiredMessage="Data abertura é obrigatorio!"
-                                                pattern="dd/MM/yyyy"
-                                                required="true"
-                                                navigator="true"/>
-                                </h:panelGrid>
-                            </p:panel>
-                            <p:panel header="Contato Banco">
-                                <h:panelGrid columns="2">
-                                    <h:outputText value="Gerente: "/>
-                                    <p:inputText size="50" value="#{contaBean.pessoa.razao}" maxlength="50" requiredMessage="Nome gerente e obrigatorio!" required="true"/>
+                    <p:panel header="Registrar conta">
 
-                                    <h:outputText value="Tel comercial: "/>
-                                    <p:inputMask mask="(99)9999-9999" value="#{contaBean.telComercial}" requiredMessage="Pelo menos um telefone e obrigatorio!" required="true"/>
-                                    <h:outputText value="Fax: "/>
-                                    <p:inputMask mask="(99)9999-9999" value="#{contaBean.fax}"/>
-                                    <h:outputText value="Celular: " />
-                                    <p:inputMask mask="(99)9999-9999" value="#{contaBean.calular}"/>
-                                    <h:outputText value="Email: "/>
-                                    <p:inputText size="40" value="#{contaBean.email}" maxlength="40"/>
-                                </h:panelGrid>
+                        <h:panelGrid columns="4">
+                            <h:outputText value="Titular: "/>
+                            <p:inputText size="30" maxlength="50" value="#{contaBean.contaNova.titular}"  requiredMessage="Titular e obrigatorio!" required="true"/>
+                            <h:outputText value="Nome da agencia: "/>
+                            <p:inputText size="30" maxlength="45" value="#{contaBean.contaNova.nomeAgencia}"/>
+                            <h:outputText value="Numero agencia: "/>
+                            <p:inputText size="15" maxlength="15" value="#{contaBean.contaNova.agencia}"/>
+                            <h:outputText value="Digito agencia"/>
+                            <p:inputText size="3" value="#{contaBean.contaNova.agenciaDigito}" maxlength="3"/>
+                            <h:outputLabel value="Numero conta  :  "/>
 
-                                <h:panelGrid columns="2">
-                                    <h:outputText value="Rua: "/>
-                                    <p:inputText size="50" value="#{contaBean.pessoa.logradouro}" maxlength="50" requiredMessage="Endereço banco obrigatorio!" required="true"/>
-                                    <h:outputText value="Nº: "/>
-                                    <p:inputText size="10" maxlength="10" value="#{contaBean.pessoa.numero}"/>
-                                    <h:outputText value="Complemento: "/>
-                                    <p:inputText size="20" maxlength="20" value="#{contaBean.pessoa.complemento}"/>
-                                    <h:outputText value="Bairro: "/>
-                                    <p:inputText size="30" value="#{contaBean.pessoa.bairro}" maxlength="30"/>
-                                    <h:outputText value="Estados:"/>
-                                    <p:selectOneMenu  value="#{contaBean.endereco.estado}" filter="true">
-                                        <f:selectItem itemLabel="Estados  " itemValue=""  />
-                                        <f:selectItems  value="#{contaBean.endereco.est}"  />
-                                        <p:ajax listener="#{contaBean.endereco.handleCidade()}" update="cidadesConta" />
-                                    </p:selectOneMenu>
-                                    <h:outputText value="Cidades:" />
-                                    <p:selectOneMenu  value="#{contaBean.endereco.cidade}" id="cidadesConta"
-                                                      filter="true"
-                                                      effect="fade">
-                                        <f:selectItem  itemLabel="Cidades  " itemValue=""/>
-                                        <f:selectItem itemLabel="Belo Horizonte" itemValue="Belo Horizonte"/>
-                                        <f:selectItems  value="#{contaBean.endereco.cid}"/>
-                                    </p:selectOneMenu>
-                                    <h:outputText value="Pais: "/>
-                                    <p:selectOneMenu value="#{contaBean.pessoa.pais}">
-                                        <f:selectItem itemLabel="Brasil" itemValue="Brasil"/>
-                                        <f:selectItem itemLabel="Argentina" itemValue="Argentina"/>
-                                    </p:selectOneMenu>
-                                </h:panelGrid>
+                            <p:inputText size="8" value="#{contaBean.contaNova.numero}" maxlength="20"/>
+                            <h:outputText value="--"/>
+                            <p:inputText size="3" value="#{contaBean.contaNova.numeroDigito}" maxlength="3"/>
 
-                            </p:panel>
-                            <p:commandButton  action="#{contaBean.salvar(actionEvent)}" value="Salvar"  update=":formDadosBancoNovo"/>
 
-                            <p:commandButton value="Limpar" type="reset" update=":formDadosBancoNovo"/>
 
-                        </p:panel>
+                            <h:outputText value="Data abertura: "/>
+                            <p:calendar size="7" value="#{contaBean.contaNova.DTAbertura}" 
+                                        requiredMessage="Data abertura é obrigatorio!"
+                                        pattern="dd/MM/yyyy"
+                                        required="true"
+                                        locale="pt"
+                                        navigator="true"/>
+                            <h:outputText value="   ativar: "/>
+                            <p:selectBooleanCheckbox value="#{contaBean.contaNova.ativa}"/>
 
-                    </h:form>
-                </h:panelGroup>
-            </f:view>
+                        </h:panelGrid>
+
+                    </p:panel>
+                    <br/>
+                    <p:commandButton  actionListener="#{contaBean.salvar(actionEvent)}" value="Salvar"  update=":formDadosBancoNovo,:formContas"/>
+                    <p:commandButton value="Limpar" type="reset" update=":formDadosBancoNovo"/>
+
+                </p:panel>
+
+            </h:form>
+            <br/>
+            <p:separator/>
+            <br/>
+            <h:form id="formContas">
+                <p:dataTable  value="#{contaRN.listar()}" var="conta" 
+                              scrollable="true"
+                              scrollHeight="400"
+                              emptyMessage="Nenhum registro">
+                    <p:column headerText="Banco" filterBy="#{conta.IDBanco.descricao}">
+                        <h:outputText value="#{conta.IDBanco.descricao}"/>
+                    </p:column>
+                    <p:column headerText="Tipo conta">
+                        <h:outputText value="#{conta.IDTipoConta.descricao}"/>
+                    </p:column>
+                    <p:column headerText="Agencia">
+                        <h:outputText value="#{conta.agencia}"/>
+                    </p:column>
+                    <p:column headerText="Num. Agencia">
+                        <h:outputText value="#{conta.agenciaDigito}"/>
+                    </p:column>
+                    <p:column headerText="Num. conta">
+                        <h:outputText value="#{conta.numero}-#{conta.numeroDigito}"/>
+                    </p:column>
+                    <p:column headerText="Titular">
+                        <h:outputText value="#{conta.titular}"/>
+                    </p:column>
+                    <p:column>
+                        
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:graphicImage library="imagens" name="ativo_#{conta.ativa}.png"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
 
         </ui:define>
     </ui:composition>

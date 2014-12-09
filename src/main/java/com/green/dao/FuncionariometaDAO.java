@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
  * @author leandro.silva
  */
 @Repository("funcionariometaDAO")
+@SuppressWarnings("unchecked")
 public class FuncionariometaDAO {
 
     @Autowired
@@ -26,7 +27,8 @@ public class FuncionariometaDAO {
         getSf().getCurrentSession().save(funcionariometa);
     }
 
-    public List<Funcionariometa> listarPorFuncionario(Funcionario funcionario) {
+    
+	public List<Funcionariometa> listarPorFuncionario(Funcionario funcionario) {
         Query query = getSf().getCurrentSession().createQuery("from com.green.modelo.Funcionariometa f where f.idfuncionario = :fun").setParameter("fun", funcionario);
         return (List<Funcionariometa>) query.list();
     }

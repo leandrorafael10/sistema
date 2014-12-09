@@ -4,8 +4,8 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Tipopagamento;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -14,11 +14,14 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.green.modelo.Tipopagamento;
+
 /**
  *
  * @author leandro.silva
  */
 @Repository("tipoPagamentoDAO")
+@SuppressWarnings("unchecked")
 public class TipoPagamentoDAO extends AbstractDao<Tipopagamento, Integer> {
     @Autowired
     SessionFactory sf;
@@ -44,7 +47,8 @@ public class TipoPagamentoDAO extends AbstractDao<Tipopagamento, Integer> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
+    
+	@Override
     public List<Tipopagamento> listar() {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Tipopagamento.class);
         return criteria.list();

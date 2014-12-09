@@ -67,6 +67,6 @@
     </listener>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>hot-sneaks</param-value>
+        <param-value>bootstrap</param-value>
     </context-param>
 </web-app>

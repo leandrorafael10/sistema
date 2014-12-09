@@ -1,113 +1,132 @@
-#usuarioLog{
-    right: 0px;
-    top: 0px;
-    float: right;
-    padding: 1px;
-    margin-right: 5%;
-    width: 90%;
-
-
-
-}
-.form-sair-home{
-    float: right;
-    margin-top: 0px;
-    height: 40px;
-}
-.form-sair-home>a{
-   color: blue;
-}
-#tudo{
-
-    width: 90%;
-    margin: 0 auto;
-    min-width: 860px;
+#usuarioLog {
+	right: 0px;
+	top: 0px;
+	float: right;
+	padding: 1px;
+	margin-right: 5%;
+	width: 90%;
 }
 
-
-#topo{
-    padding-top: 10px;
-    height: 150px;
-    box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
-    -moz-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
-    -webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
-    margin-top: 10px;
-    border-radius: 2em  ;
-    background-size:100% 100%;
-    background-image: url(../imagens/assinatura_principal.png); 
-
+.form-sair-home {
+	float: right;
+	margin-top: 0px;
+	height: 40px;
 }
 
+.form-sair-home>a {
+	color: blue;
+}
 
+#tudo {
+	width: 90%;
+	margin: 0 auto;
+	min-width: 860px;
+}
+
+#topo {
+	padding-top: 10px;
+	height: 150px;
+	box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	-moz-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	-webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	margin-top: 10px;
+	border-radius: 2em;
+	background-size: 100% 100%;
+	background-image: url(../imagens/assinatura_principal.png);
+}
 
 #rodape {
-    clear: both;
-    height: 100px;
-    background-color: #2a8ac4;
-    background-position: right;
-    box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
-    -moz-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
-    -webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
-    margin-top: 10px;
-    margin-bottom: 10px
+	clear: both;
+	height: 100px;
+	background-color: #2a8ac4;
+	background-position: right;
+	box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	-moz-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	-webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	margin-top: 10px;
+	margin-bottom: 10px
 }
 
 #navegacao {
-
-    width: 10.5%;
-    float: left;
-
+	width: 10.5%;
+	float: left;
 }
 
-
-#principal{
-    width: 85%;
-    float: right;
-    
+#principal {
+	width: 85%;
+	float: right;
 }
 
-.coluna-fixa{
-    max-width: 125px;
-    min-width: 125px;
+.coluna-fixa {
+	max-width: 125px;
+	min-width: 125px;
+}
 
+.texto-esquerda {
+	text-align: left;
 }
-.texto-esquerda{
-    text-align: left;
+
+.vermelho {
+	color: red;
 }
-.vermelho{
-    color: red;
+
+.azul {
+	color: blue;
 }
-.azul{
-    color: blue;
+
+.verde {
+	color: green;
 }
-.verde{
-    color: green;
-}
-.amarelo{
-    color: #ffb347;
+
+.amarelo {
+	color: #ffb347;
 }
 
 .old {
-    background-color: #6CE26C !important;
-    background-image: none !important;
-    color: #000000 !important;
+	background-color: #6CE26C !important;
+	background-image: none !important;
+	color: #000000 !important;
 }
+
 .fundo-vermelho {
-    background-color: #ff3333 !important;
-    background-image: none !important;
-    color: #ffffff !important;
+	background-color: #ff3333 !important;
+	background-image: none !important;
+	color: #ffffff !important;
 }
+
 .fundo-verde {
-    background-color: #6CE26C !important;
-    background-image: none !important;
-    color: #000000 !important;
+	background-color: #6CE26C !important;
+	background-image: none !important;
+	color: #000000 !important;
 }
 
+.ui-inputfield.ui-state-error,.ui-widget-header .ui-inputfield.ui-state-error,.ui-widget-content .ui-inputfield.ui-state-error
+	{
+	color: #333;
+	border: 1px solid rgba(243, 11, 45, 1) !important;
+}
 
+.ui-state-error,.ui-widget-content .ui-state-error,.ui-widget-header .ui-state-error
+	{
+	color: #FF0905;
+	border: 1px solid !important;
+}
 
-
-
-
-
-
-
+.topo-marca {
+	padding-top: 10px;
+	height: 150px;
+	box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	-moz-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	-webkit-box-shadow: 2px -5px 10px rgba(1, 1, 1, 0.7);
+	margin-top: 10px;
+	border-radius: 2em;
+	background-size: 100% 100%;
+	background-image: url(../imagens/assinatura.jpg);
+	max-width: 600px;
+}
+.pm-imagem{
+	background-image: url(../imagens/assinatura.jpg);
+	max-width: 100%;
+	max-height: 100%;
+	
+}

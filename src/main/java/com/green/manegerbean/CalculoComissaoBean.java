@@ -4,14 +4,15 @@
  */
 package com.green.manegerbean;
 
-import com.green.modelo.CalculoComissao;
-import com.green.rn.CalculoComissaoRN;
 import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+
+import com.green.modelo.CalculoComissao;
+import com.green.rn.CalculoComissaoRN;
 
 /**
  *
@@ -21,7 +22,11 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class CalculoComissaoBean implements Serializable{
     
-    private CalculoComissao calculoComissao =new CalculoComissao();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private CalculoComissao calculoComissao =new CalculoComissao();
     @ManagedProperty("#{calculoComissaoRN}")
     private CalculoComissaoRN calculoComissaoRN;
 

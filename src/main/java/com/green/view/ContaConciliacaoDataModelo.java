@@ -27,7 +27,8 @@ public class ContaConciliacaoDataModelo extends ListDataModel<ContaConciliacao> 
         return t.getConta().getIDConta();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public ContaConciliacao getRowData(String string) {
         List<ContaConciliacao> contaConciliacao = (List<ContaConciliacao>) getWrappedData();
         for (ContaConciliacao c : contaConciliacao) {

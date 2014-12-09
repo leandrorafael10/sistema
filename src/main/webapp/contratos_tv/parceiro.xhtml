@@ -37,10 +37,12 @@
                                 <p:calendar value="#{contratoParceiroBean.contratoParceiro.IDContratoMidia.dataInicioContrato}" 
                                             required="true"
                                             mask="true"
+                                            locale="pt"
                                             pattern="dd/MM/yyyy" requiredMessage="Inicio veiculação e obrigatorio!"/>
                                 <h:outputText value="término"/>
                                 <p:calendar value="#{contratoParceiroBean.contratoParceiro.IDContratoMidia.dataFimContrato}"
                                             mask="true"
+                                            locale="pt"
                                             pattern="dd/MM/yyyy" required="true" requiredMessage="Fim da veiculação e obrigatorio!"/>
 
                             </h:panelGrid>
@@ -73,15 +75,36 @@
                                 </p:selectOneMenu>
                             </h:panelGrid>
                         </p:panel>
+                        <p:panel header="Valores">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="Valor mensal bruto: "/>
+                                <p:inputText value="#{contratoParceiroBean.valorBruto}"
+                                             required="true"
+                                             requiredMessage="valor mensal bruto e obrigatorio!"
+                                             validatorMessage="valor não pode ser menor que 0!">
+                                    <f:convertNumber minFractionDigits="2" />
+                                    <p:ajax event="blur" update="receitaLiq" listener="#{contratoParceiroBean.calcula_receita()}"/>
+                                    <f:validateDoubleRange minimum="0" />
+                                </p:inputText>
+
+                                <h:outputText value="Comissão agência: "/>
+                                <p:inputText value="#{contratoParceiroBean.contratoParceiro.comissaoAgencia}"
+                                             required="true"
+                                             requiredMessage="valor comissão agência  e obrigatorio!"
+                                             validatorMessage="valor não pode ser menor que 0!">
+
+                                    <f:convertNumber minFractionDigits="2" />
+                                    <f:validateDoubleRange minimum="0" />
+                                    <p:ajax event="blur" update="receitaLiq" listener="#{contratoParceiroBean.calcula_receita()}"/>
+                                </p:inputText>
+                            </h:panelGrid>
+                        </p:panel>
                         <p:panel >
                             <h:panelGrid columns="4" cellpadding="5" >
                                 <h:outputText value="Receita líquida para base de cáuculo: "/>
-                                <p:inputText value="#{contratoParceiroBean.receitaLiquida}" size="10" required="true"
-                                             requiredMessage="valor receita líquida e obrigatorio!"
-                                             validatorMessage="valor não pode ser menor que 0!">
-                                    <f:convertNumber minFractionDigits="2" />
-                                    <f:validateDoubleRange minimum="0" />
-                                </p:inputText>
+                                <h:outputText id="receitaLiq" value="#{contratoParceiroBean.receitaLiquida}" >
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
                                 <h:outputText value="prazo contrato:"/>
                                 <p:selectOneMenu value="#{contratoParceiroBean.contratoParceiro.IDContratoMidia.numeroParcelas}">
                                     <f:selectItem itemLabel="1" itemValue="1"/>
@@ -99,7 +122,7 @@
                                 </p:selectOneMenu>
                             </h:panelGrid>
                         </p:panel>
-                        <p:panel header="Despesas">
+                        <p:panel >
 
                             <h:panelGrid columns="6" cellpadding="5">
                                 <h:outputText value="BV: "/>
@@ -121,7 +144,7 @@
                                     <f:convertNumber minFractionDigits="2" />
                                     <f:validateDoubleRange minimum="0" maximum="100" />
                                 </p:inputText>%
-                                    
+
                                 <h:outputText value="Condição de pagamento:" />
                                 <p:selectOneMenu converter="tipoPagamentoConverter" 
                                                  value="#{contratoParceiroBean.contratoParceiro.IDContratoMidia.IDtipopagamento}" 
@@ -143,7 +166,7 @@
                     </p:panel>
                 </h:form>
                 <h:form id="formInsereContrato">
-                    <p:dialog widgetVar="dialogInsereContrato" modal="true">
+                    <p:dialog  widgetVar="dialogInsereContrato" modal="true">
                         <p:panel>
                             <h:panelGrid columns="2">
                                 <h:outputText value="Parceiro:"/>
@@ -168,8 +191,9 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:panel>
+
                                 <p:panel>
-                                    <h:outputText value="RECEITA LÍQUIDA PARA BASE DE CÁUCULO : "/>
+                                    <h:outputText value="RECEITA LÍQUIDA PARA BASE DE CÁLCULO : "/>
                                     <h:outputText value=" #{contratoParceiroBean.receitaLiquida}" styleClass="azul">
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                     </h:outputText>

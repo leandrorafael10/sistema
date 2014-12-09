@@ -4,25 +4,29 @@
  */
 package com.green.dao;
 
-import com.green.modelo.CapaLote;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.CapaLote;
 
 /**
  *
  * @author leandro.silva
  */
 @Repository("capaLoteDAO")
+@SuppressWarnings({"unchecked","deprecation"})
 public class CapaLoteDAO {
     @Autowired
     private SessionFactory sf;
 
-    public List<CapaLote> listar(){
+    
+	public List<CapaLote> listar(){
         return getSf().getCurrentSession().createCriteria(CapaLote.class).list();
     }
     public void salvar(CapaLote capaLote){
@@ -46,7 +50,8 @@ public class CapaLoteDAO {
                 setInteger("cod", codigo);
         return (CapaLote) query.uniqueResult();
     }
-    public List<CapaLote> listaDoDia(){
+    
+	public List<CapaLote> listaDoDia(){
         Date date = new Date();
         Calendar c = Calendar.getInstance();
         c.set(date.getYear()+1900, date.getMonth(), date.getDate());

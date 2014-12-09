@@ -1,6 +1,12 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/relatorio/novo_despesas.jrxml=UTF-8
+encoding//src/main/webapp/relatorio/parcelas_a_receber.jrxml=UTF-8
+encoding//src/main/webapp/relatorio/ranking_faturado.jrxml=UTF-8
+encoding//src/main/webapp/relatorio/receita_praca.jrxml=UTF-8
+encoding//src/main/webapp/relatorio/relataorio_teste.jrxml=UTF-8
 encoding//src/main/webapp/relatorio/venda_jornal_vend.jrxml=UTF-8
+encoding//src/main/webapp/relatorio/vendas_ponto.jrxml=UTF-8
 encoding//src/test/java=UTF-8
 encoding/<project>=UTF-8

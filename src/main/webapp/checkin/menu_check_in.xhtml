@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+<f:view renderKitId="PRIMEFACES_MOBILE" />
+<h:head>
+
+</h:head>
+<h:body>
+	<pm:page id="main">
+		<pm:header >
+			<h:graphicImage library="imagens" name="assinatura.jpg"
+				style="max-width: 100%;"></h:graphicImage>
+		</pm:header>
+		<pm:content>
+			<h:inputHidden
+				value="#{contextoBean.usuarioLogado.IDFuncionario.IDPessoa.razao}" />
+
+			<p:menu>
+
+				<p:menuitem value="Check-in" outcome="/checkin/check" />
+				<p:menuitem value="Trocar Senha" outcome="/checkin/minha_senha" />
+
+
+			</p:menu>
+		</pm:content>
+
+	</pm:page>
+	<pm:page id="second">
+		<pm:header title="Transition" swatch="b">
+			<p:button outcome="pm:first" value="Back" icon="ui-icon-arrow-l"
+				styleClass="ui-btn-left ui-btn-inline" />
+		</pm:header>
+
+		<pm:content>
+			<h1>Target Page</h1>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

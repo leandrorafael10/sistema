@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 4.5.0  -->
+<!-- 2014-10-23T15:40:23 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relataorio_teste" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="Uauario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="ativo" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[ativo]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="idorigem" class="com.green.modelo.Origem">
+		<fieldDescription><![CDATA[idorigem]]></fieldDescription>
+	</field>
+	<field name="isentoJuros" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isentoJuros]]></fieldDescription>
+	</field>
+	<field name="isentoMulta" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[isentoMulta]]></fieldDescription>
+	</field>
+	<field name="iss" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[iss]]></fieldDescription>
+	</field>
+	<field name="numero" class="java.lang.String">
+		<fieldDescription><![CDATA[numero]]></fieldDescription>
+	</field>
+	<field name="obs" class="java.lang.String">
+		<fieldDescription><![CDATA[obs]]></fieldDescription>
+	</field>
+	<field name="obsCancelado" class="java.lang.String">
+		<fieldDescription><![CDATA[obsCancelado]]></fieldDescription>
+	</field>
+	<field name="pago" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[pago]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="52" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30"/>
+				<textFieldExpression><![CDATA[$F{ativo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="92"/>
 	<style name="title" mode="Opaque" backcolor="#FFFFFF" fontName="Times New Roman" fontSize="22">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -33,7 +33,7 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="brinde" >
+	<subDataset name="brinde">
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
@@ -51,6 +51,7 @@
 	<parameter name="data_termo" class="java.util.Date"/>
 	<parameter name="tipo_termo" class="java.lang.String"/>
 	<parameter name="listaBrinde" class="java.util.List"/>
+	<parameter name="obs" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -69,161 +70,233 @@
 	<title>
 		<band height="39" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="572" height="39" />
+				<reportElement x="0" y="0" width="572" height="39"/>
 			</rectangle>
 			<staticText>
-				<reportElement style="title" x="0" y="0" width="572" height="39" />
+				<reportElement style="title" x="0" y="0" width="572" height="39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="12" isBold="true" isItalic="false"/>
+					<font fontName="Arial" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Movimentação de Brindes por Equipe - O Tempo]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="119" splitType="Stretch">
+		<band height="123" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="572" height="16" backcolor="#CCCCCC" />
+				<reportElement x="0" y="0" width="572" height="16" backcolor="#CCCCCC"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="572" height="16" />
+				<reportElement x="0" y="0" width="572" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Termo de Responsabilidade]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="16" width="572" height="56" forecolor="#000000" backcolor="#FFFFFF" />
+				<reportElement x="0" y="16" width="572" height="56" forecolor="#000000" backcolor="#FFFFFF"/>
 			</rectangle>
 			<textField>
-				<reportElement style="texto" mode="Transparent" x="17" y="16" width="353" height="56" forecolor="#000000" backcolor="#000000" />
+				<reportElement style="texto" mode="Transparent" x="17" y="16" width="353" height="56" forecolor="#000000" backcolor="#000000"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="7" isUnderline="false" isStrikeThrough="false"/>
+					<font fontName="Arial" size="9" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{texto_termo}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="383" y="16" width="189" height="56" />
+				<reportElement x="383" y="16" width="189" height="56"/>
 			</rectangle>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="468" y="16" width="104" height="56" />
+				<reportElement x="468" y="16" width="104" height="56"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_termo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="383" y="16" width="85" height="56" />
+				<reportElement x="383" y="16" width="85" height="56"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data do termo:]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="165" y="85" width="243" height="25" backcolor="#CCCCCC" />
+				<reportElement x="165" y="85" width="243" height="25" backcolor="#CCCCCC"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="165" y="85" width="75" height="25" />
+				<reportElement x="165" y="85" width="75" height="25"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tipo:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="240" y="85" width="168" height="25" />
+				<reportElement x="240" y="85" width="168" height="25"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tipo_termo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="4" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</detail>
 	<pageFooter>
-		<band height="139">
+		<band height="185">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="82" y="118" width="100" height="20" />
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="82" y="161" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="118" width="82" height="20" />
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<reportElement x="0" y="161" width="82" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
 				<text><![CDATA[Data de Emissão:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="75" width="154" height="20" />
+				<reportElement x="0" y="118" width="154" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Assinatura responsável:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="10" width="154" height="20" />
+				<reportElement x="0" y="76" width="154" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Assinatura conferente:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="154" y="28" width="273" height="1" />
+				<reportElement x="154" y="94" width="273" height="1"/>
 			</line>
 			<line>
-				<reportElement x="154" y="91" width="273" height="1" />
+				<reportElement x="154" y="134" width="273" height="1"/>
 			</line>
+			<staticText>
+				<reportElement x="7" y="2" width="39" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Obs:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="46" y="2" width="439" height="50"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="8" width="406" height="36"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{obs}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="60" splitType="Stretch">
+		<band height="302" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table 2" style="texto" x="0" y="0" width="335" height="49" />
+				<reportElement key="table 2" style="texto" x="28" y="0" width="219" height="41"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="brinde" >
+					<datasetRun subDataset="brinde">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listaBrinde})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="196" >
-						<jr:tableHeader style="footer" height="2" rowSpan="1"/>
-						<jr:columnHeader style="table 2_CH" height="23" rowSpan="1">
+					<jr:column width="196">
+						<jr:columnHeader style="table 2_CH" height="18" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="195" height="23" />
-								<textElement textAlignment="Center">
+								<reportElement x="0" y="0" width="195" height="18"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Brinde]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 2_TD" height="19" rowSpan="1">
+						<jr:detailCell style="table 2_TD" height="16" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="195" height="19" />
+								<reportElement x="0" y="0" width="196" height="16"/>
 								<textElement verticalAlignment="Middle">
-									<font fontName="Arial"/>
+									<font fontName="Arial" size="8"/>
 								</textElement>
 								<textFieldExpression><![CDATA[""+$F{IDBrinde}.getDescricao()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="138" >
-						<jr:tableHeader style="footer" height="2" rowSpan="1"/>
-						<jr:columnHeader style="table 2_CH" height="23" rowSpan="1">
+					<jr:column width="69">
+						<jr:columnHeader style="table 2_CH" height="18" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="138" height="23" />
-								<textElement textAlignment="Center">
+								<reportElement x="0" y="0" width="69" height="18"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Qtd]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 2_TD" height="19" rowSpan="1">
+						<jr:detailCell style="table 2_TD" height="16" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="138" height="19" />
+								<reportElement x="0" y="0" width="69" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60">
+						<jr:columnHeader style="table 2_CH" height="18" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="18"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Mov]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="16" rowSpan="1"/>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 2" style="texto" x="307" y="0" width="224" height="41"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="brinde">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listaBrinde})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="196">
+						<jr:columnHeader style="table 2_CH" height="18" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="195" height="18"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Brinde]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="16" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="196" height="16"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[""+$F{IDBrinde}.getDescricao()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="69">
+						<jr:columnHeader style="table 2_CH" height="18" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="69" height="18"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Qtd]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="16" rowSpan="1"/>
 					</jr:column>
 				</jr:table>
 			</componentElement>

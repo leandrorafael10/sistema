@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -31,6 +33,11 @@ import net.sf.jasperreports.engine.util.JRLoader;
 public class RelatoriosServlet extends HttpServlet {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Processes requests for both HTTP
      * <code>GET</code> and
      * <code>POST</code> methods.
@@ -72,11 +79,10 @@ public class RelatoriosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String[] vlParametro = request.getParameterValues("id");
 
         // obtém a conexão com o banco de dados  
         Connection conn = null;
@@ -102,7 +108,7 @@ public class RelatoriosServlet extends HttpServlet {
                     context.getRealPath("/WEB-INF/relatorios/Classificacao.jasper"));
 
             // parâmetros, se houverem  
-            Map parametros = new HashMap();
+            Map<String, Object> parametros = new HashMap<String, Object>();
             parametros.put("codigo1", "" + "%");
             parametros.put("descricao1", "" + "%");
 

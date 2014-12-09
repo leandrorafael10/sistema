@@ -49,7 +49,7 @@ public class RelatorioUtil {
     }
 
     @Deprecated
-    public static File geraRelatorio(HashMap parametrosRelatorio, String nomeRelatorioJasper, String nomeRelatorioSaida, int tipoRelatorio) throws JRException {
+    public static File geraRelatorio(HashMap<String, Object> parametrosRelatorio, String nomeRelatorioJasper, String nomeRelatorioSaida, int tipoRelatorio) throws JRException {
         // StreamedContent arquivoRetorno = null;
         File arquivoGerado = null;
         java.sql.Connection conexao = null;

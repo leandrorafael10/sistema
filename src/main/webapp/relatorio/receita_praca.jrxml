@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 4.1.1  -->
+<!-- 2014-10-30T13:32:31 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receita_praca" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="praca" class="java.lang.String"/>
+	<parameter name="mes" class="java.lang.String"/>
+	<parameter name="ano" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cnpj" class="java.lang.String">
+		<fieldDescription><![CDATA[cnpj]]></fieldDescription>
+	</field>
+	<field name="contrato" class="java.lang.String">
+		<fieldDescription><![CDATA[contrato]]></fieldDescription>
+	</field>
+	<field name="data_fim" class="java.util.Date">
+		<fieldDescription><![CDATA[data_fim]]></fieldDescription>
+	</field>
+	<field name="data_inicio" class="java.util.Date">
+		<fieldDescription><![CDATA[data_inicio]]></fieldDescription>
+	</field>
+	<field name="mes_parcela" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[mes_parcela]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="qtd_mes" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[qtd_mes]]></fieldDescription>
+	</field>
+	<field name="valor_mes" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valor_mes]]></fieldDescription>
+	</field>
+	<field name="valor_total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valor_total]]></fieldDescription>
+	</field>
+	<variable name="soma_mes" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor_mes}]]></variableExpression>
+	</variable>
+	<variable name="soma_total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor_total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="4" width="802" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO PRAÇA POR PERÍODO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="33" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="802" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="7" width="50" height="23"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Praça:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="7" width="60" height="23"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="560" y="7" width="20" height="23"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="580" y="7" width="20" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="600" y="7" width="60" height="23"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ano}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="7" width="330" height="23"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{praca}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="253" y="2" width="90" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cnpj]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="2" width="230" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="2" width="60" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contrato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="2" width="60" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DT Ínicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="488" y="2" width="52" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DT Fim]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="665" y="2" width="56" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd. Meses]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="615" y="2" width="50" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Mensal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="549" y="2" width="60" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Parcela Nº]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="4" width="68" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="802" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="24" width="802" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="253" y="0" width="90" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cnpj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="0" width="230" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="352" y="0" width="60" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contrato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="419" y="0" width="60" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_inicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="488" y="0" width="52" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_fim}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="665" y="0" width="56" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtd_mes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="615" y="0" width="50" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="549" y="0" width="60" height="16">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes_parcela}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="725" y="0" width="68" height="16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="57" splitType="Stretch">
+			<textField>
+				<reportElement x="555" y="27" width="130" height="13"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="685" y="27" width="100" height="13"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="10" width="50" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Emissor : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="30" width="50" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Data : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="10" width="235" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="70" y="30" width="105" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="83" splitType="Stretch">
+			<staticText>
+				<reportElement x="580" y="47" width="104" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Soma Total : R$  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="23" width="104" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Soma mês: R$ ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement key="" x="690" y="23" width="100" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{soma_mes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement key="" x="690" y="47" width="100" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{soma_total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

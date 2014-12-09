@@ -19,11 +19,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -37,7 +35,11 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class BrindemovimentacaoBean implements Serializable {
 
-    @ManagedProperty("#{brindemovimentacaoRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@ManagedProperty("#{brindemovimentacaoRN}")
     private BrindemovimentacaoRN brindemovimentacaoRN;
     @ManagedProperty("#{brindeRN}")
     private BrindeRN brindeRN;
@@ -79,7 +81,7 @@ public class BrindemovimentacaoBean implements Serializable {
 
     public void salvarExtra(ActionEvent event) {
         getTermoRetorno().setEntradaSaida(false);
-        getBrindemovimentacaoRN().salvarRetornoExtra(getTermoRetorno());
+        getBrindemovimentacaoRN().salvarSaidaExtra(getTermoRetorno());
         RequestContext.getCurrentInstance().execute("PF('dialogExtra').hide();");
         RequestContext.getCurrentInstance().update("formNovoTermo");
 
@@ -119,8 +121,17 @@ public class BrindemovimentacaoBean implements Serializable {
         parametros.put("tipo_termo", tipo_termo);
         parametros.put("data_termo", getTermoResponsabilidade().getDataTermo());
         parametros.put("listaBrinde", getTermoResponsabilidade().getBrindeTermoList());
+        parametros.put("obs", getTermoResponsabilidade().getObs());
         JRDataSource jrds = new JRBeanCollectionDataSource(getTermoResponsabilidade().getBrindeTermoList());
         RelatorioUtil.geraRelatorioBean("termo_responsabilidade",jrds,parametros);
+    }
+    public void geraPdfMovimentacao(Brindemovimentacao movimentacao) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        somaBrindeMovimentacao(movimentacao);
+        parametros.put("saldoMov", getBrindeSoma());
+        parametros.put("usuario", ContextoUtil.getContextoBean().getUsuarioLogado().getIDFuncionario().getIDPessoa().getRazao());
+        JRDataSource jrds = new JRBeanCollectionDataSource(movimentacao.getTermoResponsabilidadeList());
+        RelatorioUtil.geraRelatorioBean("movimentacao_brindes",jrds,parametros);
     }
 
     public void excluir(ActionEvent event) {

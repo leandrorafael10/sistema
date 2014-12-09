@@ -29,7 +29,8 @@ public class ReceitaDataModelo extends ListDataModel<Receita> implements Selecta
         return t.getIDReceita().toString();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Receita getRowData(String string) {
         List<Receita> despesa = (List<Receita>) getWrappedData();
         for (Receita d : despesa) {

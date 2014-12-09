@@ -22,7 +22,11 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class DebitoBean implements Serializable{
     
-    @ManagedProperty("#{debitoRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3038115773858180957L;
+	@ManagedProperty("#{debitoRN}")
     private DebitoRN debitoRN;
     private Debito debito = new Debito();
     private List<Debito> debitos;

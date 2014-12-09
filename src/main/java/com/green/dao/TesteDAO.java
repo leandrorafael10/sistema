@@ -4,11 +4,11 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Pessoa;
-import com.green.modelo.Teste;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Teste;
 
 /**
  *

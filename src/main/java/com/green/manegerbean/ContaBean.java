@@ -39,6 +39,7 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class ContaBean implements Serializable {
 
+	private static final long serialVersionUID = 1L;
     @ManagedProperty("#{contaRN}")
     private ContaRN contaRN;
     @ManagedProperty("#{debitoRN}")
@@ -51,8 +52,8 @@ public class ContaBean implements Serializable {
     private Debito[] debitosData;
     private Credito[] creditosData;
     private List<ContaConciliacao> conciliacaos = new ArrayList<ContaConciliacao>();
-    private Conta conta = new Conta();
-    private Conta contaNova = new Conta();
+    private Conta conta= new Conta();
+    private Conta contaNova ;
     private Contato contato = new Contato();
     private Credito creditoFiltro = new Credito();
     private Debito debitoFiltro = new Debito();
@@ -91,27 +92,9 @@ public class ContaBean implements Serializable {
         this.creditoDataModelo = new CreditoDataModelo(getCreditos());
     }
 
-    public void listandoConciliado() {
-        List<Credito> cs = getCreditoRN().listando();
-        List<Debito> ds = getDebitoRN().listando();
-        setConciliacaos(new ArrayList<ContaConciliacao>());
-        for (Conta contaConciliada : getContas()) {
-  //          ContaConciliacao cc = calculoSaldos(contaConciliada, cs, ds);
-    //        getConciliacaos().add(cc);
-        }
-        setContaConciliacaoDataModelo(new ContaConciliacaoDataModelo(getConciliacaos()));
-    }
-/*
-    public void saldosConta() {
-        setValorAconciliar(BigDecimal.ZERO);
-        setValorConciliado(BigDecimal.ZERO);
-        setValorPrevisto(BigDecimal.ZERO);
-        ContaConciliacao cc = calculoSaldos(getCreditoFiltro().getIDConta(), getCreditoRN().listando(), getDebitoRN().listando());
-        setValorPrevisto(cc.getValorPrevisto());
-        setValorAconciliar(cc.getValorAconciliar());
-        setValorConciliado(cc.getValorConciliado());
-    }
-*/
+    
+    
+
     public String datahoje() {
         Date d = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -123,78 +106,16 @@ public class ContaBean implements Serializable {
         context.update("form_tarns:gridtrans");
         context.execute("dialogtrans.show()");
     }
-/*
-    public void filtroCreditoDebito() {
-        List<Credito> c;
-        List<Debito> d;
-        getDebitoFiltro().setDTBaixa(getCreditoFiltro().getDTBaixa());
-        getDebitoFiltro().setDTConciliacao(getCreditoFiltro().getDTConciliacao());
-        getDebitoFiltro().setIDAtividade(getCreditoFiltro().getIDAtividade());
-        getDebitoFiltro().setIDCCusto(getCreditoFiltro().getIDCCusto());
-        getDebitoFiltro().setIDClassificacao(getCreditoFiltro().getIDClassificacao());
-        getDebitoFiltro().setIDConta(getCreditoFiltro().getIDConta());
-        getDebitoFiltro().setIDTpDocumento(getCreditoFiltro().getIDTpDocumento());
-       getDebitoFiltro().setNumero(getCreditoFiltro().getNumero());
-        getDebitoFiltro().setValor(getCreditoFiltro().getValor());
-        getDebitoFiltro().setValor(getCreditoFiltro().getValor());
-       c = getCreditoRN().filtroCredito(getCreditoFiltro(), getFimFiltroBaixa(), getFimFiltroConciliacao());
-        d = getDebitoRN().filtroDebito(getDebitoFiltro(), getFimFiltroBaixa(), getFimFiltroConciliacao());
-        if (opcFiltroSituacao == 2) {
-            List<Credito> cs = new ArrayList<Credito>();
-            for (Credito c1 : c) {
-                if (c1.getDTConciliacao() != null) {
-                    cs.add(c1);
-                }
-            }
-            c = cs;
-        }
-        if (opcFiltroSituacao == 3) {
-            List<Credito> cs = new ArrayList<Credito>();
-            for (Credito c1 : c) {
-                if (c1.getDTConciliacao() == null) {
-                    cs.add(c1);
-                }
-            }
-            c = cs;
-        }
-        if (opcFiltroSituacao == 2) {
-            List<Debito> ds = new ArrayList<Debito>();
-            for (Debito d1 : d) {
-                if (d1.getDTConciliacao() != null) {
-                    ds.add(d1);
-                }
-            }
-            d = ds;
-        }
-        if (opcFiltroSituacao == 3) {
-            List<Debito> ds = new ArrayList<Debito>();
-            for (Debito d1 : d) {
-                if (d1.getDTConciliacao() == null) {
-                    ds.add(d1);
-                }
-            }
-            d = ds;
-        }
-        if (opcFiltroTipo == 1) {
-            setCreditos(c);
-            setDebitos(d);
-        }
-        if (opcFiltroTipo == 2) {
-            setCreditos(c);
-            setDebitos(new ArrayList<Debito>());
-        }
-        if (opcFiltroTipo == 3) {
-            setDebitos(d);
-            setCreditos(new ArrayList<Credito>());
-        }
-
-        listandoCreditoDebito();
-    }
-*/
+   
     @PostConstruct
     private void init() {
+        this.contaNova = new Conta();
+        this.contaNova.setIDBanco(new Banco());
+        this.contaNova.setIDBoleto(null);
+        this.contaNova.setIDEmpresa(new Empresa());
+        this.contaNova.setIDTipoConta(new Tipoconta());
         listando();
-        listandoConciliado();
+       
         listandoCreditoDebito();
     }
 
@@ -205,13 +126,13 @@ public class ContaBean implements Serializable {
         this.opcFiltroSituacao = 1;
         this.opcFiltroTipo = 1;
         //getCreditoFiltro().setIDConta(cc.getConta());
-        getDebitoFiltro().setIDConta(cc.getConta());
+        
         //filtroCreditoDebito();
         //saldosConta();
         setTab(false);
         FacesContext contexto = FacesContext.getCurrentInstance();
         contexto.getExternalContext().getSessionMap().put("conta", cc);
-        System.out.println(contexto.getViewRoot().getViewId()); 
+        System.out.println(contexto.getViewRoot().getViewId());
         try {
             contexto.getExternalContext().redirect("tesouraria_conciliacao.jsf");
             System.out.println(contexto.getViewRoot().getViewId());
@@ -219,91 +140,81 @@ public class ContaBean implements Serializable {
             Logger.getLogger(ContaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void recebendoConta(){
-        FacesContext contexto = FacesContext.getCurrentInstance();
-        ContaConciliacao cc = (ContaConciliacao)contexto.getExternalContext().getSessionMap().get("conta"); 
+
+    public void recebendoConta() {
         setCreditoFiltro(new Credito());
         setDebitoFiltro(new Debito());
         this.opcFiltroSituacao = 1;
         this.opcFiltroTipo = 1;
         //getCreditoFiltro().setIDConta(cc.getConta());
-        getDebitoFiltro().setIDConta(cc.getConta());
+        
        // filtroCreditoDebito();
-       // saldosConta();
+        // saldosConta();
         RequestContext.getCurrentInstance().update("forConciliacao");
     }
 
     public void conciliar(ActionEvent event) {
         getDebitoRN().conciliarDebito(getDebitosData());
         getCreditoRN().conciliarCredito(getCreditosData());
-       // saldosConta();
-        listandoConciliado();
+        // saldosConta();
+        
     }
 
-    public void cancelarConciliacao(ActionEvent event) {
-        //getCreditoRN().cancelarConciliacao(getCreditosData(), getCreditoFiltro().getIDConta());
-        //getDebitoRN().cancelarConciliacao(getDebitosData(), getCreditoFiltro().getIDConta());
-        //saldosConta();
-        listandoConciliado();
-    }
+    
 
-    public String salvar(ActionEvent actionEvent) {
-        getPessoa().setEmail(getEmail());
-        formatatel(getFax(), getCalular(), "", getTelComercial());
-        getContaRN().salvar(getContaNova(), getPessoa(), getContato());
-        setPessoa(new Pessoa());
+    public void salvar(ActionEvent actionEvent) {
+        getContaRN().salvar(getContaNova(), getContato());
         setConta(new Conta());
-        return "/tesouraria/cadastros_tesouraria/lista_contas";
+    }
+    /*
+     public ContaConciliacao calculoSaldos(Conta conta, List<Credito> creditos, List<Debito> debitos) {
+     ContaConciliacao cc = new ContaConciliacao(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+     BigDecimal saldoDebitoA = BigDecimal.ZERO;
+     BigDecimal saldoDebitoC = BigDecimal.ZERO;
+     BigDecimal saldoCreditoC = BigDecimal.ZERO;
+     BigDecimal saldoCreditoA = BigDecimal.ZERO;
+     for (Credito c : creditos) {
+     if (conta != null) {
+     if (c.getIDConta().equals(conta)) {
+     if (c.getDTConciliacao() != null) {
+     saldoCreditoC = saldoCreditoC.add(c.getValor());
+     } else {
+     saldoCreditoA = saldoCreditoA.add(c.getValor());
+     }
+     }
+     } else {
+     if (c.getDTConciliacao() != null) {
+     saldoCreditoC = saldoCreditoC.add(c.getValor());
+     } else {
+     saldoCreditoA = saldoCreditoA.add(c.getValor());
+     }
+     }
+     }
+     for (Debito d : debitos) {
+     if (conta != null) {
+     if (d.getIDConta().equals(conta)) {
+     if (d.getDTConciliacao() != null) {
+     saldoDebitoC = saldoDebitoC.add(d.getValor());
+     } else {
+     saldoDebitoA = saldoDebitoA.add(d.getValor());
+     }
+     }
+     } else {
+     if (d.getDTConciliacao() != null) {
+     saldoDebitoC = saldoDebitoC.add(d.getValor());
+     } else {
+     saldoDebitoA = saldoDebitoA.add(d.getValor());
+     }
+     }
+     }
+     cc.setConta(conta);
+     cc.setValorPrevisto(saldoCreditoA.add(saldoCreditoC).subtract(saldoDebitoA.add(saldoDebitoC)));
+     cc.setValorAconciliar(saldoCreditoA.subtract(saldoDebitoA));
+     cc.setValorConciliado(saldoCreditoC.subtract(saldoDebitoC));
+     return cc;
+     }
+     */
 
-    }
-/*
-    public ContaConciliacao calculoSaldos(Conta conta, List<Credito> creditos, List<Debito> debitos) {
-        ContaConciliacao cc = new ContaConciliacao(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-        BigDecimal saldoDebitoA = BigDecimal.ZERO;
-        BigDecimal saldoDebitoC = BigDecimal.ZERO;
-        BigDecimal saldoCreditoC = BigDecimal.ZERO;
-        BigDecimal saldoCreditoA = BigDecimal.ZERO;
-        for (Credito c : creditos) {
-            if (conta != null) {
-                if (c.getIDConta().equals(conta)) {
-                    if (c.getDTConciliacao() != null) {
-                        saldoCreditoC = saldoCreditoC.add(c.getValor());
-                    } else {
-                        saldoCreditoA = saldoCreditoA.add(c.getValor());
-                    }
-                }
-            } else {
-                if (c.getDTConciliacao() != null) {
-                    saldoCreditoC = saldoCreditoC.add(c.getValor());
-                } else {
-                    saldoCreditoA = saldoCreditoA.add(c.getValor());
-                }
-            }
-        }
-        for (Debito d : debitos) {
-            if (conta != null) {
-                if (d.getIDConta().equals(conta)) {
-                    if (d.getDTConciliacao() != null) {
-                        saldoDebitoC = saldoDebitoC.add(d.getValor());
-                    } else {
-                        saldoDebitoA = saldoDebitoA.add(d.getValor());
-                    }
-                }
-            } else {
-                if (d.getDTConciliacao() != null) {
-                    saldoDebitoC = saldoDebitoC.add(d.getValor());
-                } else {
-                    saldoDebitoA = saldoDebitoA.add(d.getValor());
-                }
-            }
-        }
-        cc.setConta(conta);
-        cc.setValorPrevisto(saldoCreditoA.add(saldoCreditoC).subtract(saldoDebitoA.add(saldoDebitoC)));
-        cc.setValorAconciliar(saldoCreditoA.subtract(saldoDebitoA));
-        cc.setValorConciliado(saldoCreditoC.subtract(saldoDebitoC));
-        return cc;
-    }
-*/
     public void trasferencia(Credito credito, Debito debito) {
         getContaRN().transferencia(credito, debito);
     }
@@ -311,7 +222,7 @@ public class ContaBean implements Serializable {
     public void incluirCredito(Credito c) {
         RequestContext context = RequestContext.getCurrentInstance();
         getCreditoRN().salvar(c);
-        listandoConciliado();
+        
         context.execute("PF('dialogIncluiCredito').hide()");
         context.execute("PF('dialogIncluir').show()");
         context.update("formConciliacao");
@@ -320,7 +231,7 @@ public class ContaBean implements Serializable {
     public void incluirDebito(Debito d) {
         RequestContext context = RequestContext.getCurrentInstance();
         getDebitoRN().salvar(d);
-        listandoConciliado();
+        
         context.execute("PF('dialogIncluirDebito').hide()");
         context.execute("PF('dialogIncluir').show()");
         context.update("formConciliacao");
@@ -330,7 +241,8 @@ public class ContaBean implements Serializable {
         getContaRN().excluir(getConta());
     }
 
-    public void arquivoRetorno(ActionEvent actionEvent) {
+    @SuppressWarnings({ "static-access", "deprecation" })
+	public void arquivoRetorno(ActionEvent actionEvent) {
         FacesContext context = FacesContext.getCurrentInstance();
         Date dateNomeRelatorio = new Date();
         RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -345,6 +257,7 @@ public class ContaBean implements Serializable {
         parametrosRelatorio.put("tipo_conta", getFiltroTipoConta());
 
         try {
+        	
             relatorioUtil.geraRelatorio(parametrosRelatorio, nomeRelatorioJasper, nomeRelatorioSaida, 1);
             requestContext.execute("dialogCarregando.hide()");
             parametrosRelatorio = new HashMap<String, Object>();
@@ -362,7 +275,6 @@ public class ContaBean implements Serializable {
         this.pessoa = pessoa;
     }
 
-    
     public String getCalular() {
         return calular;
     }
@@ -640,7 +552,6 @@ public class ContaBean implements Serializable {
         return creditoList;
     }
 
-    
     public List<Credito> getCreditoSelect() {
         return creditoSelect;
     }

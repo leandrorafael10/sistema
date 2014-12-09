@@ -21,7 +21,9 @@
                                 <h:panelGrid columns="6" cellspacing="5">
                                     <h:outputText value="periodo: " />
                                     <p:selectOneMenu value="#{capaLoteJornalBean.mes}">
-                                        <f:selectItems value="#{calendarioUtil.listaMes}" var="mes"
+                                        <f:selectItems value="#{calendarioUtil.listaMes}" 
+                                                       var="mes"
+                                                       
                                                        itemLabel="#{mes.mes}" itemValue="#{mes.numeroMes}" />
 
                                     </p:selectOneMenu>

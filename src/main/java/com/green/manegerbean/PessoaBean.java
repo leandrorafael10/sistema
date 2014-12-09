@@ -21,7 +21,12 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class PessoaBean implements Serializable {
 
-    @ManagedProperty("#{pessoaRN}")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@ManagedProperty("#{pessoaRN}")
     private PessoaRN pessoaRN;
 
     private Pessoa pessoa = new Pessoa();

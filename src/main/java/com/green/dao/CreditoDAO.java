@@ -4,17 +4,17 @@
  */
 package com.green.dao;
 
-import com.green.modelo.Conta;
-import com.green.modelo.Credito;
-import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.green.modelo.Conta;
+import com.green.modelo.Credito;
 
 /**
  *
@@ -34,7 +34,8 @@ public class CreditoDAO {
         this.sf = sf;
     }
 
-    public List<Credito> listando() {
+    @SuppressWarnings("unchecked")
+	public List<Credito> listando() {
         List<Credito> creditos;
         creditos = getSf().getCurrentSession().createCriteria(Credito.class).list();
         return creditos;
@@ -86,7 +87,8 @@ public class CreditoDAO {
         getSf().getCurrentSession().flush();
     }
 
-    public Credito ultimoConciliado(Conta conta) {
+    @SuppressWarnings("unchecked")
+	public Credito ultimoConciliado(Conta conta) {
         Criteria criteria = getSf().getCurrentSession().createCriteria(Credito.class);
         criteria.add(Restrictions.eq("iDConta", conta));
         criteria.add(Restrictions.isNotNull("dTConciliacao"));
